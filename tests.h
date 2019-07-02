@@ -96,6 +96,7 @@ bool check_all_duplicates(const std::wstring& a_fileName);
 bool test01_materials_add();
 bool test02_materials_changes_open_mode();
 bool test03_lights_add();
+bool test04_lights_add_change();
 bool test05_instances_write_discard();
 bool test06_instances_open_existent();
 bool test07_camera_add();
@@ -265,9 +266,9 @@ namespace MTL_TESTS
   bool test_133_emissive_and_diffuse();
   bool test_134_diff_refl_transp();
   
-  bool test_135_opacity_metal();        // not smooth backface
-  bool test_136_opacity_glass();        // transparency work as thin;
-  bool test_137_opacity_emission();     //
+  bool test_135_opacity_metal();         // not smooth backface
+  bool test_136_opacity_glass();         // transparency work as thin;
+  bool test_137_shadow_matte_emission(); //
 
   bool test_138_translucency_and_diffuse();
   bool test_139_glass_and_bump();
@@ -447,5 +448,8 @@ static const int CURR_RENDER_DEVICE = 0;
 //void image_p_sandbox();
 
 void run_all_mictofacet();
+
+
+#define IRRADIANCE_TO_RADIANCE (3.14159265358979323846f)
 
 #endif

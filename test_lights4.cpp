@@ -37,8 +37,6 @@ namespace LGHT_TESTS
 
   bool test_237_cubemap_ldr()
   {
-    
-
     hrErrorCallerPlace(L"test_237");
 
     hrSceneLibraryOpen(L"tests_f/test_237", HR_WRITE_DISCARD);
@@ -137,7 +135,6 @@ namespace LGHT_TESTS
       VERIFY_XML(lightNode);
     }
     hrLightClose(sky);
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -348,7 +345,7 @@ namespace LGHT_TESTS
       auto intensityNode = lightNode.append_child(L"intensity");
 
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.5 1 0.5");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"8.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(8.0*IRRADIANCE_TO_RADIANCE);
 
       lightNode.append_child(L"falloff_angle").append_attribute(L"val").set_value(90);
       lightNode.append_child(L"falloff_angle2").append_attribute(L"val").set_value(60);
@@ -371,7 +368,7 @@ namespace LGHT_TESTS
       auto intensityNode = lightNode.append_child(L"intensity");
 
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-			intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"8.0");
+			intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(8.0f*IRRADIANCE_TO_RADIANCE);
 			
 			VERIFY_XML(lightNode);
     }
@@ -578,7 +575,7 @@ namespace LGHT_TESTS
       auto intensityNode = lightNode.append_child(L"intensity");
 
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"2.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(2.0f*IRRADIANCE_TO_RADIANCE);
 
       VERIFY_XML(lightNode);
     }
@@ -598,7 +595,7 @@ namespace LGHT_TESTS
       auto intensityNode = lightNode.append_child(L"intensity");
 
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"2.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(2.0f*IRRADIANCE_TO_RADIANCE);
 
       VERIFY_XML(lightNode);
     }
@@ -716,9 +713,6 @@ namespace LGHT_TESTS
         auto pres = std::cout.precision(2);
         std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
         std::cout.precision(pres);
-
-        
-        
       }
 
       if (info.finalUpdate)
@@ -732,8 +726,6 @@ namespace LGHT_TESTS
 
   bool test_240_mesh_light_torus()
   {
-    
-
     hrErrorCallerPlace(L"test_240");
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -947,8 +939,8 @@ namespace LGHT_TESTS
 
       pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
-      intensityNode.append_child(L"color").text().set(L"1 1 1");
-      intensityNode.append_child(L"multiplier").text().set(L"2.0");
+      intensityNode.append_child(L"color").append_attribute(L"val")      = L"1 1 1";
+      intensityNode.append_child(L"multiplier").append_attribute(L"val") = 2.0f*IRRADIANCE_TO_RADIANCE;
     }
     hrLightClose(meshLightRef);
 
@@ -1306,7 +1298,7 @@ namespace LGHT_TESTS
       pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
       auto colorNode = intensityNode.append_child(L"color");
-      intensityNode.append_child(L"multiplier").text().set(L"4.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val") = 4.0f*IRRADIANCE_TO_RADIANCE;
 
       colorNode.append_attribute(L"val") = L"1 1 1";
 
@@ -1700,7 +1692,7 @@ namespace LGHT_TESTS
       pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
       auto colorNode = intensityNode.append_child(L"color");
-      intensityNode.append_child(L"multiplier").text().set(L"4.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val") = 4.0f*IRRADIANCE_TO_RADIANCE;
 
       colorNode.append_attribute(L"val") = L"1 1 1";
 
@@ -1871,8 +1863,6 @@ namespace LGHT_TESTS
 
   bool test_243_mesh_light_do_not_sample_me()
   {
-    
-
     hrErrorCallerPlace(L"test_243");
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1881,10 +1871,10 @@ namespace LGHT_TESTS
 
     hrSceneLibraryOpen(L"tests_f/test_243", HR_WRITE_DISCARD);
 
-    SimpleMesh cube = CreateCube(0.75f);
-    SimpleMesh plane = CreatePlane(10.0f);
-    SimpleMesh sphere = CreateSphere(1.0f, 32);
-    SimpleMesh torus = CreateTorus(0.05f, 0.6f, 32, 32);
+    SimpleMesh cube     = CreateCube(0.75f);
+    SimpleMesh plane    = CreatePlane(10.0f);
+    SimpleMesh sphere   = CreateSphere(1.0f, 32);
+    SimpleMesh torus    = CreateTorus(0.05f, 0.6f, 32, 32);
     SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
 
     for (size_t i = 0; i < plane.vTexCoord.size(); i++)
@@ -1934,9 +1924,6 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").text().set(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").text().set(L"0.5");
-      //refl.append_child(L"fresnel_IOR").text().set(L"1.5");
-      //refl.append_child(L"fresnel").text().set(L"1");
-
     }
     hrMaterialClose(mat1);
 
@@ -2086,8 +2073,8 @@ namespace LGHT_TESTS
 
       pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
-      intensityNode.append_child(L"color").text().set(L"1 1 1");
-      intensityNode.append_child(L"multiplier").text().set(L"2.0");
+      intensityNode.append_child(L"color").append_attribute(L"val")      = L"1 1 1";
+      intensityNode.append_child(L"multiplier").append_attribute(L"val") = 2.0f*IRRADIANCE_TO_RADIANCE;
     }
     hrLightClose(meshLightRef);
 
@@ -2283,7 +2270,7 @@ namespace LGHT_TESTS
       auto intensityNode = lightNode.append_child(L"intensity");
 
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"2.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(2.0f*IRRADIANCE_TO_RADIANCE);
 
       VERIFY_XML(lightNode);
     }
@@ -2481,7 +2468,7 @@ namespace LGHT_TESTS
       auto multNode = intensityNode.append_child(L"multiplier");
 
       colorNode.append_attribute(L"val").set_value(L"1 1 1");
-      multNode.append_attribute(L"val").set_value(L"1.0");
+      multNode.append_attribute(L"val").set_value(1.0*IRRADIANCE_TO_RADIANCE);
 
       auto texNode = hrTextureBind(texForLight, colorNode);
 
@@ -2510,7 +2497,7 @@ namespace LGHT_TESTS
       auto intensityNode = lightNode.append_child(L"intensity");
 
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"1.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0*IRRADIANCE_TO_RADIANCE);
 
       VERIFY_XML(lightNode);
     }

@@ -517,28 +517,12 @@ namespace TEST_UTILS
       node.append_child(L"method_secondary").text() = L"pathtracing";
       node.append_child(L"method_tertiary").text()  = L"pathtracing";
       node.append_child(L"method_caustic").text()   = L"pathtracing";
-      node.append_child(L"shadows").text()          = L"1";
 
-      node.append_child(L"trace_depth").text()      = L"6";
-      node.append_child(L"diff_trace_depth").text() = L"3";
+      node.append_child(L"trace_depth").text()      = 6;
+      node.append_child(L"diff_trace_depth").text() = 3;
       node.append_child(L"maxRaysPerPixel").text()  = maxRays;
       node.append_child(L"resources_path").text()   = L"..";
       node.append_child(L"offline_pt").text()       = 0;
-    }
-    hrRenderClose(renderRef);
-
-    return renderRef;
-  }
-
-  HRRenderRef CreateBasicGLRender(int w, int h)
-  {
-    HRRenderRef renderRef = hrRenderCreate(L"opengl1");
-
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      auto node = hrRenderParamNode(renderRef);
-      node.append_child(L"width").text()  = w;
-      node.append_child(L"height").text() = h;
     }
     hrRenderClose(renderRef);
 
@@ -554,22 +538,20 @@ namespace TEST_UTILS
     {
       auto node = hrRenderParamNode(renderRef);
 
-      node.append_child(L"width").text() = w;
+      node.append_child(L"width").text()  = w;
       node.append_child(L"height").text() = h;
 
       node.append_child(L"method_primary").text()   = L"pathtracing";
       node.append_child(L"method_secondary").text() = L"pathtracing";
       node.append_child(L"method_tertiary").text()  = L"pathtracing";
       node.append_child(L"method_caustic").text()   = L"none";
-      node.append_child(L"shadows").text() = L"1";
 
-      node.append_child(L"trace_depth").text() = L"5";
+      node.append_child(L"trace_depth").text()      = L"5";
       node.append_child(L"diff_trace_depth").text() = L"3";
+      node.append_child(L"qmc_variant").text()      = 7;
 
-      node.append_child(L"pt_error").text() = L"2";
       node.append_child(L"minRaysPerPixel").text() = minRays;
       node.append_child(L"maxRaysPerPixel").text() = maxRays;
-
     }
     hrRenderClose(renderRef);
 

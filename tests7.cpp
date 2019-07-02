@@ -214,8 +214,8 @@ bool test42_load_mesh_compressed()
     
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
     
-    intensityNode.append_child(L"color").text().set(L"1 1 1");
-    intensityNode.append_child(L"multiplier").text().set(L"8.0");
+    intensityNode.append_child(L"color").append_attribute(L"val")      = L"1 1 1";
+    intensityNode.append_child(L"multiplier").append_attribute(L"val") = 8.0*IRRADIANCE_TO_RADIANCE;
   }
   hrLightClose(rectLight);
   
@@ -326,8 +326,6 @@ bool test42_load_mesh_compressed()
 
 bool test43_test_direct_light()
 {
-  
-
   hrErrorCallerPlace(L"test43");
 
   HRCameraRef    camRef;
@@ -429,8 +427,8 @@ bool test43_test_direct_light()
 
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
-    intensityNode.append_child(L"color").text().set(L"1 1 1");
-    intensityNode.append_child(L"multiplier").text().set(L"2.0");
+    intensityNode.append_child(L"color").append_attribute(L"val")      = L"1 1 1";
+    intensityNode.append_child(L"multiplier").append_attribute(L"val") = 2.0f*IRRADIANCE_TO_RADIANCE;
   }
   hrLightClose(directLight);
 
@@ -859,7 +857,7 @@ bool test44_four_lights_and_compressed_mesh()
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
     intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-    intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"4.0");
+    intensityNode.append_child(L"multiplier").append_attribute(L"val") = 4.0f*IRRADIANCE_TO_RADIANCE;
   }
   hrLightClose(rectLight);
 
@@ -1276,7 +1274,7 @@ bool test45_mesh_from_vsgf_opengl_bug_teapot()
     sizeNode.append_attribute(L"half_width")  = 1.0f;
 
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"10 10 10");
+    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"31.14 31.14 31.14");
   }
   hrLightClose(rectLight);
 
@@ -1630,7 +1628,7 @@ bool test46_light_geom_rect()
     sizeNode.append_attribute(L"half_width")  = 1.0f;
 
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"10 10 10");
+    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"31.14 31.14 31.14");
   }
   hrLightClose(rectLight);
 
@@ -2044,7 +2042,7 @@ bool test47_light_geom_disk()
 
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"10 10 10");
+    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"31.14 31.14 31.14");
   }
   hrLightClose(rectLight);
 
@@ -2445,7 +2443,7 @@ bool test48_light_geom_sphere()
 
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"10 10 10");
+    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"31.14 31.14 31.14");
   }
   hrLightClose(rectLight);
 
@@ -2813,7 +2811,7 @@ bool test49_light_geom_disk()
 
     pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"10 10 10");
+    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"31.14 31.14 31.14");
   }
   hrLightClose(rectLight);
 
