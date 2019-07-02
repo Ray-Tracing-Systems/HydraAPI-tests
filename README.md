@@ -4,5 +4,5 @@ Dependent on HydraAPI and HydraCore.
 
 To run tests clone the repo to the same directory where HydraAPI root directory is located. Example directories structure:
 * my_repos
-..* HydraAPI
-..* HydraAPI-tests
+    * HydraAPI
+    * HydraAPI-tests
