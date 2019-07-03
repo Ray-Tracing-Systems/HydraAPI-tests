@@ -46,8 +46,9 @@ set(SOURCE_FILES_GL
 
 #set (CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG}")
 
-set(HYDRA_API_SRC_DIR ../HydraAPI/hydra_api)
-set(HYDRA_API_LIB_DIR ../HydraAPI/bin)
+set(HYDRA_API_ROOT_DIR ../HydraAPI)
+set(HYDRA_API_SRC_DIR ${HYDRA_API_ROOT_DIR}/hydra_api)
+set(HYDRA_API_LIB_DIR ${HYDRA_API_ROOT_DIR}/bin)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
@@ -71,6 +72,9 @@ find_library(HYDRA_API_IES_PARSER_LIB ies_parser HINTS ${HYDRA_API_LIB_DIR})
 find_library(HYDRA_API_MIKKTSPACE mikktspace HINTS ${HYDRA_API_LIB_DIR})
 find_library(HYDRA_API_CORTO corto HINTS ${HYDRA_API_LIB_DIR})
 
+find_package(FreeImage REQUIRED)
+include_directories(${FREEIMAGE_INCLUDE_DIRS})
+set(LIBS ${LIBS} ${FREEIMAGE_LIBRARIES})
 
 target_include_directories(hydra_api_tests PUBLIC ${OPENGL_INCLUDE_DIR})
 
@@ -95,10 +99,9 @@ else()
   target_link_libraries(hydra_api_tests LINK_PUBLIC
           ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY}
           ${LIBS}
-          ${HYDRA_API_IES_PARSER_LIB} ${HYDRA_API_MIKKTSPACE} ${HYDRA_API_CORTO}
-          stdc++fs rt dl OpenCL
           ${HYDRA_API_LIB}
-          glfw)
+          ${HYDRA_API_IES_PARSER_LIB} ${HYDRA_API_MIKKTSPACE} ${HYDRA_API_CORTO}
+          stdc++fs rt dl OpenCL glfw)
 
 endif()
 
