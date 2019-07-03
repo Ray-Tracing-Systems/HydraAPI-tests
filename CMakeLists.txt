@@ -42,7 +42,15 @@ set(SOURCE_FILES
         tests_algr.cpp)
 
 set(SOURCE_FILES_GL
-        opengl_init.cpp)
+        opengl_init.cpp
+        RenderDrivers.cpp
+        RenderDriverOpenGL1.h RenderDriverOpenGL1.cpp
+        RenderDriverOpenGL1_DelayedLoad.cpp
+        RenderDriverOpenGL1_DrawBvhLevels.cpp
+        RenderDriverOpenGL1_TestCustomAttributes.cpp
+        RenderDriverOpenGL1_TestSplit.cpp
+        RenderDriverOpenGL1Debug.cpp
+        RenderDriverOpenGL1DebugDrawRays.cpp)
 
 #set (CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG}")
 

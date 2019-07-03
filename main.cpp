@@ -9,6 +9,8 @@ using pugi::xml_node;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////// just leave this it as it is :)
 #include "HydraRenderDriverAPI.h"
+#include "RenderDrivers.h"
+
 IHRRenderDriver* CreateDriverRTE(const wchar_t* a_cfg) { return nullptr; }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -73,13 +75,15 @@ void sig_handler(int signo)
 #endif
 
 extern float g_MSEOutput;
-void demo_01_plane_box();
-void demo_02_load_obj();
-void demo_03_caustics();
-void demo_04_instancing();
+void init()
+{
+  registerAllGL1Drivers();
+//  printAllAvailableDrivers();
+}
 
 int main(int argc, const char** argv)
 {
+  init();
   hrInfoCallback(&InfoCallBack);
   hrErrorCallerPlace(L"main");  // for debug needs only
 
@@ -125,9 +129,8 @@ int main(int argc, const char** argv)
   try
   {
     //test42_load_mesh_compressed();
-    
-    run_all_api_tests(); // passed
-    //run_all_geo_tests();
+    run_all_api_tests();
+//    run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
