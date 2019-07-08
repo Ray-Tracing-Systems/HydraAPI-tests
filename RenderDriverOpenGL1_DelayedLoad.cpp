@@ -21,6 +21,7 @@ struct RD_OGL1_Plain_DelayedLoad : public RD_OGL1_Plain
 {
 public:
 
+  void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1DelayedLoad");};
   RD_OGL1_Plain_DelayedLoad() = default;
   ~RD_OGL1_Plain_DelayedLoad() = default;
 
@@ -34,9 +35,9 @@ protected:
 };
 
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1_DelayedLoad_RenderDriver()
+IHRRenderDriver* CreateOpenGL1_DelayedLoad_RenderDriver()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_Plain_DelayedLoad);
+  return new RD_OGL1_Plain_DelayedLoad;
 }
 
 
@@ -126,6 +127,8 @@ public:
   RD_OGL1_Plain_DelayedLoad2() = default;
   ~RD_OGL1_Plain_DelayedLoad2() = default;
 
+    void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1DelayedLoad2");};
+
 //  HRDriverInfo Info() override;
 
   bool UpdateMesh(int32_t a_meshId, pugi::xml_node a_meshNode, const HRMeshDriverInput& a_input, const HRBatchInfo* a_batchList, int32_t a_listSize) override;
@@ -135,9 +138,9 @@ protected:
 
 };
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1_DelayedLoad_RenderDriver2()
+IHRRenderDriver* CreateOpenGL1_DelayedLoad_RenderDriver2()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_Plain_DelayedLoad2);
+  return new RD_OGL1_Plain_DelayedLoad2;
 }
 
 

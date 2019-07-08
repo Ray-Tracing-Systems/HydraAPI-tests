@@ -57,6 +57,7 @@ set(SOURCE_FILES_GL
 set(HYDRA_API_ROOT_DIR ../HydraAPI)
 set(HYDRA_API_SRC_DIR ${HYDRA_API_ROOT_DIR}/hydra_api)
 set(HYDRA_API_LIB_DIR ${HYDRA_API_ROOT_DIR}/bin)
+set(HYDRA_API_UTILS_SRC_DIR ${HYDRA_API_ROOT_DIR}/utils)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
@@ -74,7 +75,7 @@ endif()
 
 find_package(OpenGL REQUIRED)
 add_executable(hydra_api_tests ${SOURCE_FILES} ${SOURCE_FILES_GL})
-include_directories(${ADDITIONAL_INCLUDE_DIRS} ${HYDRA_API_SRC_DIR})
+include_directories(${ADDITIONAL_INCLUDE_DIRS} ${HYDRA_API_SRC_DIR} ${HYDRA_API_UTILS_SRC_DIR})
 find_library(HYDRA_API_LIB hydra_api HINTS ${HYDRA_API_LIB_DIR})
 find_library(HYDRA_API_IES_PARSER_LIB ies_parser HINTS ${HYDRA_API_LIB_DIR})
 find_library(HYDRA_API_MIKKTSPACE mikktspace HINTS ${HYDRA_API_LIB_DIR})

@@ -235,9 +235,6 @@ namespace GEO_TESTS
         auto pres = std::cout.precision(2);
         std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
         std::cout.precision(pres);
-
-        
-        
       }
 
       if (info.finalUpdate)

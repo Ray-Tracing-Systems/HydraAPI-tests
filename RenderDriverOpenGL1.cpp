@@ -5,9 +5,9 @@ using namespace HydraLiteMath;
 #include <iostream>
 
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1_RenderDriver()
+IHRRenderDriver* CreateOpenGL1_RenderDriver()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_Plain);
+  return new RD_OGL1_Plain;
 }
 
 RD_OGL1_Plain::RD_OGL1_Plain() : m_displayLists(-1), m_listNum(0)

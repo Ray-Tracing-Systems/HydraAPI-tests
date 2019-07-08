@@ -53,6 +53,8 @@ struct RD_OGL1_DebugDrawBVH : public RD_OGL1_Debug
 
   ~RD_OGL1_DebugDrawBVH() override { glDeleteLists(m_boxesDisplayLists, MAX_BVH_LEVELS); }
 
+  void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1DrawBvh");};
+
   void BeginScene(pugi::xml_node a_sceneNode) override;
   void EndScene() override;
 
@@ -66,9 +68,9 @@ protected:
 };
 
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1DrawBVH_RenderDriver()
+IHRRenderDriver* CreateOpenGL1DrawBVH_RenderDriver()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_DebugDrawBVH);
+  return new RD_OGL1_DebugDrawBVH;
 }
 
 RD_OGL1_DebugDrawBVH::RD_OGL1_DebugDrawBVH() : m_numDebugRays(0), m_boxesDisplayLists(0)

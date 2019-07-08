@@ -362,7 +362,7 @@ void RD_OGL1_Debug::EndScene()
 }
 
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1Debug_RenderDriver()
+IHRRenderDriver* CreateOpenGL1Debug_RenderDriver()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_Debug);
+  return new RD_OGL1_Debug;
 }

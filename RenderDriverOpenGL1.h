@@ -25,6 +25,7 @@ struct RD_OGL1_Plain : public IHRRenderDriver
 {
   RD_OGL1_Plain();
 
+  void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1");};
   void              ClearAll() override;
   HRDriverAllocInfo AllocAll(HRDriverAllocInfo a_info) override;
        
@@ -115,6 +116,8 @@ struct RD_OGL1_Debug : public RD_OGL1_Plain
     m_meshNum            = 0;
   }
 
+  void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1Debug");};
+
   void ClearAll() override;
   HRDriverAllocInfo AllocAll(HRDriverAllocInfo a_info) override;
 
@@ -147,6 +150,8 @@ protected:
 struct RD_OGL1_ShowCustomAttr : public RD_OGL1_Plain
 {
   RD_OGL1_ShowCustomAttr() = default;
+
+  void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1TestCustomAttributes");};
 
   bool UpdateMesh(int32_t a_meshId, pugi::xml_node a_meshNode, const HRMeshDriverInput& a_input,
       const HRBatchInfo* a_batchList, int32_t listSize) override;

@@ -129,12 +129,14 @@ int main(int argc, const char** argv)
   try
   {
     //test42_load_mesh_compressed();
-    run_all_api_tests();
-//    run_all_geo_tests();
+ //   run_all_api_tests();
+    run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_ipp_tests();
+//    MTL_TESTS::test_163_diffuse_texture_recommended_res();
+//    MTL_TESTS::test_168_diffuse_texture_recommended_res2();
     
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
 	  terminate_opengl();

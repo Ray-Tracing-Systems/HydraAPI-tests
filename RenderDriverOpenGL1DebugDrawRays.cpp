@@ -29,6 +29,8 @@ struct RD_OGL1_DebugDrawRays : public RD_OGL1_Debug
 
   ~RD_OGL1_DebugDrawRays() = default;
 
+  void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1DrawRays");};
+
   void BeginScene(pugi::xml_node a_sceneNode) override;
   void EndScene  () override;
 
@@ -113,8 +115,8 @@ void RD_OGL1_DebugDrawRays::LoadRays()
 }
 
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1DrawRays_RenderDriver()
+IHRRenderDriver* CreateOpenGL1DrawRays_RenderDriver()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_DebugDrawRays);
+  return new RD_OGL1_DebugDrawRays;
 }
 

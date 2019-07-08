@@ -113,8 +113,8 @@ bool RD_OGL1_ShowCustomAttr::UpdateMesh(int32_t a_meshId, pugi::xml_node a_meshN
   return true;
 }
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1Debug_TestCustomAttributes()
+IHRRenderDriver* CreateOpenGL1Debug_TestCustomAttributes()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_ShowCustomAttr);
+  return new RD_OGL1_ShowCustomAttr;
 }
 

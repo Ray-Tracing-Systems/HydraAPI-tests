@@ -39,6 +39,8 @@ struct RD_OGL1_TestSplit : public RD_OGL1_Plain
     m_meshNum = 0;
   }
 
+  void GetRenderDriverName(std::wstring &name) override { name = std::wstring(L"opengl1TestSplit");};
+
   void              ClearAll() override;
   HRDriverAllocInfo AllocAll(HRDriverAllocInfo a_info) override;
 
@@ -607,7 +609,7 @@ void RD_OGL1_TestSplit::EndScene()
 }
 
 
-std::unique_ptr<IHRRenderDriver> CreateOpenGL1TestSplit_RenderDriver()
+IHRRenderDriver* CreateOpenGL1TestSplit_RenderDriver()
 {
-  return std::unique_ptr<IHRRenderDriver>(new RD_OGL1_TestSplit);
+  return new RD_OGL1_TestSplit;
 }
