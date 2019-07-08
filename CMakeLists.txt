@@ -37,7 +37,6 @@ set(SOURCE_FILES
         tests_mtl3.cpp
         tests_mtl4.cpp
         tests_mtl5.cpp
-        tests_pp.cpp
         tests_external.cpp
         tests_algr.cpp)
 
@@ -93,7 +92,7 @@ if(WIN32)
   target_link_libraries(hydra_api_tests LINK_PUBLIC ${OPENGL_gl_LIBRARY} hydra_api glfw3dll )
 else()
   target_compile_options(hydra_api_tests PRIVATE -fpermissive -Wnarrowing)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1 -fopenmp")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
 
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=memory -fno-omit-frame-pointer -fsanitize=leak)
@@ -110,7 +109,7 @@ else()
           ${LIBS}
           ${HYDRA_API_LIB}
           ${HYDRA_API_IES_PARSER_LIB} ${HYDRA_API_MIKKTSPACE} ${HYDRA_API_CORTO}
-          stdc++fs rt dl OpenCL glfw)
+          Threads::Threads stdc++fs rt dl OpenCL glfw)
 
 endif()
 

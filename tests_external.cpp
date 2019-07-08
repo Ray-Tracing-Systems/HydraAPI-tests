@@ -34,7 +34,6 @@
 #include <random>
 
 #include "HR_HDRImageTool.h"
-#include "HydraPostProcessAPI.h"
 #include "LiteMath.h"
 #include "HydraXMLHelpers.h"
 

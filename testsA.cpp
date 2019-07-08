@@ -29,7 +29,6 @@
 #include <sstream>
 
 #include "HR_HDRImageTool.h"
-#include "HydraPostProcessAPI.h"
 #include "LiteMath.h"
 
 using namespace TEST_UTILS;
