@@ -1717,7 +1717,12 @@ void run_all_geo_tests()
 						           &test_002_mesh_from_vsgf,
 						           &test_003_compute_normals,
                        &test_004_dof,
-                       &test_005_instancing, };
+                       &test_005_instancing,
+                       &test_006_points_on_mesh,
+    
+                       &test_007_import_obj,
+                       &test_008_import_obj_w_mtl,
+                       &test_009_import_obj_fullscale};
 
 
 	int testNum = sizeof(tests) / sizeof(TestFunc);
