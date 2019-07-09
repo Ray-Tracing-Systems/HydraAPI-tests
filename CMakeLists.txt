@@ -53,10 +53,11 @@ set(SOURCE_FILES_GL
 
 #set (CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG}")
 
-set(HYDRA_API_ROOT_DIR ../HydraAPI)
+set(HYDRA_API_ROOT_DIR ${CMAKE_SOURCE_DIR}/../HydraAPI CACHE PATH "Path to HydraAPI") #
 set(HYDRA_API_SRC_DIR ${HYDRA_API_ROOT_DIR}/hydra_api)
 set(HYDRA_API_LIB_DIR ${HYDRA_API_ROOT_DIR}/bin)
 set(HYDRA_API_UTILS_SRC_DIR ${HYDRA_API_ROOT_DIR}/utils)
+
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
@@ -84,6 +85,7 @@ find_package(FreeImage REQUIRED)
 include_directories(${FREEIMAGE_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${FREEIMAGE_LIBRARIES})
 
+
 target_include_directories(hydra_api_tests PUBLIC ${OPENGL_INCLUDE_DIR})
 
 if(WIN32)
@@ -106,8 +108,8 @@ else()
   MESSAGE( STATUS "CMAKE_CXX_FLAGS(main): " ${CMAKE_CXX_FLAGS} )
   target_link_libraries(hydra_api_tests LINK_PUBLIC
           ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY}
-          ${LIBS}
           ${HYDRA_API_LIB}
+          ${LIBS}
           ${HYDRA_API_IES_PARSER_LIB} ${HYDRA_API_MIKKTSPACE} ${HYDRA_API_CORTO}
           Threads::Threads stdc++fs rt dl OpenCL glfw)
 
