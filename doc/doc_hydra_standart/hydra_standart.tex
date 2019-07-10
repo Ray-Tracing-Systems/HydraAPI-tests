@@ -1,4 +1,4 @@
-\title{Rendering Feature Requrenments}
+\title{ORB.S : Open Rendering Benchmark Spec}
 \author{Ray Tracing Systems}
 \date{\today}
 
@@ -114,7 +114,7 @@ The standard feature number definition consists of 3 parts. They are material, l
 
 \section{Materials v0.1.}\label{general}
 
-Image \ref{fig:brdf} and equation \ref{eq:integral} show lighting integral and related angles. These notation will be used further in the document.
+Image \ref{fig:brdf} and equation \ref{eq:integral} show lighting integral and related angles. These notation will be used further in the document. They assume reverse (i.e. Path Tracing) direction of light by default: 
 
 \begin{figure}[htb]
 	\centering
@@ -127,12 +127,13 @@ Image \ref{fig:brdf} and equation \ref{eq:integral} show lighting integral and r
 I(\phi_{in}, \theta_{in}) = \int\limits_{\phi_{out}}\int\limits_{\theta_{out}}  L(\phi_{out},\theta_{out})BRDF(\phi_{out},\theta_{out},\phi_{in},\theta_{in})cos(\theta_{out}) \mathrm{d}\phi_{out}  \mathrm{d}\theta_{out}
 \end{eqnarray}
 
+It should be noted that the adopted agreement of the backward propagation of light (from eye to light) does not limit anything and can be applied also for calculation of forward propagation (from light to eye).
 
-\boldblue{(!) Implementation:} All BRDF and BTDF should be implemented without $cos(\theta_{out})$ term. For mirrors cosine shouldn't be applied, thus you should pre-divide $cos(\theta_{out})$ instead (so that the cosines cancel each other). Also note that we do not include color in BRDF/BTDF equations. The color should be multiplied with the BRDF value.
+\boldblue{(!) Implementation REQ. :} All BRDF and BTDF should be implemented without $cos(\theta_{out})$ term. For mirrors cosine shouldn't be applied, thus you should pre-divide $cos(\theta_{out})$ instead (so that the cosines cancel each other). Also note that we do not include color in BRDF/BTDF equations. The color should be multiplied with the BRDF value.
 
-\boldblue{(!) Implementation:} Note that texture color (that comes from PNG, JPG, BMP and othe LDR formats) should be transformed to linear space with gamma transform: $ C_{linear} = C_{srgb}^{2.2} $. Unlike textures values that are \textbf{specified explicitly} in XML (or other) assummed to be \textbf{already in linear space}.
+\boldblue{(!) Implementation REQ. :} Note that texture color (that comes from PNG, JPG, BMP and othe LDR formats) should be transformed to linear space with gamma transform: $ C_{linear} = C_{srgb}^{2.2} $. Unlike textures values that are \textbf{specified explicitly} in XML (or other) assummed to be \textbf{already in linear space}.
 
-\boldblue{(!) Implementation:} Note that final color of the image should be first clamped and then transformed from HDR to LDR space with gamma correction: $ C_{srgb} = C_{linear}^{(1.0/2.2)} $. Clamping should be simple (i.e. losing color). For example color (1.5, 2.0, 10.0) should be clamped to (1,1,1) but not to (0.15, 0.2, 1.0) for example.
+\boldblue{(!) Implementation REQ. :} Note that final color of the image should be first clamped and then transformed from HDR to LDR space with gamma correction: $ C_{srgb} = C_{linear}^{(1.0/2.2)} $. Clamping should be simple (i.e. losing color). For example color (1.5, 2.0, 10.0) should be clamped to (1,1,1) but not to (0.15, 0.2, 1.0) for example.
 
 \newpage
 
@@ -140,7 +141,7 @@ I(\phi_{in}, \theta_{in}) = \int\limits_{\phi_{out}}\int\limits_{\theta_{out}}  
 
 \reqirenment{lambert}
 
-Basic support for Lambertian reflections. The BRDF function \textbf{must} be implemented according to equation \ref{brdf_lambert}. See fig \ref{fig:test_101_image} and listing \ref{lambertxml} for image and XML example respectively.
+Basic support for Lambertian reflections. The BRDF function \textbf{must} be implemented according to equation \ref{brdf_lambert}. See fig \ref{fig:test_101_image}. % and listing \ref{lambertxml} for image and XML example respectively.
 
 \boldblue{Implementation:}
 \begin{equation}\label{brdf_lambert}
@@ -157,16 +158,15 @@ BRDF_{lambert} = \frac{1}{\pi}
 
 \FloatBarrier
 
-
-\boldblue{Storage:}
-\lstset{language=XML}
-\begin{lstlisting}[caption=Lambert material definition in Hydra XML standart, label=lambertxml, captionpos=b]
-<material id="0" name="mysimplemat" type="hydra_material">
-  <diffuse brdf_type="lambert">
-    <color val="0.5 0.5 0.5" />
-  </diffuse>
-</material>
-\end{lstlisting}
+%\boldblue{Storage:}
+%\lstset{language=XML}
+%\begin{lstlisting}[caption=Lambert material definition in Hydra XML standart, label=lambertxml, captionpos=b]
+%<material id="0" name="mysimplemat" type="hydra_material">
+%  <diffuse brdf_type="lambert">
+%    <color val="0.5 0.5 0.5" />
+%  </diffuse>
+%</material>
+%\end{lstlisting}
 
 \reqirenment{phong}
 
@@ -204,10 +204,34 @@ Assume both reflection vector and generated direction (x,y,z) \textbf{are given 
 \reqirenment{mirror}
 
 Pure specular reflection. Note that mixing of mirror and lambertian reflections is not needed at this level of standard. Renderer may suppose mutually exclusive: (phong, mirror or lambert). 
+\boldblue{Implementation:} It is assumed that you will pre-divide to $cos(\theta_{out})$ inside BRDF and later cancel this cosine in lighting integral (equation \ref{eq:integral}) instead of considering pure specular reflection as a special case during lighting integral evaluation. Though, you will probably have to consider pure specular reflection as special cases in many other places. 
+\begin{equation}\label{brdf_idealmirror}
+BRDF_{mirror} = \frac{1}{cos(\theta_{out})}
+\end{equation}
+
+\boldblue{(!) Implementation Note:} You are \textbf{allowed} to clamp denominator to avoid dividing by zero: 
+
+\begin{equation}\label{brdf_idealmirror}
+BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 1.0*10^{-6})}
+\end{equation}
+
+\textbf{!!!TODO: add test image for this test!!!}
 
 \reqirenment{emission}
 
 Basic support for emissive material. On this level of standart emissive materials don't combined with others. Renderer may suppose mutually exclusive: (emissive or 'some other'). Please note that emissive materials have not be considered as lights (i.e. they don't have to be sampled with any explicit sampling strategy, however, of cource, they could), but they must cast GI.
+
+\boldblue{Test:} 123\_emission. MSE should be less than 5.0 for 512x512 LDR image. 
+\newline \textbf{!!!TODO: make this test inside cornell box!!!}
+\newline \textbf{!!!TODO: the test must automaticly check impl. requirenment!!!}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_123/w_ref.png}           
+	\caption{\label{fig:test_123_image}
+		Example of emissive material. }   
+\end{figure}
+
+\boldblue{(!) Implementation REQ. :} Emission color value \textbf{must} specify \textbf{brightness} value. It is easy to ckeck this requirenment. Directly visible emissive surface on rendered image (stored in linear HDR framebuffer) must have exactly same value that was set for material. For example if you set emission color to (0.5, 0.5, 0) and then check directly visiable surfaces (when primary rays immediately hit surface), you shoulg get exactly same yellow color (0.5, 0.5, 0) in the rendered image (in linear space, i.e. HDR image).
 
 \reqirenment{lambert\_texture\_color}
 
