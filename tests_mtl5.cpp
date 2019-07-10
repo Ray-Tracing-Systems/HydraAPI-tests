@@ -1938,7 +1938,7 @@ bool MTL_TESTS::test_174_mirror_orbspec_mat03()
      node.append_child(L"method_secondary").text() = L"pathtracing";
      node.append_child(L"method_tertiary").text()  = L"pathtracing";
      node.append_child(L"method_caustic").text()   = L"pathtracing";
-     //node.append_child(L"qmc_variant").text()      = 7;
+     node.append_child(L"qmc_variant").text()      = 7;
      node.append_child(L"trace_depth").text()      = 10;
      node.append_child(L"diff_trace_depth").text() = 4;
      node.append_child(L"maxRaysPerPixel").text()  = 4096;

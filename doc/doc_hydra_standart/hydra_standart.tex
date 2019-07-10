@@ -151,7 +151,7 @@ BRDF_{lambert} = \frac{1}{\pi}
 \boldblue{Test:} 101\_diffuse\_lambert. MSE should be less than 5.0 for 512x512 LDR image.
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.25\linewidth]{images/test_101/w_ref.png}           
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_101/w_ref.png}           
 	\caption{\label{fig:test_101_image}
      Example of lambertian material. The grey ball have color equal to (0.5, 0.5, 0.5).  }   
 \end{figure}
@@ -188,14 +188,14 @@ Assume both reflection vector and generated direction (x,y,z) \textbf{are given 
 
 \begin{figure}[h]
 	\begin{minipage}[h]{0.33\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{images/test_104/w_ref.png} \\ cosPower = 12}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_104/w_ref.png} \\ cosPower = 12}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[h]{0.325\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{images/test_104/w_ref2.png} \\ cosPower = 32}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_104/w_ref2.png} \\ cosPower = 32}
 	\end{minipage}
 	\begin{minipage}[h]{0.33\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{images/test_104/w_ref3.png} \\ cosPower = 82}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_104/w_ref3.png} \\ cosPower = 82}
 	\end{minipage}
 	\caption{Phong for different cosine power and color (0.5, 0.5, 0.5).}
 \end{figure}
@@ -215,7 +215,13 @@ BRDF_{mirror} = \frac{1}{cos(\theta_{out})}
 BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 1.0*10^{-6})}
 \end{equation}
 
-\textbf{!!!TODO: add test image for this test!!!}
+\boldblue{Test:} test\_174\_mirror\_orbspec\_mat03. 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_174/w_ref.png}           
+	\caption{\label{fig:test_174_image}
+		Example of mirror material with color equal to (0.75, 0.75, 0.75).  }   
+\end{figure}
 
 \reqirenment{emission}
 
