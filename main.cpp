@@ -95,7 +95,9 @@ int main(int argc, const char** argv)
   std::wcout << L"[main]: curr_dir = " << NPath << std::endl;
 #else
 
-  chdir(workingDir.c_str());
+  if(chdir(workingDir.c_str()) != 0)
+    std::cout << "[main]: chdir have failed for some reason ... " << std::endl;
+
   char cwd[1024];
   if (getcwd(cwd, sizeof(cwd)) != nullptr)
     std::cout << "[main]: curr_dir = " << cwd <<std::endl;

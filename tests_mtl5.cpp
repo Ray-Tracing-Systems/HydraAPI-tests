@@ -1988,5 +1988,5 @@ bool MTL_TESTS::test_174_mirror_orbspec_mat03()
 
    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_174/z_out.png");
 
-   return check_images("test_174", 1, 20);
+   return check_images("test_174", 1, 25);
 }
