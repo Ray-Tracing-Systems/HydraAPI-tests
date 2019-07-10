@@ -21,12 +21,6 @@ IHRRenderDriver* CreateDriverRTE(const wchar_t* a_cfg) { return nullptr; }
 #include <signal.h>
 #endif
 
-
-void ErrorCallBack(const wchar_t* message, const wchar_t* callerPlace)
-{
-  std::wcout << callerPlace << L":\t" << message << std::endl;
-}
-
 void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level)
 {
   if (a_level >= HR_SEVERITY_WARNING)
@@ -37,7 +31,6 @@ void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERIT
       std::wcerr << L"ERROR  : " << callerPlace << L": " << message; // << std::endl;
   }
 }
-
 
 void destroy()
 {
@@ -130,13 +123,14 @@ int main(int argc, const char** argv)
   {
     //test42_load_mesh_compressed();
     //run_all_api_tests();
-    //run_all_geo_tests();
+    run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_ipp_tests();
 
-//    MTL_TESTS::test_101_diffuse_lambert();
+    //std::cout << GEO_TESTS::test_006_points_on_mesh() << std::endl;
+    //std::cout << "MSE = " << g_MSEOutput << std::endl;
 
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
 	  terminate_opengl();

@@ -15,7 +15,6 @@ using namespace HydraLiteMath;
 #include "mesh_utils.h"
 #include "simplerandom.h"
 
-void ErrorCallBack(const wchar_t* message, const wchar_t* callerPlace);
 void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level);
 
 using pugi::xml_node;
@@ -218,6 +217,10 @@ namespace GEO_TESTS
   bool test_004_dof();
   bool test_005_instancing();
   bool test_006_points_on_mesh();
+  
+  bool test_007_import_obj();
+  bool test_008_import_obj_w_mtl();
+  bool test_009_import_obj_fullscale();
 }
 
 namespace MTL_TESTS

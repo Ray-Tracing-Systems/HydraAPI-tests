@@ -948,7 +948,7 @@ bool test13_render_ogl_some_figures_diff_mats_prom_ptr()
 
 bool g_test14ErrorIsOk = false;
 
-void ErrorCallBack2(const wchar_t* message, const wchar_t* callerPlace)
+void ErrorCallBack2(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level)
 {
   std::wstring tmp(message);
   
@@ -967,8 +967,7 @@ bool test14_bad_material_indices()
   g_test14ErrorIsOk = false;
 
   hrErrorCallerPlace(L"test_14");
-  hrErrorCallback(ErrorCallBack2);
-  hrInfoCallback(nullptr);
+  hrInfoCallback(ErrorCallBack2);
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -1131,13 +1130,11 @@ bool test14_bad_material_indices()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-
-  hrErrorCallback(ErrorCallBack);
+  
   hrInfoCallback(InfoCallBack);
 
   return g_test14ErrorIsOk;
 }
-
 
 
 bool test15_main_scene_and_mat_editor()

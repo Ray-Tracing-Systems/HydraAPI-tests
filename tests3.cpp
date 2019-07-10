@@ -945,7 +945,7 @@ bool test21_add_same_textures_from_file()
 
 bool g_test22ErrorIsOk = false;
 
-void ErrorCallBack3(const wchar_t* message, const wchar_t* callerPlace)
+void ErrorCallBack3(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level)
 {
   std::wstring tmp(message);
   auto foundPos = tmp.find(L"failed to load");
@@ -960,7 +960,7 @@ bool test22_can_not_load_texture()
   g_test22ErrorIsOk = false;
 
   hrErrorCallerPlace(L"test_22");
-  hrErrorCallback(ErrorCallBack3);
+  hrInfoCallback(ErrorCallBack3);
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -1125,7 +1125,7 @@ bool test22_can_not_load_texture()
   hrFlush(scnRef, settingsRef);
   hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_22/z_out.png");
 
-  hrErrorCallback(ErrorCallBack);
+  hrInfoCallback(InfoCallBack);
 
   return check_images("test_22") && (testTex2.id == 0) && g_test22ErrorIsOk;
 }
