@@ -158,7 +158,7 @@ bool test56_mesh_change_open_existing();
 bool test57_single_instance();
 bool test58_crysponza_and_opacity1_perf();
 bool test59_cornell_water_mlt();
-bool test60_debug_print();
+bool test60_debug_print_and_cant_load_mesh();
 bool test61_cornell_with_light_near_wall_and_glossy_wall();
 
 //bool test62_bad_textures();

@@ -1577,7 +1577,20 @@ bool test59_cornell_water_mlt()
   return check_images("test_59", 1, 50.0f);
 }
 
-bool test60_debug_print()
+int g_test60ErrorIsOk = 0;
+
+static void ErrorCallBack_test60(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level)
+{
+  if(a_level >= HR_SEVERITY_ERROR)
+  {
+    std::wstring tmp(message);
+    auto foundPos     = tmp.find(L"file does not exists");
+    if(foundPos != std::wstring::npos)
+      g_test60ErrorIsOk++;
+  }
+}
+
+bool test60_debug_print_and_cant_load_mesh()
 {
   hrErrorCallerPlace(L"test_60");
 
@@ -1586,7 +1599,10 @@ bool test60_debug_print()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   hrSceneLibraryOpen(L"tests/test_60", HR_WRITE_DISCARD);
-
+  
+  g_test60ErrorIsOk = 0;
+  hrInfoCallback(&ErrorCallBack_test60);
+  
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
   SimpleMesh sphere   = CreateSphere(1.0f, 32);
@@ -1731,6 +1747,9 @@ bool test60_debug_print()
   HRMeshRef sphereRef   = hrMeshCreate(L"my_sphere");
   HRMeshRef torusRef    = hrMeshCreate(L"my_torus");
 
+  HRMeshRef notExistingMesh1 = hrMeshCreateFromFile  (L"donotexists1.mymesh");
+  HRMeshRef notExistingMesh2 = hrMeshCreateFromFileDL(L"donotexists2.mymesh");
+  
   hrMeshOpen(cubeRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
   {
     hrMeshVertexAttribPointer4f(cubeRef, L"pos", &cube.vPos[0]);
@@ -1916,11 +1935,9 @@ bool test60_debug_print()
   float mRot1[4][4], mTranslate[4][4], mRes[4][4];
 
   float mTranslateDown[4][4], mRes2[4][4];
-
-
+  
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
-
-
+  
   int mmIndex = 0;
   mat4x4_identity(mRot1);
   mat4x4_identity(mTranslate);
@@ -1969,8 +1986,10 @@ bool test60_debug_print()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, renderRef);
-
-  return true;
+  
+  hrInfoCallback(&InfoCallBack);
+  
+  return (g_test60ErrorIsOk == 2);
 }
 
 

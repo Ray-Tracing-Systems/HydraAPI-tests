@@ -1629,9 +1629,9 @@ void run_all_api_tests(const int startTestId)
                        &test57_single_instance,
                        &dummy_test,                 // 58
                        &test59_cornell_water_mlt,
-                       &dummy_test,                 // 60
+                       &test60_debug_print_and_cant_load_mesh, // 60
                        &test61_cornell_with_light_near_wall_and_glossy_wall,  
-                       &dummy_test,                 // 62
+                       &dummy_test,                            // 62
                        &dummy_test,
                        &test64_several_changes_light_area,
                        &test65_several_changes_light_rect,

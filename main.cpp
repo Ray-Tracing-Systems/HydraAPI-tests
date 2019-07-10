@@ -122,13 +122,15 @@ int main(int argc, const char** argv)
   try
   {
     //test42_load_mesh_compressed();
-    //run_all_api_tests();
-    run_all_geo_tests();
+    run_all_api_tests();
+    //run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_ipp_tests();
 
+    //std::cout << test60_debug_print_and_cant_load_mesh() << std::endl;
+    
     //std::cout << GEO_TESTS::test_006_points_on_mesh() << std::endl;
     //std::cout << "MSE = " << g_MSEOutput << std::endl;
 
