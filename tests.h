@@ -307,6 +307,8 @@ namespace MTL_TESTS
   bool test_171_simple_displacement_triplanar();
   bool test_172_glossy_dark_edges_phong();
   bool test_173_glossy_dark_edges_microfacet();
+
+  bool test_174_mirror_orbspec_mat03();
 }
 
 namespace LGHT_TESTS
