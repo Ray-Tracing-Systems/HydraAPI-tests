@@ -15,7 +15,6 @@ using namespace HydraLiteMath;
 #include "mesh_utils.h"
 #include "simplerandom.h"
 
-void ErrorCallBack(const wchar_t* message, const wchar_t* callerPlace);
 void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level);
 
 using pugi::xml_node;

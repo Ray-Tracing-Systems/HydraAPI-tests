@@ -21,12 +21,6 @@ IHRRenderDriver* CreateDriverRTE(const wchar_t* a_cfg) { return nullptr; }
 #include <signal.h>
 #endif
 
-
-void ErrorCallBack(const wchar_t* message, const wchar_t* callerPlace)
-{
-  std::wcout << callerPlace << L":\t" << message << std::endl;
-}
-
 void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level)
 {
   if (a_level >= HR_SEVERITY_WARNING)
@@ -37,7 +31,6 @@ void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERIT
       std::wcerr << L"ERROR  : " << callerPlace << L": " << message; // << std::endl;
   }
 }
-
 
 void destroy()
 {

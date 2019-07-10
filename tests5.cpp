@@ -738,7 +738,7 @@ bool test33_update_from_file()
 
 	id_ok2 = (new_testTex2.id == testTex2.id);
 
-	hrErrorCallback(ErrorCallBack);
+	hrInfoCallback(InfoCallBack);
 
   bool noDups1 = check_all_duplicates(L"tests/test_33/statex_00002.xml");
   bool noDups2 = check_all_duplicates(L"tests/test_33/statex_00003.xml");
@@ -946,8 +946,8 @@ bool test36_update_from_memory()
 	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_36/z_out3.png");
 
 	id_ok2 = (new_testTex3.id == testTex3.id);
-
-	hrErrorCallback(ErrorCallBack);
+  
+  hrInfoCallback(InfoCallBack);
 
 	return check_images("test_36", 3) && id_ok1 && id_ok2;
 }
