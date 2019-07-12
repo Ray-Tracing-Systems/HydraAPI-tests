@@ -228,14 +228,21 @@ BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 1.0*10^{-6})}
 Basic support for emissive material. On this level of standart emissive materials don't combined with others. Renderer may suppose mutually exclusive: (emissive or 'some other'). Please note that emissive materials have not be considered as lights (i.e. they don't have to be sampled with any explicit sampling strategy, however, of cource, they could), but they must cast GI.
 
 \boldblue{Test:} 123\_emission. MSE should be less than 5.0 for 512x512 LDR image. 
-\newline \textbf{!!!TODO: make this test inside cornell box!!!}
-\newline \textbf{!!!TODO: the test must automaticly check impl. requirenment!!!}
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.25\linewidth]{../../tests_images/test_123/w_ref.png}           
-	\caption{\label{fig:test_123_image}
-		Example of emissive material. }   
+
+\begin{figure}[h]
+	\begin{minipage}[h]{0.33\linewidth}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_123/w_ref.png} \\ red emission}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[h]{0.325\linewidth}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_123/w_ref2.png} \\ green emission}
+	\end{minipage}
+	\begin{minipage}[h]{0.33\linewidth}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_123/w_ref3.png} \\ blue emission}
+	\end{minipage}
+	\caption{Phong for different cosine power and color (0.5, 0.5, 0.5).}
 \end{figure}
+
 
 \boldblue{(!) Implementation REQ. :} Emission color value \textbf{must} specify \textbf{brightness} value. It is easy to ckeck this requirenment. Directly visible emissive surface on rendered image (stored in linear HDR framebuffer) must have exactly same value that was set for material. For example if you set emission color to (0.5, 0.5, 0) and then check directly visiable surfaces (when primary rays immediately hit surface), you shoulg get exactly same yellow color (0.5, 0.5, 0) in the rendered image (in linear space, i.e. HDR image).
 
