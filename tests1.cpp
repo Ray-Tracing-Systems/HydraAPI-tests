@@ -1757,10 +1757,10 @@ void run_all_geo_tests()
 void run_all_mtl_tests(int a_start)
 {
 	using namespace MTL_TESTS;
-	TestFunc tests[] = { &test_101_diffuse_lambert,
+	TestFunc tests[] = {&test_101_diffuse_lambert_orbspec_mat01,
 						           &test_102_diffuse_orennayar,
 						           &test_103_diffuse_texture,
-						           &test_104_reflect_phong,
+                      &test_104_reflect_phong_orbspec_mat03,
 						           &test_105_reflect_microfacet,
 						           &test_106_reflect_fresnel_ior,
 						           &test_107_reflect_extrusion,

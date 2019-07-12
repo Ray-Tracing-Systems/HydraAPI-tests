@@ -33,7 +33,7 @@ namespace MTL_TESTS
 {
   namespace hlm = HydraLiteMath;
 
-  bool test_101_diffuse_lambert()
+  bool test_101_diffuse_lambert_orbspec_mat01()
   {
     hrErrorCallerPlace(L"test_101");
 
@@ -816,7 +816,7 @@ namespace MTL_TESTS
   };
 
 
-  bool test_104_reflect_phong()
+  bool test_104_reflect_phong_orbspec_mat03()
   {
     hrErrorCallerPlace(L"test_104");
 
@@ -6703,260 +6703,243 @@ namespace MTL_TESTS
   {
     hrErrorCallerPlace(L"test_123");
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     hrSceneLibraryOpen(L"tests_f/test_123", HR_WRITE_DISCARD);
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    SimpleMesh sphere   = CreateSphere(2.5f, 128);
+    SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
 
-    HRMaterialRef matR = hrMaterialCreate(L"matR");
-    HRMaterialRef matG = hrMaterialCreate(L"matG");
-    HRMaterialRef matB = hrMaterialCreate(L"matB");
-    HRMaterialRef matBG = hrMaterialCreate(L"matBG");
-    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
+    HRMaterialRef mat1 = hrMaterialCreate(L"red");
+    HRMaterialRef mat2 = hrMaterialCreate(L"green");
+    HRMaterialRef mat3 = hrMaterialCreate(L"white");
 
-    HRTextureNodeRef texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
+    HRMaterialRef matR = hrMaterialCreate(L"red_emission");
+    HRMaterialRef matG = hrMaterialCreate(L"green_emission");
+    HRMaterialRef matB = hrMaterialCreate(L"blue_emission");
+
+    hrMaterialOpen(mat0, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat0);
+      xml_node diff    = matNode.append_child(L"diffuse");
+
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+      diff.append_child(L"color").append_attribute(L"val") = L"0.5 0.5 0.5";
+    }
+    hrMaterialClose(mat0);
+
+    hrMaterialOpen(mat1, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat1);
+      xml_node diff = matNode.append_child(L"diffuse");
+
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+      diff.append_child(L"color").append_attribute(L"val") = L"0.5 0.0 0.0";
+    }
+    hrMaterialClose(mat1);
+
+    hrMaterialOpen(mat2, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat2);
+      xml_node diff = matNode.append_child(L"diffuse");
+
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.0 0.5 0.0");
+    }
+    hrMaterialClose(mat2);
+
+    hrMaterialOpen(mat3, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat3);
+      xml_node diff = matNode.append_child(L"diffuse");
+
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+    }
+    hrMaterialClose(mat3);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     hrMaterialOpen(matR, HR_WRITE_DISCARD);
     {
-      auto matNode = hrMaterialParamNode(matR);
-
+      auto matNode  = hrMaterialParamNode(matR);
       auto emission = matNode.append_child(L"emission");
-      emission.append_child(L"color").append_attribute(L"val").set_value(L"1.0 0.0 0.0");
+
       emission.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
-			VERIFY_XML(matNode);
+      emission.append_child(L"color").append_attribute(L"val").set_value(L"1.0 0.0 0.0");
+
+  	  VERIFY_XML(matNode);
     }
     hrMaterialClose(matR);
 
     hrMaterialOpen(matG, HR_WRITE_DISCARD);
     {
-      auto matNode = hrMaterialParamNode(matG);
-
+      auto matNode  = hrMaterialParamNode(matG);
       auto emission = matNode.append_child(L"emission");
+
+      emission.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
       emission.append_child(L"color").append_attribute(L"val").set_value(L"0.0 1.0 0.0");
-      emission.append_child(L"multiplier").append_attribute(L"val").set_value(2.0f);
-			VERIFY_XML(matNode);
+
+     VERIFY_XML(matNode);
     }
     hrMaterialClose(matG);
 
     hrMaterialOpen(matB, HR_WRITE_DISCARD);
     {
-      auto matNode = hrMaterialParamNode(matB);
-
+      auto matNode  = hrMaterialParamNode(matB);
       auto emission = matNode.append_child(L"emission");
+
+      emission.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
       emission.append_child(L"color").append_attribute(L"val").set_value(L"0.0 0.0 1.0");
-      emission.append_child(L"multiplier").append_attribute(L"val").set_value(4.0f);
-			VERIFY_XML(matNode);
+
+     VERIFY_XML(matNode);
     }
     hrMaterialClose(matB);
 
-    hrMaterialOpen(matBG, HR_WRITE_DISCARD);
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRMeshRef cubeOpenRef = hrMeshCreate(L"my_box");
+    HRMeshRef sphereRef[3];
     {
-      auto matNode = hrMaterialParamNode(matBG);
-
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.25 0.25 1.0");
-      color.append_attribute(L"tex_apply_mode").set_value(L"multiply");
-
-			auto texNode = hrTextureBind(texChecker, color);
-
-      texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 32, 0, 0, 0,
-                                  0, 16, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
-      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
-      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
-      texNode.append_attribute(L"input_gamma").set_value(2.2f);
-      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-
-      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
-			VERIFY_XML(matNode);
+      sphereRef[0] = hrMeshCreate(L"my_sphere1");
+      sphereRef[1] = hrMeshCreate(L"my_sphere2");
+      sphereRef[2] = hrMeshCreate(L"my_sphere3");
     }
-    hrMaterialClose(matBG);
 
-    hrMaterialOpen(matGray, HR_WRITE_DISCARD);
+    hrMeshOpen(cubeOpenRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
     {
-      auto matNode = hrMaterialParamNode(matGray);
+      hrMeshVertexAttribPointer4f(cubeOpenRef, L"pos", &cubeOpen.vPos[0]);
+      hrMeshVertexAttribPointer4f(cubeOpenRef, L"norm", &cubeOpen.vNorm[0]);
+      hrMeshVertexAttribPointer2f(cubeOpenRef, L"texcoord", &cubeOpen.vTexCoord[0]);
 
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+      int cubeMatIndices[10] = { mat3.id, mat3.id, mat3.id, mat3.id, mat3.id, mat3.id, mat2.id, mat2.id, mat1.id, mat1.id };
 
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"1.0 1.0 1.0");
-      color.append_attribute(L"tex_apply_mode").set_value(L"replace");
-
-			auto texNode = hrTextureBind(texChecker, color);
-
-      texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 16, 0, 0, 0,
-                                  0, 16, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
-      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
-      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
-      texNode.append_attribute(L"input_gamma").set_value(2.2f);
-      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-
-      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
-			VERIFY_XML(matNode);
+      //hrMeshMaterialId(cubeRef, 0);
+      hrMeshPrimitiveAttribPointer1i(cubeOpenRef, L"mind", cubeMatIndices);
+      hrMeshAppendTriangles3(cubeOpenRef, int(cubeOpen.triIndices.size()), &cubeOpen.triIndices[0]);
     }
-    hrMaterialClose(matGray);
+    hrMeshClose(cubeOpenRef);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Meshes
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    HRMeshRef sph1 = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64), matR.id);
-    HRMeshRef sph2 = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64), matG.id);
-    HRMeshRef sph3 = HRMeshFromSimpleMesh(L"sph3", CreateSphere(2.0f, 64), matB.id);
-    HRMeshRef boxBG = HRMeshFromSimpleMesh(L"boxBG", CreateCube(1.0f), matBG.id);
-    HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(20.0f), matGray.id);
+    int32_t matsId[3] = {matR.id, matG.id, matB.id};
+    for(int i=0;i<3;i++)
+    {
+      hrMeshOpen(sphereRef[i], HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
+      {
+        hrMeshVertexAttribPointer4f(sphereRef[i], L"pos",      &sphere.vPos[0]);
+        hrMeshVertexAttribPointer4f(sphereRef[i], L"norm",     &sphere.vNorm[0]);
+        hrMeshVertexAttribPointer2f(sphereRef[i], L"texcoord", &sphere.vTexCoord[0]);
 
+        hrMeshMaterialId(sphereRef[i], matsId[i]);
+        hrMeshAppendTriangles3(sphereRef[i], int32_t(sphere.triIndices.size()), &sphere.triIndices[0]);
+      }
+      hrMeshClose(sphereRef[i]);
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Light
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     HRLightRef rectLight = hrLightCreate(L"my_area_light");
 
     hrLightOpen(rectLight, HR_WRITE_DISCARD);
     {
-      auto lightNode = hrLightParamNode(rectLight);
+      pugi::xml_node lightNode = hrLightParamNode(rectLight);
 
       lightNode.attribute(L"type").set_value(L"area");
       lightNode.attribute(L"shape").set_value(L"rect");
       lightNode.attribute(L"distribution").set_value(L"diffuse");
 
-      auto sizeNode = lightNode.append_child(L"size");
+      pugi::xml_node sizeNode = lightNode.append_child(L"size");
 
-      sizeNode.append_attribute(L"half_length").set_value(L"10.0");
-      sizeNode.append_attribute(L"half_width").set_value(L"10.0");
+      sizeNode.append_attribute(L"half_length") = 1.0f;
+      sizeNode.append_attribute(L"half_width")  = 1.0f;
 
-      auto intensityNode = lightNode.append_child(L"intensity");
+      pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(2.0f*IRRADIANCE_TO_RADIANCE);
-
-			VERIFY_XML(lightNode);
+      intensityNode.append_child(L"color").append_attribute(L"val")      = L"1 1 1";
+      intensityNode.append_child(L"multiplier").append_attribute(L"val") = 8.0f*IRRADIANCE_TO_RADIANCE;
     }
     hrLightClose(rectLight);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Camera
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // camera
+    //
     HRCameraRef camRef = hrCameraCreate(L"my camera");
 
     hrCameraOpen(camRef, HR_WRITE_DISCARD);
     {
-      auto camNode = hrCameraParamNode(camRef);
+      xml_node camNode = hrCameraParamNode(camRef);
 
       camNode.append_child(L"fov").text().set(L"45");
       camNode.append_child(L"nearClipPlane").text().set(L"0.01");
       camNode.append_child(L"farClipPlane").text().set(L"100.0");
 
       camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 1 16");
-      camNode.append_child(L"look_at").text().set(L"0 1 0");
+      camNode.append_child(L"position").text().set(L"0 0 14");
+      camNode.append_child(L"look_at").text().set(L"0 0 0");
     }
     hrCameraClose(camRef);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Render settings
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // set up render settings
+    //
+    HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
+    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
+    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
+    {
+      pugi::xml_node node = hrRenderParamNode(renderRef);
 
+      node.append_child(L"width").text()  = 512;
+      node.append_child(L"height").text() = 512;
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Create scene
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      node.append_child(L"method_primary").text()   = L"pathtracing";
+      node.append_child(L"method_secondary").text() = L"pathtracing";
+      node.append_child(L"method_tertiary").text()  = L"pathtracing";
+      node.append_child(L"method_caustic").text()   = L"pathtracing";
+      node.append_child(L"qmc_variant").text()      = 7;
 
+      node.append_child(L"trace_depth").text()      = 8;
+      node.append_child(L"diff_trace_depth").text() = 4;
+      node.append_child(L"maxRaysPerPixel").text()  = 1024;
+    }
+    hrRenderClose(renderRef);
+
+    // create scene
+    //
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
-    float4x4 mRot;
-    float4x4 mTranslate;
-    float4x4 mScale;
-    float4x4 mRes;
+    bool checkReqRed = false;
+
+    for(int sceneId = 0; sceneId < 3; sceneId++) {
 
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+    {
+      // instance sphere and cornell box
+      //
+      auto mtranslate = hlm::translate4x4(hlm::float3(0.0f, -1.5f, 1.0f));
+      hrMeshInstance(scnRef, sphereRef[sceneId], mtranslate.L());
 
-    ///////////
-    mTranslate.identity();
-    mRes.identity();
+      auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+      hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
-    mTranslate = translate4x4(float3(0.0f, -1.0f, 0.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, planeRef, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(-4.25f, 1.25f, 4.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, sph1, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(0.0f, 1.25f, 4.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, sph2, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(4.25f, 1.25f, 4.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, sph3, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-    mRot.identity();
-
-    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
-
-    mTranslate = translate4x4(float3(0.0f, 1.0f, -4.0f));
-    mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
-    // mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
-    mRes = mul(mScale, mRes);
-    // mRes = mul(mRot, mRes);
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, boxBG, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(0, 15.0f, 0.0));
-    mRes = mul(mTranslate, mRes);
-
-    hrLightInstance(scnRef, rectLight, mRes.L());
-
-    ///////////
-
+      mtranslate = hlm::translate4x4(hlm::float3(0, 3.85f, 0));
+      hrLightInstance(scnRef, rectLight, mtranslate.L());
+    }
     hrSceneClose(scnRef);
 
-    hrFlush(scnRef, renderRef);
-    
+    hrFlush(scnRef, renderRef, camRef);
+
     while (true)
     {
       std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -6974,9 +6957,30 @@ namespace MTL_TESTS
         break;
     }
 
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_123/z_out.png");
+    if(sceneId == 0)
+      hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_123/z_out.png");
+    else if(sceneId == 1)
+      hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_123/z_out2.png");
+    else
+      hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_123/z_out3.png");
 
-    return check_images("test_123", 1, 10);
+
+    if(sceneId == 0)
+    {
+      std::vector<float> imageHDR(512*512*4);
+      hrRenderGetFrameBufferHDR4f(renderRef, 512, 512, imageHDR.data());
+      
+      float rgba[3] = {0,0,0};
+      rgba[0] = imageHDR[4*(220*512 + 256) + 0];
+      rgba[1] = imageHDR[4*(220*512 + 256) + 1];
+      rgba[2] = imageHDR[4*(220*512 + 256) + 2];
+      
+      checkReqRed = (fabs(rgba[0] - 1.0f) < 1e-5f && fabs(rgba[1]) < 1.0e-5f && fabs(rgba[2]) < 1.0e-5f);
+    }
+
+    }
+
+    return check_images("test_123", 3, 10) && checkReqRed;
   }
 
   bool test_124_emission_texture()

@@ -225,11 +225,11 @@ namespace GEO_TESTS
 
 namespace MTL_TESTS
 {
-  bool test_101_diffuse_lambert();
+  bool test_101_diffuse_lambert_orbspec_mat01();
   bool test_102_diffuse_orennayar();
   bool test_103_diffuse_texture();
 
-  bool test_104_reflect_phong();
+  bool test_104_reflect_phong_orbspec_mat03();
   bool test_105_reflect_microfacet();
   bool test_106_reflect_fresnel_ior();
   bool test_107_reflect_extrusion();

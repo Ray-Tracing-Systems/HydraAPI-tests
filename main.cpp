@@ -130,8 +130,9 @@ int main(int argc, const char** argv)
     //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_ipp_tests();
-    
-    std::cout << MTL_TESTS::test_174_mirror_orbspec_mat03() << std::endl;
+
+
+    std::cout << MTL_TESTS::test_123_emission() << std::endl;
     std::cout << "MSE = " << g_MSEOutput << std::endl;
 
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
