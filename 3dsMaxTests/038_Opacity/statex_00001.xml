@@ -4,10 +4,10 @@
   <texture id="1" name="falloff" type="proc">
     <code file="c:/[Hydra]/pluginFiles/ProceduralTextures/falloff.c" main="main" loc="data/proctex_00001.c">
       <generated>
-        <arg id="0" type="float3" name="color1" size="1" wsize="3" woffset="0" />
-        <arg id="1" type="float3" name="color2" size="1" wsize="3" woffset="3" />
+        <arg id="0" type="float4" name="color1" size="1" wsize="4" woffset="0" />
+        <arg id="1" type="float4" name="color2" size="1" wsize="4" woffset="4" />
         <return type="float4" />
-        <call>prtex1_main(sHit, make_float3(stack[0], stack[1], stack[2]), make_float3(stack[3], stack[4], stack[5]), _PROCTEXTAILTAG_)</call>
+        <call>prtex1_main(sHit, make_float4(stack[0], stack[1], stack[2], stack[3]), make_float4(stack[4], stack[5], stack[6], stack[7]), _PROCTEXTAILTAG_)</call>
       </generated>
     </code>
   </texture>
@@ -20,17 +20,15 @@
         <arg id="3" type="sampler2D" name="texX2" size="1" wsize="1" woffset="3" />
         <arg id="4" type="sampler2D" name="texY2" size="1" wsize="1" woffset="4" />
         <arg id="5" type="sampler2D" name="texZ2" size="1" wsize="1" woffset="5" />
-        <arg id="6" type="float" name="blendSize" size="1" wsize="1" woffset="6" />
-        <arg id="7" type="float" name="mapScale" size="1" wsize="1" woffset="7" />
         <return type="float4" />
-        <call>prtex2_main(sHit, as_int(stack[0]), as_int(stack[1]), as_int(stack[2]), as_int(stack[3]), as_int(stack[4]), as_int(stack[5]), stack[6], stack[7], _PROCTEXTAILTAG_)</call>
+        <call>prtex2_main(sHit, as_int(stack[0]), as_int(stack[1]), as_int(stack[2]), as_int(stack[3]), as_int(stack[4]), as_int(stack[5]), _PROCTEXTAILTAG_)</call>
       </generated>
     </code>
   </texture>
-  <texture id="3" name="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\texture1.bmp" path="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\texture1.bmp" loc="data/chunk_00001.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
+  <texture id="3" name="D:\RayTracingSystems\HydraDevelop\HydraAPI-tests\data\textures\texture1.bmp" path="D:\RayTracingSystems\HydraDevelop\HydraAPI-tests\data\textures\texture1.bmp" loc="data/chunk_00001.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
   <texture id="4" name="Map#4" loc="data/chunk_00002.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
-  <texture id="5" name="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\opacity_white_bliack.png" path="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\opacity_white_bliack.png" loc="data/chunk_00003.image4ub" offset="8" bytesize="198916" width="223" height="223" dl="0" />
-  <texture id="6" name="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\LA_Downtown_Afternoon_Fishing_3k.hdr" path="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\LA_Downtown_Afternoon_Fishing_3k.hdr" loc="data/chunk_00008.image4f" offset="8" bytesize="103680000" width="3600" height="1800" dl="0" />
+  <texture id="5" name="D:\RayTracingSystems\HydraDevelop\HydraAPI-tests\data\textures\opacity_white_bliack.png" path="D:\RayTracingSystems\HydraDevelop\HydraAPI-tests\data\textures\opacity_white_bliack.png" loc="data/chunk_00003.image4ub" offset="8" bytesize="198916" width="223" height="223" dl="0" />
+  <texture id="6" name="C:\[Hydra]\temp\Map #2-.hdr" path="C:\[Hydra]\temp\Map #2-.hdr" loc="data/chunk_00008.image4f" offset="8" bytesize="3276800" width="640" height="320" dl="0" />
 </textures_lib>
 <materials_lib>
   <material id="0" name="grayOverrideMat" type="hydra_material">
@@ -43,7 +41,36 @@
       <color>0.078 0.0 0.156</color>
     </diffuse>
   </material>
-  <material id="2" name="08- Default" type="hydra_material">
+  <material id="2" name="Material #0" type="hydra_material">
+    <diffuse brdf_type="lambert">
+      <color val="0.7 0.7 0.7" />
+      <roughness val="0" />
+    </diffuse>
+    <reflectivity brdf_type="phong">
+      <extrusion val="luminance" />
+      <color val="0 0 0" />
+      <glossiness val="1" />
+      <fresnel val="1" />
+      <fresnel_ior val="1.5" />
+    </reflectivity>
+    <transparency brdf_type="phong">
+      <color val="0 0 0" />
+      <glossiness val="1" />
+      <thin_walled val="0" />
+      <fog_color val="1 1 1" />
+      <fog_multiplier val="0" />
+      <ior val="1.5" />
+    </transparency>
+    <emission>
+      <color val="0 0 0" />
+      <cast_gi val="1" />
+    </emission>
+    <translucency>
+      <color val="0 0 0" />
+      <multiplier val="0" />
+    </translucency>
+  </material>
+  <material id="3" name="08- Default" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0.422745 0.0603922 0.631373" />
       <roughness val="0" />
@@ -66,35 +93,6 @@
     <opacity smooth="1">
       <texture id="3" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
     </opacity>
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
-  </material>
-  <material id="3" name="Material #0" type="hydra_material">
-    <diffuse brdf_type="lambert">
-      <color val="0.7 0.7 0.7" />
-      <roughness val="0" />
-    </diffuse>
-    <reflectivity brdf_type="phong">
-      <extrusion val="luminance" />
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <fresnel val="1" />
-      <fresnel_ior val="1.5" />
-    </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="1 1 1" />
-      <fog_multiplier val="0" />
-      <ior val="1.5" />
-    </transparency>
     <emission>
       <color val="0 0 0" />
       <cast_gi val="1" />
@@ -182,13 +180,13 @@
     <indices type="array1i" bytesize="384" offset="1424" apply="tlist" />
     <matindices type="array1i" bytesize="128" offset="1808" apply="primitive" />
   </mesh>
-  <mesh id="1" name="GeoSphere001" type="vsgf" bytesize="230392" loc="data/chunk_00005.vsgf" offset="0" vertNum="3748" triNum="1280" dl="0" path="" bbox="-0.0418892 0.0418892 -0.0418892 0.0418892 -0.0418892 0.0418892">
-    <positions type="array4f" bytesize="59968" offset="24" apply="vertex" />
-    <normals type="array4f" bytesize="59968" offset="59992" apply="vertex" />
-    <tangents type="array4f" bytesize="59968" offset="119960" apply="vertex" />
-    <texcoords type="array2f" bytesize="29984" offset="179928" apply="vertex" />
-    <indices type="array1i" bytesize="15360" offset="209912" apply="tlist" />
-    <matindices type="array1i" bytesize="5120" offset="225272" apply="primitive" />
+  <mesh id="1" name="GeoSphere001" type="vsgf" bytesize="229720" loc="data/chunk_00005.vsgf" offset="0" vertNum="3736" triNum="1280" dl="0" path="" bbox="-0.0418892 0.0418892 -0.0418892 0.0418892 -0.0418892 0.0418892">
+    <positions type="array4f" bytesize="59776" offset="24" apply="vertex" />
+    <normals type="array4f" bytesize="59776" offset="59800" apply="vertex" />
+    <tangents type="array4f" bytesize="59776" offset="119576" apply="vertex" />
+    <texcoords type="array2f" bytesize="29888" offset="179352" apply="vertex" />
+    <indices type="array1i" bytesize="15360" offset="209240" apply="tlist" />
+    <matindices type="array1i" bytesize="5120" offset="224600" apply="primitive" />
   </mesh>
   <mesh id="2" name="Teapot001" type="vsgf" bytesize="224928" loc="data/chunk_00006.vsgf" offset="0" vertNum="3559" triNum="1600" dl="0" path="" bbox="-0.0335036 0.0383504 0 0.0351788 -0.0223357 0.0223357">
     <positions type="array4f" bytesize="56944" offset="24" apply="vertex" />
@@ -211,7 +209,7 @@
   <light id="0" name="environment" type="sky" shape="point" distribution="map" visible="1" mat_id="6">
     <intensity>
       <color val="1 1 1">
-        <texture id="6" type="texref" matrix="1 0 0 -0.5 0 1 0 0 0 0 1 0 0 0 0 1 " addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
+        <texture id="6" type="texref" matrix="1 0 0 -0.25 0 1 0 0 0 0 1 0 0 0 0 1 " addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </color>
       <multiplier val="1" />
     </intensity>
@@ -271,7 +269,7 @@
 <scenes>
   <scene id="0" name="my scene" discard="1" bbox="-0.0803281 0.0798175 -0.0418892 0.0439439 -0.0727539 0.0779808">
     <remap_lists>
-      <remap_list id="0" size="2" val="0 3 " />
+      <remap_list id="0" size="2" val="0 2 " />
     </remap_lists>
     <instance id="0" mesh_id="0" rmap_id="0" scn_id="0" scn_sid="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " />
     <instance id="1" mesh_id="1" rmap_id="-1" scn_id="0" scn_sid="0" matrix="1 0 0 0 0 1 0 0 0 0 1 -0.0245246 0 0 0 1 " />

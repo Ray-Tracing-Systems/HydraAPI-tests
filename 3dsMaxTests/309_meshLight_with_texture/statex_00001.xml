@@ -4,10 +4,10 @@
   <texture id="1" name="falloff" type="proc">
     <code file="c:/[Hydra]/pluginFiles/ProceduralTextures/falloff.c" main="main" loc="data/proctex_00001.c">
       <generated>
-        <arg id="0" type="float3" name="color1" size="1" wsize="3" woffset="0" />
-        <arg id="1" type="float3" name="color2" size="1" wsize="3" woffset="3" />
+        <arg id="0" type="float4" name="color1" size="1" wsize="4" woffset="0" />
+        <arg id="1" type="float4" name="color2" size="1" wsize="4" woffset="4" />
         <return type="float4" />
-        <call>prtex1_main(sHit, make_float3(stack[0], stack[1], stack[2]), make_float3(stack[3], stack[4], stack[5]), _PROCTEXTAILTAG_)</call>
+        <call>prtex1_main(sHit, make_float4(stack[0], stack[1], stack[2], stack[3]), make_float4(stack[4], stack[5], stack[6], stack[7]), _PROCTEXTAILTAG_)</call>
       </generated>
     </code>
   </texture>
@@ -20,14 +20,12 @@
         <arg id="3" type="sampler2D" name="texX2" size="1" wsize="1" woffset="3" />
         <arg id="4" type="sampler2D" name="texY2" size="1" wsize="1" woffset="4" />
         <arg id="5" type="sampler2D" name="texZ2" size="1" wsize="1" woffset="5" />
-        <arg id="6" type="float" name="blendSize" size="1" wsize="1" woffset="6" />
-        <arg id="7" type="float" name="mapScale" size="1" wsize="1" woffset="7" />
         <return type="float4" />
-        <call>prtex2_main(sHit, as_int(stack[0]), as_int(stack[1]), as_int(stack[2]), as_int(stack[3]), as_int(stack[4]), as_int(stack[5]), stack[6], stack[7], _PROCTEXTAILTAG_)</call>
+        <call>prtex2_main(sHit, as_int(stack[0]), as_int(stack[1]), as_int(stack[2]), as_int(stack[3]), as_int(stack[4]), as_int(stack[5]), _PROCTEXTAILTAG_)</call>
       </generated>
     </code>
   </texture>
-  <texture id="3" name="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\LA_Downtown_Afternoon_Fishing_3k.hdr" path="D:\Works\Ray-Tracing_Systems\HydraDevelop\HydraAPI-tests\data\textures\LA_Downtown_Afternoon_Fishing_3k.hdr" loc="data/chunk_00001.image4f" offset="8" bytesize="103680000" width="3600" height="1800" dl="0" />
+  <texture id="3" name="C:\[Hydra]\temp\Map #0-02 - Default.hdr" path="C:\[Hydra]\temp\Map #0-02 - Default.hdr" loc="data/chunk_00001.image4f" offset="8" bytesize="3276800" width="640" height="320" dl="0" />
 </textures_lib>
 <materials_lib>
   <material id="0" name="grayOverrideMat" type="hydra_material">
@@ -217,7 +215,7 @@
     <mmlt_threads>524288</mmlt_threads>
     <mmlt_multBrightness>1</mmlt_multBrightness>
     <mlt_med_enable>false</mlt_med_enable>
-    <mlt_med_threshold>2.3509887e-38</mlt_med_threshold>
+    <mlt_med_threshold>0.100000001</mlt_med_threshold>
     <envclamp>5</envclamp>
     <bsdfclamp>1000000</bsdfclamp>
     <separate_swap>0</separate_swap>

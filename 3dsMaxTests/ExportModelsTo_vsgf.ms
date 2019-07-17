@@ -9,14 +9,11 @@ clearListener()
 
 fn CopyDir sourceDir outDir =
 (
-	print sourceDir 
-
 	for f in getFiles (sourceDir + "*.*") do
 		copyFile f (outDir + getFilenameFile f + getFilenameType f)
 
 	for d in getDirectories (sourceDir + "*") do
 	(
-		print d
 		dataDir = outDir + "data\\"
 		makedir dataDir
 		
@@ -27,9 +24,11 @@ fn CopyDir sourceDir outDir =
 
 
 (--start ms			
-	hydraDataPath		= "c:\\[Hydra]\\pluginFiles\\scenelib\\"	
-	rootPath 				= "d:\\Works\\Ray-Tracing_Systems\\HydraDevelop\\HydraAPI-tests\\3dsMaxTests\\"		
-		
+	hydraDataPath	= "c:\\[Hydra]\\pluginFiles\\scenelib\\"	
+	--rootPath 			= "d:\\Works\\Ray-Tracing_Systems\\HydraDevelop\\HydraAPI-tests\\3dsMaxTests\\"		
+	rootPath 			= "d:\\RayTracingSystems\\HydraDevelop\\HydraAPI-tests\\3dsMaxTests\\"
+	refPath 				= rootPath + "Reference\\"
+	
 	numExportScenes = 0
 	numAllScenes = 0	
 			
@@ -41,7 +40,7 @@ fn CopyDir sourceDir outDir =
 		
 		fileName = getFilenameFile f			
 		
-		render vfb:true
+		render vfb:true outputFile:(refPath + fileName + ".png")
 		
 		outPath = rootPath + fileName + "\\"		
 		makedir outPath 
