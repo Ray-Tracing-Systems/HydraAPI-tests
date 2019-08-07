@@ -12,7 +12,7 @@
 #endif
 
 
-bool check_duplacates(pugi::xml_node a_lib) // check that each object with some id have only one xml node.
+bool check_dups(pugi::xml_node a_lib) // check that each object with some id have only one xml node.
 {
   std::set<int32_t> idSet; 
 
@@ -27,6 +27,33 @@ bool check_duplacates(pugi::xml_node a_lib) // check that each object with some 
 
   return true;
 }
+
+bool check_dups_attr(pugi::xml_node a_lib) // check that each object with some id have only one xml node.
+{
+  for (pugi::xml_node child = a_lib.first_child(); child != nullptr; child = child.next_sibling())
+  {
+    std::set< std::wstring > attrSet;
+    for (auto attr : child.attributes())
+    {
+      const std::wstring name = attr.name();
+      if(attrSet.find(name) == attrSet.end())
+        attrSet.insert(name);
+      else
+      {
+        std::wcout << L"duplicate attribute found for node " << child.name() << L", name = " \
+                   << child.attribute(L"name").as_string() << L", id = " \
+                   << child.attribute(L"id").as_int() << std::endl;
+        return false;
+      }
+    }
+    
+    if(!check_dups_attr(child))
+      return false;
+  }
+  
+  return true;
+}
+
 
 bool check_all_duplicates(const std::wstring& a_fileName)
 {
@@ -49,8 +76,38 @@ bool check_all_duplicates(const std::wstring& a_fileName)
   if (lib4 == nullptr || lib5 == nullptr || lib6 == nullptr)
     return false;
 
-  return check_duplacates(lib0) && check_duplacates(lib1) && check_duplacates(lib2) && 
-         check_duplacates(lib3) && check_duplacates(lib4) && check_duplacates(lib5) && check_duplacates(lib6);
+  bool thistest = check_dups(lib0) && check_dups(lib1) && check_dups(lib2) &&
+                  check_dups(lib3) && check_dups(lib4) && check_dups(lib5) && check_dups(lib6);
+  
+  bool othertest = check_all_attrib_duplicates(a_fileName);
+  
+  return thistest && othertest;
+}
+
+bool check_all_attrib_duplicates(const std::wstring& a_fileName)
+{
+  pugi::xml_document doc;
+  doc.load_file(a_fileName.c_str());
+  if (doc == nullptr)
+    return false;
+  
+  pugi::xml_node lib0 = doc.child(L"textures_lib");
+  pugi::xml_node lib1 = doc.child(L"materials_lib");
+  pugi::xml_node lib2 = doc.child(L"lights_lib");
+  pugi::xml_node lib3 = doc.child(L"geometry_lib");
+  pugi::xml_node lib4 = doc.child(L"cam_lib");
+  pugi::xml_node lib5 = doc.child(L"render_lib");
+  pugi::xml_node lib6 = doc.child(L"scenes");
+  
+  if (lib0 == nullptr || lib1 == nullptr || lib2 == nullptr || lib3 == nullptr)
+    return false;
+  
+  if (lib4 == nullptr || lib5 == nullptr || lib6 == nullptr)
+    return false;
+  
+  return check_dups_attr(lib0) && check_dups_attr(lib1) && check_dups_attr(lib2) &&
+         check_dups_attr(lib3) && check_dups_attr(lib4) && check_dups_attr(lib5) &&
+         check_dups_attr(lib6);
 }
 
 bool check_test_01(const std::wstring a_fileName)

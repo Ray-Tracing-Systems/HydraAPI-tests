@@ -91,6 +91,7 @@ void test_console_render(const wchar_t* a_libPath, const wchar_t* a_savePath);
 void test_device_list();
 
 bool check_all_duplicates(const std::wstring& a_fileName);
+bool check_all_attrib_duplicates(const std::wstring& a_fileName);
 
 bool test01_materials_add();
 bool test02_materials_changes_open_mode();

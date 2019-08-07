@@ -746,18 +746,24 @@ bool test33_update_from_file()
 	return check_images("test_33") && id_ok1 && id_ok2 && noDups1 && noDups2;
 }
 
+
+bool ckeck36_test()
+{
+  bool noDups1 = check_all_duplicates(L"tests/test_36/statex_00002.xml");
+  bool noDups2 = check_all_duplicates(L"tests/test_36/statex_00003.xml");
+  
+  return noDups1 && noDups2;
+}
+
 bool test36_update_from_memory()
 {
-  initGLIfNeeded(1024,768);
+  initGLIfNeeded(512,512);
   
   hrErrorCallerPlace(L"test_36");
 
 	HRCameraRef    camRef;
 	HRSceneInstRef scnRef;
 	HRRenderRef    settingsRef;
-
-	bool id_ok1 = false;
-	bool id_ok2 = false;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -767,18 +773,20 @@ bool test36_update_from_memory()
 
 	// geometry
 	//
-	HRMeshRef cubeRef = HRMeshFromSimpleMesh(L"my_cube", CreateCube(0.75f), 0);
-	HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(2.0f), 1);
-	HRMeshRef sphRef = HRMeshFromSimpleMesh(L"my_sphere", CreateSphere(0.5f, 32), 1);
-	HRMeshRef torRef = HRMeshFromSimpleMesh(L"my_torus", CreateTorus(0.2f, 0.5f, 32, 32), 0);
+	HRMeshRef cubeRef  = HRMeshFromSimpleMesh(L"my_cube"  , CreateCube(0.75f), 0);
+	HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane" , CreatePlane(2.0f), 1);
+	HRMeshRef sphRef   = HRMeshFromSimpleMesh(L"my_sphere", CreateSphere(0.5f, 32), 1);
+	HRMeshRef torRef   = HRMeshFromSimpleMesh(L"my_torus" , CreateTorus(0.2f, 0.5f, 32, 32), 0);
 
 	// material and textures
 	//
 	unsigned int colors1[4] = { 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF, 0xFF000000 };
 	unsigned int colors2[4] = { 0xFF00FF00, 0xFFFF0000, 0xFFFF00FF, 0xFFFFFFFF };
+  unsigned int colors3[4] = { 0xF0F0F0FF, 0xFF00FFFF, 0xFF00FFFF, 0xFF000000 };
 
 	std::vector<unsigned int> imageData1 = CreateStripedImageData(colors1, 4, 128, 128);
 	std::vector<unsigned int> imageData2 = CreateStripedImageData(colors2, 4, 300, 300);
+  std::vector<unsigned int> imageData3 = CreateStripedImageData(colors3, 4, 640, 480);
 
 	HRTextureNodeRef testTex2 = hrTexture2DCreateFromMemory(128, 128, 4, &imageData1[0]);
 	HRTextureNodeRef testTex3 = hrTexture2DCreateFromMemory(300, 300, 4, &imageData2[0]);
@@ -838,23 +846,16 @@ bool test36_update_from_memory()
 	hrRenderOpen(settingsRef, HR_WRITE_DISCARD);
 	{
 		pugi::xml_node node = hrRenderParamNode(settingsRef);
-
-		wchar_t temp[256];
-		swprintf(temp, 256, L"%d", 1024);
-		node.append_child(L"width").text().set(temp);
-		swprintf(temp, 256, L"%d", 768);
-		node.append_child(L"height").text().set(temp);
+		node.append_child(L"width").text()  = 512;
+		node.append_child(L"height").text() = 512;
 	}
 	hrRenderClose(settingsRef);
 
 	// create scene
 	//
 	scnRef = hrSceneCreate(L"my scene");
-
-	float	rtri = 25.0f; // Angle For The Triangle ( NEW )
+	
 	float	rquad = 40.0f;
-	float g_FPS = 60.0f;
-	int   frameCounter = 0;
 
 	const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
@@ -926,11 +927,12 @@ bool test36_update_from_memory()
 	hrFlush(scnRef, settingsRef);
 	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_36/z_out2.png");
 
-	id_ok1 = (new_testTex2.id == testTex2.id);
+	bool id_ok1 = (new_testTex2.id == testTex2.id);
 	// frame 3
 	//
 	
 	HRTextureNodeRef new_testTex3 = hrTexture2DUpdateFromMemory(testTex3, 128, 128, 4, &imageData1[0]);
+	                 new_testTex3 = hrTexture2DUpdateFromMemory(testTex3, 640, 480, 4, &imageData3[0]);
 
 	hrMaterialOpen(mat1, HR_OPEN_EXISTING);
 	{
@@ -945,9 +947,9 @@ bool test36_update_from_memory()
 	hrFlush(scnRef, settingsRef);
 	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_36/z_out3.png");
 
-	id_ok2 = (new_testTex3.id == testTex3.id);
+	bool id_ok2 = (new_testTex3.id == testTex3.id);
   
   hrInfoCallback(InfoCallBack);
 
-	return check_images("test_36", 3) && id_ok1 && id_ok2;
+	return check_images("test_36", 3) && id_ok1 && id_ok2 && ckeck36_test();
 }

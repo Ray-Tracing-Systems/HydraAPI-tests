@@ -558,8 +558,13 @@ namespace LGHT_TESTS
 
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.75 0.75 1");
       intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
-
-			VERIFY_XML(lightNode);
+  
+      HRTextureNodeRef texAlwaysWhite; texAlwaysWhite.id = 0;
+      auto back = lightNode.append_child(L"back");
+      hrTextureBind(texAlwaysWhite, back);
+  
+  
+      VERIFY_XML(lightNode);
     }
     hrLightClose(sky);
 
@@ -681,9 +686,6 @@ namespace LGHT_TESTS
         auto pres = std::cout.precision(2);
         std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
         std::cout.precision(pres);
-
-        
-        
       }
 
       if (info.finalUpdate)
