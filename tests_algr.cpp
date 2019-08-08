@@ -551,8 +551,6 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
 
 bool ALGR_TESTS::test_403_light_inside_double_glass()
 {
-  
-  
   hrErrorCallerPlace(L"test_403");
   
   hrSceneLibraryOpen(L"tests_a/test_403", HR_WRITE_DISCARD);
