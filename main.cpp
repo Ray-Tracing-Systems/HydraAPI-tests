@@ -128,9 +128,9 @@ int main(int argc, const char** argv)
     //run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
-    run_all_alg_tests();
+    run_all_alg_tests(3);
     
-    //std::cout << GEO_TESTS::test_006_points_on_mesh() << std::endl;
+    //std::cout << ALGR_TESTS::test_404_cornell_glossy() << std::endl;
 
     //std::cout << test56_mesh_change_open_existing() << std::endl;
     //std::cout << test77_save_gbuffer_layers() << std::endl;

@@ -901,7 +901,8 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
 bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test should check situation when scene is not found.
 {
   hrErrorCallerPlace(L"test404");                            // scene not found ?
-  hrSceneLibraryOpen(L"tests_a/test_404", HR_OPEN_EXISTING);
+  if(!hrSceneLibraryOpen(L"tests_a/test_404", HR_OPEN_EXISTING))
+    return false;
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -935,7 +936,8 @@ bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test 
 bool ALGR_TESTS::test_405_cornell_with_mirror()
 {
   hrErrorCallerPlace(L"test405");                            // scene not found ?
-  hrSceneLibraryOpen(L"tests_a/test_405", HR_OPEN_EXISTING);
+  if(!hrSceneLibraryOpen(L"tests_a/test_405", HR_OPEN_EXISTING))
+    return false;
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -968,7 +970,8 @@ bool ALGR_TESTS::test_405_cornell_with_mirror()
 bool ALGR_TESTS::test_406_env_glass_ball_caustic()
 {
   hrErrorCallerPlace(L"test406");                            // scene not found ?
-  hrSceneLibraryOpen(L"tests_a/test_406", HR_OPEN_EXISTING);
+  if(!hrSceneLibraryOpen(L"tests_a/test_406", HR_OPEN_EXISTING))
+    return false;
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
