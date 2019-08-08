@@ -124,14 +124,14 @@ int main(int argc, const char** argv)
   try
   {
 
-    //run_all_api_tests();
+    run_all_api_tests();
     //run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_ipp_tests();
   
-    std::cout << test36_update_from_memory() << std::endl;
+    //std::cout << test36_update_from_memory() << std::endl;
 
     //std::cout << MTL_TESTS::test_103_diffuse_texture() << std::endl;
     //std::cout << "MSE = " << g_MSEOutput << std::endl;
