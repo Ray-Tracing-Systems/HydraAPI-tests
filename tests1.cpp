@@ -1768,8 +1768,8 @@ void run_all_geo_tests()
 		bool res = tests[i]();
     if (res)
     {
-      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tPASSED!\t MSE = " << g_MSEOutput << std::endl;
-      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tPASSED!\t MSE = " << g_MSEOutput << std::endl;
+      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tPASSED!" << std::endl;
+      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tPASSED!" << std::endl;
     }
     else if (g_testWasIgnored)
     {
@@ -1881,8 +1881,8 @@ void run_all_mtl_tests(int a_start)
 		bool res = tests[i]();
     if (res)
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tPASSED!\tMSE = " << g_MSEOutput << std::endl;;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tPASSED!\tMSE = " << g_MSEOutput << std::endl;;
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tPASSED!" << std::endl;;
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tPASSED!" << std::endl;;
     }
     else if (g_testWasIgnored)
     {
@@ -1967,8 +1967,8 @@ void run_all_lgt_tests(int a_start)
     bool res = tests[i]();
     if (res)
     {
-      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!\tMSE = " << g_MSEOutput << std::endl;;
-      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!\tMSE = " << g_MSEOutput << std::endl;;
+      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!" << std::endl;
+      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!" << std::endl;
     }
     else if (g_testWasIgnored)
     {

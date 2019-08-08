@@ -1411,8 +1411,8 @@ namespace GEO_TESTS
     mRes.identity();
     
     mTranslate = translate4x4(float3(0.0f, -1.0f, 0.0f));
-    mScale = scale4x4(float3(0.51f, 0.51f, 0.51f));
-    mRes = mul(mTranslate, mScale);
+    mScale     = scale4x4(float3(0.51f, 0.51f, 0.51f));
+    mRes       = mul(mTranslate, mScale);
     
     auto pt_matrix = mRes;
     
@@ -1420,11 +1420,11 @@ namespace GEO_TESTS
     
     for(int i = 0; i < points.size(); i += 3)
     {
-      auto pt = make_float3(points[i * 3], points[i * 3 + 1], points[i * 3 + 2]);
-      pt = mul(pt_matrix, pt);
+      auto pt    = make_float3(points[i * 3], points[i * 3 + 1], points[i * 3 + 2]);
+      pt         = mul(pt_matrix, pt);
       mTranslate = translate4x4(pt);
-      mScale = scale4x4(float3(1.0f, 1.0f, 1.0f));
-      mRes = mul(mTranslate, mScale);
+      mScale     = scale4x4(float3(1.0f, 1.0f, 1.0f));
+      mRes       = mul(mTranslate, mScale);
       
       hrMeshInstance(scnRef, lucyRef, mRes.L());
     }
