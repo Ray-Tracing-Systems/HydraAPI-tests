@@ -493,8 +493,6 @@ namespace LGHT_TESTS
 
   bool test_202_sky_color()
   {
-    
-
     hrErrorCallerPlace(L"test_202");
 
     hrSceneLibraryOpen(L"tests_f/test_202", HR_WRITE_DISCARD);
@@ -559,10 +557,9 @@ namespace LGHT_TESTS
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.75 0.75 1");
       intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
   
-      HRTextureNodeRef texAlwaysWhite; texAlwaysWhite.id = 0;
-      auto back = lightNode.append_child(L"back");
-      hrTextureBind(texAlwaysWhite, back);
-  
+      //HRTextureNodeRef texAlwaysWhite; texAlwaysWhite.id = 0;
+      //auto back = lightNode.append_child(L"back");
+      //hrTextureBind(texAlwaysWhite, back);
   
       VERIFY_XML(lightNode);
     }

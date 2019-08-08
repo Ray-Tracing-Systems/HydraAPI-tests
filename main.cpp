@@ -127,7 +127,7 @@ int main(int argc, const char** argv)
     //run_all_api_tests();
     //run_all_geo_tests();
     //run_all_mtl_tests();
-    run_all_lgt_tests();
+    //run_all_lgt_tests();
     run_all_alg_tests();
     
     //std::cout << GEO_TESTS::test_006_points_on_mesh() << std::endl;
