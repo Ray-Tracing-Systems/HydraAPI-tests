@@ -154,6 +154,16 @@ At this specification level, the whole scene is defined as set of instances of m
 
 At this specification level, the whole scene is defined as set of instances of meshe. Each mesh instance has its own transform 4x4 matrix. Matrices can contain rotation, translation, scaling (both linear and non-linear). If the mesh was not instanced at all, it should not be drawn.
 
+\boldblue{Test:} test\_005\_instancing.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\linewidth]{../../tests_images/test_005/w_ref.png}           
+	\caption{\label{fig:test_005_image}
+		Example of instancing.  }   
+\end{figure}
+
+\FloatBarrier
+
 \reqirenmentg{inst\_remaplist}
 
 This requirement defines the ability to instantiate same objects with different materials. That is, different instances of the same object can have different materials. For this, we define such a thing as <<remap list>>. The remap list is a list of pairs of material indices. In each pair, the first index defines the material to be replaced, and the second index determines the final material. For example, consider frurther remap lists (listing \ref{remaplist}): 
@@ -166,7 +176,23 @@ This requirement defines the ability to instantiate same objects with different 
 </remap_lists>
 \end{lstlisting}
 
-The remap list with id <<0>> will replace material 0 to 5 and material 3 to 1. The remap list with id <<1>> will replace all its input materials (1,2,3,4) to 0.
+The remap list with id <<0>> will replace material 0 to 5 and material 3 to 1. The remap list with id <<1>> will replace all its input materials (1,2,3,4) to 0. 
+
+So, each instance can assign an existing remap list. If this happands, for this instance on the displayed model the replacements specified in remap list should be applied (fig. \ref{fig:remaplist}).
+
+\boldblue{Test:} test78\_material\_remap\_list1. MSE should be less than 50.0 for 512x512 LDR image.
+
+\begin{figure}[h]\label{fig:remaplist}
+	\begin{minipage}[h]{0.45\linewidth}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_79/w_ref.png} \\ Original material mapping}
+	\end{minipage}
+	\begin{minipage}[h]{0.45\linewidth}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_79/w_ref2.png} \\ Appliyng remap list}
+	\end{minipage}
+	\caption{Remap list example.}
+\end{figure}
+
+\FloatBarrier
 
 \section{Materials v1.0.}\label{materialgeneral}
 
