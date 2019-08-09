@@ -480,7 +480,6 @@ namespace MTL_TESTS
 
   bool test_103_diffuse_texture()
   {
-    
     hrErrorCallerPlace(L"test_103");
 
     hrSceneLibraryOpen(L"tests_f/test_103", HR_WRITE_DISCARD);
@@ -6919,7 +6918,9 @@ namespace MTL_TESTS
 
     const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
-    bool checkReqRed = false;
+    bool checkReqRed   = false;
+    bool checkReqGreen = false;
+    bool checkReqBlue  = false;
 
     for(int sceneId = 0; sceneId < 3; sceneId++) {
 
@@ -6977,10 +6978,35 @@ namespace MTL_TESTS
       
       checkReqRed = (fabs(rgba[0] - 1.0f) < 1e-5f && fabs(rgba[1]) < 1.0e-5f && fabs(rgba[2]) < 1.0e-5f);
     }
+    else if (sceneId == 1)
+    {
+      std::vector<float> imageHDR(512*512*4);
+      hrRenderGetFrameBufferHDR4f(renderRef, 512, 512, imageHDR.data());
+
+      float rgba[3] = {0,0,0};
+      rgba[0] = imageHDR[4*(220*512 + 256) + 0];
+      rgba[1] = imageHDR[4*(220*512 + 256) + 1];
+      rgba[2] = imageHDR[4*(220*512 + 256) + 2];
+
+      checkReqGreen = (fabs(rgba[0]) < 1e-5f && fabs(rgba[1] - 1.0f) < 1.0e-5f && fabs(rgba[2]) < 1.0e-5f);
+    }
+    else if (sceneId == 2)
+    {
+      std::vector<float> imageHDR(512*512*4);
+      hrRenderGetFrameBufferHDR4f(renderRef, 512, 512, imageHDR.data());
+
+      float rgba[3] = {0,0,0};
+      rgba[0] = imageHDR[4*(220*512 + 256) + 0];
+      rgba[1] = imageHDR[4*(220*512 + 256) + 1];
+      rgba[2] = imageHDR[4*(220*512 + 256) + 2];
+
+      checkReqBlue = (fabs(rgba[0]) < 1e-5f && fabs(rgba[1]) < 1.0e-5f && fabs(rgba[2] - 1.0f) < 1.0e-5f);
+    }
+
 
     }
 
-    return check_images("test_123", 3, 10) && checkReqRed;
+    return check_images("test_123", 3, 10) && checkReqRed && checkReqGreen && checkReqBlue;
   }
 
   bool test_124_emission_texture()
