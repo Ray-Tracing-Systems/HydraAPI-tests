@@ -152,7 +152,7 @@ At this specification level, the whole scene is defined as set of instances of m
 
 \reqirenmentg{inst\_matrices}
 
-At this specification level, the whole scene is defined as set of instances of meshe. Each mesh instance has its own transform 4x4 matrix. Matrices can contain rotation, translation, scaling (both linear and non-linear). If the mesh was not instanced at all, it should not be drawn.
+At this specification level, the whole scene is defined as set of instances of meshes. Each mesh instance has its own transform 4x4 matrix. Matrices can contain rotation, translation, scaling (both linear and non-linear). If the mesh was not instanced at all, it should not be drawn.
 
 \boldblue{Test:} test\_005\_instancing.
 \begin{figure}[htb]
@@ -178,9 +178,9 @@ This requirement defines the ability to instantiate same objects with different 
 
 The remap list with id <<0>> will replace material 0 to 5 and material 3 to 1. The remap list with id <<1>> will replace all its input materials (1,2,3,4) to 0. 
 
-So, each instance can assign an existing remap list. If this happands, for this instance on the displayed model the replacements specified in remap list should be applied (fig. \ref{fig:remaplist}).
+So, each instance can assign an existing remap list. If this happends, for this instance on the displayed model the replacements specified in remap list should be applied (fig. \ref{fig:remaplist}).
 
-\boldblue{Test:} test78\_material\_remap\_list1. MSE should be less than 50.0 for 512x512 LDR image.
+\boldblue{Test:} test78\_material\_remap\_list1. MSE should be less than 5.0 for 512x512 LDR image.
 
 \begin{figure}[h]\label{fig:remaplist}
 	\begin{minipage}[h]{0.45\linewidth}
@@ -344,8 +344,6 @@ Adding LDR textures for Lambertian materials. When reading from LDR texture, gam
 
 \FloatBarrier
 
-\boldblue{(!) Implementation REQ. :} Texture fetch (samplers) must support both <<wrap>> and <<clamp>> addressing modes separately for $u$ and $v$ texture coordinates. If the mode is not specified, the default mode is wrap.  Lack of support for the <<clamp>> mode in the test will lead to incorrect visualization of the edges of the cube due to interpolation between red and black colors, which should be absent with the <<clamp>> mode.
-
 \reqirenment{phong\_mirror\_texture\_color}
 
 Adding LDR textures for reflection color for both phong and mirrors. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of standart.
@@ -375,12 +373,6 @@ Adding LDR textures to emission color. When reading from LDR texture, gamma tran
 	\caption{\label{fig:test_124_image}
 		Emissive textures.  }   
 \end{figure}
-
-\reqirenment{emission\_texture\_color\_hdr}
-
-Adding HDR textures to emission color. HDR textures are assumed to be in linear space already, so, in contrast to LDR textures, no transforms should be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of standart.
-
-\boldblue{Test:} \textbf{ADD TEST HERE!}
 
 \reqirenment{phong\_texture\_glosiness}
 
@@ -434,6 +426,14 @@ cosMult &=& 1 + t*(\frac{1}{cos(\theta_{out})} - 1)
 \end{eqnarray*}
 
 It is easy to see that for gloss equal to 0.5 we get 1.0 and for gloss equal to 1 we get $\frac{1}{cos(\theta_{out})}$.
+
+\reqirenment{texture\_wrap\_and\_clamp}
+
+Texture fetch (samplers) must support both <<wrap>> and <<clamp>> addressing modes separately for $u$ and $v$ texture coordinates. If the mode is not specified, the default mode is wrap.  Lack of support for the <<clamp>> mode in test (req.\ref{req:diffusetexture}) will lead to incorrect visualization of the edges of the cube due to interpolation between red and black colors, which should be absent with the <<clamp>> mode. Texture sampler parameters must be enabled for further material parameters: diffuse, reflection, emission, glosiness.
+
+\reqirenment{texture\_matrices}
+
+The sampler object must support the storage and use of texture matrices. Texture matrices are aplied to texture coordinates before actual texture fetch is performed. Initially, the matrices should be 4x4, but since in most cases the texture coordinates are two-dimensional, at this level of the specification, the render can save only the first 2 rows of the matrix.
 
 \reqirenment{mix\_phong\_lambert\_extrusion\_maxcolor}
 
