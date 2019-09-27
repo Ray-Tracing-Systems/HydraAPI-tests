@@ -1869,6 +1869,7 @@ void run_all_mtl_tests(int a_start)
                        &test_171_simple_displacement_triplanar,
                        &test_172_glossy_dark_edges_phong,
                        &test_173_glossy_dark_edges_microfacet,
+                       &test_174_mirror_orbspec_mat03,
 	                   };
 
 

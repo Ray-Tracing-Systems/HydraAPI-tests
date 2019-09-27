@@ -37,6 +37,7 @@ set(SOURCE_FILES
         tests_mtl3.cpp
         tests_mtl4.cpp
         tests_mtl5.cpp
+        tests_mtl6.cpp
         tests_external.cpp
         tests_algr.cpp)
 
@@ -49,7 +50,7 @@ set(SOURCE_FILES_GL
         RenderDriverOpenGL1_TestCustomAttributes.cpp
         RenderDriverOpenGL1_TestSplit.cpp
         RenderDriverOpenGL1Debug.cpp
-        RenderDriverOpenGL1DebugDrawRays.cpp)
+        RenderDriverOpenGL1DebugDrawRays.cpp tests_mtl6.cpp)
 
 #set (CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG}")
 

@@ -16,7 +16,6 @@
 #include <GLFW/glfw3.h>
 #pragma comment(lib, "glfw3dll.lib")
 #pragma comment(lib, "FreeImage.lib")
-
 #else
 #include <FreeImage.h>
 #include <GLFW/glfw3.h>

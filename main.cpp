@@ -129,8 +129,9 @@ int main(int argc, const char** argv)
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
-    
-    std::cout << test78_material_remap_list1() << std::endl;
+  
+    std::cout << std::endl;
+    std::cout << MTL_TESTS::test_175_beckman_isotropic() << std::endl;
 
     //std::cout << test56_mesh_change_open_existing() << std::endl;
     //std::cout << test77_save_gbuffer_layers() << std::endl;

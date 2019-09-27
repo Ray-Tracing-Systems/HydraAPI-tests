@@ -28,12 +28,6 @@ inline xml_node force_child(xml_node a_parent, const wchar_t* a_name) ///< helpe
     return a_parent.append_child(a_name);
 }
 
-inline float rnd(float s, float e)
-{
-  float t = (float)rand() / (float)RAND_MAX;
-  return s + t*(e - s);
-}
-
 
 bool check_images(const char* a_path, const int a_numImages = 1, const float a_mse = 10.0f);
 void initGLIfNeeded(int a_width = 512, int a_height = 512, const char* a_name = "glfw demo");
@@ -310,6 +304,8 @@ namespace MTL_TESTS
   bool test_173_glossy_dark_edges_microfacet();
 
   bool test_174_mirror_orbspec_mat03();
+  
+  bool test_175_beckman_isotropic();
 }
 
 namespace LGHT_TESTS
