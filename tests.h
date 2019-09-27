@@ -306,6 +306,12 @@ namespace MTL_TESTS
   bool test_174_mirror_orbspec_mat03();
   
   bool test_175_beckman_isotropic();
+  bool test_176_beckman_anisotropic();
+  bool test_177_beckman_aniso_rot();
+  
+  bool test_178_trggx_isotropic();
+  bool test_179_trggx_anisotropic();
+  bool test_180_trggx_aniso_rot();
 }
 
 namespace LGHT_TESTS

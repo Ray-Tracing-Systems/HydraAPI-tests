@@ -131,8 +131,14 @@ int main(int argc, const char** argv)
     //run_all_alg_tests();
   
     std::cout << std::endl;
-    std::cout << MTL_TESTS::test_175_beckman_isotropic() << std::endl;
-
+    //std::cout << MTL_TESTS::test_175_beckman_isotropic() << std::endl;
+    //std::cout << MTL_TESTS::test_176_beckman_anisotropic() << std::endl;
+    //std::cout << MTL_TESTS::test_177_beckman_aniso_rot() << std::endl;
+  
+    //std::cout << MTL_TESTS::test_178_trggx_isotropic() << std::endl;
+    std::cout << MTL_TESTS::test_179_trggx_anisotropic() << std::endl;
+    std::cout << MTL_TESTS::test_180_trggx_aniso_rot() << std::endl;
+    
     //std::cout << test56_mesh_change_open_existing() << std::endl;
     //std::cout << test77_save_gbuffer_layers() << std::endl;
 

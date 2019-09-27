@@ -33,11 +33,25 @@ namespace hlm = HydraLiteMath;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MTL_TESTS::test_175_beckman_isotropic()
+struct InputMaterialTestParams
 {
-  hrErrorCallerPlace(L"test_175");
+  std::wstring testName;
+  std::wstring paramName;
+  std::wstring brdfName;
+  float values[4];
+  float maxMSE;
+  float initialGlosiness;
+  float initialAniso;
+  float initialRot;
+};
+
+bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
+{
+  hrErrorCallerPlace(testParams.testName.c_str());
   
-  hrSceneLibraryOpen(L"tests_f/test_175", HR_WRITE_DISCARD);
+  const std::wstring pathToSceneLib = std::wstring(L"tests_f/") + testParams.testName;
+  
+  hrSceneLibraryOpen(pathToSceneLib.c_str(), HR_WRITE_DISCARD);
   
   SimpleMesh sphere   = CreateSphere(2.5f, 128);
   SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
@@ -91,15 +105,19 @@ bool MTL_TESTS::test_175_beckman_isotropic()
   hrMaterialOpen(mat4, HR_WRITE_DISCARD);
   {
     xml_node matNode = hrMaterialParamNode(mat4);
-  
+    
     auto refl        = matNode.append_child(L"reflectivity");
+    
+    refl.append_attribute(L"brdf_type") = testParams.brdfName.c_str();
+    refl.append_child(L"color").append_attribute(L"val")      = L"1.0 1.0 1.0";
   
-    refl.append_attribute(L"brdf_type").set_value(L"beckmann");
-    refl.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
-    refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.5");
     refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
     refl.append_child(L"fresnel").append_attribute(L"val").set_value(0);
-  
+    
+    refl.append_child(L"glossiness").append_attribute(L"val") = testParams.initialGlosiness;
+    refl.append_child(L"anisotropy").append_attribute(L"val") = testParams.initialAniso;
+    refl.child(L"anisotropy").append_attribute(L"rot") = testParams.initialRot;
+    
     VERIFY_XML(matNode);
   }
   hrMaterialClose(mat4);
@@ -233,12 +251,12 @@ bool MTL_TESTS::test_175_beckman_isotropic()
   }
   hrSceneClose(scnRef);
   
+  const std::wstring testImages1 = std::wstring(L"tests_images/") + testParams.testName + L"/z_out.png";
+  const std::wstring testImages2 = std::wstring(L"tests_images/") + testParams.testName + L"/z_out2.png";
+  const std::wstring testImages3 = std::wstring(L"tests_images/") + testParams.testName + L"/z_out3.png";
+  const std::wstring testImages4 = std::wstring(L"tests_images/") + testParams.testName + L"/z_out4.png";
   
-  float glossVal[4] = {0.25f, 0.5, 0.75f, 0.9f};
-  const std::wstring names[4] = {L"tests_images/test_175/z_out.png",
-                                 L"tests_images/test_175/z_out2.png",
-                                 L"tests_images/test_175/z_out3.png",
-                                 L"tests_images/test_175/z_out4.png",};
+  const std::wstring names[4] = {testImages1.c_str(), testImages2.c_str(), testImages3.c_str(), testImages4.c_str()};
   
   for(int iter = 0; iter < 4; iter++)
   {
@@ -246,7 +264,10 @@ bool MTL_TESTS::test_175_beckman_isotropic()
     {
       xml_node matNode = hrMaterialParamNode(mat4);
       auto refl = matNode.child(L"reflectivity");
-      refl.child(L"glossiness").attribute(L"val") = glossVal[iter];
+      if(testParams.paramName != L"rot")
+        refl.child(testParams.paramName.c_str()).attribute(L"val") = testParams.values[iter];
+      else
+        refl.child(L"anisotropy").attribute(L"rot") = testParams.values[iter];
       VERIFY_XML(matNode);
     }
     hrMaterialClose(mat4);
@@ -256,20 +277,19 @@ bool MTL_TESTS::test_175_beckman_isotropic()
       hrRenderOpen(renderRef, HR_OPEN_EXISTING);
       {
         pugi::xml_node node = hrRenderParamNode(renderRef);
-  
-        node.child(L"maxRaysPerPixel").text()  = 4096;
+        node.child(L"maxRaysPerPixel").text() = 4096;
       }
       hrRenderClose(renderRef);
     }
     
     hrFlush(scnRef, renderRef, camRef);
-  
+    
     while (true)
     {
       std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    
+      
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-    
+      
       if (info.haveUpdateFB)
       {
         auto pres = std::cout.precision(2);
@@ -277,15 +297,124 @@ bool MTL_TESTS::test_175_beckman_isotropic()
         std::cout.flush();
         std::cout.precision(pres);
       }
-    
+      
       if (info.finalUpdate)
         break;
     }
-  
+    
     hrRenderSaveFrameBufferLDR(renderRef, names[iter].c_str());
-  
+    
   }
   
-  return check_images("test_175", 4, 25.0f);
+  const std::string name = ws2s(testParams.testName);
+  return check_images(name.c_str(), 4, testParams.maxMSE);
 }
 
+
+bool MTL_TESTS::test_175_beckman_isotropic()
+{
+  InputMaterialTestParams params;
+  params.testName  = L"test_175";
+  params.brdfName  = L"beckmann";
+  params.paramName = L"glossiness";
+  params.values[0] = 0.25f;
+  params.values[1] = 0.5f;
+  params.values[2] = 0.75f;
+  params.values[3] = 0.90f;
+  params.maxMSE    = 25.0f;
+  params.initialGlosiness = 0.0f;
+  params.initialAniso     = 0.0f;
+  params.initialRot       = 0.0f;
+  
+  return PefrormMaterialTest(params);
+}
+
+bool MTL_TESTS::test_176_beckman_anisotropic()
+{
+  InputMaterialTestParams params;
+  params.testName  = L"test_176";
+  params.brdfName  = L"beckmann";
+  params.paramName = L"anisotropy";
+  params.values[0] = 0.25f;
+  params.values[1] = 0.5f;
+  params.values[2] = 0.75f;
+  params.values[3] = 1.0f;
+  params.maxMSE    = 25.0f;
+  params.initialGlosiness = 0.0f;
+  params.initialAniso     = 0.0f;
+  params.initialRot       = 0.0f;
+  
+  return PefrormMaterialTest(params);
+}
+
+bool MTL_TESTS::test_177_beckman_aniso_rot()
+{
+  InputMaterialTestParams params;
+  params.testName  = L"test_177";
+  params.brdfName  = L"beckmann";
+  params.paramName = L"rot";
+  params.values[0] = 0.25f;
+  params.values[1] = 0.5f;
+  params.values[2] = 0.75f;
+  params.values[3] = 1.0f;
+  params.maxMSE    = 25.0f;
+  params.initialGlosiness = 0.0f;
+  params.initialAniso     = 1.0f;
+  params.initialRot       = 0.0f;
+  
+  return PefrormMaterialTest(params);
+}
+
+bool MTL_TESTS::test_178_trggx_isotropic()
+{
+  InputMaterialTestParams params;
+  params.testName  = L"test_178";
+  params.brdfName  = L"trggx";
+  params.paramName = L"glossiness";
+  params.values[0] = 0.25f;
+  params.values[1] = 0.5f;
+  params.values[2] = 0.75f;
+  params.values[3] = 0.90f;
+  params.maxMSE    = 25.0f;
+  params.initialGlosiness = 0.0f;
+  params.initialAniso     = 0.0f;
+  params.initialRot       = 0.0f;
+  
+  return PefrormMaterialTest(params);
+}
+
+bool MTL_TESTS::test_179_trggx_anisotropic()
+{
+  InputMaterialTestParams params;
+  params.testName  = L"test_179";
+  params.brdfName  = L"trggx";
+  params.paramName = L"anisotropy";
+  params.values[0] = 0.25f;
+  params.values[1] = 0.5f;
+  params.values[2] = 0.75f;
+  params.values[3] = 0.90f;
+  params.maxMSE    = 25.0f;
+  params.initialGlosiness = 0.0f;
+  params.initialAniso     = 0.0f;
+  params.initialRot       = 0.0f;
+  
+  return PefrormMaterialTest(params);
+}
+
+bool MTL_TESTS::test_180_trggx_aniso_rot()
+{
+  InputMaterialTestParams params;
+  params.testName  = L"test_180";
+  params.brdfName  = L"trggx";
+  params.paramName = L"rot";
+  params.values[0] = 0.25f;
+  params.values[1] = 0.5f;
+  params.values[2] = 0.75f;
+  params.values[3] = 1.0f;
+  params.maxMSE    = 25.0f;
+  params.initialGlosiness = 0.0f;
+  params.initialAniso     = 1.0f;
+  params.initialRot       = 0.0f;
+  
+  return PefrormMaterialTest(params);
+}

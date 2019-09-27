@@ -1870,6 +1870,13 @@ void run_all_mtl_tests(int a_start)
                        &test_172_glossy_dark_edges_phong,
                        &test_173_glossy_dark_edges_microfacet,
                        &test_174_mirror_orbspec_mat03,
+
+                       &test_175_beckman_isotropic,
+                       &test_176_beckman_anisotropic,
+                       &test_177_beckman_aniso_rot,
+                       &test_178_trggx_isotropic,
+                       &test_179_trggx_anisotropic,
+                       &test_180_trggx_aniso_rot,
 	                   };
 
 
