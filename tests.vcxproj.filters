@@ -182,5 +182,8 @@
     <ClCompile Include="test_mtl_adv.cpp">
       <Filter>tests_mtl</Filter>
     </ClCompile>
+    <ClCompile Include="tests_mtl6.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -2042,7 +2042,7 @@ void run_all_alg_tests(int a_start)
   
 }
 
-void run_all_mictofacet()
+void run_all_mictofacet_torrance_sparrow()
 {
   using namespace LGHT_TESTS;
   using namespace MTL_TESTS;
