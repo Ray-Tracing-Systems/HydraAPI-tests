@@ -2140,7 +2140,7 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
   scnRef.id    = 0;
   /////////////////////////////////////////////////////////
 
-  hrRenderEnableDevice(renderRef, 1, true);
+  //hrRenderEnableDevice(renderRef, 1, true);
 
   hrFlush(scnRef, renderRef);
 
