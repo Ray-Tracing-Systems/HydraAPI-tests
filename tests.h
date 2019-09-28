@@ -426,8 +426,8 @@ static const int CURR_RENDER_DEVICE = 0;
 
 //void image_p_sandbox();
 
-void run_all_mictofacet();
-
+void run_all_mictofacet_torrance_sparrow();
+void run_all_3dsmax_tests();
 
 #define IRRADIANCE_TO_RADIANCE (3.14159265358979323846f)
 

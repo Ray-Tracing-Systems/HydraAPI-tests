@@ -130,8 +130,9 @@ int main(int argc, const char** argv)
     //run_all_lgt_tests();
     //run_all_alg_tests();
   
-    run_all_mictofacet();
-   
+    //run_all_mictofacet_torrance_sparrow();
+    run_all_3dsmax_tests();
+
     //std::cout << MTL_TESTS::test_175_beckman_isotropic() << std::endl;
     //std::cout << MTL_TESTS::test_176_beckman_anisotropic() << std::endl;
     //std::cout << MTL_TESTS::test_177_beckman_aniso_rot() << std::endl;

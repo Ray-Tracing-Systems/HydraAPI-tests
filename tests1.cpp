@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <fstream>
 #include <set>
+#include <algorithm>
 
 #if defined(WIN32)
   #include <GLFW/glfw3.h>
@@ -11,6 +12,10 @@
   #include <GLFW/glfw3.h>
 #endif
 
+#include <wchar.h>
+#include <wctype.h>
+
+#include "../hydra_api/HR_HDRImageTool.h"
 
 bool check_dups(pugi::xml_node a_lib) // check that each object with some id have only one xml node.
 {
@@ -2113,6 +2118,117 @@ void run_all_mictofacet_torrance_sparrow()
     g_testWasIgnored = false;
   }
   
+  fout.close();
+}
+
+std::vector<std::wstring> hr_listfiles(const wchar_t* a_folder);
+std::string ws2s(const std::wstring& wstr);
+
+bool run_single_3dsmax_test(const std::wstring& a_path)
+{
+  std::wstring errorPlace = std::wstring(L"run_single_3dsmax_test__") + a_path;
+  std::wstring outPath    = std::wstring(L"3dsMaxTests/rendered/")    + a_path.substr(12, a_path.size()) + L".png";
+  std::wstring refPath    = std::wstring(L"3dsMaxTests/Reference/")   + a_path.substr(12, a_path.size()) + L".png";
+
+  hrErrorCallerPlace(errorPlace.c_str());
+  hrSceneLibraryOpen(a_path.c_str(), HR_OPEN_EXISTING);
+
+  /////////////////////////////////////////////////////////
+  HRRenderRef renderRef;
+  HRSceneInstRef scnRef;
+  renderRef.id = 0;
+  scnRef.id    = 0;
+  /////////////////////////////////////////////////////////
+
+  hrRenderEnableDevice(renderRef, 1, true);
+
+  hrFlush(scnRef, renderRef);
+
+  while (true)
+  {
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+    if (info.haveUpdateFB)
+    {
+      auto pres = std::cout.precision(2);
+      std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+      std::cout.precision(pres);
+    }
+
+    if (info.finalUpdate)
+      break;
+  }
+
+  hrRenderSaveFrameBufferLDR(renderRef, outPath.c_str());
+
+  const std::string outPathS = ws2s(outPath);
+  const std::string refPathS = ws2s(refPath);
+
+  int w1, h1, w2, h2;
+  std::vector<int32_t> image1, image2;
+
+  bool loaded1 = HydraRender::LoadLDRImageFromFile(outPathS.c_str(), &w1, &h1, image1);
+  bool loaded2 = HydraRender::LoadLDRImageFromFile(refPathS.c_str(), &w2, &h2, image2);
+
+  if (w1 != w2 || h1 != h2 || !loaded1 || !loaded2)
+  {
+    g_MSEOutput = 1000000.0f;
+    return false;
+  }
+
+  const float mseVal = HydraRender::MSE_RGB_LDR(image1, image2);
+  g_MSEOutput        = fmax(g_MSEOutput, mseVal);
+
+
+  //#TODO: clean generated state files !!!
+
+  return (mseVal <= 50.0f);
+}
+
+
+void run_all_3dsmax_tests()
+{
+  std::vector<std::wstring> files = hr_listfiles(L"3dsMaxTests");
+  std::vector<std::wstring> filesFiltered; 
+
+  filesFiltered.reserve(files.size());
+  std::copy_if(files.begin(), files.end(), std::back_inserter(filesFiltered), 
+               [](const std::wstring& f) { return (f.size() >= 15 && f.find(L"3dsMaxTests") != std::wstring::npos && f.find(L".max") == std::wstring::npos && iswdigit(f[12 + 0]) && iswdigit(f[12 + 1]) && iswdigit(f[12 + 2])); });
+
+
+  std::ofstream fout("z_3dsmax_tests.txt");
+
+  const int testNum = filesFiltered.size();
+
+  int i = 0;
+  for (auto f : filesFiltered)
+  {
+    std::string name = ws2s(f);
+    const bool res   = run_single_3dsmax_test(f);
+    
+    if (res)
+    {
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
+    }
+    else if (g_testWasIgnored)
+    {
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
+    }
+    else
+    {
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+    }
+
+    fout.flush();
+
+    g_testWasIgnored = false;
+    i++;
+  }
+
   fout.close();
 }
 
