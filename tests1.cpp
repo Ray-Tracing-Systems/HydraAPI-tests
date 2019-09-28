@@ -2178,8 +2178,7 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
   }
 
   const float mseVal = HydraRender::MSE_RGB_LDR(image1, image2);
-  g_MSEOutput        = fmax(g_MSEOutput, mseVal);
-
+  g_MSEOutput        = mseVal;
 
   //#TODO: clean generated state files !!!
 
