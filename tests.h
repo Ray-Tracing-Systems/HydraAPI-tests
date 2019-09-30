@@ -428,6 +428,7 @@ static const int CURR_RENDER_DEVICE = 0;
 
 void run_all_mictofacet_torrance_sparrow();
 void run_all_3dsmax_tests();
+bool run_single_3dsmax_test(const std::wstring& a_path);
 
 #define IRRADIANCE_TO_RADIANCE (3.14159265358979323846f)
 

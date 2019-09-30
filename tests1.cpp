@@ -2121,7 +2121,7 @@ void run_all_mictofacet_torrance_sparrow()
   fout.close();
 }
 
-std::vector<std::wstring> hr_listfiles(const wchar_t* a_folder);
+std::vector<std::wstring> hr_listfiles(const wchar_t* a_folder, bool excludeFolders = true);
 std::string ws2s(const std::wstring& wstr);
 
 bool run_single_3dsmax_test(const std::wstring& a_path)
@@ -2188,14 +2188,14 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
 
 void run_all_3dsmax_tests()
 {
-  std::vector<std::wstring> files = hr_listfiles(L"3dsMaxTests");
+  std::vector<std::wstring> files = hr_listfiles(L"3dsMaxTests", false);
   std::vector<std::wstring> filesFiltered; 
 
   filesFiltered.reserve(files.size());
-  std::copy_if(files.begin(), files.end(), std::back_inserter(filesFiltered), 
+  std::copy_if(files.begin(), files.end(), std::back_inserter(filesFiltered),
                [](const std::wstring& f) { return (f.size() >= 15 && f.find(L"3dsMaxTests") != std::wstring::npos && f.find(L".max") == std::wstring::npos && iswdigit(f[12 + 0]) && iswdigit(f[12 + 1]) && iswdigit(f[12 + 2])); });
-
-
+    
+  
   std::ofstream fout("z_3dsmax_tests.txt");
 
   const int testNum = filesFiltered.size();

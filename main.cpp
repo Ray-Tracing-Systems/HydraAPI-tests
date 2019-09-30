@@ -67,6 +67,7 @@ void sig_handler(int signo)
 }
 #endif
 
+
 extern float g_MSEOutput;
 void init()
 {
@@ -132,6 +133,7 @@ int main(int argc, const char** argv)
   
     //run_all_mictofacet_torrance_sparrow();
     run_all_3dsmax_tests();
+    //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
 
     //std::cout << MTL_TESTS::test_175_beckman_isotropic() << std::endl;
     //std::cout << MTL_TESTS::test_176_beckman_anisotropic() << std::endl;
