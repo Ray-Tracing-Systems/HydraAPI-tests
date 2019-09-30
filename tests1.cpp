@@ -2123,6 +2123,8 @@ void run_all_mictofacet_torrance_sparrow()
 
 std::vector<std::wstring> hr_listfiles(const wchar_t* a_folder, bool excludeFolders = true);
 std::string ws2s(const std::wstring& wstr);
+void hr_deletefile(const wchar_t* a_file);
+
 
 bool run_single_3dsmax_test(const std::wstring& a_path)
 {
@@ -2181,7 +2183,15 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
   g_MSEOutput        = mseVal;
 
   //#TODO: clean generated state files !!!
-
+  
+  std::vector<std::wstring> files = hr_listfiles(a_path.c_str(), true);
+  
+  for(const auto& file : files)
+  {
+    if(file.find(L"statex_00001.xml") == std::wstring::npos)
+      hr_deletefile(file.c_str());
+  }
+  
   return (mseVal <= 50.0f);
 }
 
