@@ -2196,7 +2196,7 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
 }
 
 
-void run_all_3dsmax_tests()
+void run_all_3dsmax_tests(int a_start)
 {
   std::vector<std::wstring> files = hr_listfiles(L"3dsMaxTests", false);
   std::vector<std::wstring> filesFiltered; 
@@ -2213,6 +2213,13 @@ void run_all_3dsmax_tests()
   int i = 0;
   for (auto f : filesFiltered)
   {
+
+    if (i < a_start)
+    {
+      i++;
+      continue;
+    }
+
     std::string name = ws2s(f);
     const bool res   = run_single_3dsmax_test(f);
     

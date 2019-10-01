@@ -422,12 +422,12 @@ void run_all_lgt_tests(int a_start = 0);
 void run_all_alg_tests(int a_start = 0);
 void terminate_opengl();
 
-static const int CURR_RENDER_DEVICE = 0;
+static const int CURR_RENDER_DEVICE = 1;
 
 //void image_p_sandbox();
 
 void run_all_mictofacet_torrance_sparrow();
-void run_all_3dsmax_tests();
+void run_all_3dsmax_tests(int a_start = 0);
 bool run_single_3dsmax_test(const std::wstring& a_path);
 
 #define IRRADIANCE_TO_RADIANCE (3.14159265358979323846f)

@@ -227,7 +227,7 @@
     <diff_trace_depth>4</diff_trace_depth>
     <pt_error>2.5</pt_error>
     <minRaysPerPixel>256</minRaysPerPixel>
-    <maxRaysPerPixel>500</maxRaysPerPixel>
+    <maxRaysPerPixel>512</maxRaysPerPixel>
     <qmc_variant>1</qmc_variant>
     <mmlt_burn_iters>256</mmlt_burn_iters>
     <mmlt_step_power>normal</mmlt_step_power>
