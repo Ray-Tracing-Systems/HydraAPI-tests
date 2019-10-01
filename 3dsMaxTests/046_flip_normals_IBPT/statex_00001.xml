@@ -728,8 +728,7 @@
     <normals type="array4f" bytesize="4352" offset="4376" apply="vertex" />
     <tangents type="array4f" bytesize="4352" offset="8728" apply="vertex" />
     <texcoords type="array2f" bytesize="2176" offset="13080" apply="vertex" />
-    <indices type="array1i" bytesize="2544" offset="15256" apply="tlist" />
-    <matindices type="array1i" bytesize="848" offset="17800" apply="primitive" />
+    <indices type="array1i" bytesize="2544" offset="15256" apply="tlist" />    <matindices type="array1i" bytesize="848" offset="17800" apply="primitive" />
   </mesh>
   <mesh id="78" name="Cylinder053" type="vsgf" bytesize="20448" loc="data/chunk_00079.vsgf" offset="0" vertNum="303" triNum="216" dl="0" path="" bbox="-0.119549 0.119549 0 0.359309 -0.117732 0.117732">
     <positions type="array4f" bytesize="4848" offset="24" apply="vertex" />
@@ -2434,8 +2433,8 @@
     <diff_trace_depth>4</diff_trace_depth>
     <pt_error>2</pt_error>
     <minRaysPerPixel>256</minRaysPerPixel>
-    <maxRaysPerPixel>4000</maxRaysPerPixel>
-    <qmc_variant>1</qmc_variant>
+    <maxRaysPerPixel>16384</maxRaysPerPixel>
+    <qmc_variant>7</qmc_variant>
     <mmlt_burn_iters>256</mmlt_burn_iters>
     <mmlt_step_power>normal</mmlt_step_power>
     <mmlt_step_size>0.25</mmlt_step_size>
