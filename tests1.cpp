@@ -2142,7 +2142,7 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
   scnRef.id    = 0;
   /////////////////////////////////////////////////////////
 
-  //hrRenderEnableDevice(renderRef, 1, true);
+  hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
 
   hrFlush(scnRef, renderRef);
 
@@ -2218,18 +2218,18 @@ void run_all_3dsmax_tests()
     
     if (res)
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tPASSED!\t\n";
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tPASSED!\t\n";
     }
     else if (g_testWasIgnored)
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tSKIPPED!\t\n";
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tSKIPPED!\t\n";
     }
     else
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
     }
 
     fout.flush();
