@@ -1832,7 +1832,7 @@ void run_all_mtl_tests(int a_start)
 		                   &test_134_diff_refl_transp,
                        &test_135_opacity_metal,
                        &test_136_opacity_glass,
-                       &dummy_test,               // test_137_opacity_emission,
+                       &test_137_cam_mapped_diffuse,
                        &test_138_translucency_and_diffuse,
                        &test_139_glass_and_bump,
                        &test_140_blend_emission,
