@@ -266,7 +266,7 @@ namespace MTL_TESTS
   
   bool test_135_opacity_metal();         // not smooth backface
   bool test_136_opacity_glass();         // transparency work as thin;
-  bool test_137_shadow_matte_emission(); //
+  bool test_137_cam_mapped_diffuse();    //
 
   bool test_138_translucency_and_diffuse();
   bool test_139_glass_and_bump();
@@ -422,7 +422,7 @@ void run_all_lgt_tests(int a_start = 0);
 void run_all_alg_tests(int a_start = 0);
 void terminate_opengl();
 
-static const int CURR_RENDER_DEVICE = 1;
+static const int CURR_RENDER_DEVICE = 0;
 
 //void image_p_sandbox();
 

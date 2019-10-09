@@ -130,12 +130,12 @@ int main(int argc, const char** argv)
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
-    run_all_3dsmax_tests(28);
+    //run_all_3dsmax_tests();
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
 
     //run_all_mictofacet_torrance_sparrow();
      
-    //std::cout << MTL_TESTS::test_180_trggx_aniso_rot() << std::endl;
+    std::cout << MTL_TESTS::test_137_cam_mapped_diffuse() << std::endl;
     //std::cout << test77_save_gbuffer_layers() << std::endl;
 
     //std::cout << MTL_TESTS::test_103_diffuse_texture() << std::endl;
