@@ -121,11 +121,11 @@
     <method_tertiary>pathtracing</method_tertiary>
     <method_caustic>none</method_caustic>
     <shadows>1</shadows>
-    <trace_depth>2</trace_depth>
-    <diff_trace_depth>0</diff_trace_depth>
+    <trace_depth>10</trace_depth>
+    <diff_trace_depth>8</diff_trace_depth>
     <pt_error>2.5</pt_error>
     <minRaysPerPixel>256</minRaysPerPixel>
-    <maxRaysPerPixel>976</maxRaysPerPixel>
+    <maxRaysPerPixel>1024</maxRaysPerPixel>
     <qmc_variant>1</qmc_variant>
     <mmlt_burn_iters>1024</mmlt_burn_iters>
     <mmlt_step_power>normal</mmlt_step_power>

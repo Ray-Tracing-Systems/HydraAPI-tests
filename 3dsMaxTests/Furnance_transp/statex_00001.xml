@@ -122,7 +122,7 @@
     <method_caustic>none</method_caustic>
     <shadows>1</shadows>
     <trace_depth>10</trace_depth>
-    <diff_trace_depth>0</diff_trace_depth>
+    <diff_trace_depth>8</diff_trace_depth>
     <pt_error>2.5</pt_error>
     <minRaysPerPixel>256</minRaysPerPixel>
     <maxRaysPerPixel>1024</maxRaysPerPixel>
