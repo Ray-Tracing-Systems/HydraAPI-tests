@@ -84,7 +84,7 @@
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0">
+      <anisotropy val="0.899999976" rot="1">
         <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
@@ -105,7 +105,7 @@
       <multiplier val="0" />
     </translucency>
   </material>
-  <material id="4" name="1" type="hydra_material">
+  <material id="4" name="2" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0 0 0" />
       <roughness val="0" />
@@ -116,7 +116,7 @@
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0">
+      <anisotropy val="0.899999976" rot="1">
         <texture_rot id="4" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
@@ -148,7 +148,7 @@
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0">
+      <anisotropy val="0.899999976" rot="1">
         <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
         <texture_rot id="4" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
       </anisotropy>
@@ -278,13 +278,13 @@
     <remap_lists>
       <remap_list id="0" size="2" val="0 2 " />
       <remap_list id="1" size="2" val="0 3 " />
-      <remap_list id="2" size="2" val="0 4 " />
-      <remap_list id="3" size="2" val="0 5 " />
+      <remap_list id="2" size="2" val="0 5 " />
+      <remap_list id="3" size="2" val="0 4 " />
     </remap_lists>
     <instance id="0" mesh_id="0" rmap_id="0" scn_id="0" scn_sid="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " />
     <instance id="1" mesh_id="1" rmap_id="1" scn_id="0" scn_sid="0" matrix="1 0 5.96046e-08 -0.256019 0 1 0 0 -5.96046e-08 0 1 0 0 0 0 1 " />
-    <instance id="2" mesh_id="1" rmap_id="2" scn_id="0" scn_sid="0" matrix="1 0 5.96046e-08 -0.00196608 0 1 0 0 -5.96046e-08 0 1 0 0 0 0 1 " />
-    <instance id="3" mesh_id="1" rmap_id="3" scn_id="0" scn_sid="0" matrix="1 0 5.96046e-08 0.252087 0 1 0 0 -5.96046e-08 0 1 0 0 0 0 1 " />
+    <instance id="2" mesh_id="1" rmap_id="2" scn_id="0" scn_sid="0" matrix="1 0 5.96046e-08 0.252087 0 1 0 0 -5.96046e-08 0 1 0 0 0 0 1 " />
+    <instance id="3" mesh_id="1" rmap_id="3" scn_id="0" scn_sid="0" matrix="1 0 5.96046e-08 -0.00196608 0 1 0 0 -5.96046e-08 0 1 0 0 0 0 1 " />
     <instance_light id="0" light_id="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " lgroup_id="-1" />
     <instance_light id="1" light_id="1" matrix="-1 1.23689e-07 8.66076e-08 0 0 0.573576 -0.819152 0.730157 -1.50996e-07 -0.819152 -0.573576 -0.778032 0 0 0 1 " lgroup_id="-1" />
     <instance id="5" mesh_id="2" rmap_id="-1" matrix="-1 1.23689e-07 8.66076e-08 0 0 0.573576 -0.819152 0.730157 -1.50996e-07 -0.819152 -0.573576 -0.778032 0 0 0 1 " light_id="1" linst_id="1" />
