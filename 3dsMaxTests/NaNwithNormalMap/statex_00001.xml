@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<textures_lib total_chunks="3">
+<textures_lib total_chunks="4">
   <texture id="0" name="Map#0" loc="data/chunk_00000.image4ub" offset="8" bytesize="16" width="2" height="2" dl="0" />
   <texture id="1" name="falloff" type="proc">
     <code file="c:/[Hydra]/pluginFiles/ProceduralTextures/falloff.c" main="main" loc="data/proctex_00001.c">
@@ -27,7 +27,8 @@
       </generated>
     </code>
   </texture>
-  <texture id="3" name="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\NaN_pixels\Normalmap_01.png" path="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\NaN_pixels\Normalmap_01.png" loc="data/chunk_00001.image4ub" offset="8" bytesize="1048576" width="512" height="512" dl="0" />
+  <texture id="3" name="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\NaN_pixels\roof.jpg" path="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\NaN_pixels\roof.jpg" loc="data/chunk_00001.image4ub" offset="8" bytesize="15908864" width="2048" height="1942" dl="0" />
+  <texture id="4" name="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\NaN_pixels\facade_normal.jpg" path="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\NaN_pixels\facade_normal.jpg" loc="data/chunk_00002.image4ub" offset="8" bytesize="17694720" width="2160" height="2048" dl="0" />
 </textures_lib>
 <materials_lib>
   <material id="0" name="grayOverrideMat" type="hydra_material">
@@ -40,7 +41,7 @@
       <color>0.078 0.0 0.156</color>
     </diffuse>
   </material>
-  <material id="2" name="Material #8" type="hydra_material">
+  <material id="2" name="Material #9" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0.8 0.8 0.8" />
       <roughness val="0" />
@@ -69,31 +70,96 @@
       <color val="0 0 0" />
       <multiplier val="0" />
     </translucency>
+    <displacement type="height_bump">
+      <height_map amount="0.200000003" smooth_lvl="0.25">
+        <texture id="3" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
+      </height_map>
+    </displacement>
+  </material>
+  <material id="3" name="Material #8" type="hydra_material">
+    <diffuse brdf_type="lambert">
+      <color val="0.8 0.8 0.8" />
+      <roughness val="0" />
+    </diffuse>
+    <reflectivity brdf_type="ggx">
+      <extrusion val="maxcolor" />
+      <color val="1 1 1" />
+      <glossiness val="0.649999976" />
+      <fresnel val="1" />
+      <fresnel_ior val="1.5" />
+      <anisotropy val="0" rot="0" />
+    </reflectivity>
+    <transparency brdf_type="phong">
+      <color val="0 0 0" />
+      <glossiness val="1" />
+      <thin_walled val="0" />
+      <fog_color val="1 1 1" />
+      <fog_multiplier val="0" />
+      <ior val="1.5" />
+    </transparency>
+    <emission>
+      <color val="0 0 0" />
+      <cast_gi val="1" />
+    </emission>
+    <translucency>
+      <color val="0 0 0" />
+      <multiplier val="0" />
+    </translucency>
     <displacement type="normal_bump">
       <normal_map>
         <invert x="0" y="1" swap_xy="0" />
-        <texture id="3" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
+        <texture id="4" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </normal_map>
     </displacement>
   </material>
-  <material id="3" name="environment_material" type="hydra_material" light_id="0" visible="1">
+  <material id="4" name="Material #6" type="hydra_material">
+    <diffuse brdf_type="lambert">
+      <color val="0.8 0.8 0.8" />
+      <roughness val="0" />
+    </diffuse>
+    <reflectivity brdf_type="ggx">
+      <extrusion val="maxcolor" />
+      <color val="1 1 1" />
+      <glossiness val="0.899999976" />
+      <fresnel val="1" />
+      <fresnel_ior val="1.5" />
+      <anisotropy val="0" rot="0" />
+    </reflectivity>
+    <transparency brdf_type="phong">
+      <color val="0 0 0" />
+      <glossiness val="1" />
+      <thin_walled val="0" />
+      <fog_color val="1 1 1" />
+      <fog_multiplier val="0" />
+      <ior val="1.5" />
+    </transparency>
+    <emission>
+      <color val="0 0 0" />
+      <cast_gi val="1" />
+    </emission>
+    <translucency>
+      <color val="0 0 0" />
+      <multiplier val="0" />
+    </translucency>
+  </material>
+  <material id="5" name="environment_material" type="hydra_material" light_id="0" visible="1">
     <emission>
       <color val="1 1 1" />
     </emission>
   </material>
 </materials_lib>
-<geometry_lib total_chunks="3">
-  <mesh id="0" name="Object001" type="vsgf" bytesize="392" loc="data/chunk_00002.vsgf" offset="0" vertNum="6" triNum="2" dl="0" path="" bbox="-4.3691 -4.3691 -0.0871045 1.88514 -0.797809 -0.53036">
-    <positions type="array4f" bytesize="96" offset="24" apply="vertex" />
-    <normals type="array4f" bytesize="96" offset="120" apply="vertex" />
-    <tangents type="array4f" bytesize="96" offset="216" apply="vertex" />
-    <texcoords type="array2f" bytesize="48" offset="312" apply="vertex" />
-    <indices type="array1i" bytesize="24" offset="360" apply="tlist" />
-    <matindices type="array1i" bytesize="8" offset="384" apply="primitive" />
+<geometry_lib total_chunks="4">
+  <mesh id="0" name="Facade_vol8" type="vsgf" bytesize="3226832" loc="data/chunk_00003.vsgf" offset="0" vertNum="52611" triNum="17537" dl="0" path="" bbox="-9.27405 8.2622 -0.0871045 16.7605 -6.80049 0.527877">
+    <positions type="array4f" bytesize="841776" offset="24" apply="vertex" />
+    <normals type="array4f" bytesize="841776" offset="841800" apply="vertex" />
+    <tangents type="array4f" bytesize="841776" offset="1683576" apply="vertex" />
+    <texcoords type="array2f" bytesize="420888" offset="2525352" apply="vertex" />
+    <indices type="array1i" bytesize="210444" offset="2946240" apply="tlist" />
+    <matindices type="array1i" bytesize="70148" offset="3156684" apply="primitive" />
   </mesh>
 </geometry_lib>
 <lights_lib>
-  <light id="0" name="environment" type="sky" shape="point" distribution="uniform" visible="1" mat_id="3">
+  <light id="0" name="environment" type="sky" shape="point" distribution="uniform" visible="1" mat_id="5">
     <intensity>
       <color val="1 1 1" />
       <multiplier val="1" />
@@ -108,8 +174,8 @@
     <enable_dof>0</enable_dof>
     <dof_lens_radius>0.00999999978</dof_lens_radius>
     <up>0.00572544 0.999962 0.00658565</up>
-    <position>-1.39603 0.857434 2.43315</position>
-    <look_at>-66.9995 1.73009 -73.0349</look_at>
+    <position>6.05165 3.59296 7.77737</position>
+    <look_at>-59.5518 4.46562 -67.6907</look_at>
     <tiltRotX>0</tiltRotX>
     <tiltRotY>0</tiltRotY>
     <tiltShiftX>0</tiltShiftX>
@@ -152,9 +218,9 @@
   </render_settings>
 </render_lib>
 <scenes>
-  <scene id="0" name="my scene" discard="1" bbox="-4.52233 -4.52233 -0.0871045 1.88514 -1.29696 -1.02951">
+  <scene id="0" name="my scene" discard="1" bbox="-9.42727 8.10897 -0.0871045 16.7605 -7.29964 0.0287235">
     <remap_lists>
-      <remap_list id="0" size="2" val="0 2 " />
+      <remap_list id="0" size="12" val="0 2 1 3 2 3 3 3 4 0 5 4 " />
     </remap_lists>
     <instance id="0" mesh_id="0" rmap_id="0" scn_id="0" scn_sid="0" matrix="1 0 0 -0.153224 0 1 0 0 0 0 1 -0.499153 0 0 0 1 " />
     <instance_light id="0" light_id="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " lgroup_id="-1" />

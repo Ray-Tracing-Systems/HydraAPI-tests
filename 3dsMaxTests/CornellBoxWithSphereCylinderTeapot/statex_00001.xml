@@ -165,10 +165,10 @@
       <color val="0 0 0" />
       <roughness val="0" />
     </diffuse>
-    <reflectivity brdf_type="trggx">
+    <reflectivity brdf_type="ggx">
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
-      <glossiness val="0.5" />
+      <glossiness val="0.0" />
       <fresnel val="0" />
       <fresnel_ior val="1.5" />
       <anisotropy val="0" rot="0" />
