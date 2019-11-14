@@ -44,7 +44,7 @@
   <material id="2" name="03 - Default" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="1 1 1">
-        <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
+        <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1.0" input_alpha="rgb" />
       </color>
       <roughness val="0" />
     </diffuse>
@@ -80,12 +80,12 @@
     </diffuse>
     <reflectivity brdf_type="trggx">
       <extrusion val="luminance" />
-      <color val="0.9 0.9 0.9" />
+      <color val="0.5 0.5 0.5" />
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="1">
-        <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
+      <anisotropy val="0.899999976" rot="1" flip_axis="1">
+        <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1.0" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
     <transparency brdf_type="phong">
@@ -112,12 +112,12 @@
     </diffuse>
     <reflectivity brdf_type="trggx">
       <extrusion val="luminance" />
-      <color val="0.9 0.9 0.9" />
-      <glossiness val="0.5" />
+      <color val="0.5 0.5 0.5" />
+      <glossiness val="0.25" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="1">
-        <texture_rot id="4" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
+      <anisotropy val="1" rot="1" flip_axis="1">
+        <texture_rot id="4" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" filter="point" input_gamma="2.2" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
     <transparency brdf_type="phong">
@@ -144,13 +144,13 @@
     </diffuse>
     <reflectivity brdf_type="trggx">
       <extrusion val="luminance" />
-      <color val="0.9 0.9 0.9" />
+      <color val="0.5 0.5 0.5" />
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="1">
-        <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
-        <texture_rot id="4" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
+      <anisotropy val="0.899999976" rot="1" flip_axis="1">
+        <texture id="3" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1.0" input_alpha="rgb" />
+        <texture_rot id="4" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" filter="point" input_gamma="2.2" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
     <transparency brdf_type="phong">
