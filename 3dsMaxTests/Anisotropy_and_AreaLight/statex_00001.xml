@@ -55,8 +55,8 @@
   </texture>
   <texture id="5" name="Map#5" loc="data/chunk_00001.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
   <texture id="6" name="C:\[Hydra]\temp\Map #4-3.bmp" path="C:\[Hydra]\temp\Map #4-3.bmp" loc="data/chunk_00002.image4ub" offset="8" bytesize="5760000" width="1200" height="1200" dl="0" />
-  <texture id="7" name="D:\RayTracingSystems\HydraMiscellanea\Tests\Anisotropy\Textures\aniso_rot_circles.png" path="D:\RayTracingSystems\HydraMiscellanea\Tests\Anisotropy\Textures\aniso_rot_circles.png" loc="data/chunk_00003.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
-  <texture id="8" name="Map#8" loc="data/chunk_00004.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
+  <texture id="7" name="Map#7" loc="data/chunk_00003.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
+  <texture id="8" name="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\Anisotropy\Textures\aniso_rot_circles.png" path="D:\Works\Ray-Tracing_Systems\HydraMiscellanea\Test\Anisotropy\Textures\aniso_rot_circles.png" loc="data/chunk_00004.image4ub" offset="8" bytesize="262144" width="256" height="256" dl="0" />
 </textures_lib>
 <materials_lib>
   <material id="0" name="grayOverrideMat" type="hydra_material">
@@ -74,20 +74,19 @@
       <color>0.078 0.0 0.156</color>
     </diffuse>
   </material>
-  <material id="3" name="3" type="hydra_material">
+  <material id="3" name="2" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0 0 0" />
       <roughness val="0" />
     </diffuse>
     <reflectivity brdf_type="trggx">
       <extrusion val="luminance" />
-      <color val="0.9 0.9 0.9" />
+      <color val="0.8 0.8 0.8" />
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0" flip_axis="1">
-        <texture id="5" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
-        <texture_rot id="6" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20002651" input_alpha="rgb" />
+      <anisotropy val="0.899999976" rot="1" flip_axis="1">
+        <texture_rot id="5" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
     <transparency brdf_type="phong">
@@ -107,19 +106,19 @@
       <multiplier val="0" />
     </translucency>
   </material>
-  <material id="4" name="1" type="hydra_material">
+  <material id="4" name="3" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0 0 0" />
       <roughness val="0" />
     </diffuse>
     <reflectivity brdf_type="trggx">
       <extrusion val="luminance" />
-      <color val="0.9 0.9 0.9" />
+      <color val="0.8 0.8 0.8" />
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0" flip_axis="1">
-        <texture_rot id="7" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
+      <anisotropy val="0.899999976" rot="1" flip_axis="1">
+        <texture_rot id="6" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20002651" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
     <transparency brdf_type="phong">
@@ -142,7 +141,7 @@
   <material id="5" name="03 - Default" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="1 1 1">
-        <texture id="5" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
+        <texture id="7" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </color>
       <roughness val="0" />
     </diffuse>
@@ -152,7 +151,7 @@
       <glossiness val="0.099999994" />
       <fresnel val="0" />
       <fresnel_ior val="1.5" />
-      <anisotropy val="0" rot="0" />
+      <anisotropy val="0" rot="0" flip_axis="1" />
     </reflectivity>
     <transparency brdf_type="phong">
       <color val="0 0 0" />
@@ -171,19 +170,19 @@
       <multiplier val="0" />
     </translucency>
   </material>
-  <material id="6" name="3" type="hydra_material">
+  <material id="6" name="1" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0 0 0" />
       <roughness val="0" />
     </diffuse>
     <reflectivity brdf_type="trggx">
       <extrusion val="luminance" />
-      <color val="0.9 0.9 0.9" />
+      <color val="0.8 0.8 0.8" />
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0" flip_axis="1">
-        <texture_rot id="6" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20002651" input_alpha="rgb" />
+      <anisotropy val="0.899999976" rot="1" flip_axis="1">
+        <texture_rot id="8" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
     <transparency brdf_type="phong">
@@ -203,19 +202,19 @@
       <multiplier val="0" />
     </translucency>
   </material>
-  <material id="7" name="2" type="hydra_material">
+  <material id="7" name="3" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0 0 0" />
       <roughness val="0" />
     </diffuse>
     <reflectivity brdf_type="trggx">
       <extrusion val="luminance" />
-      <color val="0.9 0.9 0.9" />
+      <color val="0.8 0.8 0.8" />
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0" flip_axis="1">
-        <texture_rot id="8" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
+      <anisotropy val="0.899999976" rot="1" flip_axis="1">
+        <texture_rot id="6" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20002651" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
     <transparency brdf_type="phong">
@@ -240,7 +239,7 @@
       <color val="0 0 0" />
     </emission>
   </material>
-  <material id="9" name="HydraLight001_material" type="hydra_material" light_id="1" visible="1">
+  <material id="9" name="CoronaLight001_material" type="hydra_material" light_id="1" visible="1">
     <emission>
       <color val="1 1 1" />
     </emission>
@@ -279,7 +278,7 @@
     <indices type="array1i" bytesize="1392" offset="19512" apply="tlist" />
     <matindices type="array1i" bytesize="464" offset="20904" apply="primitive" />
   </mesh>
-  <mesh id="4" name="HydraLight001_lightmesh" type="vsgf" bytesize="280" loc="data/chunk_00009.vsgf" offset="0" vertNum="4" triNum="2" dl="0" path="" light_id="1" bbox="  -0.5 0.5 0 0 -0.5 0.5">
+  <mesh id="4" name="CoronaLight001_lightmesh" type="vsgf" bytesize="280" loc="data/chunk_00009.vsgf" offset="0" vertNum="4" triNum="2" dl="0" path="" light_id="1" bbox="  -0.5 0.5 0 0 -0.5 0.5">
     <positions type="array4f" bytesize="64" offset="24" apply="vertex" />
     <normals type="array4f" bytesize="64" offset="88" apply="vertex" />
     <tangents type="array4f" bytesize="64" offset="152" apply="vertex" />
@@ -295,7 +294,7 @@
       <multiplier val="1" />
     </intensity>
   </light>
-  <light id="1" name="HydraLight001" type="area" shape="rect" distribution="diffuse" visible="1" mat_id="9" mesh_id="4">
+  <light id="1" name="CoronaLight001" type="area" shape="rect" distribution="diffuse" visible="1" mat_id="9" mesh_id="4">
     <intensity>
       <multiplier val="1" />
       <color val="1 1 1" />
@@ -326,14 +325,14 @@
     <method_primary>pathtracing</method_primary>
     <method_secondary>pathtracing</method_secondary>
     <method_tertiary>pathtracing</method_tertiary>
-    <method_caustic>pathtracing</method_caustic>
+    <method_caustic>none</method_caustic>
     <shadows>1</shadows>
     <trace_depth>10</trace_depth>
     <diff_trace_depth>8</diff_trace_depth>
     <pt_error>2.5</pt_error>
     <minRaysPerPixel>256</minRaysPerPixel>
-    <maxRaysPerPixel>12560</maxRaysPerPixel>
-    <qmc_variant>1</qmc_variant>
+    <maxRaysPerPixel>1024</maxRaysPerPixel>
+    <qmc_variant>7</qmc_variant>
     <mmlt_burn_iters>1024</mmlt_burn_iters>
     <mmlt_step_power>normal</mmlt_step_power>
     <mmlt_step_size>0.5</mmlt_step_size>
@@ -341,8 +340,8 @@
     <mmlt_multBrightness>1</mmlt_multBrightness>
     <mlt_med_enable>false</mlt_med_enable>
     <mlt_med_threshold>0.400000006</mlt_med_threshold>
-    <envclamp>1000000</envclamp>
-    <bsdfclamp>1000000</bsdfclamp>
+    <envclamp>5</envclamp>
+    <clamping>1000000</clamping>
     <separate_swap>0</separate_swap>
     <forceGPUFrameBuffer>0</forceGPUFrameBuffer>
     <evalgbuffer>1</evalgbuffer>
@@ -358,9 +357,9 @@
   <scene id="0" name="my scene" discard="1" bbox="  -0.5 0.5 0 0.246447 -0.5 0.5">
     <remap_lists>
       <remap_list id="0" size="2" val="0 5 " />
-      <remap_list id="1" size="2" val="0 4 " />
-      <remap_list id="2" size="2" val="0 3 " />
-      <remap_list id="3" size="4" val="0 7 1 6 " />
+      <remap_list id="1" size="2" val="0 6 " />
+      <remap_list id="2" size="2" val="0 4 " />
+      <remap_list id="3" size="4" val="0 3 1 7 " />
     </remap_lists>
     <instance id="0" mesh_id="0" rmap_id="0" scn_id="0" scn_sid="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " />
     <instance id="1" mesh_id="1" rmap_id="1" scn_id="0" scn_sid="0" matrix="0.965926 0 -0.258819 -0.0993513 0 1 0 0 0.258819 0 0.965926 0 0 0 0 1 " />
