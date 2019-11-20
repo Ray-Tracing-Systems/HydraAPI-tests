@@ -85,7 +85,7 @@
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0">
+      <anisotropy val="0.899999976" rot="0" flip_axis="1">
         <texture id="5" type="texref" matrix="10 0 0 -4.5 0 10 0 -4.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
         <texture_rot id="6" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20002651" input_alpha="rgb" />
       </anisotropy>
@@ -118,7 +118,7 @@
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0">
+      <anisotropy val="0.899999976" rot="0" flip_axis="1">
         <texture_rot id="7" type="texref" matrix="2 0 0 -0.5 0 2 0 -0.5 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
@@ -182,7 +182,7 @@
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0">
+      <anisotropy val="0.899999976" rot="0" flip_axis="1">
         <texture_rot id="6" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20002651" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
@@ -214,7 +214,7 @@
       <glossiness val="0.5" />
       <fresnel val="1" />
       <fresnel_ior val="100" />
-      <anisotropy val="0.899999976" rot="0">
+      <anisotropy val="0.899999976" rot="0" flip_axis="1">
         <texture_rot id="8" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </anisotropy>
     </reflectivity>
@@ -242,7 +242,7 @@
   </material>
   <material id="9" name="HydraLight001_material" type="hydra_material" light_id="1" visible="1">
     <emission>
-      <color val="1.75695 1.75695 1.75695" />
+      <color val="1 1 1" />
     </emission>
   </material>
 </materials_lib>
@@ -297,7 +297,7 @@
   </light>
   <light id="1" name="HydraLight001" type="area" shape="rect" distribution="diffuse" visible="1" mat_id="9" mesh_id="4">
     <intensity>
-      <multiplier val="1.75695431" />
+      <multiplier val="1" />
       <color val="1 1 1" />
     </intensity>
     <size radius="0.0500000007" half_length="0.5" half_width="0.5" />
