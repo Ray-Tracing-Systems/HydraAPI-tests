@@ -1418,7 +1418,7 @@ namespace GEO_TESTS
     
     hrMeshInstance(scnRef, tess, mRes.L());
     
-    for(int i = 0; i < points.size(); i += 3)
+    for(int i = 0; i < n_points; i += 3)
     {
       auto pt    = make_float3(points[i * 3], points[i * 3 + 1], points[i * 3 + 2]);
       pt         = mul(pt_matrix, pt);
