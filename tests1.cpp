@@ -2223,13 +2223,13 @@ void run_all_3dsmax_tests(int a_start)
     
     if (res)
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tPASSED!\t\n";
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tPASSED!\t\n";
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\ok\t\n";
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tok\t\n";
     }
     else if (g_testWasIgnored)
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tSKIPPED!\t\n";
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tSKIPPED!\t\n";
+      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
+      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
     }
     else
     {
