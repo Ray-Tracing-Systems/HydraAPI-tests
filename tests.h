@@ -10,7 +10,7 @@
 #include "HydraXMLVerify.h"
 #include "LiteMath.h"
 
-using namespace HydraLiteMath;
+using namespace LiteMath;
 
 #include "mesh_utils.h"
 #include "simplerandom.h"

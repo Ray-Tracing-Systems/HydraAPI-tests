@@ -1,6 +1,6 @@
 #include "RenderDriverOpenGL1.h"
 #include "LiteMath.h"
-using namespace HydraLiteMath;
+using namespace LiteMath;
 
 #include <iostream>
 
@@ -378,8 +378,8 @@ void RD_OGL1_Plain::BeginScene(pugi::xml_node a_sceneNode)
     glMatrixMode(GL_PROJECTION);			// Select The Projection Matrix
 
     const float aspect = float(m_width) / float(m_height);
-    float4x4 projMatrixInv = projectionMatrixTransposed(camFov, aspect, camNearPlane, camFarPlane);
-    glLoadMatrixf(projMatrixInv.L());
+    float4x4 projMatrixInv = perspectiveMatrix(camFov, aspect, camNearPlane, camFarPlane);
+    glLoadMatrixf((float*)&projMatrixInv);
 
     glMatrixMode(GL_MODELVIEW);			  // Select The Modelview Matrix
 
@@ -387,9 +387,8 @@ void RD_OGL1_Plain::BeginScene(pugi::xml_node a_sceneNode)
     float3 center(camLookAt[0], camLookAt[1], camLookAt[2]);
     float3 up(camUp[0], camUp[1], camUp[2]);
 
-    float4x4 lookAtMatrix = lookAtTransposed(eye, center, up); // get inverse lookAt matrix
-
-    glLoadMatrixf(lookAtMatrix.L());
+    float4x4 lookAtMatrix = lookAt(eye, center, up); // get inverse lookAt matrix
+    glLoadMatrixf((float*)&lookAtMatrix);
   }
 }
 

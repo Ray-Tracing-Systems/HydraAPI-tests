@@ -4,7 +4,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "LiteMath.h"
-using namespace HydraLiteMath;
+using namespace LiteMath;
 
 #include <iostream>
 #include <queue>

@@ -36,7 +36,7 @@ using namespace TEST_UTILS;
 
 extern GLFWwindow* g_window;
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 
 bool test41_load_library_basic()
 {
@@ -279,7 +279,7 @@ bool test42_load_mesh_compressed()
     auto mtranslate2 = hlm::translate4x4(hlm::float3(+3, -4.0, 0));
     auto mtranslate3 = hlm::translate4x4(hlm::float3(0,  -4.0, -1));
     
-    auto mrot3       = hlm::rotate_Y_4x4(-90.0f*DEG_TO_RAD);
+    auto mrot3       = hlm::rotate4x4Y(-90.0f*DEG_TO_RAD);
     auto m2          = hlm::mul(mtranslate2, mrot3);
     auto m3          = hlm::mul(mtranslate3, mrot3);
   
@@ -289,7 +289,7 @@ bool test42_load_mesh_compressed()
     hrMeshInstance(scnRef, lucyCompressed1, m2.L(),          remapList1, 2);
     hrMeshInstance(scnRef, lucyCompressed2, m3.L(),          remapList1, 2);
     
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
     
     //// instance light (!!!)

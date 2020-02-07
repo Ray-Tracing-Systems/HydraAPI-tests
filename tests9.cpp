@@ -931,9 +931,9 @@ bool test56_mesh_change_open_existing()
 
     int32_t* matindices = (int32_t*)hrMeshGetPrimitiveAttribPointer(sphereRef, L"mind");
     
-    HydraLiteMath::float4* vpos = (HydraLiteMath::float4*)hrMeshGetAttribPointer(sphereRef, L"pos");
+    LiteMath::float4* vpos = (LiteMath::float4*)hrMeshGetAttribPointer(sphereRef, L"pos");
 
-    HydraLiteMath::float4 center(0, 0, 0, 0);
+    LiteMath::float4 center(0, 0, 0, 0);
     for (size_t i = 0; i < vertNum; i++)
       center += vpos[i];
     center = center*(1.0f / float(vertNum));
@@ -947,8 +947,8 @@ bool test56_mesh_change_open_existing()
         auto dir1 = normalize(to_float3(vpos[i + 0]) - center3);
         auto dir2 = normalize(to_float3(vpos[i + 1]) - center3);
 
-        vpos[i+0] = HydraLiteMath::to_float4(center3 + 1.25f*r*dir1, 1.0f);
-        vpos[i+1] = HydraLiteMath::to_float4(center3 + 1.25f*r*dir2, 1.0f);
+        vpos[i+0] = LiteMath::to_float4(center3 + 1.25f*r*dir1, 1.0f);
+        vpos[i+1] = LiteMath::to_float4(center3 + 1.25f*r*dir2, 1.0f);
       }
     }
 
@@ -1071,7 +1071,7 @@ bool test57_single_instance()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1089,8 +1089,8 @@ bool test57_single_instance()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(0.0f, 1.0f, 2.5f));
-  mRot       = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2      = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2      = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes       = mul(mRot, mRot2);
   mRes       = mul(mTranslate, mRes);
 
@@ -1254,7 +1254,7 @@ bool test58_crysponza_and_opacity1_perf()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1268,7 +1268,7 @@ bool test58_crysponza_and_opacity1_perf()
 
   mTranslate = translate4x4(float3(0, 0, 0));
   mScale     = scale4x4(float3(5.0f, 5.0f, 5.0f));
-  mRot       = rotate_Y_4x4(90.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(90.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mul(mRot, mScale));
 
   hrMeshInstance(scnRef, sponzaRef, mRes.L());
@@ -1290,8 +1290,8 @@ bool test58_crysponza_and_opacity1_perf()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(200.0f, 200.0f, -100.0f));
-  mRot       = rotate_X_4x4(10.0f*DEG_TO_RAD);
-  mRot2      = rotate_Z_4x4(10.f*DEG_TO_RAD);
+  mRot       = rotate4x4X(10.0f*DEG_TO_RAD);
+  mRot2      = rotate4x4Z(10.f*DEG_TO_RAD);
   mRes       = mul(mRot2, mRot);
   mRes       = mul(mTranslate, mRes);
 
@@ -1527,7 +1527,7 @@ bool test59_cornell_water_mlt()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1541,7 +1541,7 @@ bool test59_cornell_water_mlt()
 
   mTranslate = translate4x4(float3(0,0,0));
   mScale     = scale4x4(float3(1.0f, 1.0f, 1.0f));
-  mRot       = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(180.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mul(mRot, mScale));
 
   hrMeshInstance(scnRef, treeRef, mRes.L());
@@ -2950,7 +2950,7 @@ bool test100_dummy_hydra_exec()
 
 	const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
-	using namespace HydraLiteMath;
+	using namespace LiteMath;
 
 	hrSceneOpen(scnRef, HR_WRITE_DISCARD);
 	{

@@ -36,11 +36,11 @@ using namespace TEST_UTILS;
 
 extern GLFWwindow* g_window;
 
-using HydraLiteMath::float2;
-using HydraLiteMath::float3;
-using HydraLiteMath::float4;
+using LiteMath::float2;
+using LiteMath::float3;
+using LiteMath::float4;
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 
 
 bool MTL_TESTS::test_162_shadow_matte_back1()
@@ -272,7 +272,7 @@ bool MTL_TESTS::test_162_shadow_matte_back1()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -1399,7 +1399,7 @@ bool MTL_TESTS::test_170_fresnel_blend()
     int32_t remapList2[] = {matBlend.id, mat5.id};
     hrMeshInstance(scnRef, sphereRef, mtranslate.L(), remapList2, sizeof(remapList2)/sizeof(int));
     
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
     
     //// instance light (!!!)
@@ -1549,7 +1549,7 @@ bool MTL_TESTS::test_172_glossy_dark_edges_phong()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1731,7 +1731,7 @@ bool MTL_TESTS::test_173_glossy_dark_edges_microfacet()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1961,7 +1961,7 @@ bool MTL_TESTS::test_174_mirror_orbspec_mat03()
 
      hrMeshInstance(scnRef, teapotRef, mres.L(), remapList, 2);
 
-     auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+     auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
      hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
      mtranslate = hlm::translate4x4(hlm::float3(0, 3.85f, 0));

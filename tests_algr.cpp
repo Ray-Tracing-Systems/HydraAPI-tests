@@ -199,7 +199,7 @@ bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
   
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
   
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
   
   float4x4 mRot;
   float4x4 mTranslate;
@@ -212,7 +212,7 @@ bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
   ///////////
   
   mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-  mRot       = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(180.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mRot);
   
   hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -456,7 +456,7 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
   
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
   
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
   
   float4x4 mRot;
   float4x4 mTranslate;
@@ -469,7 +469,7 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
   ///////////
   
   mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-  mRot       = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(180.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mRot);
   
   hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -711,7 +711,7 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
   
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
   
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
   
   float4x4 mRot;
   float4x4 mTranslate;
@@ -724,7 +724,7 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
   ///////////
   
   mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-  mRot       = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(180.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mRot);
   
   hrMeshInstance(scnRef, cubeOpen, mRes.L());

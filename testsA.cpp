@@ -338,7 +338,7 @@ bool test64_several_changes_light_area()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -367,7 +367,7 @@ bool test64_several_changes_light_area()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -380,8 +380,8 @@ bool test64_several_changes_light_area()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot       = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2      = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2      = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes       = mul(mRot, mRot2);
   mRes       = mul(mTranslate, mRes);
 
@@ -1111,7 +1111,7 @@ bool test66_fast_render_no_final_update()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1141,7 +1141,7 @@ bool test66_fast_render_no_final_update()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 100.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1154,8 +1154,8 @@ bool test66_fast_render_no_final_update()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 100.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -1321,7 +1321,7 @@ bool test67_fast_empty_scene()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1350,7 +1350,7 @@ bool test67_fast_empty_scene()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 100.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1363,8 +1363,8 @@ bool test67_fast_empty_scene()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 100.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -1412,8 +1412,8 @@ bool test67_fast_empty_scene()
   return check_images("test_67");
 }
 
-using HydraLiteMath::float4x4;
-using HydraLiteMath::float3;
+using LiteMath::float4x4;
+using LiteMath::float3;
 
 bool test97_camera_from_matrices()
 {
@@ -1680,11 +1680,11 @@ bool test97_camera_from_matrices()
   mat4x4_transpose(matrixT4, mRes); // this fucking math library swap rows and columns
 
 
-  HydraLiteMath::float4x4 m2Translate = HydraLiteMath::translate4x4(HydraLiteMath::float3(10.0f, 50.0f, -10.0f));
-  HydraLiteMath::float4x4 m2Rot       = HydraLiteMath::rotate_X_4x4(-45.0f*DEG_TO_RAD);
-  HydraLiteMath::float4x4 m2Rot2      = HydraLiteMath::rotate_Z_4x4(-30.f*DEG_TO_RAD);
-  HydraLiteMath::float4x4 m2Res       = HydraLiteMath::mul(m2Rot2, m2Rot);
-  m2Res                               = HydraLiteMath::mul(m2Translate, m2Res);
+  LiteMath::float4x4 m2Translate = LiteMath::translate4x4(LiteMath::float3(10.0f, 50.0f, -10.0f));
+  LiteMath::float4x4 m2Rot       = LiteMath::rotate4x4X(-45.0f*DEG_TO_RAD);
+  LiteMath::float4x4 m2Rot2      = LiteMath::rotate4x4Z(-30.f*DEG_TO_RAD);
+  LiteMath::float4x4 m2Res       = LiteMath::mul(m2Rot2, m2Rot);
+  m2Res                          = LiteMath::mul(m2Translate, m2Res);
 
   // draw scene
   //
@@ -1718,8 +1718,8 @@ bool test97_camera_from_matrices()
 
     camNode.attribute(L"type") = L"two_matrices";
 
-    float4x4 projMatrixInv = HydraLiteMath::transpose( HydraLiteMath::projectionMatrixTransposed(45.0f, 1.0f, 0.01f, 100.0f) );
-    float4x4 lookAtMatrix  = HydraLiteMath::transpose( HydraLiteMath::lookAtTransposed(float3(2,4,2), float3(0, 0, -5), float3(0,1,0)) );
+    float4x4 projMatrixInv = LiteMath::perspectiveMatrix(45.0f, 1.0f, 0.01f, 100.0f);
+    float4x4 lookAtMatrix  = LiteMath::lookAt(float3(2,4,2), float3(0, 0, -5), float3(0,1,0));
 
     std::wstringstream mProj, mWorldView;
 

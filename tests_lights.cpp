@@ -177,7 +177,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -195,7 +195,7 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -247,7 +247,7 @@ namespace LGHT_TESTS
     mRes.identity();
 
     mTranslate = translate4x4(float3(0.0f, -2.5f, 0.0f));
-    mRot = rotate_Z_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Z(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, spot3, mRes.L());
@@ -395,7 +395,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -413,7 +413,7 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -600,7 +600,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
@@ -629,7 +629,7 @@ namespace LGHT_TESTS
     mRot.identity();
 
     mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -642,8 +642,8 @@ namespace LGHT_TESTS
     mRot2.identity();
 
     mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-    mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-    mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
     mRes = mul(mRot, mRot2);
     mRes = mul(mTranslate, mRes);
 
@@ -816,7 +816,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
@@ -845,7 +845,7 @@ namespace LGHT_TESTS
     mRot.identity();
 
     mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -858,8 +858,8 @@ namespace LGHT_TESTS
     mRot2.identity();
 
     mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-    mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-    mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
     mRes = mul(mRot, mRot2);
     mRes = mul(mTranslate, mRes);
 
@@ -1038,7 +1038,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
@@ -1067,7 +1067,7 @@ namespace LGHT_TESTS
     mRot.identity();
 
     mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1080,8 +1080,8 @@ namespace LGHT_TESTS
     mRot2.identity();
 
     mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-    mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-    mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
     mRes = mul(mRot, mRot2);
     mRes = mul(mTranslate, mRes);
 
@@ -1268,7 +1268,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
@@ -1297,7 +1297,7 @@ namespace LGHT_TESTS
     mRot.identity();
 
     mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1334,8 +1334,8 @@ namespace LGHT_TESTS
     mRot2.identity();
 
     mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-    mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-    mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
     mRes = mul(mRot, mRot2);
     mRes = mul(mTranslate, mRes);
 
@@ -1366,8 +1366,8 @@ namespace LGHT_TESTS
     mRot2.identity();
 
     mTranslate = translate4x4(float3(100.0f, 100.0f, -50.0f));
-    mRot = rotate_X_4x4(-45.0f*DEG_TO_RAD);
-    mRot2 = rotate_Z_4x4(-30.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-45.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4Z(-30.f*DEG_TO_RAD);
     mRes = mul(mRot2, mRot);
     mRes = mul(mTranslate, mRes);
 
@@ -1545,7 +1545,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -1563,7 +1563,7 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -1774,7 +1774,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -1792,7 +1792,7 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -1834,7 +1834,7 @@ namespace LGHT_TESTS
     mRes.identity();
 
     mTranslate = translate4x4(float3(0.0f, -2.5f, 0.0f));
-    mRot = rotate_Z_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Z(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, light2, mRes.L());
@@ -2005,7 +2005,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -2023,7 +2023,7 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -2245,7 +2245,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -2263,7 +2263,6 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 6.0f, 0.0f));
-    //mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
     mScale = scale4x4(float3(1.0f, 0.5f, 1.0f));
     mRes = mul(mTranslate, mScale);
 
@@ -2277,7 +2276,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(18.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2292,7 +2291,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-18.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2307,7 +2306,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(0.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2323,7 +2322,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(8.0f, 0.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.35f, 1.0f, 0.5f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2338,7 +2337,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-8.0f, 0.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.35f, 1.0f, 0.5f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2378,7 +2377,7 @@ namespace LGHT_TESTS
     mRes.identity();
 
     mTranslate = translate4x4(float3(7.0f, -1.75f, 1.0f));
-    mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.f*DEG_TO_RAD);
     mScale = scale4x4(float3(1.0f, 1.75f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2401,7 +2400,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-8.0f, 12.0f, -24.05f));
-    mRot = rotate_X_4x4(-90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-90.f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, portal1, mRes.L());
@@ -2415,7 +2414,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(8.0f, 12.0f, -24.05f));
-    mRot = rotate_X_4x4(-90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-90.f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, portal2, mRes.L());
@@ -2614,7 +2613,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -2632,7 +2631,6 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 6.0f, 0.0f));
-    //mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
     mScale = scale4x4(float3(1.0f, 0.5f, 1.0f));
     mRes = mul(mTranslate, mScale);
 
@@ -2646,7 +2644,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(18.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2661,7 +2659,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-18.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2676,7 +2674,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(0.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2692,7 +2690,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(8.0f, 0.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.35f, 1.0f, 0.5f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2707,7 +2705,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-8.0f, 0.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.35f, 1.0f, 0.5f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2747,7 +2745,7 @@ namespace LGHT_TESTS
     mRes.identity();
 
     mTranslate = translate4x4(float3(7.0f, -1.75f, 1.0f));
-    mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.f*DEG_TO_RAD);
     mScale = scale4x4(float3(1.0f, 1.75f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -2770,7 +2768,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-8.0f, 12.0f, -24.05f));
-    mRot = rotate_X_4x4(-90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-90.f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, portal1, mRes.L());
@@ -2784,7 +2782,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(8.0f, 12.0f, -24.05f));
-    mRot = rotate_X_4x4(-90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-90.f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, portal2, mRes.L());
@@ -2962,7 +2960,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
@@ -2991,7 +2989,7 @@ namespace LGHT_TESTS
     mRot.identity();
 
     mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -3028,8 +3026,8 @@ namespace LGHT_TESTS
     mRot2.identity();
 
     mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-    mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-    mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
     mRes = mul(mRot, mRot2);
     mRes = mul(mTranslate, mRes);
 
@@ -3059,11 +3057,11 @@ namespace LGHT_TESTS
     mRot.identity();
     mRot2.identity();
 
-    mRot  = rotate_X_4x4(-45.0f*DEG_TO_RAD);
-    mRot2 = rotate_Z_4x4(-30.f*DEG_TO_RAD);
+    mRot  = rotate4x4X(-45.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4Z(-30.f*DEG_TO_RAD);
     mRes  = mul(mRot2, mRot);
 
-    const float3 sunPos = mul(mRes, float3(0.0f, 100.0f, 0.0f));
+    const float3 sunPos = mRes*float3(0.0f, 100.0f, 0.0f);
 
     mTranslate = translate4x4(sunPos);
     mRes       = mul(mTranslate, mRes);
@@ -3273,7 +3271,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
@@ -3291,7 +3289,6 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 6.0f, 0.0f));
-    //mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
     mScale = scale4x4(float3(1.0f, 0.5f, 1.0f));
     mRes = mul(mTranslate, mScale);
 
@@ -3305,7 +3302,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(18.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -3320,7 +3317,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-18.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -3335,7 +3332,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(0.0f, 6.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.5f, 1.0f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -3351,7 +3348,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(8.0f, 0.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.35f, 1.0f, 0.5f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -3366,7 +3363,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-8.0f, 0.0f, -24.0f));
-    mRot = rotate_X_4x4(90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(90.f*DEG_TO_RAD);
     mScale = scale4x4(float3(0.35f, 1.0f, 0.5f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -3406,7 +3403,7 @@ namespace LGHT_TESTS
     mRes.identity();
 
     mTranslate = translate4x4(float3(7.0f, -1.75f, 1.0f));
-    mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.f*DEG_TO_RAD);
     mScale = scale4x4(float3(1.0f, 1.75f, 1.0f));
     mRes = mul(mRot, mScale);
     mRes = mul(mTranslate, mRes);
@@ -3428,8 +3425,8 @@ namespace LGHT_TESTS
     mRot2.identity();
 
     mTranslate = translate4x4(float3(50.0f, 50.0f, -250.0f));
-    mRot = rotate_X_4x4(-45.0f*DEG_TO_RAD);
-    mRot2 = rotate_Z_4x4(-30.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-45.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4Z(-30.f*DEG_TO_RAD);
     mRes = mul(mRot2, mRot);
     mRes = mul(mTranslate, mRes);
 
@@ -3445,7 +3442,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(-8.0f, 12.0f, -24.05f));
-    mRot = rotate_X_4x4(-90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-90.f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, portal1, mRes.L());
@@ -3459,7 +3456,7 @@ namespace LGHT_TESTS
     mScale.identity();
 
     mTranslate = translate4x4(float3(8.0f, 12.0f, -24.05f));
-    mRot = rotate_X_4x4(-90.f*DEG_TO_RAD);
+    mRot = rotate4x4X(-90.f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, portal2, mRes.L());
@@ -3598,7 +3595,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -3616,7 +3613,7 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -3815,7 +3812,7 @@ namespace LGHT_TESTS
 
 		HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-		using namespace HydraLiteMath;
+		using namespace LiteMath;
 
 		float4x4 mRot, mRot2;
 		float4x4 mTranslate;
@@ -3844,7 +3841,7 @@ namespace LGHT_TESTS
 		mRot.identity();
 
 		mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-		mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+		mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
 		mRes = mul(mTranslate, mRot);
 
 		hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -3857,8 +3854,8 @@ namespace LGHT_TESTS
 		mRot2.identity();
 
 		mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-		mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-		mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+		mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+		mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
 		mRes = mul(mRot, mRot2);
 		mRes = mul(mTranslate, mRes);
 
@@ -4495,7 +4492,7 @@ namespace LGHT_TESTS
 
 		HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-		using namespace HydraLiteMath;
+		using namespace LiteMath;
 
 		float4x4 mRot, mRot2, mTranslate, mScale, mRes;
 
@@ -4510,7 +4507,7 @@ namespace LGHT_TESTS
 
 
 		mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-		mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+		mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
 		mRes = mul(mTranslate, mRot);
 
 		hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -4540,8 +4537,8 @@ namespace LGHT_TESTS
 		mRes.identity();
 
 		mTranslate = translate4x4(float3(3.0f, 6.0f, 0.0f));
-		mRot       = rotate_Z_4x4(-10.0f*DEG_TO_RAD);
-		mRot2      = rotate_X_4x4(-15.0f*DEG_TO_RAD);
+		mRot       = rotate4x4Z(-10.0f*DEG_TO_RAD);
+		mRot2      = rotate4x4X(-15.0f*DEG_TO_RAD);
 		mRes       = mul(mTranslate, mul(mRot, mul(mRot2,mRes)));
 		hrLightInstance(scnRef, light1, mRes.L());
 		///////////
@@ -4550,8 +4547,8 @@ namespace LGHT_TESTS
 		mRes.identity();
 
 		mTranslate = translate4x4(float3(-4.5f, 6.5f, 0.0f));
-		mRot       = rotate_Y_4x4(-90.0f*DEG_TO_RAD);
-		mRot2      = rotate_X_4x4(25.0f*DEG_TO_RAD);
+		mRot       = rotate4x4Y(-90.0f*DEG_TO_RAD);
+		mRot2      = rotate4x4X(25.0f*DEG_TO_RAD);
 		mRes       = mul(mTranslate, mul(mRot2, mul(mRot, mRes)));
 		hrLightInstance(scnRef, light2, mRes.L());
 		///////////
@@ -4705,7 +4702,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -4723,7 +4720,7 @@ namespace LGHT_TESTS
 
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -4764,7 +4761,7 @@ namespace LGHT_TESTS
     mRes.identity();
     
     mTranslate = translate4x4(float3(0.0f, -2.5f, 0.0f));
-    mRot = rotate_Z_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Z(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
     
     hrLightInstance(scnRef, spot3, mRes.L());
@@ -4942,7 +4939,7 @@ namespace LGHT_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot, mTranslate, mScale, mRes;
     const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
@@ -4951,7 +4948,7 @@ namespace LGHT_TESTS
     ///////////
 
     mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-    mRot = rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrMeshInstance(scnRef, cubeOpen, mRes.L());
@@ -4982,7 +4979,7 @@ namespace LGHT_TESTS
     mRes.identity();
 
     mTranslate = translate4x4(float3(-3.0f, 8.0f, 0.0f));
-    mRot = rotate_Y_4x4(90.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(90.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
 
     hrLightInstance(scnRef, spot2, mRes.L());
@@ -4990,8 +4987,8 @@ namespace LGHT_TESTS
     ///////////
     float4x4 mRot2;
     mTranslate = translate4x4(float3(4.0f, -1.5f, 0.0f));
-    mRot  = rotate_Y_4x4(20.0f*DEG_TO_RAD);
-    mRot2 = rotate_X_4x4(-20.0f*DEG_TO_RAD);
+    mRot  = rotate4x4Y(20.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4X(-20.0f*DEG_TO_RAD);
     mRes  = mul(mTranslate, mul(mRot, mRot2));
 
     hrLightInstance(scnRef, spot2, mRes.L());

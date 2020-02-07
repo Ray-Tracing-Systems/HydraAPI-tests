@@ -36,11 +36,11 @@ using namespace TEST_UTILS;
 
 extern GLFWwindow* g_window;
 
-using HydraLiteMath::float2;
-using HydraLiteMath::float3;
-using HydraLiteMath::float4;
+using LiteMath::float2;
+using LiteMath::float3;
+using LiteMath::float4;
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 
 bool MTL_TESTS::test_158_proc_dirt1()
 {
@@ -588,26 +588,26 @@ bool MTL_TESTS::test_158_proc_dirt1()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    auto mrot1      = hlm::rotate_Y_4x4(-5.0f*DEG_TO_RAD);
+    auto mrot1      = hlm::rotate4x4Y(-5.0f*DEG_TO_RAD);
     auto mtranslate = hlm::translate4x4(hlm::float3(0.0, -3.0f, -1));
     auto mtransform = mul(mtranslate, mul(mrot1, mscale)); 
     hrMeshInstance(scnRef, cubeRef, mtransform.L());
 
     int32_t remapList1[2] = { mat4.id, mat5.id }; 
     mscale     = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    mrot1      = hlm::rotate_Y_4x4(-10.0f*DEG_TO_RAD);
+    mrot1      = hlm::rotate4x4Y(-10.0f*DEG_TO_RAD);
     mtranslate = hlm::translate4x4(hlm::float3(-2.5f, -3.0f, 1));
     mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L(), remapList1, sizeof(remapList1) / sizeof(int32_t));
 
     int32_t remapList2[2] = { mat4.id, mat6.id };
     mscale     = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    mrot1      = hlm::rotate_Y_4x4(+15.0f*DEG_TO_RAD);
+    mrot1      = hlm::rotate4x4Y(+15.0f*DEG_TO_RAD);
     mtranslate = hlm::translate4x4(hlm::float3(+2.5f, -3.0f, 2.0));
     mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L(), remapList2, sizeof(remapList2) / sizeof(int32_t));
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -1220,14 +1220,14 @@ bool MTL_TESTS::test_159_proc_dirt2()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    auto mrot1      = hlm::rotate_Y_4x4(-5.0f*DEG_TO_RAD);
+    auto mrot1      = hlm::rotate4x4Y(-5.0f*DEG_TO_RAD);
     auto mtranslate = hlm::translate4x4(hlm::float3(0.0, -3.0f, -1));
     auto mtransform = mul(mtranslate, mul(mrot1, mscale)); 
     hrMeshInstance(scnRef, cubeRef, mtransform.L());
 
     int32_t remapList1[2] = { mat4.id, mat5.id }; 
     mscale     = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    mrot1      = hlm::rotate_Y_4x4(-10.0f*DEG_TO_RAD);
+    mrot1      = hlm::rotate4x4Y(-10.0f*DEG_TO_RAD);
     mtranslate = hlm::translate4x4(hlm::float3(-2.5f, -3.0f, 1));
     mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L(), remapList1, sizeof(remapList1) / sizeof(int32_t));
@@ -1235,12 +1235,12 @@ bool MTL_TESTS::test_159_proc_dirt2()
     //int32_t remapList2[2] = { mat4.id, mat6.id };
     int32_t remapList2[2] = { mat4.id, mat7.id };
     mscale     = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    mrot1      = hlm::rotate_Y_4x4(+15.0f*DEG_TO_RAD);
+    mrot1      = hlm::rotate4x4Y(+15.0f*DEG_TO_RAD);
     mtranslate = hlm::translate4x4(hlm::float3(+2.5f, -3.0f, 2.0));
     mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L(), remapList2, sizeof(remapList2) / sizeof(int32_t));
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -1909,14 +1909,14 @@ bool MTL_TESTS::test_160_proc_dirt3()
     // instance sphere and cornell box
     //
     auto mscale = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    auto mrot1 = hlm::rotate_Y_4x4(-5.0f*DEG_TO_RAD);
+    auto mrot1 = hlm::rotate4x4Y(-5.0f*DEG_TO_RAD);
     auto mtranslate = hlm::translate4x4(hlm::float3(0.0, -3.0f, -1));
     auto mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L());
 
     int32_t remapList1[2] = { mat4.id, mat5.id };
     mscale = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    mrot1 = hlm::rotate_Y_4x4(-10.0f*DEG_TO_RAD);
+    mrot1 = hlm::rotate4x4Y(-10.0f*DEG_TO_RAD);
     mtranslate = hlm::translate4x4(hlm::float3(-2.5f, -3.0f, 1));
     mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L(), remapList1, sizeof(remapList1) / sizeof(int32_t));
@@ -1924,12 +1924,12 @@ bool MTL_TESTS::test_160_proc_dirt3()
     //int32_t remapList2[2] = { mat4.id, mat6.id };
     int32_t remapList2[2] = { mat4.id, mat7.id };
     mscale = hlm::scale4x4(float3(1.0f, 1.0f, 1.0f));
-    mrot1 = hlm::rotate_Y_4x4(+15.0f*DEG_TO_RAD);
+    mrot1 = hlm::rotate4x4Y(+15.0f*DEG_TO_RAD);
     mtranslate = hlm::translate4x4(hlm::float3(+2.5f, -3.0f, 2.0));
     mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L(), remapList2, sizeof(remapList2) / sizeof(int32_t));
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -2144,7 +2144,7 @@ bool MTL_TESTS::test_161_simple_displacement()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -2377,7 +2377,7 @@ bool MTL_TESTS::test_164_simple_displacement_proctex()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -2618,7 +2618,7 @@ bool MTL_TESTS::test_165_simple_displacement_mesh()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -2855,7 +2855,7 @@ bool MTL_TESTS::test_166_displace_by_noise()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -3183,7 +3183,7 @@ bool MTL_TESTS::test_167_subdiv()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -3229,11 +3229,11 @@ bool MTL_TESTS::test_167_subdiv()
 
   const float DEG_TO_RAD = 0.01745329251f;
 
-  mRot  = rotate_X_4x4(-15.0f*DEG_TO_RAD);
-  mRot2 = rotate_Z_4x4(-30.f*DEG_TO_RAD);
+  mRot  = rotate4x4X(-15.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4Z(-30.f*DEG_TO_RAD);
   mRes  = mul(mRot2, mRot);
 
-  const float3 sunPos = mul(mRes, float3(0.0f, 100.0f, 0.0f));
+  const float3 sunPos = mRes*float3(0.0f, 100.0f, 0.0f);
 
   mTranslate = translate4x4(sunPos);
   mRes       = mul(mTranslate, mRes);
@@ -3448,7 +3448,7 @@ bool MTL_TESTS::test_169_displace_custom_callback()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -3722,18 +3722,11 @@ bool MTL_TESTS::test_171_simple_displacement_triplanar()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(0.25f, 0.25f, 0.25f));
-    //auto mrot1      = hlm::rotate_Y_4x4(-25.0f*DEG_TO_RAD);
-    //auto mtranslate = hlm::translate4x4(hlm::float3(0, -2.5f, 1));
-    // auto mtransform = mul(mtranslate, mul(mrot1, mscale));
 
     hrMeshInstance(scnRef, lucyRef, mscale.L());
-
-    //auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, planeRef, hlm::float4x4().L());
 
-//    auto mrot1      = hlm::rotate_Y_4x4(-40.0f*DEG_TO_RAD);
     auto mtranslate = hlm::translate4x4(hlm::float3(-0.75f, 0.5, 0));
-    //  auto mtransform = mul(mtranslate, mrot1);
 
     hrMeshInstance(scnRef, sphereRef1, mtranslate.L());
 

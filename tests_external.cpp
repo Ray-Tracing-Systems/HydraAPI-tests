@@ -39,12 +39,12 @@
 
 using namespace TEST_UTILS;
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 extern GLFWwindow* g_window;
 
-using HydraLiteMath::float2;
-using HydraLiteMath::float3;
-using HydraLiteMath::float4;
+using LiteMath::float2;
+using LiteMath::float3;
+using LiteMath::float4;
 
 
 
@@ -152,7 +152,7 @@ bool test_x1_displace_car_by_noise()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -365,7 +365,7 @@ bool test_x2_car_displacement_triplanar()
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -680,7 +680,7 @@ bool test_x3_car_fresnel_ice()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -959,7 +959,7 @@ bool test_x4_car_triplanar(const int i)
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -1295,7 +1295,7 @@ bool test_depth_mesh()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mRot2;
@@ -1312,16 +1312,16 @@ bool test_depth_mesh()
 
 
   mTranslate = translate4x4(float3(0.0f, 0.0f, 0.0f));
-  mRot = rotate_X_4x4(DEG_TO_RAD * 90.0f);
-  mRot2 = rotate_Z_4x4(DEG_TO_RAD * 180.0f);
+  mRot = rotate4x4X(DEG_TO_RAD * 90.0f);
+  mRot2 = rotate4x4Z(DEG_TO_RAD * 180.0f);
   mScale = scale4x4(float3(1.0f, 1.0f, 1.0f));
   mRes = mul(mTranslate, mul(mRot2, mRot));
 
   hrMeshInstance(scnRef, tess, mRes.L());
 
 //
-//  mRot = rotate_X_4x4(DEG_TO_RAD * 90.0f);
-//  mRot2 = rotate_Z_4x4(DEG_TO_RAD * 180.0f);
+//  mRot = rotate4x4X(DEG_TO_RAD * 90.0f);
+//  mRot2 = rotate4x4Z(DEG_TO_RAD * 180.0f);
 //  mScale = scale4x4(float3(1.0f, 1.0f, -1.0f));
 //  mTranslate = translate4x4(float3(0.0f, 0.0f, 15.0f));
 //  mRes = mul(mTranslate, mul(mScale, mul(mRot2, mRot)));
@@ -1579,19 +1579,20 @@ bool test_precomp_depth_mesh()
 
 
   float4x4 mR2;
-  mR2.row[0].x = dot(oY, plane_normal);
-  mR2.row[0].y = -length(cross(oY, plane_normal));
-  mR2.row[1].x = length(cross(oY, plane_normal));
-  mR2.row[1].y = dot(oY, plane_normal);
+
+  mR2.set_row(0, float4(dot(oY, plane_normal), -length(cross(oY, plane_normal)), 0.0f, 1.0f));
+  mR2.set_row(1, float4(length(cross(oY, plane_normal)), dot(oY, plane_normal), 0.0f, 1.0f));
+
 
   float4x4 ff;
 
   float3 tmp1 = (plane_normal - c * oY) / length(plane_normal - c * oY);
   float3 tmp2 = cross(plane_normal,oY);
-  ff = make_float4x4_by_columns(float4(0.0f, 1.0f, 0.0f, 0.0f),
-                                float4(tmp1.x, tmp1.y, tmp1.z, 0.0f),
-                                float4(tmp2.x, tmp2.y, tmp2.z, 0.0f),
-                                float4(0.0f, 0.0f, 0.0f, 1.0f));
+
+  ff.col(0) = float4(0.0f, 1.0f, 0.0f, 0.0f);
+  ff.col(1) = float4(tmp1.x, tmp1.y, tmp1.z, 0.0f);
+  ff.col(2) = float4(tmp2.x, tmp2.y, tmp2.z, 0.0f);
+  ff.col(3) = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
   float4x4 U = mul(ff, mul(mR2, inverse4x4(ff)));
   hrMeshInstance(scnRef, z_mesh, mRes.L());
@@ -1634,7 +1635,7 @@ bool test_precomp_depth_mesh()
   hrLightInstance(scnRef, sky, mTranslate.L());
 
   mTranslate = translate4x4(float3(0.0f, 1.0f, 5.0f));
-  mRot = rotate_X_4x4(45 * DEG_TO_RAD);
+  mRot = rotate4x4X(45 * DEG_TO_RAD);
 
   mRes = mul(mTranslate, mRot);
 

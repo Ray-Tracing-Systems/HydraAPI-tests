@@ -9,7 +9,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "LiteMath.h"
-using namespace HydraLiteMath;
+using namespace LiteMath;
 
 // #if defined(WIN32)
 //   #include <GLFW/glfw3.h>

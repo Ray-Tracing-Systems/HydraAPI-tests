@@ -23,11 +23,11 @@
 #include "LiteMath.h"
 #include "HydraXMLHelpers.h"
 
-using HydraLiteMath::float2;
-using HydraLiteMath::float3;
-using HydraLiteMath::float4;
+using LiteMath::float2;
+using LiteMath::float3;
+using LiteMath::float4;
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,7 +243,7 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
     auto mtranslate = hlm::translate4x4(hlm::float3(0.0f, -1.5f, 1.0f));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
     
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
     
     mtranslate = hlm::translate4x4(hlm::float3(0, 3.85f, 0));
