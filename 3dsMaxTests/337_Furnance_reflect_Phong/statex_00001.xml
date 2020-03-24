@@ -16,10 +16,6 @@
     </diffuse>
   </material>
   <material id="2" name="Metall" type="hydra_material">
-    <diffuse brdf_type="lambert">
-      <color val="0 0 0" />
-      <roughness val="0" />
-    </diffuse>
     <reflectivity brdf_type="phong">
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
@@ -27,26 +23,9 @@
         <texture id="1" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </glossiness>
       <fresnel val="0" />
-      <fresnel_ior val="1.51999998" />
+      <fresnel_ior val="1.5" />
       <anisotropy val="0" rot="0" flip_axis="1" />
     </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="0.5 0.5 0.5" />
-      <fog_multiplier val="0" />
-      <ior val="1.51999998" />
-    </transparency>
-    <opacity />
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
   </material>
   <material id="3" name="03 - Default" type="hydra_material">
     <emission>
@@ -55,37 +34,16 @@
     </emission>
   </material>
   <material id="4" name="Metall2" type="hydra_material">
-    <diffuse brdf_type="lambert">
-      <color val="0 0 0" />
-      <roughness val="0" />
-    </diffuse>
-    <reflectivity brdf_type="ggx">
+    <reflectivity brdf_type="phong">
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
       <glossiness val="1">
         <texture id="2" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </glossiness>
       <fresnel val="0" />
-      <fresnel_ior val="1.51999998" />
+      <fresnel_ior val="1.5" />
       <anisotropy val="0" rot="0" flip_axis="1" />
     </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="0.5 0.5 0.5" />
-      <fog_multiplier val="0" />
-      <ior val="1.51999998" />
-    </transparency>
-    <opacity />
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
   </material>
   <material id="5" name="environment_material" type="hydra_material" light_id="0" visible="1">
     <emission>

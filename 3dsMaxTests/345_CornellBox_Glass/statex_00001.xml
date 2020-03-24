@@ -122,14 +122,14 @@
     <reflectivity brdf_type="ggx">
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
-      <glossiness val="0.9" />
+      <glossiness val="0.0" />
       <fresnel val="1" />
       <fresnel_ior val="1.5" />
       <anisotropy val="0" rot="0" flip_axis="1" />
     </reflectivity>
     <transparency brdf_type="phong">
       <color val="1 1 1" />
-      <glossiness val="0.9" />
+      <glossiness val="0.0" />
       <thin_walled val="0" />
       <fog_color val="1 1 1" />
       <fog_multiplier val="0" />

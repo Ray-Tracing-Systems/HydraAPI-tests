@@ -110,7 +110,7 @@
   </light>
   <light id="1" name="HydraLight001" type="area" shape="rect" distribution="diffuse" visible="1" mat_id="4" mesh_id="1">
     <intensity>
-      <multiplier val="0.49999997" />
+      <multiplier val="0.5" />
       <color val="1 1 1" />
     </intensity>
     <size radius="3.99726748" half_length="10" half_width="10" />

@@ -47,41 +47,25 @@
     </translucency>
   </material>
   <material id="3" name="Glass" type="hydra_material">
-    <reflectivity brdf_type="ggx">
-      <extrusion val="maxcolor" />
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <fresnel val="0" />
-      <fresnel_ior val="1.5" />
-      <anisotropy val="0" rot="0" flip_axis="1" />
-    </reflectivity>
     <transparency brdf_type="phong">
       <color val="1 1 1" />
       <glossiness val="1">
         <texture id="1" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </glossiness>
       <thin_walled val="0" />
-      <fog_color val="0.5 0.5 0.5" />
+      <fog_color val="1 1 1" />
       <fog_multiplier val="0" />
       <ior val="1.5" />
     </transparency>
   </material>
   <material id="4" name="Glass2" type="hydra_material">
-    <reflectivity brdf_type="ggx">
-      <extrusion val="maxcolor" />
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <fresnel val="0" />
-      <fresnel_ior val="1.5" />
-      <anisotropy val="0" rot="0" flip_axis="1" />
-    </reflectivity>
     <transparency brdf_type="phong">
       <color val="1 1 1" />
       <glossiness val="1">
         <texture id="2" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </glossiness>
       <thin_walled val="0" />
-      <fog_color val="0.5 0.5 0.5" />
+      <fog_color val="1 1 1" />
       <fog_multiplier val="0" />
       <ior val="1.5" />
     </transparency>
@@ -159,7 +143,7 @@
     <method_tertiary>pathtracing</method_tertiary>
     <method_caustic>pathtracing</method_caustic>
     <shadows>1</shadows>
-    <trace_depth>10</trace_depth>
+    <trace_depth>50</trace_depth>
     <diff_trace_depth>8</diff_trace_depth>
     <pt_error>2.5</pt_error>
     <minRaysPerPixel>256</minRaysPerPixel>
