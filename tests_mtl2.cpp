@@ -30,7 +30,7 @@ using namespace TEST_UTILS;
 
 namespace MTL_TESTS
 {
-  namespace hlm = HydraLiteMath;
+  namespace hlm = LiteMath;
   
 	bool test_133_emissive_and_diffuse()
 	{
@@ -266,7 +266,7 @@ namespace MTL_TESTS
 
 		HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-		using namespace HydraLiteMath;
+		using namespace LiteMath;
 
 		float4x4 mRot;
 		float4x4 mTranslate;
@@ -324,7 +324,7 @@ namespace MTL_TESTS
 
 		mTranslate = translate4x4(float3(0.0f, 1.0f, -4.0f));
 		mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
-		// mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
+		// mRot = rotate4x4Y(60.f*DEG_TO_RAD);
 		mRes = mul(mScale, mRes);
 		// mRes = mul(mRot, mRes);
 		mRes = mul(mTranslate, mRes);
@@ -637,12 +637,12 @@ namespace MTL_TESTS
 
 		///////////
 		{
-			HydraLiteMath::float4x4 mTranslate, mRes, mRot, mScale;
+			LiteMath::float4x4 mTranslate, mRes, mRot, mScale;
 
 			const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
-			mTranslate = HydraLiteMath::translate4x4(HydraLiteMath::float3(0.0f, 1.0f, -4.0f));
-			mScale     = HydraLiteMath::scale4x4(HydraLiteMath::float3(16.0f, 8.0f, 0.5f));
+			mTranslate = LiteMath::translate4x4(LiteMath::float3(0.0f, 1.0f, -4.0f));
+			mScale     = LiteMath::scale4x4(LiteMath::float3(16.0f, 8.0f, 0.5f));
 			mRes       = mul(mScale, mRes);
 			mRes       = mul(mTranslate, mRes);
 
@@ -928,7 +928,7 @@ namespace MTL_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -986,7 +986,7 @@ namespace MTL_TESTS
 
     mTranslate = translate4x4(float3(0.0f, 1.0f, -4.0f));
     mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
-    // mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
+    // mRot = rotate4x4Y(60.f*DEG_TO_RAD);
     mRes = mul(mScale, mRes);
     // mRes = mul(mRot, mRes);
     mRes = mul(mTranslate, mRes);
@@ -1347,7 +1347,7 @@ namespace MTL_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -1405,7 +1405,7 @@ namespace MTL_TESTS
 
     mTranslate = translate4x4(float3(0.0f, 1.0f, -4.0f));
     mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
-    // mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
+    // mRot = rotate4x4Y(60.f*DEG_TO_RAD);
     mRes = mul(mScale, mRes);
     // mRes = mul(mRot, mRes);
     mRes = mul(mTranslate, mRes);
@@ -1706,17 +1706,17 @@ namespace MTL_TESTS
     {
       // instance sphere and cornell box
       //
-      auto mrot1      = hlm::rotate_Y_4x4(30.0f*DEG_TO_RAD);
+      auto mrot1      = hlm::rotate4x4Y(30.0f*DEG_TO_RAD);
       auto mtranslate = hlm::translate4x4(hlm::float3(-1.5f, -2.5f, -1.5f));
       auto mres       = hlm::mul(mtranslate, mrot1);
       hrMeshInstance(scnRef, cubeRef, mres.L());
   
-      mrot1      = hlm::rotate_Y_4x4(-20.0f*DEG_TO_RAD);
+      mrot1      = hlm::rotate4x4Y(-20.0f*DEG_TO_RAD);
       mtranslate = hlm::translate4x4(hlm::float3(2.0f, -2.5f, 1.0f));
       mres       = hlm::mul(mtranslate, mrot1);
       hrMeshInstance(scnRef, cubeRef2, mres.L());
     
-      auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+      auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
       hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
     
       mtranslate = hlm::translate4x4(hlm::float3(0, 3.85f, 0));
@@ -2018,7 +2018,7 @@ namespace MTL_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -2076,7 +2076,7 @@ namespace MTL_TESTS
 
     mTranslate = translate4x4(float3(0.0f, -6.0f, 3.0f));
     mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
-    mRot = rotate_Y_4x4(25.f * DEG_TO_RAD);
+    mRot = rotate4x4Y(25.f * DEG_TO_RAD);
     mRes = mul(mScale, mRes);
     mRes = mul(mRot, mRes);
     mRes = mul(mTranslate, mRes);
@@ -2435,7 +2435,7 @@ namespace MTL_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -2775,7 +2775,7 @@ namespace MTL_TESTS
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
 
     float4x4 mRot;
     float4x4 mTranslate;
@@ -2833,7 +2833,7 @@ namespace MTL_TESTS
 
     mTranslate = translate4x4(float3(0.0f, 1.0f, -4.0f));
     mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
-    // mRot = rotate_Y_4x4(60.f*DEG_TO_RAD);
+    // mRot = rotate4x4Y(60.f*DEG_TO_RAD);
     mRes = mul(mScale, mRes);
     // mRes = mul(mRot, mRes);
     mRes = mul(mTranslate, mRes);

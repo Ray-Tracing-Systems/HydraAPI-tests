@@ -39,7 +39,7 @@ using namespace TEST_UTILS;
 
 extern GLFWwindow* g_window;
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 
 bool test90_proc_tex_normalmap()
 {
@@ -420,7 +420,7 @@ bool test90_proc_tex_normalmap()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
     
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
     
     //// instance light (!!!)
@@ -770,7 +770,7 @@ bool test91_proc_tex_bump()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
     
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
     
     //// instance light (!!!)
@@ -1120,7 +1120,7 @@ bool test92_proc_tex_bump2()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
     
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
     
     //// instance light (!!!)
@@ -1460,7 +1460,7 @@ bool test93_proc_tex_recursive()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -1819,7 +1819,7 @@ bool test_126_debug_bump()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
@@ -2114,7 +2114,7 @@ bool test51_instance_many_trees_and_opacity()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2143,7 +2143,7 @@ bool test51_instance_many_trees_and_opacity()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot       = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2162,7 +2162,7 @@ bool test51_instance_many_trees_and_opacity()
         const float3 pos = dist1*float3(float(i), 0.0f, float(j)) + dist1*1.0f*float3(randOffset.x, 0.0f, randOffset.y);
 
         mTranslate = translate4x4(float3(pos.x, 1.0f, pos.z));
-        mRot       = rotate_Y_4x4(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
+        mRot       = rotate4x4Y(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
         mRes       = mul(mTranslate, mRot);
 
         hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2184,7 +2184,7 @@ bool test51_instance_many_trees_and_opacity()
 
         mTranslate = translate4x4(pos);
         mScale     = scale4x4(float3(5.0f, 5.0f, 5.0f));
-        mRot       = rotate_Y_4x4(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
+        mRot       = rotate4x4Y(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
         mRes       = mul(mTranslate, mul(mRot, mScale));
 
         if((simplerandom::rnd(rgen, 0.0f, 1.0f) > 0.5f))
@@ -2207,8 +2207,8 @@ bool test51_instance_many_trees_and_opacity()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(200.0f, 200.0f, -100.0f));
-  mRot = rotate_X_4x4(10.0f*DEG_TO_RAD);
-  mRot2 = rotate_Z_4x4(30.f*DEG_TO_RAD);
+  mRot = rotate4x4X(10.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4Z(30.f*DEG_TO_RAD);
   mRes = mul(mRot2, mRot);
   mRes = mul(mTranslate, mRes);
 
@@ -2484,7 +2484,7 @@ bool test52_instance_perf_test()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2513,7 +2513,7 @@ bool test52_instance_perf_test()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2533,7 +2533,7 @@ bool test52_instance_perf_test()
         const float3 pos        = dist1*float3(float(i), 0.0f, float(j)) + dist1*1.0f*float3(randOffset.x, 0.0f, randOffset.y);
 
         mTranslate = translate4x4(float3(pos.x, 1.0f, pos.z));
-        mRot       = rotate_Y_4x4(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
+        mRot       = rotate4x4Y(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
         mRes       = mul(mTranslate, mRot);
 
         hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2555,7 +2555,7 @@ bool test52_instance_perf_test()
 
         mTranslate = translate4x4(pos);
         mScale     = scale4x4(float3(5.0f, 5.0f, 5.0f));
-        mRot       = rotate_Y_4x4(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
+        mRot       = rotate4x4Y(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
         mRes       = mul(mTranslate, mul(mRot, mScale));
 
         if ((simplerandom::rnd(rgen, 0.0f, 1.0f) > 0.5f))
@@ -2578,8 +2578,8 @@ bool test52_instance_perf_test()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(200.0f, 200.0f, -100.0f));
-  mRot = rotate_X_4x4(10.0f*DEG_TO_RAD);
-  mRot2 = rotate_Z_4x4(30.f*DEG_TO_RAD);
+  mRot = rotate4x4X(10.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4Z(30.f*DEG_TO_RAD);
   mRes = mul(mRot2, mRot);
   mRes = mul(mTranslate, mRes);
 
@@ -2729,7 +2729,7 @@ bool test53_crysponza_perf()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2743,7 +2743,7 @@ bool test53_crysponza_perf()
 
   mTranslate = translate4x4(float3(0,0,0));
   mScale     = scale4x4(float3(5.0f, 5.0f, 5.0f));
-  mRot       = rotate_Y_4x4(90.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(90.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mul(mRot, mScale));
 
   hrMeshInstance(scnRef, treeRef, mRes.L());
@@ -2756,8 +2756,8 @@ bool test53_crysponza_perf()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(200.0f, 200.0f, -100.0f));
-  mRot = rotate_X_4x4(10.0f*DEG_TO_RAD);
-  mRot2 = rotate_Z_4x4(10.f*DEG_TO_RAD);
+  mRot = rotate4x4X(10.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4Z(10.f*DEG_TO_RAD);
   mRes = mul(mRot2, mRot);
   mRes = mul(mTranslate, mRes);
 
@@ -2898,7 +2898,7 @@ bool test54_portalsroom_perf()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2919,7 +2919,7 @@ bool test54_portalsroom_perf()
   ///////////
   mTranslate = translate4x4(float3(-10, 0, 0));
   mScale     = scale4x4(float3(10.0f, 10.0f, 10.0f));
-  mRot       = rotate_Y_4x4(90.0f*DEG_TO_RAD);
+  mRot       = rotate4x4Y(90.0f*DEG_TO_RAD);
   mRes       = mul(mTranslate, mul(mRot, mScale));
 
   hrMeshInstance(scnRef, treeRef, mRes.L());
@@ -2932,8 +2932,8 @@ bool test54_portalsroom_perf()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(2000.0f, 2000.0f, 100.0f));
-  mRot       = rotate_X_4x4(-10.0f*DEG_TO_RAD);
-  mRot2      = rotate_Z_4x4(-50.f*DEG_TO_RAD);
+  mRot       = rotate4x4X(-10.0f*DEG_TO_RAD);
+  mRot2      = rotate4x4Z(-50.f*DEG_TO_RAD);
   mRes       = mul(mRot2, mRot);
   mRes       = mul(mTranslate, mRes);
 

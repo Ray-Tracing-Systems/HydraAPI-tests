@@ -81,9 +81,9 @@ protected:
   int   m_width;
   int   m_height;
 
-  HydraLiteMath::float4x4 camWorldViewMartrixTransposed;
-  HydraLiteMath::float4x4 camProjMatrixTransposed;
-  bool                    camUseMatrices;
+  LiteMath::float4x4 camWorldViewMartrixTransposed;
+  LiteMath::float4x4 camProjMatrixTransposed;
+  bool               camUseMatrices;
 
   std::vector<float> m_diffColors;
   std::vector<int>   m_diffTexId;

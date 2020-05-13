@@ -128,7 +128,7 @@ int main(int argc, const char** argv)
     //run_all_geo_tests();
 
     //run_all_mtl_tests();
-    run_all_lgt_tests();
+    //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_3dsmax_tests();
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
@@ -138,7 +138,7 @@ int main(int argc, const char** argv)
     //std::cout << GEO_TESTS::test_005_instancing() << std::endl;
     //std::cout << GEO_TESTS::test_006_points_on_mesh() << std::endl;
 
-    //std::cout << test77_save_gbuffer_layers() << std::endl;
+    std::cout << test77_save_gbuffer_layers() << std::endl;
 
     //std::cout << MTL_TESTS::test_103_diffuse_texture() << std::endl;
     //std::cout << "MSE = " << g_MSEOutput << std::endl;

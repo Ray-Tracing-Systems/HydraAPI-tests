@@ -833,7 +833,7 @@ bool test1007_merge_library()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -862,7 +862,7 @@ bool test1007_merge_library()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -875,8 +875,8 @@ bool test1007_merge_library()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -1079,7 +1079,7 @@ bool test1008_merge_one_texture()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1108,7 +1108,7 @@ bool test1008_merge_one_texture()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1121,8 +1121,8 @@ bool test1008_merge_one_texture()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -1320,7 +1320,7 @@ bool test1009_merge_one_material()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1349,7 +1349,7 @@ bool test1009_merge_one_material()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1362,8 +1362,8 @@ bool test1009_merge_one_material()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -1538,7 +1538,7 @@ bool test1010_merge_one_mesh()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1567,7 +1567,7 @@ bool test1010_merge_one_mesh()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1580,8 +1580,8 @@ bool test1010_merge_one_mesh()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -1789,7 +1789,7 @@ bool test1011_merge_scene()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -1818,7 +1818,7 @@ bool test1011_merge_scene()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1831,8 +1831,8 @@ bool test1011_merge_scene()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -2016,7 +2016,7 @@ bool test1012_merge_one_light()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2045,7 +2045,7 @@ bool test1012_merge_one_light()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2058,8 +2058,8 @@ bool test1012_merge_one_light()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -2411,7 +2411,7 @@ bool test1014_print_matlib_map()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2440,7 +2440,7 @@ bool test1014_print_matlib_map()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2453,8 +2453,8 @@ bool test1014_print_matlib_map()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -2669,7 +2669,7 @@ bool test1015_merge_scene_with_remaps()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2685,7 +2685,7 @@ bool test1015_merge_scene_with_remaps()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-6.0f, 1.5f, -4.5f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2698,8 +2698,8 @@ bool test1015_merge_scene_with_remaps()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(6.0f, 1.5f, -4.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -2869,7 +2869,7 @@ bool test1016_merge_scene_remap_override()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -2885,7 +2885,7 @@ bool test1016_merge_scene_remap_override()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-6.0f, 1.5f, -4.5f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -2898,8 +2898,8 @@ bool test1016_merge_scene_remap_override()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(6.0f, 1.5f, -4.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 
@@ -3089,7 +3089,7 @@ bool test1017_merge_scene_scene_id_mask()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot, mRot2;
   float4x4 mTranslate;
@@ -3105,7 +3105,7 @@ bool test1017_merge_scene_scene_id_mask()
   mRot.identity();
 
   mTranslate = translate4x4(float3(-6.0f, 1.5f, -4.5f));
-  mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
   mRes = mul(mTranslate, mRot);
 
   hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -3118,8 +3118,8 @@ bool test1017_merge_scene_scene_id_mask()
   mRot2.identity();
 
   mTranslate = translate4x4(float3(6.0f, 1.5f, -4.5f));
-  mRot = rotate_Y_4x4(-60.0f*DEG_TO_RAD);
-  mRot2 = rotate_X_4x4(90.0f*DEG_TO_RAD);
+  mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
+  mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
   mRes = mul(mRot, mRot2);
   mRes = mul(mTranslate, mRes);
 

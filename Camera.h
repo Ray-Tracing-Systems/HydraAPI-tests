@@ -8,7 +8,7 @@
 #else
 #include "LiteMath.h"
 #endif
-using namespace HydraLiteMath;
+using namespace LiteMath;
 
 struct Camera
 {
@@ -37,11 +37,11 @@ struct Camera
     {
       float4x4 rot;
       rot.identity();
-      rot.M(0, 0) = rot.M(2, 2) = cosf(-TORADIANS*rightAngle);
-      rot.M(0, 2) = -sinf(-TORADIANS*rightAngle);
-      rot.M(2, 0) = sinf(-TORADIANS*rightAngle);
+      rot(0, 0) = rot(2, 2) = cosf(-TORADIANS*rightAngle);
+      rot(0, 2) = -sinf(-TORADIANS*rightAngle);
+      rot(2, 0) = sinf(-TORADIANS*rightAngle);
 
-      float3 direction2 = normalize(mul(rot, forward()));
+      float3 direction2 = normalize(rot*forward());
       up     = normalize(mul(rot, up));
       lookAt = pos + tdist*direction2;
     }

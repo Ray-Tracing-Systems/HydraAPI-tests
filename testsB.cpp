@@ -36,9 +36,9 @@ using namespace TEST_UTILS;
 
 extern GLFWwindow* g_window;
 
-using HydraLiteMath::float2;
-using HydraLiteMath::float3;
-using HydraLiteMath::float4;
+using LiteMath::float2;
+using LiteMath::float3;
+using LiteMath::float4;
 
 
 
@@ -69,7 +69,7 @@ bool test81_custom_attributes()
 
   HRMeshRef cubeRef  = hrMeshCreate(L"my_cube");
 
-  std::vector<HydraLiteMath::float3> cubeColors(cubeMeshData.vPos.size() / 4);
+  std::vector<LiteMath::float3> cubeColors(cubeMeshData.vPos.size() / 4);
   for (size_t i = 0; i < cubeColors.size(); i++)
     cubeColors[i] = float3(1, 1, 1);
 
@@ -256,7 +256,7 @@ bool test81_custom_attributes()
   return check_images("test_81");
 }
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 
 bool test38_save_mesh_and_delayed_load()
 {
@@ -949,7 +949,7 @@ bool test82_proc_texture()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -1264,7 +1264,7 @@ bool test83_proc_texture2()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -1604,7 +1604,7 @@ bool test84_proc_texture2()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -1956,7 +1956,7 @@ bool test85_proc_texture_ao()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -2305,7 +2305,7 @@ bool test86_proc_texture_ao_dirt()
     auto mtranslate2 = hlm::translate4x4(hlm::float3(-1.5f, -2, 1)); 
     hrMeshInstance(scnRef, sphereRef, mtranslate2.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -2659,7 +2659,7 @@ bool test87_proc_texture_reflect()
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
     hrMeshInstance(scnRef, sphereRef, mtranslate.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -3095,12 +3095,12 @@ bool test88_proc_texture_convex_rust()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(1.5f, 1.5f, 1.5f));
-    auto mrot1      = hlm::rotate_Y_4x4(-25.0f*DEG_TO_RAD); 
+    auto mrot1      = hlm::rotate4x4Y(-25.0f*DEG_TO_RAD); 
     auto mtranslate = hlm::translate4x4(hlm::float3(0, -2.5f, 1));
     auto mtransform = mul(mtranslate, mul(mrot1, mscale));
     hrMeshInstance(scnRef, cubeRef, mtransform.L());
 
-    auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
 
     //// instance light (!!!)
@@ -3456,13 +3456,13 @@ bool test89_proc_texture_dirty()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(0.25f, 0.25f, 0.25f));
-    //auto mrot1      = hlm::rotate_Y_4x4(-25.0f*DEG_TO_RAD);
+    //auto mrot1      = hlm::rotate4x4Y(-25.0f*DEG_TO_RAD);
     //auto mtranslate = hlm::translate4x4(hlm::float3(0, -2.5f, 1));
    // auto mtransform = mul(mtranslate, mul(mrot1, mscale));
 
     hrMeshInstance(scnRef, lucyRef, mscale.L());
 
-    //auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    //auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, planeRef, hlm::float4x4().L());
 
     //// instance light (!!!)
@@ -3730,16 +3730,16 @@ bool test99_triplanar()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(0.25f, 0.25f, 0.25f));
-    //auto mrot1      = hlm::rotate_Y_4x4(-25.0f*DEG_TO_RAD);
+    //auto mrot1      = hlm::rotate4x4Y(-25.0f*DEG_TO_RAD);
     //auto mtranslate = hlm::translate4x4(hlm::float3(0, -2.5f, 1));
     // auto mtransform = mul(mtranslate, mul(mrot1, mscale));
 
     hrMeshInstance(scnRef, lucyRef, mscale.L());
 
-    //auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    //auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, planeRef, hlm::float4x4().L());
 
-//    auto mrot1      = hlm::rotate_Y_4x4(-40.0f*DEG_TO_RAD);
+//    auto mrot1      = hlm::rotate4x4Y(-40.0f*DEG_TO_RAD);
     auto mtranslate = hlm::translate4x4(hlm::float3(-0.75f, 0.5, 0));
   //  auto mtransform = mul(mtranslate, mrot1);
 
@@ -4036,16 +4036,16 @@ bool test96_hexaplanar()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(0.25f, 0.25f, 0.25f));
-    //auto mrot1      = hlm::rotate_Y_4x4(-25.0f*DEG_TO_RAD);
+    //auto mrot1      = hlm::rotate4x4Y(-25.0f*DEG_TO_RAD);
     //auto mtranslate = hlm::translate4x4(hlm::float3(0, -2.5f, 1));
     // auto mtransform = mul(mtranslate, mul(mrot1, mscale));
 
     hrMeshInstance(scnRef, lucyRef, mscale.L());
 
-    //auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    //auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, planeRef, hlm::float4x4().L());
 
-//    auto mrot1      = hlm::rotate_Y_4x4(-40.0f*DEG_TO_RAD);
+//    auto mrot1      = hlm::rotate4x4Y(-40.0f*DEG_TO_RAD);
     auto mtranslate = hlm::translate4x4(hlm::float3(-0.75f, 0.5, 0));
     //  auto mtransform = mul(mtranslate, mrot1);
 
@@ -4360,16 +4360,16 @@ bool test95_bump()
     // instance sphere and cornell box
     //
     auto mscale     = hlm::scale4x4(float3(0.25f, 0.25f, 0.25f));
-    //auto mrot1      = hlm::rotate_Y_4x4(-25.0f*DEG_TO_RAD);
+    //auto mrot1      = hlm::rotate4x4Y(-25.0f*DEG_TO_RAD);
     //auto mtranslate = hlm::translate4x4(hlm::float3(0, -2.5f, 1));
     // auto mtransform = mul(mtranslate, mul(mrot1, mscale));
 
     hrMeshInstance(scnRef, lucyRef, mscale.L());
 
-    //auto mrot = hlm::rotate_Y_4x4(180.0f*DEG_TO_RAD);
+    //auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
     hrMeshInstance(scnRef, planeRef, hlm::float4x4().L());
 
-//    auto mrot1      = hlm::rotate_Y_4x4(-40.0f*DEG_TO_RAD);
+//    auto mrot1      = hlm::rotate4x4Y(-40.0f*DEG_TO_RAD);
     auto mtranslate = hlm::translate4x4(hlm::float3(-0.75f, 0.5, 0));
     //  auto mtransform = mul(mtranslate, mrot1);
 

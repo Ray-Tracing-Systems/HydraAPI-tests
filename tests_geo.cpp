@@ -29,7 +29,7 @@ using namespace TEST_UTILS;
 
 HAPI HRMeshRef hrMeshCreateFromFileDL_NoNormals(const wchar_t* a_fileName);
 
-namespace hlm = HydraLiteMath;
+namespace hlm = LiteMath;
 
 namespace GEO_TESTS
 {
@@ -1092,7 +1092,7 @@ namespace GEO_TESTS
     
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
     
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
     
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
@@ -1121,7 +1121,7 @@ namespace GEO_TESTS
     mRot.identity();
     
     mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate_Y_4x4(60.0f*DEG_TO_RAD);
+    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
     mRes = mul(mTranslate, mRot);
     
     hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1140,7 +1140,7 @@ namespace GEO_TESTS
           const float3 pos        = dist1*float3(float(i), 0.0f, float(j)) + dist1*1.0f*float3(randOffset.x, 0.0f, randOffset.y);
           
           mTranslate = translate4x4(float3(pos.x, 1.0f, pos.z));
-          mRot       = rotate_Y_4x4(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
+          mRot       = rotate4x4Y(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
           mRes       = mul(mTranslate, mRot);
           
           hrMeshInstance(scnRef, cubeR, mRes.L());
@@ -1162,7 +1162,7 @@ namespace GEO_TESTS
           
           mTranslate = translate4x4(pos);
           mScale     = scale4x4(float3(5.0f, 5.0f, 5.0f));
-          mRot       = rotate_Y_4x4(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
+          mRot       = rotate4x4Y(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
           mRes       = mul(mTranslate, mul(mRot, mScale));
           
           if ((simplerandom::rnd(rgen, 0.0f, 1.0f) > 0.5f))
@@ -1185,8 +1185,8 @@ namespace GEO_TESTS
     mRot2.identity();
     
     mTranslate = translate4x4(float3(200.0f, 200.0f, -100.0f));
-    mRot  = rotate_X_4x4(10.0f*DEG_TO_RAD);
-    mRot2 = rotate_Z_4x4(30.f*DEG_TO_RAD);
+    mRot  = rotate4x4X(10.0f*DEG_TO_RAD);
+    mRot2 = rotate4x4Z(30.f*DEG_TO_RAD);
     mRes  = mul(mRot2, mRot);
     mRes  = mul(mTranslate, mRes);
     
@@ -1397,7 +1397,7 @@ namespace GEO_TESTS
     
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
     
-    using namespace HydraLiteMath;
+    using namespace LiteMath;
     
     float4x4 mRot;
     float4x4 mTranslate;
@@ -1598,7 +1598,7 @@ namespace GEO_TESTS
       hrMeshInstance(scnRef, planeRef, mres.L());
       
       // Directional light and sky
-      mres = hlm::mul(hlm::rotate_Z_4x4(1.0f * DEG_TO_RAD), hlm::translate4x4({0.0f, 100.0f, 0.0f}));
+      mres = hlm::mul(hlm::rotate4x4Z(1.0f * DEG_TO_RAD), hlm::translate4x4({0.0f, 100.0f, 0.0f}));
       hrLightInstance(scnRef, directLight, mres.L());
       hrLightInstance(scnRef, sky, mres.L());
       
@@ -1804,7 +1804,7 @@ namespace GEO_TESTS
       hrMeshInstance(scnRef, planeRef, mres.L());
       
       // Directional light and sky
-      mres = hlm::mul(hlm::rotate_Z_4x4(1.0f * DEG_TO_RAD), hlm::translate4x4({0.0f, 100.0f, 0.0f}));
+      mres = hlm::mul(hlm::rotate4x4Z(1.0f * DEG_TO_RAD), hlm::translate4x4({0.0f, 100.0f, 0.0f}));
       hrLightInstance(scnRef, directLight, mres.L());
       hrLightInstance(scnRef, sky, mres.L());
       
@@ -2009,7 +2009,7 @@ namespace GEO_TESTS
       hrMeshInstance(scnRef, planeRef, mres.L());
       
       // Directional light and sky
-      mres = hlm::mul(hlm::rotate_Z_4x4(1.0f * DEG_TO_RAD), hlm::translate4x4({0.0f, 100.0f, 0.0f}));
+      mres = hlm::mul(hlm::rotate4x4Z(1.0f * DEG_TO_RAD), hlm::translate4x4({0.0f, 100.0f, 0.0f}));
       hrLightInstance(scnRef, directLight, mres.L());
       hrLightInstance(scnRef, sky, mres.L());
       

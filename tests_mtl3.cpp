@@ -1176,7 +1176,7 @@ bool MTL_TESTS::test_153_opacity_shadow_matte_opacity()
 
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  using namespace HydraLiteMath;
+  using namespace LiteMath;
 
   float4x4 mRot;
   float4x4 mTranslate;
