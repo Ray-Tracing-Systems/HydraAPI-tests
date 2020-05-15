@@ -452,7 +452,7 @@ namespace GEO_TESTS
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     HRMeshRef teapotRef = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/teapot.vsgf");
-    HRMeshRef lucyRef = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/lucy.vsgf");
+    HRMeshRef lucyRef   = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/lucy.vsgf");
 
 /*
     HRMeshRef teapotRef = hrMeshCreateFromFileDL(L"data/meshes/teapot.vsgf");
