@@ -41,10 +41,6 @@
     </diffuse>
   </material>
   <material id="2" name="01 - Default" type="hydra_material">
-    <diffuse brdf_type="lambert">
-      <color val="0 0 0" />
-      <roughness val="0" />
-    </diffuse>
     <reflectivity brdf_type="ggx">
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
@@ -55,22 +51,6 @@
       <fresnel_ior val="1.5" />
       <anisotropy val="0" rot="0" />
     </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="1 1 1" />
-      <fog_multiplier val="0" />
-      <ior val="1.5" />
-    </transparency>
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
   </material>
   <material id="3" name="environment_material" type="hydra_material" light_id="0" visible="1">
     <emission>
@@ -110,7 +90,7 @@
   </light>
   <light id="1" name="HydraLight001" type="area" shape="rect" distribution="diffuse" visible="1" mat_id="4" mesh_id="1">
     <intensity>
-      <multiplier val="0.49999997" />
+      <multiplier val="0.5" />
       <color val="1 1 1" />
     </intensity>
     <size radius="3.99726748" half_length="10" half_width="10" />
