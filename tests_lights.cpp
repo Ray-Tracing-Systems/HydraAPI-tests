@@ -1489,12 +1489,14 @@ namespace LGHT_TESTS
       distribution.append_attribute(L"data").set_value(L"data/ies/ies_1.ies");
 
       distribution.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 1.2f, 0, 0, 0,
-                                  0, 1.2f, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
 
-      HydraXMLHelpers::WriteMatrix4x4(distribution, L"matrix", samplerMatrix);
+      float4x4 matrixRot = rotate4x4X(-45.0f*DEG_TO_RAD);
+      //float samplerMatrix[16] = { 1.2f, 0, 0, 0,
+      //                            0, 1.2f, 0, 0,
+      //                            0, 0, 1, 0,
+      //                            0, 0, 0, 1 };
+
+      HydraXMLHelpers::WriteMatrix4x4(distribution, L"matrix", matrixRot.L());
 
 	    auto sizeNode = lightNode.append_child(L"size");
 		  
