@@ -142,15 +142,19 @@ The standard feature number definition consists of 3 parts. They are material, l
 \setcounter{section}{1}
 \setcounter{req}{-1}
 
-\reqirenmentg{single\_mesh}
+\reqirenmentg{single\_mesh\_camera\_space}
 
-At this specification level, the whole scene is defined as a single mesh. For each triangle of this mesh some material is assigned --- that is, per triangle material is specified.
+At this specification level, the whole scene is defined as a single mesh or several meshes with transformed vertices in \underline{camera space}: camera located at (0,0,0) and looks at (0,0,+1). For each triangle of this mesh some material is assigned --- that is, per triangle material is specified. 
 
-\reqirenmentg{inst\_translate}
+\reqirenmentg{single\_mesh\_world\_space}
+
+At this specification level, the whole scene is defined as a single mesh or several meshes with transformed vertices in \underline{world space}. For each triangle of this mesh some material is assigned --- that is, per triangle material is specified.
+
+\reqirenmentg{inst\_translate}\label{geom2}
 
 At this specification level, the whole scene is defined as set of instances of meshes. Each mesh instance has its own translation. The same mesh can have many copies (many instances) with different translation. If the mesh was not instanced at all, it should not be drawn.
 
-\reqirenmentg{inst\_matrices}
+\reqirenmentg{inst\_matrices}\label{geom3}
 
 At this specification level, the whole scene is defined as set of instances of meshes. Each mesh instance has its own transform 4x4 matrix. Matrices can contain rotation, translation, scaling (both linear and non-linear). If the mesh was not instanced at all, it should not be drawn.
 
@@ -164,9 +168,17 @@ At this specification level, the whole scene is defined as set of instances of m
 
 \FloatBarrier
 
-\reqirenmentg{inst\_remaplist}
+\reqirenmentg{inst\_change\_material}
 
-This requirement defines the ability to instantiate same objects with different materials. That is, different instances of the same object can have different materials. For this, we define such a thing as <<remap list>>. The remap list is a list of pairs of material indices. In each pair, the first index defines the material to be replaced, and the second index determines the final material. For example, consider frurther remap lists (listing \ref{remaplist}): 
+This requirement defines the ability to instantiate same objects with different materials. However, only single material for the whole mesh (and thus fo the whole instance) is allowed. Though, rasterization based traditional renderers assume to change their shaders once per instance and the ray tracing based solutions should substitute single material id for each instance. 
+
+\boldblue{(!)Note: }In other words, each mesh has strictly 1 material, and if any of them has 2 different materials, the exporter must divide this mesh into two different meshes.
+
+\boldblue{(!)Note: }Here we can see a unobvious thing for content exporter developers. On both previous and subsequent levels of specification for a single mesh it is allowed to have several materials. But current specification level directly forbids this: export/preparation software must split meshes to have only single material per mesh. It is important to emphasize that there is no contradiction here, because our specification is created for renderers and thus exporters must adapt to this. For render systems without full instancing support (geom: \ref{geom2}, \ref{geom3}) in general there is no difference if object was spitted to several meshes or not, as well remap list (see next spec. level) size may be equal to 1 when we go to subsequent levels. 
+
+\reqirenmentg{inst\_remaplist\_(MaxMaterials == 4)}
+
+This requirement defines the ability to instantiate same objects with different materials. That is, different instances of the same object can have different materials. For this, we define such a thing as <<remap list>>. The remap list is a list of pairs of material indices. In each pair, the first index defines the material to be replaced, and the second index determines the final material. For example, consider further remap lists (listing \ref{remaplist}): 
 
 \lstset{language=XML}
 \begin{lstlisting}[caption=Remap list example, label=remaplist, captionpos=b]
@@ -191,6 +203,8 @@ So, each instance can assign an existing remap list. If this happends, for this 
 	\end{minipage}
 	\caption{Remap list example.}
 \end{figure}
+
+\boldblue{(!)Note: } For efficiency reasons renderers may restrict remap list size (MaxMaterials == 4). This is essential, for example for objects with opacity (leafes, grass and e.t.c). If remapped material has opacity property, during ray-triangle intersection we have to look up in the opacity texture. However, material id remapping in general case is implemented via binary search which is too expensive if performed for each triangle. In this way renderer may restrict remap list size to 4 or 8 elements (and thus 2 or 4 materials, for example) to be sure that remapping will be cheap enough. Please note that default maximum material amount in remap list is equal to 4 and thus \underline{exporter must split} single mesh to several meshes for all instances that have greater than 4 materials in their remap list.      
 
 \FloatBarrier
 
