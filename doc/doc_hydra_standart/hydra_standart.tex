@@ -180,6 +180,8 @@ xmax   &=& ymax * aspect \\
 left   &=& -xmax, right = +xmax, bottom = -ymax, top = +ymax \\
 \end{eqnarray*}
 
+Reference implementation can be found \href{https://github.com/Ray-Tracing-Systems/HydraAPI-tests/blob/dev/doc/doc_hydra_standart/cammatrices.h}{here} (perspectiveMatrix)
+
 \reqirenmentg{single\_mesh\_world\_space}
 
 At this specification level, the whole scene is defined as a single mesh or several meshes with transformed vertices in \underline{world space}. The camera should be specified in the following way:
@@ -190,7 +192,7 @@ At this specification level, the whole scene is defined as a single mesh or seve
 \item camera distance : scalar, represent distance to focal plane.
 \end{itemize}
 
-The modelView matrix should be calculated from (position,lookAt,upVector) according to \href{https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml}{gluLookAt} specification.
+The modelView matrix should be calculated from (position,lookAt,upVector) according to \href{https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml}{gluLookAt} specification. Reference implementation can be found \href{https://github.com/Ray-Tracing-Systems/HydraAPI-tests/blob/dev/doc/doc_hydra_standart/cammatrices.h}{here} (lookAt).
 
 \reqirenmentg{inst\_translate}\label{geom2}
 
