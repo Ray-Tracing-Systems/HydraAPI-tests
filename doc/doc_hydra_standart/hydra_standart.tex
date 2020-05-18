@@ -142,6 +142,18 @@ The standard feature number definition consists of 3 parts. They are material, l
 \setcounter{section}{1}
 \setcounter{req}{-1}
 
+\reqirenmentg{primitive\_format}
+
+At this specification level, triangulated indexed meshes are supported. Indices must be specified with uniform winding order for the whole scene - only clockwise or only counter-clockwise. Triangle vertices *must* have the following attributes specified:
+\begin{itemize}
+	\item positions in 3d space;
+	\item normals;
+	\item tangents;
+	\item texture coordinates (can be set to zeroes).
+\end{itemize}
+At this level, renderer itself should not do any geometry preprocessing (such as normals recalculation, vertex splitting, etc.) and use provided data as it is.
+
+
 \reqirenmentg{single\_mesh\_camera\_space}
 
 At this specification level, the whole scene is defined as a single mesh or several meshes with transformed vertices in \underline{camera space}: camera located at (0,0,0) and looks at (0,0,+1). For each triangle of this mesh some material is assigned --- that is, per triangle material is specified. 
