@@ -528,10 +528,21 @@ Mixing phong and lambert separately for each color component.  The phong reflect
 
 Mixing phong and lambert without priority. If summ of reflection coeffitients is greater than 1, both of them \textbf{should} be scaled lineary to get sum equal to 1.0 \textit{separately for each color component}.
 
+Note that all mixtures could be (and in general recommended to be) implemented via blend by mask (see blend\_mask). However, on this level of specification you don't have to implement blend for BRDFs.
+
+\reqirenmentextension{ggx}
+
+\begin{eqnarray*}
+A &=& \frac{1}{\omega_i \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_i \cdot n)^2} } \\
+B &=& \frac{1}{\omega_o \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_o \cdot n)^2} } \\
+D &=& \frac{\alpha^2}{ \pi \left( (\omega_h \cdot n)^2 . (\alpha^2 - 1) + 1 \right)^2 }  \\
+\\
+f_r(\omega_o, \omega_i, \alpha) &=& A*B*D \\
+\end{eqnarray*}
+
 
 \addtocounter{section}{2}
 
-Note that all mixtures could be (and in general recommended to be) implemented via blend by mask (see blend\_mask). However, on this level of specification you don't have to implement blend for BRDFs.
 
 \section{Light v1.0}\label{lightfeatures}
 
