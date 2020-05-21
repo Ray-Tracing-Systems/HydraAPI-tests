@@ -219,8 +219,6 @@ namespace LGHT_TESTS
 
   bool test_227_point_spot_glossy_wall()
   {
-
-
     hrErrorCallerPlace(L"test_227");
     hrSceneLibraryOpen(L"tests_f/test_227", HR_WRITE_DISCARD);
 
@@ -257,6 +255,7 @@ namespace LGHT_TESTS
       refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
       refl.append_child(L"fresnel").append_attribute(L"val").set_value(0);
       refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(50);
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
 
       VERIFY_XML(matNode);
     }
@@ -437,9 +436,6 @@ namespace LGHT_TESTS
         std::cout << "rendering progress = " << info.progress << "% \r";
         std::cout.precision(pres);
         std::cout.flush();
-
-
-
       }
 
       if (info.finalUpdate)

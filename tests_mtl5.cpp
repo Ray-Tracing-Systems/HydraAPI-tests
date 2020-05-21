@@ -353,7 +353,7 @@ bool check_test_163(const wchar_t* a_path)
   int32_t rw2 = tex2.attribute(L"rwidth").as_int();
   int32_t rh2 = tex2.attribute(L"rheight").as_int();
 
-  return (rw1 == 256) && (rh1 == 256) && (rw2 == 2048) && (rh2 == 2048);
+  return (rw1 == 512) && (rh1 == 512) && (rw2 == 2048) && (rh2 == 2048);
 }
 
 
@@ -709,7 +709,7 @@ bool MTL_TESTS::test_163_diffuse_texture_recommended_res()
 
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_163/z_out.png");
 
-  return check_images("test_163", 1, 60) && check_test_163(L"tests_f/test_163/statex_00001_fixed.xml");
+  return check_images("test_163", 1, 20) && check_test_163(L"tests_f/test_163/statex_00001_fixed.xml");
 }
 
 
@@ -733,7 +733,7 @@ bool check_test_168(const wchar_t* a_path)
   int32_t rw3 = tex3.attribute(L"rwidth").as_int();
   int32_t rh3 = tex3.attribute(L"rheight").as_int();
 
-  return (rw1 == 256) && (rh1 == 256) && (rw2 == 2048) && (rh2 == 2048) && (rw3 == 708) && (rh3 == 643);
+  return (rw1 == 512) && (rh1 == 512) && (rw2 == 2048) && (rh2 == 2048) && (rw3 == 708) && (rh3 == 643);
 }
 
 
@@ -1470,6 +1470,7 @@ bool MTL_TESTS::test_172_glossy_dark_edges_phong()
     refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
     refl.append_child(L"fresnel").append_attribute(L"val").set_value(0);
     refl.append_child(L"fresnel_IOR").append_attribute(L"val").set_value(8.0f);
+    refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
   }
   hrMaterialClose(matRefl);
 

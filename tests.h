@@ -255,7 +255,7 @@ namespace MTL_TESTS
   bool test_126_bump_amount();
   bool test_127_normal_map_height(); 
   bool test_128_bump_radius();
-  bool test_129_parallax();            // #NOT_SUPPORTED_CURRENTLY; parallax is broken;
+  bool test_129_phong_energy_fix();      
   bool test_130_bump_invert_normalY();
 
   bool test_131_blend_simple();

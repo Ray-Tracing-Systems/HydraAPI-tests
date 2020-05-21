@@ -64,6 +64,7 @@ bool MTL_TESTS::test_150_gloss_mirror_cos_div()
     refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
     refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
     refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(2.5);
+    refl.append_child(L"energy_fix").append_attribute(L"val")  = 1;
 
     VERIFY_XML(matNode);
   }
@@ -86,6 +87,7 @@ bool MTL_TESTS::test_150_gloss_mirror_cos_div()
     refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
     refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
     refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(2.5);
+    refl.append_child(L"energy_fix").append_attribute(L"val")  = 1;
 
     VERIFY_XML(matNode);
   }
@@ -108,6 +110,7 @@ bool MTL_TESTS::test_150_gloss_mirror_cos_div()
     refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
     refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
     refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(2.5);
+    refl.append_child(L"energy_fix").append_attribute(L"val")  = 1;
 
     VERIFY_XML(matNode);
   }
@@ -130,6 +133,7 @@ bool MTL_TESTS::test_150_gloss_mirror_cos_div()
     refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
     refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
     refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(2.5);
+    refl.append_child(L"energy_fix").append_attribute(L"val")  = 1;
 
     VERIFY_XML(matNode);
   }
@@ -152,6 +156,7 @@ bool MTL_TESTS::test_150_gloss_mirror_cos_div()
     refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
     refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
     refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(2.5);
+    refl.append_child(L"energy_fix").append_attribute(L"val")  = 1;
 
     VERIFY_XML(matNode);
   }

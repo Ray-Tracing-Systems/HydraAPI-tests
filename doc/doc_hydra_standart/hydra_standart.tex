@@ -158,9 +158,9 @@ The geometry should be represented as triangulated indexed meshes. Indices must 
 
 For each triangle of this mesh some material is assigned --- that is, per triangle material is specified.
 
-\reqirenmentg{single\_mesh\_camera\_space}
+\reqirenmentg{single\_mesh}
 
-At this specification level, the whole scene is defined as a single mesh or several meshes with transformed vertices in \underline{camera space}: camera located at (0,0,0) and looks at (0,0,+1). All positions of vertices must me specified \underline{in meters}. 
+At this specification level, the whole scene is defined as a single mesh or several meshes with transformed vertices in \underline{world space}. All positions of vertices must me specified \underline{in meters}. 
 
 There are five parameters that should be specified for drawing model: (fovY, width, height, zNear, zFar). If they are not specified, renderer may use default values:
 
@@ -182,9 +182,8 @@ left   &=& -xmax, right = +xmax, bottom = -ymax, top = +ymax \\
 
 Reference implementation can be found \href{https://github.com/Ray-Tracing-Systems/HydraAPI-tests/blob/dev/doc/doc_hydra_standart/cammatrices.h}{here} (perspectiveMatrix)
 
-\reqirenmentg{single\_mesh\_world\_space}
 
-At this specification level, the whole scene is defined as a single mesh or several meshes with transformed vertices in \underline{world space}. The camera should be specified in the following way:
+The camera should be specified in the following way:
 \begin{itemize}
 \item camera position : point in 3D.
 \item camera lookAt  : point in 3D.
@@ -193,10 +192,6 @@ At this specification level, the whole scene is defined as a single mesh or seve
 \end{itemize}
 
 The modelView matrix should be calculated from (position,lookAt,upVector) according to \href{https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml}{gluLookAt} specification. Reference implementation can be found \href{https://github.com/Ray-Tracing-Systems/HydraAPI-tests/blob/dev/doc/doc_hydra_standart/cammatrices.h}{here} (lookAt).
-
-\reqirenmentg{inst\_translate}\label{geom2}
-
-At this specification level, the whole scene is defined as set of instances of meshes. Each mesh instance has its own translation. The same mesh can have many copies (many instances) with different translation. If the mesh was not instanced at all, it should not be drawn.
 
 \reqirenmentg{inst\_matrices}\label{geom3}
 

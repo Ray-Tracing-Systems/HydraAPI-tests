@@ -1053,7 +1053,7 @@ namespace MTL_TESTS
       hrRenderSaveFrameBufferLDR(renderRef, outNames[j].c_str());
     } // for(int j=0;j<3;j++)
 
-    return check_images("test_104", 3, 20);
+    return check_images("test_104", 3, 30);
   }
 
 

@@ -787,6 +787,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").text().set(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").text().set(L"0.5");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
       //refl.append_child(L"fresnel_IOR").text().set(L"1.5");
       //refl.append_child(L"fresnel").text().set(L"1");
 
@@ -1064,10 +1065,7 @@ namespace LGHT_TESTS
       {
         auto pres = std::cout.precision(2);
         std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-
-        
-        
+        std::cout.precision(pres); 
       }
 
       if (info.finalUpdate)
@@ -1081,8 +1079,6 @@ namespace LGHT_TESTS
 
   bool test_241_mesh_light_torus_texture_ldr()
   {
-    
-
     hrErrorCallerPlace(L"test_241");
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1143,6 +1139,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").text().set(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").text().set(L"0.5");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
       //refl.append_child(L"fresnel_IOR").text().set(L"1.5");
       //refl.append_child(L"fresnel").text().set(L"1");
 
@@ -1199,6 +1196,7 @@ namespace LGHT_TESTS
       refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
       refl.append_child(L"fresnel").append_attribute(L"val").set_value(0);
       refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(1.5);
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat5);
 
@@ -1453,9 +1451,6 @@ namespace LGHT_TESTS
         auto pres = std::cout.precision(2);
         std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
         std::cout.precision(pres);
-
-        
-        
       }
 
       if (info.finalUpdate)
@@ -1470,8 +1465,6 @@ namespace LGHT_TESTS
 
   bool test_242_mesh_light_torus_texture_hdr()
   {
-    
-
     hrErrorCallerPlace(L"test_242");
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1532,6 +1525,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").text().set(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").text().set(L"0.5");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
       //refl.append_child(L"fresnel_IOR").text().set(L"1.5");
       //refl.append_child(L"fresnel").text().set(L"1");
 
@@ -1588,6 +1582,7 @@ namespace LGHT_TESTS
       refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
       refl.append_child(L"fresnel").append_attribute(L"val").set_value(0);
       refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(1.5);
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat5);
 
@@ -1847,9 +1842,6 @@ namespace LGHT_TESTS
         auto pres = std::cout.precision(2);
         std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
         std::cout.precision(pres);
-
-        
-        
       }
 
       if (info.finalUpdate)
@@ -1924,6 +1916,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").text().set(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").text().set(L"0.5");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat1);
 
@@ -2199,9 +2192,6 @@ namespace LGHT_TESTS
         auto pres = std::cout.precision(2);
         std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
         std::cout.precision(pres);
-
-        
-        
       }
 
       if (info.finalUpdate)
@@ -2215,10 +2205,7 @@ namespace LGHT_TESTS
 
   bool test_244_do_not_sample_me()
   {
-    
-
     hrErrorCallerPlace(L"test_244");
-
     hrSceneLibraryOpen(L"tests_f/test_244", HR_WRITE_DISCARD);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1199,6 +1199,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.5");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat1);
 
@@ -1299,6 +1300,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.4 0.4 0.4");
       refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.75");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat9);
 
@@ -1592,6 +1594,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.5");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat1);
 
@@ -1692,6 +1695,7 @@ namespace LGHT_TESTS
       refl.append_attribute(L"brdf_type").set_value(L"phong");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.4 0.4 0.4");
       refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.85");
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat9);
 

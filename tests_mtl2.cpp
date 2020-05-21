@@ -734,11 +734,12 @@ namespace MTL_TESTS
       auto refl = matNode.append_child(L"reflectivity");
 
       refl.append_attribute(L"brdf_type").set_value(L"phong");
-      refl.append_child(L"color").append_attribute(L"val").set_value(L"0.8 0.8 0.8");
-      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.8");
-      refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
-      refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
-      refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(50);
+      refl.append_child(L"color").append_attribute(L"val")       = L"0.8 0.8 0.8";
+      refl.append_child(L"glossiness").append_attribute(L"val")  = L"0.8";
+      refl.append_child(L"extrusion").append_attribute(L"val")   = L"maxcolor";
+      refl.append_child(L"fresnel").append_attribute(L"val")     = 1;
+      refl.append_child(L"fresnel_ior").append_attribute(L"val") = 50;
+      refl.append_child(L"energy_fix").append_attribute(L"val")  = 1;
 
       auto opacity = matNode.append_child(L"opacity");
       opacity.append_child(L"skip_shadow").append_attribute(L"val").set_value(1);
