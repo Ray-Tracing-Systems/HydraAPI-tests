@@ -270,7 +270,15 @@ It should be noted that the adopted agreement of the backward propagation of lig
 
 \boldblue{(!) Implementation REQ. :} Note that final color of the image should be first clamped and then transformed from HDR to LDR space with gamma correction: $ C_{srgb} = C_{linear}^{(1.0/2.2)} $. Clamping should be simple (i.e. losing color). For example color (1.5, 2.0, 10.0) should be clamped to (1,1,1) but not to (0.15, 0.2, 1.0) for example.
 
-\newpage
+\boldblue{(!) Symbols:}\label{symbols} 
+
+\begin{itemize}
+\item $\omega_i = v$: in, or view vector (note that on image \ref{fig:brdf} inverse view vector (i.e. $-v$) is drawn with blue arrow);
+\item $\omega_o = l$: out, or light vector;
+\item $\omega_h = \frac{l+v}{2}$, half vector;
+\item $n$, normal vector.
+\end{itemize}
+
 
 \setcounter{section}{1}
 \setcounter{req}{-1}
@@ -330,6 +338,8 @@ Assume both reflection vector and generated direction (x,y,z) \textbf{are given 
 	brdf = \frac{n+2}{2\pi}cos(\alpha)^{n} \\
 	pdf = \frac{n+1}{2\pi}cos(\alpha)^{n} \\
 \end{eqnarray*}
+
+Where in practice $cos(\alpha) = dot(\omega_o, \omega_r)$ and $\omega_r$ is perfect specular reflection vector obtained from $\omega_i$: $\omega_r = reflect(\omega_i, n)$.
 
 \boldblue{Test:} 104\_reflect\_phong. MSE should be less than 25.0 for 512x512 LDR image.
 
@@ -532,6 +542,8 @@ Note that all mixtures could be (and in general recommended to be) implemented v
 
 \reqirenmentextension{ggx}
 
+The GGX isotropic BRDF implementation according to \cite{ggx}:
+
 \begin{eqnarray*}
 A &=& \frac{1}{\omega_i \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_i \cdot n)^2} } \\
 B &=& \frac{1}{\omega_o \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_o \cdot n)^2} } \\
@@ -539,6 +551,19 @@ D &=& \frac{\alpha^2}{ \pi \left( (\omega_h \cdot n)^2 . (\alpha^2 - 1) + 1 \rig
 \\
 f_r(\omega_o, \omega_i, \alpha) &=& A*B*D \\
 \end{eqnarray*}
+
+Where $\alpha$ is roughness and $(\omega_o, \omega_i)$ described previously here \ref{symbols}.
+
+GGX sampling can be efficiently implemented according to the Eric Heitz paper \cite{ggxSampling}. Additional implementation with further explanation can be found \href{https://schuttejoe.github.io/post/ggximportancesamplingpart2/}{here} \cite{ggxSampling2}.
+
+%330_CornellBoxWithSphereCylinderTeapot
+
+\boldblue{Test:} 330\_CornellBoxWithSphereCylinderTeapot. 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.25\linewidth]{../../3dsMaxTests/Reference/330_CornellBoxWithSphereCylinderTeapot.png}           
+	\caption{\label{fig:CornellBoxWithSphereCylinderTeapot} testing GGX: Todo describe parameters, add make images for different roughness cases.  }   
+\end{figure}
 
 
 \addtocounter{section}{2}
@@ -557,6 +582,11 @@ f_r(\omega_o, \omega_i, \alpha) &=& A*B*D \\
 \bibitem{fixedPhongpaper} Eric P. Lafortune and Yves D. Willems. \textit{Using the Modified Phong Reflectance Model for Physically Based Rendering}. 1994. 
 		
 		
+\bibitem{ggx} Bruce Walter, Stephen R. Marschner, Hongsong Li, and Kenneth E. Torrance.  \textit{Microfacet models for refraction through rough surfaces.} In Proceedings of the 18th Eurographics conference on Rendering Techniques (EGSR’07). 2007. Eurographics Association, Goslar, DEU, 195–206.		
+		
+\bibitem{ggxSampling} Eric Heitz. \textit{A Simpler and Exact Sampling Routine for the GGX Distribution of Visible Normals.} [Research Report] Unity Technologies. 2017. hal-01509746		
+
+\bibitem{ggxSampling2} Joe Schutte. \textit{Importance Sampling techniques for GGX with Smith Masking-Shadowing: Part 2}. March 7, 2018. Github pages, accessed 22.05.2020. 		
 		
 }
 \end{thebibliography}
