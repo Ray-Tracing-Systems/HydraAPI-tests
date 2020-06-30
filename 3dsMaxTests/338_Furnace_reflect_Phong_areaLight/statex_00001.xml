@@ -47,6 +47,7 @@
       <glossiness val="1">
         <texture id="3" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="2.20000005" input_alpha="alpha" />
       </glossiness>
+  	  <energy_fix val="1"/>
       <fresnel val="0" />
       <fresnel_ior val="1.5" />
       <anisotropy val="0" rot="0" />

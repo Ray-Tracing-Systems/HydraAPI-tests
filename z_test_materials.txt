@@ -1,0 +1,6 @@
+mtl_test_101	PASSED!
+mtl_test_102	PASSED!
+mtl_test_103	PASSED!
+mtl_test_104	FAILED!	MSE = 75.473129
+mtl_test_105	FAILED!	MSE = 3498.916016
+mtl_test_106	FAILED!	MSE = 2335.284912
