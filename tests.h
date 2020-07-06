@@ -314,7 +314,7 @@ namespace MTL_TESTS
   bool test_180_trggx_aniso_rot();
 }
 
-namespace LGHT_TESTS
+namespace LIGHT_TESTS
 {
   bool test_200_spot();
   bool test_201_sphere();

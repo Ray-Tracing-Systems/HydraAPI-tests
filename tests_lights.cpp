@@ -29,7 +29,7 @@ extern GLFWwindow* g_window;
 using namespace TEST_UTILS;
 
 
-namespace LGHT_TESTS
+namespace LIGHT_TESTS
 {
   bool test_200_spot()
   {
@@ -3540,7 +3540,7 @@ namespace LGHT_TESTS
       lightNode.attribute(L"distribution").set_value(L"uniform");
 
       auto intensityNode = lightNode.append_child(L"intensity");
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"25 12.5 25");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"78.5 39.2 78.5");
 
 			VERIFY_XML(lightNode);
     }
@@ -3557,7 +3557,7 @@ namespace LGHT_TESTS
       lightNode.attribute(L"distribution").set_value(L"uniform");
 
       auto intensityNode = lightNode.append_child(L"intensity");
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"12.5 25 12.5");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"39.2 78.5 39.2");
 
 			VERIFY_XML(lightNode);
     }

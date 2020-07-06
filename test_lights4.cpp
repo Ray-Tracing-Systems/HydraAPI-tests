@@ -27,7 +27,7 @@
 extern GLFWwindow* g_window;
 using namespace TEST_UTILS;
 
-namespace LGHT_TESTS
+namespace LIGHT_TESTS
 {
   using LiteMath::float4;
   using LiteMath::float3;

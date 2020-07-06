@@ -27,7 +27,7 @@
 extern GLFWwindow* g_window;
 using namespace TEST_UTILS;
 
-namespace LGHT_TESTS
+namespace LIGHT_TESTS
 {
   const int TEST_SCREEN_SIZE = 512;
 

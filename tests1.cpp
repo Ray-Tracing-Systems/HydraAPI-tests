@@ -1919,7 +1919,7 @@ void run_all_mtl_tests(int a_start)
 
 void run_all_lgt_tests(int a_start)
 {
-  using namespace LGHT_TESTS;
+  using namespace LIGHT_TESTS;
   TestFunc tests[] = { &test_200_spot,
                        &test_201_sphere,
                        &test_202_sky_color,
@@ -2049,7 +2049,7 @@ void run_all_alg_tests(int a_start)
 
 void run_all_mictofacet_torrance_sparrow()
 {
-  using namespace LGHT_TESTS;
+  using namespace LIGHT_TESTS;
   using namespace MTL_TESTS;
   
   TestFunc tests[] = {
