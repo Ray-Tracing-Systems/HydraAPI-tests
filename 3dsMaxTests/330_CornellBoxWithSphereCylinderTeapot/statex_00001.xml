@@ -75,90 +75,18 @@
       <color val="0.6 0.6 0.6" />
       <roughness val="0" />
     </diffuse>
-    <reflectivity brdf_type="phong">
-      <extrusion val="maxcolor" />
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <fresnel val="1" />
-      <fresnel_ior val="1.5" />
-      <anisotropy val="0" rot="0" />
-    </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="1 1 1" />
-      <fog_multiplier val="0" />
-      <ior val="1.5" />
-    </transparency>
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
   </material>
   <material id="4" name="Red" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0.6 0.0352941 0.0352941" />
       <roughness val="0" />
     </diffuse>
-    <reflectivity brdf_type="phong">
-      <extrusion val="maxcolor" />
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <fresnel val="1" />
-      <fresnel_ior val="1.5" />
-      <anisotropy val="0" rot="0" />
-    </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="1 1 1" />
-      <fog_multiplier val="0" />
-      <ior val="1.5" />
-    </transparency>
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
   </material>
   <material id="5" name="Green" type="hydra_material">
     <diffuse brdf_type="lambert">
       <color val="0.0352941 0.6 0.0352941" />
       <roughness val="0" />
     </diffuse>
-    <reflectivity brdf_type="phong">
-      <extrusion val="maxcolor" />
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <fresnel val="1" />
-      <fresnel_ior val="1.5" />
-      <anisotropy val="0" rot="0" />
-    </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="1 1 1" />
-      <fog_multiplier val="0" />
-      <ior val="1.5" />
-    </transparency>
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
   </material>
   <material id="6" name="teaport_material" type="hydra_material">
     <diffuse brdf_type="lambert">
@@ -169,26 +97,11 @@
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
       <glossiness val="0.5" />
+	  <energy_fix val="1"/>
       <fresnel val="1" />
       <fresnel_ior val="10" />
       <anisotropy val="0" rot="0" />
     </reflectivity>
-    <transparency brdf_type="phong">
-      <color val="0 0 0" />
-      <glossiness val="1" />
-      <thin_walled val="0" />
-      <fog_color val="1 1 1" />
-      <fog_multiplier val="0" />
-      <ior val="1.5" />
-    </transparency>
-    <emission>
-      <color val="0 0 0" />
-      <cast_gi val="1" />
-    </emission>
-    <translucency>
-      <color val="0 0 0" />
-      <multiplier val="0" />
-    </translucency>
   </material>
   <material id="7" name="environment_material" type="hydra_material" light_id="0" visible="1">
     <emission>
