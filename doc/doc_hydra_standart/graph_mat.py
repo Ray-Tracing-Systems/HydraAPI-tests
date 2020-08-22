@@ -1,58 +1,5 @@
 from graphviz import Digraph
 
-'''
-f = Digraph('G', filename='fsm.gv')
-f.attr(size='4,5')
-
-f.attr('node', shape='circle')
-
-with f.subgraph(name='cluster_0') as s:
-  s.attr(rank='same')
-  f.node('lambert')
-  f.node('emission')
-  f.node('mirror')
-  f.node('ggx')
-  f.attr(label='BRDFs')
-
-with f.subgraph(name='cluster_1') as s:
-  s.attr(rank='same')
-  f.node('lambert_tex')
-  f.node('emission_tex')
-  f.node('mirror_tex')
-  f.node('ggx_tex')
-  f.attr(label='Textures')
-
-f.node('ggx_tex_gloss')
-
-#f.node('mix_ggx_lambert_maxcolor')
-
-f.node('tex_wrap_clamp', shape='doublecircle', label='tex_wrap_clamp')
-f.node('tex_matrices',  shape='doublecircle')
-
-f.edge('lambert',  'lambert_tex')
-f.edge('emission', 'emission_tex')
-f.edge('mirror',   'mirror_tex')
-f.edge('ggx',      'ggx_tex')
-f.edge('ggx',      'ggx_tex_gloss')
-
-f.edge('lambert_tex',   'tex_wrap_clamp')
-f.edge('emission_tex',  'tex_wrap_clamp')
-f.edge('mirror_tex',    'tex_wrap_clamp')
-f.edge('ggx_tex',       'tex_wrap_clamp')
-f.edge('ggx_tex_gloss', 'tex_wrap_clamp')
-f.edge('tex_wrap_clamp', 'tex_matrices')
-
-
-#f.edge('ggx',     'mix_ggx_lambert_maxcol')
-#f.edge('lambert', 'mix_ggx_lambert_maxcol')
-#f.edge('mirror',  'mix_ggx_lambert_maxcol')
-
-f.view()
-
-'''
-
-from graphviz import Digraph
-
 g = Digraph('G', filename='cluster.gv')
 
 g.attr(nodesep='1', ranksep='1')
@@ -62,11 +9,11 @@ g.attr(nodesep='1', ranksep='1')
 
 with g.subgraph(name='cluster_0') as c:
     c.node('tex_color', shape='doublecircle')
-    c.node('tex_gloss')
+    c.node('tex_gloss', shape='doublecircle')
     c.node('tex_wrap_clamp')
     c.node('tex_matrices')
     c.edge('tex_color',  'tex_wrap_clamp')
-    c.edge('tex_gloss', 'tex_wrap_clamp') 
+    c.edge('tex_gloss', 'tex_wrap_clamp', style='dotted') 
     c.edge('tex_wrap_clamp', 'tex_matrices')
     c.attr(label='Textures')
 
@@ -114,6 +61,8 @@ g.edge('emission', 'tex_color')
 g.edge('mirror',   'tex_color')
 g.edge('ggx',      'tex_color')
 g.edge('ggx',      'tex_gloss')
+g.edge('phong',    'tex_gloss', style='dotted')
+g.edge('maxphong', 'tex_gloss', style='dotted')
 
 g.edge('diff','mix0')
 g.edge('refl','mix0')
