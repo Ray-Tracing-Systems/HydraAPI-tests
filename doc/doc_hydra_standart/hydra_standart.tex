@@ -309,98 +309,50 @@ Basic support for emissive material. On this level of specification emissive mat
 \boldblue{Test:} 123\_emission. MSE should be less than 5.0 for 512x512 LDR image. 
 
 \begin{figure}[h]
-	\begin{minipage}[h]{0.33\linewidth}
+	\begin{minipage}[h]{0.26\linewidth}
 		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_123/w_ref.png} \\ red emission}
 	\end{minipage}
 	\hfill
-	\begin{minipage}[h]{0.325\linewidth}
+	\begin{minipage}[h]{0.26\linewidth}
 		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_123/w_ref2.png} \\ green emission}
 	\end{minipage}
-	\begin{minipage}[h]{0.33\linewidth}
+    \hfill
+	\begin{minipage}[h]{0.26\linewidth}
 		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_123/w_ref3.png} \\ blue emission}
 	\end{minipage}
 	\caption{Phong for different cosine power and color (0.5, 0.5, 0.5).}
 \end{figure}
 
+\FloatBarrier
+
 \boldblue{(!) Implementation REQ. :} Emission color value \textbf{must} specify \textbf{brightness} value. It is easy to ckeck this requirenment. Directly visible emissive surface on rendered image (stored in linear HDR framebuffer) must have exactly same value that was set for material. For example if you set emission color to (0.5, 0.5, 0) and then check directly visible surfaces (when primary rays immediately hit surface), you shoulg get exactly same yellow color (0.5, 0.5, 0) in the rendered image (in linear space, i.e. HDR image).
 
-\reqirenment{phong}
+\reqirenment{ggx}
 
-Basic support for reflections via Modified Phong model \cite{fixedPhongpaper}. Note that mixing of phong and lambertian reflections is not needed at this level of specification. Renderer may suppose mutually exclusive phong or lambert. 
+The GGX isotropic BRDF implementation according to \cite{ggx} and \cite{ggxSampling}:
 
-\boldblue{Implementation:}
-Assume both reflection vector and generated direction (x,y,z) \textbf{are given in local basis} and thus ideal reflection vector equals to (0,1,0). Then, further model can be used for sampling and BRDF evaluation:
-
-\begin{eqnarray*} \label{eq:fixedPhong}
-	h           = \sqrt{1-\xi_1^{\frac{2}{n+1}}} \\
-	(x,y,z )    = (h*cos(2\pi\xi_2), h*sin(2\pi\xi_2), \xi_1^{\frac{1}{n+1}} )\\
-	cos(\alpha) = dot((0,1,0), (x,y,z)) = y \\
-	brdf = \frac{n+2}{2\pi}cos(\alpha)^{n} \\
-	pdf = \frac{n+1}{2\pi}cos(\alpha)^{n} \\
+\begin{eqnarray*}
+	A &=& \frac{1}{\omega_i \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_i \cdot n)^2} } \\
+	B &=& \frac{1}{\omega_o \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_o \cdot n)^2} } \\
+	D &=& \frac{\alpha^2}{ \pi \left( (\omega_h \cdot n)^2 . (\alpha^2 - 1) + 1 \right)^2 }  \\
+	\\
+	f_r(\omega_o, \omega_i, \alpha) &=& A*B*D \\
 \end{eqnarray*}
 
-Where in practice $cos(\alpha) = dot(\omega_o, \omega_r)$ and $\omega_r$ is perfect specular reflection vector obtained from $\omega_i$: $\omega_r = reflect(\omega_i, n)$.
+Where $\alpha$ is roughness and $(\omega_o, \omega_i)$ described previously here \ref{symbols}.
 
-\boldblue{Test:} 104\_reflect\_phong. MSE should be less than 25.0 for 512x512 LDR image.
+GGX sampling can be efficiently implemented according to the Eric Heitz paper \cite{ggxSampling}. Additional implementation with further explanation can be found \href{https://schuttejoe.github.io/post/ggximportancesamplingpart2/}{here} \cite{ggxSampling2}.
 
+%330_CornellBoxWithSphereCylinderTeapot
 
-\begin{figure}[h]
-	\begin{minipage}[h]{0.33\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_104/w_ref.png} \\ cosPower = 12}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[h]{0.325\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_104/w_ref2.png} \\ cosPower = 32}
-	\end{minipage}
-	\begin{minipage}[h]{0.33\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_104/w_ref3.png} \\ cosPower = 82}
-	\end{minipage}
-	\caption{Phong for different cosine power and color (0.95, 0.95, 0.95).}\label{fig:phong1}
-\end{figure}
-
-\reqirenmentextension{phong\_energy\_fix}
-
-Unfortunately modified Phong have several drawbacks and thus almost never used in practice. First, it looks bad due to darkening edges (fig. \ref{fig:phong1}) due to reflected rays that have fallen under the surface. Second, at high values of cosine power modified Phong actually does not become perfect mirror --- it's also too dark. To solve these problems simple modification can be proposed (equation \ref{eq:phongEnergyFix}). The result is presented on figure \ref{fig:phong2}.
-
-\boldblue{Test:} 129\_phong\_energy\_fix (fig. \ref{fig:phong2}). MSE should be less than 25.0 for 512x512 LDR image.
-
-\begin{figure}[h]
-	\begin{minipage}[h]{0.33\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_129/w_ref.png} \\ cosPower = 12}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[h]{0.325\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_129/w_ref2.png} \\ cosPower = 32}
-	\end{minipage}
-	\begin{minipage}[h]{0.33\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_129/w_ref3.png} \\ cosPower = 82}
-	\end{minipage}
-	\caption{Phong with energy fix for different cosine power and color (0.95, 0.95, 0.95).}\label{fig:phong2}
-\end{figure}
-
-\boldblue{Test:} 337\_Furnance\_reflect\_Phong (fig. \ref{fig:test_337_image}). MSE should be less than 25.0 for 1024x128 LDR image.
-
+\boldblue{Test:} 330\_CornellBoxWithSphereCylinderTeapot. 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=1.0\linewidth]{../../3dsMaxTests/Reference/337_Furnance_reflect_Phong.png}           
-	\caption{\label{fig:test_337_image}
-		Phong furnance test. This test demonstrates approximate energy conservation in practice, since spheres are illuminated only with a gray background and the image of the balls inter-flows with the background. A small residual presence of dark edges does not violate energy conservation although we tried to minimize it compared to the original Phong model during the desing of equation \ref{eq:phongEnergyFix}.  }   
+	\includegraphics[width=0.30\linewidth]{../../3dsMaxTests/Reference/330_CornellBoxWithSphereCylinderTeapot.png}           
+	\caption{\label{fig:CornellBoxWithSphereCylinderTeapot} testing GGX: Todo describe parameters, add make images for different roughness cases.  }   
 \end{figure}
 
-
-\begin{equation}\label{eq:phongEnergyFix}
-energyFix = \frac{cos(\alpha)}{cos(\theta_{out})}
-\end{equation}
-
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.5\linewidth]{images/phong.png}           
-	\caption{\label{fig:phongletters}
-		Surveys for equation \ref{eq:phongEnergyFix}. TBD: on this image wrong theta angle is shown!  }   
-\end{figure}
-
-Where $cos(\alpha)$ is the cosine used in Phong model and $cos(\theta_{out})$ is geometry cosine (fig. \ref{fig:phongletters}).
+\FloatBarrier
 
 \reqirenment{mirror}
 
@@ -428,7 +380,6 @@ BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 10^{-6})}
 
 Adding LDR textures for Lambertian materials. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
 
-
 \boldblue{Test:} test\_103\_diffuse\_texture. MSE should be less than 5.0 for 512x512 LDR image. 
 \begin{figure}[htb]
 	\centering
@@ -439,9 +390,9 @@ Adding LDR textures for Lambertian materials. When reading from LDR texture, gam
 
 \FloatBarrier
 
-\reqirenment{phong\_mirror\_texture\_color}
+\reqirenment{reflect\_texture\_color}
 
-Adding LDR textures for reflection color for both phong and mirrors. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
+Adding LDR textures for reflection color for both ggx and mirrors. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
 
 \boldblue{Test:} test\_108\_reflect\_texture. MSE should be less than 5.0 for 512x512 LDR image. 
 \begin{figure}[htb]
@@ -455,11 +406,9 @@ Adding LDR textures for reflection color for both phong and mirrors. When readin
 
 \boldblue{(!) Implementation REQ. :} Texture fetch (samplers) must support both <<wrap>> and <<clamp>> addressing modes separately for $u$ and $v$ texture coordinates. Please see req. \ref{req:diffusetexture} for detailed description.
 
-
 \reqirenment{emission\_texture\_color\_ldr}
 
 Adding LDR textures to emission color. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
-
 
 \boldblue{Test:} test\_124\_emission\_texture. MSE should be less than 5.0 for 512x512 LDR image. 
 \begin{figure}[htb]
@@ -469,45 +418,13 @@ Adding LDR textures to emission color. When reading from LDR texture, gamma tran
 		Emissive textures.  }   
 \end{figure}
 
-\reqirenment{phong\_texture\_glosiness}
+\FloatBarrier
 
-Adding textures for reflection glosiness in phong model. The phong power \textbf{must} be obtained from glosiness value via function: 
+\reqirenment{ggx\_texture\_glosiness}
 
-\begin{lstlisting}[language=C++, caption={phong cos power from glosiness}]
-const float glosscoeff[10][4] = {
- { 8.88178419700125e-14f, -1.77635683940025e-14f, 5.0f, 1.0f },     //0-0.1
- { 357.142857142857f, -35.7142857142857f, 5.0f, 1.5f },             //0.1-0.2
- { -2142.85714285714f, 428.571428571429f, 8.57142857142857f, 2.0f}, //0.2-0.3
- { 428.571428571431f, -42.8571428571432f, 30.0f, 5.0f },            //0.3-0.4
- { 2095.23809523810f, -152.380952380952f, 34.2857142857143f, 8.0f}, //0.4-0.5
- { -4761.90476190476f, 1809.52380952381f, 66.6666666666667f, 12.0f},//0.5-0.6
- { 9914.71215351811f, 1151.38592750533f, 285.714285714286f, 32.0f}, //0.6-0.7
- { 45037.7068059246f, 9161.90096119855f, 813.432835820895f, 82.0f}, //0.7-0.8
- { 167903.678757035f, 183240.189801913f, 3996.94423223835f, 300.0f},//0.8-0.9
- { -20281790.7444668f, 6301358.14889336f, 45682.0925553320f,2700.0f}//0.9-1.0
-};
+Adding textures for reflection $glosiness = 1-roughness$ in ggx model. Colored textures should use $max(color.r, color.g, color.b)$ to get glosiness value from textures.
 
-float cosPowerFromGlosiness(float glosiness)
-{
-  const float cMin = 1.0f;
-  const float cMax = 1000000.0f;
-
-  const float x  = glosiness;
-  const int   k  = (fabs(x - 1.0f) < 1e-5f) ? 10 : (int)(x*10.0f);
-  const float x1 = (x - (float)(k)*0.1f);
-
-  if (k == 10 || x >= 0.99f)
-    return cMax;
-  else
-    return glosscoeff[k][3] + glosscoeff[k][2] * x1    \
-                            + glosscoeff[k][1] * x1*x1 \
-                            + glosscoeff[k][0] * x1*x1*x1;
-}
-\end{lstlisting}\label{cospowerfromglosiness}
-
-Colored textures should use $max(color.r, color.g, color.b)$ to get glosiness value from textures.
-
-Note that on this specification level phong with glosiness equal to 1 \textbf{must} become mirror material.
+\boldblue{Note:} On this specification level ggx with glosiness equal to 1 \textbf{must} become mirror material.
 
 \reqirenment{texture\_wrap\_and\_clamp}
 
@@ -517,53 +434,29 @@ Texture fetch (samplers) must support both <<wrap>> and <<clamp>> addressing mod
 
 The sampler object must support the storage and use of texture matrices. Texture matrices are aplied to texture coordinates before actual texture fetch is performed. Initially, the matrices should be 4x4, but since in most cases the texture coordinates are two-dimensional, at this level of the specification, the render can save only the first 2 rows of the matrix.
 
-\reqirenment{mix\_phong\_lambert\_extrusion\_maxcolor}
+\reqirenment{mix\_ggx\_lambert\_extrusion\_maxcolor}
 
-Mixing phong and lambert. The phong reflection have a higher priority and \textbf{must} extrude lambertian reflectiosn if summ of reflection coeffitients are greater than 1.
+Mixing ggx and lambert. The ggx reflection have a higher priority and \textbf{must} extrude Lambertian reflection if summ of reflection coefficients are greater than 1.
 
-Colored textures gain $max(color.r, color.g, color.b)$ for mix coeffitient.
+Colored textures gain $max(color.r, color.g, color.b)$ for mix coefficient.
 
-\reqirenment{mix\_phong\_lambert\_extrusion\_avgcolor}
+\reqirenment{mix\_ggx\_lambert\_extrusion\_avgcolor}
 
-Mixing phong and lambert. The phong reflection have a higher priority and \textbf{must} extrude lambertian reflectiosn if summ of reflection coeffitients are greater than 1. The Corona and Mental Ray renderers use this extrusion type by default.
+Mixing ggx and lambert. The ggx reflection have a higher priority and \textbf{must} extrude Lambertian reflection if summ of reflection coefficients are greater than 1. The Corona and Mental Ray renderers use this extrusion type by default.
 
-Colored textures gain $avg(color.r, color.g, color.b)$ for mix coeffitient.
+Colored textures gain $avg(color.r, color.g, color.b)$ for mix coefficient.
 
 
-\reqirenmentextension{mix\_phong\_lambert\_extrusion\_percomponent}
+\reqirenmentextension{mix\_ggx\_lambert\_extrusion\_percomponent}
 
-Mixing phong and lambert separately for each color component.  The phong reflection have a higher priority and \textbf{must} extrude lambertian reflectiosn \textit{separately for each color component} if summ of reflection coeffitients are greater than 1. The VRay renderer use this extrusion type by default.
+Mixing ggx and lambert separately for each color component.  The ggx reflection have a higher priority and \textbf{must} extrude lambertian reflection \textit{separately for each color component} if summ of reflection coefficients are greater than 1. The VRay renderer use this extrusion type by default.
 
-\reqirenmentextension{mix\_phong\_lambert\_extrusion\_sumcolor}
+\reqirenmentextension{mix\_ggx\_lambert\_extrusion\_sumcolor}
 
-Mixing phong and lambert without priority. If summ of reflection coeffitients is greater than 1, both of them \textbf{should} be scaled lineary to get sum equal to 1.0 \textit{separately for each color component}.
+Mixing ggx and lambert without priority. If summ of reflection coefficients is greater than 1, both of them \textbf{should} be scaled linearly to get sum equal to 1.0 \textit{separately for each color component}.
 
 Note that all mixtures could be (and in general recommended to be) implemented via blend by mask (see blend\_mask). However, on this level of specification you don't have to implement blend for BRDFs.
 
-\reqirenmentextension{ggx}
-
-The GGX isotropic BRDF implementation according to \cite{ggx}:
-
-\begin{eqnarray*}
-A &=& \frac{1}{\omega_i \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_i \cdot n)^2} } \\
-B &=& \frac{1}{\omega_o \cdot n + \sqrt{ \alpha^2 + (1-\alpha^2) (\omega_o \cdot n)^2} } \\
-D &=& \frac{\alpha^2}{ \pi \left( (\omega_h \cdot n)^2 . (\alpha^2 - 1) + 1 \right)^2 }  \\
-\\
-f_r(\omega_o, \omega_i, \alpha) &=& A*B*D \\
-\end{eqnarray*}
-
-Where $\alpha$ is roughness and $(\omega_o, \omega_i)$ described previously here \ref{symbols}.
-
-GGX sampling can be efficiently implemented according to the Eric Heitz paper \cite{ggxSampling}. Additional implementation with further explanation can be found \href{https://schuttejoe.github.io/post/ggximportancesamplingpart2/}{here} \cite{ggxSampling2}.
-
-%330_CornellBoxWithSphereCylinderTeapot
-
-\boldblue{Test:} 330\_CornellBoxWithSphereCylinderTeapot. 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.25\linewidth]{../../3dsMaxTests/Reference/330_CornellBoxWithSphereCylinderTeapot.png}           
-	\caption{\label{fig:CornellBoxWithSphereCylinderTeapot} testing GGX: Todo describe parameters, add make images for different roughness cases.  }   
-\end{figure}
 
 
 \addtocounter{section}{2}
@@ -579,7 +472,7 @@ GGX sampling can be efficiently implemented according to the Eric Heitz paper \c
 \begin{thebibliography}{1}
 \small{    
 		
-\bibitem{fixedPhongpaper} Eric P. Lafortune and Yves D. Willems. \textit{Using the Modified Phong Reflectance Model for Physically Based Rendering}. 1994. 
+\bibitem{fixedpaper} Eric P. Lafortune and Yves D. Willems. \textit{Using the Modified Phong Reflectance Model for Physically Based Rendering}. 1994. 
 		
 		
 \bibitem{ggx} Bruce Walter, Stephen R. Marschner, Hongsong Li, and Kenneth E. Torrance.  \textit{Microfacet models for refraction through rough surfaces.} In Proceedings of the 18th Eurographics conference on Rendering Techniques (EGSR’07). 2007. Eurographics Association, Goslar, DEU, 195–206.		
