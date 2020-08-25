@@ -327,6 +327,30 @@ Basic support for emissive material. On this level of specification emissive mat
 
 \boldblue{(!) Implementation REQ. :} Emission color value \textbf{must} specify \textbf{brightness} value. It is easy to ckeck this requirenment. Directly visible emissive surface on rendered image (stored in linear HDR framebuffer) must have exactly same value that was set for material. For example if you set emission color to (0.5, 0.5, 0) and then check directly visible surfaces (when primary rays immediately hit surface), you shoulg get exactly same yellow color (0.5, 0.5, 0) in the rendered image (in linear space, i.e. HDR image).
 
+\reqirenment{perfect\_mirror}
+
+Pure specular reflection. Note that mixing of mirror and lambertian reflections is not needed at this level of specification. Renderer may suppose mutually exclusive: (phong, mirror or lambert). 
+\boldblue{Implementation:} It is assumed that you will pre-divide to $cos(\theta_{out})$ inside BRDF and later cancel this cosine in lighting integral (equation \ref{eq:integral}) instead of considering pure specular reflection as a special case during lighting integral evaluation. Though, you will probably have to consider pure specular reflection as special cases in many other places. 
+\begin{equation}\label{brdf_idealmirror1}
+BRDF_{mirror} = \frac{1}{cos(\theta_{out})}
+\end{equation}
+
+\boldblue{(!) Implementation Note:} You are \textbf{allowed} to clamp denominator to avoid dividing by zero: 
+
+\begin{equation}\label{brdf_idealmirror2}
+BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 10^{-6})}
+\end{equation}
+
+\boldblue{Test:} test\_174\_mirror\_orbspec\_mat03. 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_174/w_ref.png}           
+	\caption{\label{fig:test_174_image}
+		Example of mirror material with color equal to (0.75, 0.75, 0.75).  }   
+\end{figure}
+
+\FloatBarrier
+
 \reqirenment{ggx}
 
 The GGX isotropic BRDF implementation according to \cite{ggx} and \cite{ggxSampling}:
@@ -354,29 +378,8 @@ GGX sampling can be efficiently implemented according to the Eric Heitz paper \c
 
 \FloatBarrier
 
-\reqirenment{mirror}
 
-Pure specular reflection. Note that mixing of mirror and lambertian reflections is not needed at this level of specification. Renderer may suppose mutually exclusive: (phong, mirror or lambert). 
-\boldblue{Implementation:} It is assumed that you will pre-divide to $cos(\theta_{out})$ inside BRDF and later cancel this cosine in lighting integral (equation \ref{eq:integral}) instead of considering pure specular reflection as a special case during lighting integral evaluation. Though, you will probably have to consider pure specular reflection as special cases in many other places. 
-\begin{equation}\label{brdf_idealmirror1}
-BRDF_{mirror} = \frac{1}{cos(\theta_{out})}
-\end{equation}
-
-\boldblue{(!) Implementation Note:} You are \textbf{allowed} to clamp denominator to avoid dividing by zero: 
-
-\begin{equation}\label{brdf_idealmirror2}
-BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 10^{-6})}
-\end{equation}
-
-\boldblue{Test:} test\_174\_mirror\_orbspec\_mat03. 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.25\linewidth]{../../tests_images/test_174/w_ref.png}           
-	\caption{\label{fig:test_174_image}
-		Example of mirror material with color equal to (0.75, 0.75, 0.75).  }   
-\end{figure}
-
-\reqirenment{lambert\_texture\_color}\label{req:diffusetexture}
+\reqirenment{lambert\_texture}\label{req:diffusetexture}
 
 Adding LDR textures for Lambertian materials. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
 
@@ -390,7 +393,22 @@ Adding LDR textures for Lambertian materials. When reading from LDR texture, gam
 
 \FloatBarrier
 
-\reqirenment{reflect\_texture\_color}
+\reqirenment{emission\_texture\_ldr}
+
+Adding LDR textures to emission color. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
+
+\boldblue{Test:} test\_124\_emission\_texture. MSE should be less than 5.0 for 512x512 LDR image. 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_124/w_ref.png}           
+	\caption{\label{fig:test_124_image}
+		Emissive textures.  }   
+\end{figure}
+
+\FloatBarrier
+
+
+\reqirenment{ggx\_texture}
 
 Adding LDR textures for reflection color for both ggx and mirrors. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
 
@@ -405,20 +423,6 @@ Adding LDR textures for reflection color for both ggx and mirrors. When reading 
 \FloatBarrier
 
 \boldblue{(!) Implementation REQ. :} Texture fetch (samplers) must support both <<wrap>> and <<clamp>> addressing modes separately for $u$ and $v$ texture coordinates. Please see req. \ref{req:diffusetexture} for detailed description.
-
-\reqirenment{emission\_texture\_color\_ldr}
-
-Adding LDR textures to emission color. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
-
-\boldblue{Test:} test\_124\_emission\_texture. MSE should be less than 5.0 for 512x512 LDR image. 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.25\linewidth]{../../tests_images/test_124/w_ref.png}           
-	\caption{\label{fig:test_124_image}
-		Emissive textures.  }   
-\end{figure}
-
-\FloatBarrier
 
 \reqirenment{ggx\_texture\_glosiness}
 
@@ -468,6 +472,16 @@ Note that all mixtures could be (and in general recommended to be) implemented v
 \setcounter{req}{-1}
 
 \reqirenmentlight{area\_light}
+
+
+\reqirenmentlight{alg\_paths}
+
+Further path grammar must occur in scenes:
+\begin{enumerate}
+\item ESDL and EDSL --- single mirror in scene that is also reflect single reflected caustic;	
+\item ESDSL --- single reflected caustic, that is visible in the mirror; 
+\item EGGL --- double glossy reflection.	
+\end{enumerate}	
 
 \begin{thebibliography}{1}
 \small{    
