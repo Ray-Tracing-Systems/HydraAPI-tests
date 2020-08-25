@@ -473,15 +473,43 @@ Note that all mixtures could be (and in general recommended to be) implemented v
 
 \reqirenmentlight{area\_light}
 
-
+\newpage
 \reqirenmentlight{alg\_paths}
 
 Further path grammar must occur in scenes:
 \begin{enumerate}
 \item ESDL and EDSL --- single mirror in scene that is also reflect single reflected caustic;	
-\item ESDSL --- single reflected caustic, that is visible in the mirror; 
-\item EGGL --- double glossy reflection.	
+\item ESDSL (R) --- single reflected caustic, that is visible in the mirror; 
+\item ESDSL (T) --- single refracted caustic to check light transport symmetry;
+\item E*SS*L --- double perfect reflection.	
+\item E*GG*L --- double glossy reflection.	
 \end{enumerate}	
+
+
+Suggested scenes:
+\begin{enumerate}
+\item one mirror wall in diffuse Cornell box (ESDL,EDSL, ESDSL (R));	
+\item one glossy wall in diffuse Cornell box (EGDL,EDGL, EGDGL (R));	
+\item one mirror wall and mirror teapot in Cornell box;
+\item one mirror wall and glossy teapot in Cornell box.
+\item one glossy wall and glossy teapot in Cornell box (fig. \ref{fig:rotatedlights}, left).
+\item two mirror walls and mirror teapot in Cornell box;
+\item two mirror walls and glossy teapot in Cornell box;
+\item two glossy walls and mirror teapot in Cornell box;
+\item two glossy walls and glossy teapot in Cornell box.
+\end{enumerate}
+
+\begin{figure}[h]
+	\begin{minipage}[h]{0.49\linewidth}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_223/w_ref.png} \\ test\_223}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[h]{0.49\linewidth}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_224/w_ref.png} \\ test\_224}
+	\end{minipage}
+	\caption{rotated lights.}\label{fig:rotatedlights}
+\end{figure}
+
 
 \begin{thebibliography}{1}
 \small{    
