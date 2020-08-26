@@ -467,7 +467,7 @@ Colored textures gain $avg(color.r, color.g, color.b)$ for mix coefficient.
 Mixing ggx and lambert separately for each color component.  The ggx reflection have a higher priority and \textbf{must} extrude lambertian reflection \textit{separately for each color component} if summ of reflection coefficients are greater than 1. The VRay renderer use this extrusion type by default.
 
 \reqirenmentextension{mix\_ggx\_lambert\_extrusion\_sumcolor}
-\reqirenmentlight
+
 Mixing ggx and lambert without priority. If summ of reflection coefficients is greater than 1, both of them \textbf{should} be scaled linearly to get sum equal to 1.0 \textit{separately for each color component}.
 
 Note that all mixtures could be (and in general recommended to be) implemented via blend by mask (see blend\_mask). However, on this level of specification you don't have to implement blend for BRDFs.
