@@ -100,6 +100,19 @@
 }
 
 
+\newcommand{\reqirenmentalg}[1]{%
+	\refstepcounter{req}%
+	\par\noindent 
+	\phantomsection % Needed for hyperref compatibility with the \addcontensline command
+	%\addcontentsline{def2}{figure}{#1} % Adds the question to the list of questions
+	\addcontentsline{def2}{figure}
+	{\protect\numberline{\thesection.\thereq}#1}\par
+	\todo[inline, color=green!25]{\textbf{alg\_\thesection.\thereq:} \textbf{#1} \hyperref[ruleslist]{(core)}} % Uses the todonotes package to create a fancy box to put the question
+	\vspace{1em} % White space after the question before the start of the answer
+}
+
+
+
 \newcommand{\reqirenmentextension}[1]{%
 	\refstepcounter{req}%
 	\par\noindent 
@@ -378,7 +391,6 @@ GGX sampling can be efficiently implemented according to the Eric Heitz paper \c
 
 \FloatBarrier
 
-
 \reqirenment{lambert\_texture}\label{req:diffusetexture}
 
 Adding LDR textures for Lambertian materials. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
@@ -406,7 +418,6 @@ Adding LDR textures to emission color. When reading from LDR texture, gamma tran
 \end{figure}
 
 \FloatBarrier
-
 
 \reqirenment{ggx\_texture}
 
@@ -456,7 +467,7 @@ Colored textures gain $avg(color.r, color.g, color.b)$ for mix coefficient.
 Mixing ggx and lambert separately for each color component.  The ggx reflection have a higher priority and \textbf{must} extrude lambertian reflection \textit{separately for each color component} if summ of reflection coefficients are greater than 1. The VRay renderer use this extrusion type by default.
 
 \reqirenmentextension{mix\_ggx\_lambert\_extrusion\_sumcolor}
-
+\reqirenmentlight
 Mixing ggx and lambert without priority. If summ of reflection coefficients is greater than 1, both of them \textbf{should} be scaled linearly to get sum equal to 1.0 \textit{separately for each color component}.
 
 Note that all mixtures could be (and in general recommended to be) implemented via blend by mask (see blend\_mask). However, on this level of specification you don't have to implement blend for BRDFs.
@@ -473,42 +484,50 @@ Note that all mixtures could be (and in general recommended to be) implemented v
 
 \reqirenmentlight{area\_light}
 
-\newpage
-\reqirenmentlight{alg\_paths}
 
-Further path grammar must occur in scenes:
+
+\newpage
+
+\section{Integrators}\label{algfeatures}
+
+\reqirenmentalg{paths\_basic}
+
+\noindent Scenes should be tested in which the following types of paths contribute significantly to the image:
 \begin{enumerate}
-\item ESDL and EDSL --- single mirror in scene that is also reflect single reflected caustic;	
-\item ESDSL (R) --- single reflected caustic, that is visible in the mirror; 
-\item ESDSL (T) --- single refracted caustic to check light transport symmetry;
-\item E*SS*L --- double perfect reflection.	
-\item E*GG*L --- double glossy reflection.	
+\item ESDL, EDSL, ESDSL (R) --- mirror wall that is also reflect single reflected caustic;
+\item EGDL, EDGL, EGDGL (R) --- glossy wall that is also reflect single reflected caustic; 
+\item ESSL, EDSSL --- double perfect reflection.	
+\item EGGL, EDGGL --- double glossy reflection.	
 \end{enumerate}	
 
+\reqirenmentalg{paths\_glass}
 
-Suggested scenes:
+\noindent Scenes should be tested in which the following types of paths contribute significantly to the image:
 \begin{enumerate}
-\item one mirror wall in diffuse Cornell box (ESDL,EDSL, ESDSL (R));	
-\item one glossy wall in diffuse Cornell box (EGDL,EDGL, EGDGL (R));	
-\item one mirror wall and mirror teapot in Cornell box;
-\item one mirror wall and glossy teapot in Cornell box.
-\item one glossy wall and glossy teapot in Cornell box (fig. \ref{fig:rotatedlights}, left).
-\item two mirror walls and mirror teapot in Cornell box;
-\item two mirror walls and glossy teapot in Cornell box;
-\item two glossy walls and mirror teapot in Cornell box;
-\item two glossy walls and glossy teapot in Cornell box.
-\end{enumerate}
+\item EDSL, EDSL (T) --- spherical light inside glass ball to check light transport symmetry;
+\item ESDSL (T) --- single refracted caustic to check light transport symmetry (water scene);
+\item ESSL  (T) --- single refracted caustic to check light transport symmetry (glass ball);
+\end{enumerate}	
 
-\begin{figure}[h]
-	\begin{minipage}[h]{0.49\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_223/w_ref.png} \\ test\_223}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[h]{0.49\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_224/w_ref.png} \\ test\_224}
-	\end{minipage}
-	\caption{rotated lights.}\label{fig:rotatedlights}
-\end{figure}
+\reqirenmentalg{paths\_glossy\_glass}
+
+\noindent Scenes should be tested in which the following types of paths contribute significantly to the image:
+\begin{enumerate}
+	\item EDGL, EDGL (T) --- spherical light inside glass ball to check light transport symmetry;
+	\item EGDGL (T) --- single refracted caustic to check light transport symmetry (water scene);
+	\item EGGL  (T) --- single refracted caustic to check light transport symmetry (glass ball);
+\end{enumerate}	
+
+%\begin{figure}[h]
+%	\begin{minipage}[h]{0.49\linewidth}
+%		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_223/w_ref.png} \\ test\_223}
+%	\end{minipage}
+%	\hfill
+%	\begin{minipage}[h]{0.49\linewidth}
+%		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_224/w_ref.png} \\ test\_224}
+%	\end{minipage}
+%	\caption{rotated lights.}\label{fig:rotatedlights}
+%\end{figure}
 
 
 \begin{thebibliography}{1}
