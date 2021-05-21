@@ -1,6 +1,4 @@
 # HydraAPI-tests
-[![Codacy Security Scan](https://github.com/Ray-Tracing-Systems/HydraAPI-tests/actions/workflows/codacy-analysis.yml/badge.svg?branch=master)](https://github.com/Ray-Tracing-Systems/HydraAPI-tests/actions/workflows/codacy-analysis.yml)
-
 Tests for HydraAPI (https://github.com/Ray-Tracing-Systems/HydraAPI) migrated from the main HydraAPI project
 Dependent on HydraAPI and HydraCore.
 
