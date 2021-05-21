@@ -6,3 +6,6 @@ To run tests clone the repo to the same directory where HydraAPI root directory 
 * my_repos
     * HydraAPI
     * HydraAPI-tests
+
+
+[![Codacy Security Scan](https://github.com/Ray-Tracing-Systems/HydraAPI-tests/actions/workflows/codacy-analysis.yml/badge.svg?branch=master)](https://github.com/Ray-Tracing-Systems/HydraAPI-tests/actions/workflows/codacy-analysis.yml)
