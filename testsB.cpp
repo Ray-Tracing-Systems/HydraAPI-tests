@@ -914,7 +914,7 @@ bool test82_proc_texture()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"/home/frol/temp/", true);
+  //hrRenderLogDir(renderRef, L"/home/frol/temp/", true);
 
   hrRenderOpen(renderRef, HR_WRITE_DISCARD);
   {
@@ -990,8 +990,7 @@ bool test82_proc_texture()
 
 bool test83_proc_texture2()
 {
-  
-
+ 
   hrErrorCallerPlace(L"test_83");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1228,7 +1227,7 @@ bool test83_proc_texture2()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", false);
+  //hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", false);
 
   hrRenderOpen(renderRef, HR_WRITE_DISCARD);
   {
@@ -1919,7 +1918,7 @@ bool test85_proc_texture_ao()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
+  //hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
 
 
   hrRenderOpen(renderRef, HR_WRITE_DISCARD);
@@ -2622,7 +2621,7 @@ bool test87_proc_texture_reflect()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
+  //hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
 
 
   hrRenderOpen(renderRef, HR_WRITE_DISCARD);
@@ -3060,7 +3059,7 @@ bool test88_proc_texture_convex_rust()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
+  //hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
 
 
   hrRenderOpen(renderRef, HR_WRITE_DISCARD);
@@ -3418,7 +3417,7 @@ bool test89_proc_texture_dirty()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"/tmp/hydra_logs", true);
+  //hrRenderLogDir(renderRef, L"/tmp/hydra_logs", true);
 
 
   const int w = 512;
@@ -3998,7 +3997,7 @@ bool test96_hexaplanar()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"/tmp/hydra_logs", true);
+  //hrRenderLogDir(renderRef, L"/tmp/hydra_logs", true);
 
 
   const int w = 512;
@@ -4325,7 +4324,7 @@ bool test95_bump()
   //
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  hrRenderLogDir(renderRef, L"/tmp/hydra_logs", true);
+  //hrRenderLogDir(renderRef, L"/tmp/hydra_logs", true);
   
   const int w = 1024;
   const int h = 1024;
@@ -4406,4 +4405,136 @@ bool test95_bump()
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_95/z_out.png");
 
   return check_images("test_95", 1, 40);
+}
+
+
+bool test38_2_obj_delayed_load()
+{
+  hrErrorCallerPlace(L"test_38_2");
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  hrSceneLibraryOpen(L"tests/test_38_2", HR_WRITE_DISCARD);
+
+  // textures
+  //
+  HRTextureNodeRef texEmission = hrTexture2DCreateFromFileDL(L"data/textures/5.exr");
+  HRMaterialRef mat0 = hrMaterialCreate(L"material");
+
+  hrMaterialOpen(mat0, HR_WRITE_DISCARD);
+  {
+    xml_node matNode = hrMaterialParamNode(mat0);
+    xml_node e = matNode.append_child(L"emission");
+
+    auto colorNode = e.append_child(L"color");
+
+    colorNode.append_attribute(L"val") = L"2.0 2.0 2.0";
+    colorNode.append_attribute(L"tex_apply_mode") = L"multiply";
+
+    auto texNode = hrTextureBind(texEmission, colorNode);
+
+    texNode.append_attribute(L"matrix");
+    float samplerMatrix[16] = { 4, 0, 0, 0,
+                                0, 4, 0, 0,
+                                0, 0, 1, 0,
+                                0, 0, 0, 1 };
+
+    texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
+    texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
+    texNode.append_attribute(L"input_gamma").set_value(1.0f);
+    texNode.append_attribute(L"input_alpha").set_value(L"rgb");
+
+    HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+  }
+  hrMaterialClose(mat0);
+
+  HRModelLoadInfo loadInfo{};
+  loadInfo.useMaterial  = false;
+  loadInfo.useCentering = false;
+  std::wstring meshPath (L"data/meshes/bunny.obj");
+
+  HRMeshRef objMesh = hrMeshCreateFromFileDL(meshPath.c_str());
+  // camera
+  //
+  HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+  hrCameraOpen(camRef, HR_WRITE_DISCARD);
+  {
+    xml_node camNode = hrCameraParamNode(camRef);
+
+    camNode.append_child(L"fov").text().set(L"45");
+    camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+    camNode.append_child(L"farClipPlane").text().set(L"100.0");
+
+    camNode.append_child(L"up").text().set(L"0 1 0");
+    camNode.append_child(L"position").text().set(L"0 2 4");
+    camNode.append_child(L"look_at").text().set(L"0 0 -2");
+  }
+  hrCameraClose(camRef);
+
+  // set up render settings
+  //
+  HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
+  hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+  //hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", false);
+
+  hrRenderOpen(renderRef, HR_WRITE_DISCARD);
+  {
+    pugi::xml_node node = hrRenderParamNode(renderRef);
+
+    node.append_child(L"width").text() = L"1024";
+    node.append_child(L"height").text() = L"1024";
+
+    node.append_child(L"method_primary").text() = L"pathtracing";
+    node.append_child(L"method_secondary").text() = L"pathtracing";
+    node.append_child(L"method_tertiary").text() = L"pathtracing";
+    node.append_child(L"method_caustic").text() = L"pathtracing";
+    node.append_child(L"shadows").text() = L"1";
+
+    node.append_child(L"trace_depth").text() = L"2";
+    node.append_child(L"diff_trace_depth").text() = L"2";
+    node.append_child(L"pt_error").text() = L"2.0";
+    node.append_child(L"minRaysPerPixel").text() = L"1024";
+    node.append_child(L"maxRaysPerPixel").text() = L"1024";
+  }
+  hrRenderClose(renderRef);
+
+  // create scene
+  //
+  HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
+
+  const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
+  hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+  {
+    float4x4 identity;
+    int32_t remapList[] = { 0, mat0.id };
+    hrMeshInstance(scnRef, objMesh, identity.L(), remapList, 2);
+  }
+  hrSceneClose(scnRef);
+
+  hrFlush(scnRef, renderRef, camRef);
+
+  while (true)
+  {
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+    HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+    if (info.haveUpdateFB)
+    {
+      auto pres = std::cout.precision(2);
+      std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+      std::cout.precision(pres);
+    }
+
+    if (info.finalUpdate)
+      break;
+  }
+
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_38_2/z_out.png");
+
+  return check_images("test_38_2", 1, 5);
 }
