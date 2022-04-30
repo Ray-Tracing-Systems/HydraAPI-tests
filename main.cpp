@@ -124,8 +124,10 @@ int main(int argc, const char** argv)
   
   try
   {
-    MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+    //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
     //MTL_TESTS::test_103_diffuse_texture();
+
+    EXTENSIONS_TESTS::test_ext_vtex_1();
     
     //run_all_api_tests();
     //run_all_geo_tests();
