@@ -22,13 +22,15 @@ namespace EXTENSIONS_TESTS
 
     pugi::xml_node vtex_node;
     hr_vtex::vtexInfo vtex_info{};
-    vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_RASTERIZE;
-    vtex_info.dpi = 300;
-    vtex_info.sdfCombine = true;
-    vtex_info.sdfRange = 5.0f;
+    vtex_info.mode        = hr_vtex::VTEX_MODE::VTEX_MSDF;
+    vtex_info.dpi         = 300;
+    vtex_info.sdfCombine  = true;
+    vtex_info.sdfRange    = 5.0f;
     vtex_info.sdfAngThres = 3.14;
+    vtex_info.bgColor[0]  = 0.5f; vtex_info.bgColor[1] = 0.5f; vtex_info.bgColor[2] = 0.0f; vtex_info.bgColor[3] = 1.0f;
     //HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/separate_figures.svg", &vtex_info, &vtex_node);
-    HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/figure.svg", &vtex_info, &vtex_node);
+    //HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/ko-ko-ko.svg", &vtex_info, &vtex_node);
+    HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/figure_text.svg", &vtex_info, &vtex_node);
 
     HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
     hrMaterialOpen(mat0, HR_WRITE_DISCARD);
@@ -38,36 +40,16 @@ namespace EXTENSIONS_TESTS
 
       diff.append_attribute(L"brdf_type").set_value(L"lambert");
       auto colorNode = diff.append_child(L"color");
-      colorNode.append_attribute(L"tex_apply_mode") = L"multiply";
-      colorNode.append_attribute(L"val") = L"0.5 0.5 0.5";
+      colorNode.append_attribute(L"tex_apply_mode") = L"replace";
+
+      std::wstringstream ws;
+      ws << vtex_info.bgColor[0] << L" "
+         << vtex_info.bgColor[1] << L" "
+         << vtex_info.bgColor[2] << L" "
+         << vtex_info.bgColor[3];
+      colorNode.append_attribute(L"val") = ws.str().c_str();
 
       auto texNode = hrTextureBind(texSDF, colorNode);
-
-      // not used currently #TODO: figure out what of theese we needed!
-      //
-      texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 1, 0, 0, 0,
-                                  0, 1, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
-
-      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
-      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
-      texNode.append_attribute(L"input_gamma").set_value(2.2f);
-
-      if (vtex_info.mode == hr_vtex::VTEX_MODE::VTEX_RASTERIZE)
-      {
-        //colorNode.append_attribute(L"tex_apply_mode") = L"multiply";
-        texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-      }
-      else
-      {
-       // colorNode.append_attribute(L"tex_apply_mode") = L"multiply";
-        texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-      }
-
-      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
-
       auto& child = vtex_node.first_child();
       while (child)
       {
@@ -75,6 +57,19 @@ namespace EXTENSIONS_TESTS
         texNode.append_move(child);
         child = next;
       }
+
+      // not used currently
+      texNode.append_attribute(L"matrix");
+      float samplerMatrix[16] = { 1, 0, 0, 0,
+                                  0, 1, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1 };
+      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+
+      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
+      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
+      texNode.append_attribute(L"input_gamma").set_value(2.2f);
+      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
     }
     hrMaterialClose(mat0);
 
