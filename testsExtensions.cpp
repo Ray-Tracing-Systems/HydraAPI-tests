@@ -22,15 +22,15 @@ namespace EXTENSIONS_TESTS
 
     pugi::xml_node vtex_node;
     hr_vtex::vtexInfo vtex_info{};
-    vtex_info.mode        = hr_vtex::VTEX_MODE::VTEX_MSDF;
+    vtex_info.mode        = hr_vtex::VTEX_MODE::MSDF;
     vtex_info.dpi         = 300;
-    vtex_info.sdfCombine  = true;
+    vtex_info.sdfCombine  = false;
     vtex_info.sdfRange    = 5.0f;
     vtex_info.sdfAngThres = 3.14;
-    vtex_info.bgColor[0]  = 0.5f; vtex_info.bgColor[1] = 0.5f; vtex_info.bgColor[2] = 0.0f; vtex_info.bgColor[3] = 1.0f;
+    vtex_info.bgColor[0]  = 0.5f; vtex_info.bgColor[1] = 0.5f; vtex_info.bgColor[2] = 0.5f; vtex_info.bgColor[3] = 1.0f;
     //HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/separate_figures.svg", &vtex_info, &vtex_node);
     //HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/ko-ko-ko.svg", &vtex_info, &vtex_node);
-    HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/figure_text.svg", &vtex_info, &vtex_node);
+    HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/figures4.svg", &vtex_info, &vtex_node);
 
     HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
     hrMaterialOpen(mat0, HR_WRITE_DISCARD);
