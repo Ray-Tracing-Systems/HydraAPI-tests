@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>../HydraAPI/dependencies/optional/msdfgen/include;../HydraAPI/dependencies/optional/nanosvg;../HydraAPI/hydra_api;../HydraAPI/dependencies/include;$(IncludePath)</IncludePath>
-    <LibraryPath>../HydraAPI/dependencies/optional/msdfgen/lib/win_x64_debug;../HydraAPI/dependencies/lib_x64_win;$(LibraryPath)</LibraryPath>
+    <LibraryPath>../HydraAPI/dependencies/optional/skia/win_x64/out/Shared;../HydraAPI/dependencies/optional/msdfgen/lib/win_x64_debug;../HydraAPI/dependencies/lib_x64_win;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -81,7 +81,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>../HydraAPI/hydra_api;../HydraAPI/dependencies/optional/nanosvg;../HydraAPI/dependencies/optional/msdfgen/include;../HydraAPI/dependencies/include;$(IncludePath)</IncludePath>
-    <LibraryPath>../HydraAPI/dependencies/optional/msdfgen/lib/win_x64_release;../HydraAPI/dependencies/lib_x64_win;$(LibraryPath)</LibraryPath>
+    <LibraryPath>../HydraAPI/dependencies/optional/skia/win_x64/out/Shared;../HydraAPI/dependencies/optional/msdfgen/lib/win_x64_release;../HydraAPI/dependencies/lib_x64_win;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -109,7 +109,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>msdfgen.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>skia.dll.lib;msdfgen.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -152,7 +152,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>msdfgen.lib;opengl32.lib; glu32.lib; kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>skia.dll.lib;msdfgen.lib;opengl32.lib; glu32.lib; kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
