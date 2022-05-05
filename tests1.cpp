@@ -2099,18 +2099,18 @@ void run_all_mictofacet_torrance_sparrow()
     bool res = tests[i]();
     if (res)
     {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!\t\n";
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!\t\n";
+      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
     }
     else if (g_testWasIgnored)
     {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tSKIPPED!\t\n";
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tSKIPPED!\t\n";
+      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
     }
     else
     {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
     }
     
     fout.flush();
@@ -2118,6 +2118,60 @@ void run_all_mictofacet_torrance_sparrow()
     g_testWasIgnored = false;
   }
   
+  fout.close();
+}
+
+void run_all_vector_tex_tests()
+{
+  using namespace EXTENSIONS_TESTS;
+  TestFunc tests[] = {
+                       &test_ext_vtex_1,
+                       &test_ext_vtex_2,
+                       &test_ext_vtex_3,
+                       &test_ext_vtex_4,
+                       &test_ext_vtex_5,
+                       &test_ext_vtex_6
+  };
+
+
+  std::string names[] = {
+    "test_ext_vtex_1",
+    "test_ext_vtex_2",
+    "test_ext_vtex_3",
+    "test_ext_vtex_4",
+    "test_ext_vtex_5",
+    "test_ext_vtex_6"
+  };
+
+
+  std::ofstream fout("z_vector_textures.txt");
+
+  const int testNum = sizeof(tests) / sizeof(TestFunc);
+
+  for (int i = 0; i < testNum; i++)
+  {
+    bool res = tests[i]();
+    if (res)
+    {
+      std::cout << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!\t\n";
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!\t\n";
+    }
+    else if (g_testWasIgnored)
+    {
+      std::cout << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tSKIPPED!\t\n";
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tSKIPPED!\t\n";
+    }
+    else
+    {
+      std::cout << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << 200 + i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+    }
+
+    fout.flush();
+
+    g_testWasIgnored = false;
+  }
+
   fout.close();
 }
 

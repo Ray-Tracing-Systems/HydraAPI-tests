@@ -386,8 +386,14 @@ namespace ALGR_TESTS
 
 namespace EXTENSIONS_TESTS
 {
-  bool test_ext_vtex_1();
+  bool test_ext_vtex_1(); // msdf basic
+  bool test_ext_vtex_2(); // texture matrix
+  bool test_ext_vtex_3(); // outlines
+  bool test_ext_vtex_4(); // combine
+  bool test_ext_vtex_5(); // rasterize
+  bool test_ext_vtex_6(); // overlapping shapes
 }
+void run_all_vector_tex_tests();
 
 //These tests need some scene library to exist in their respective folders
 bool test1000_loadlibrary_and_edit();
