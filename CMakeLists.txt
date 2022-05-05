@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(hydra_api_tests)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCE_FILES
         Camera.h
@@ -51,48 +51,117 @@ set(SOURCE_FILES_GL
         RenderDriverOpenGL1_TestSplit.cpp
         RenderDriverOpenGL1Debug.cpp
         RenderDriverOpenGL1DebugDrawRays.cpp tests_mtl6.cpp)
+        
+set(SOURCE_FILES_EXTENSIONS
+        testsExtensions.cpp)
 
 #set (CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG}")
 
-set(HYDRA_API_ROOT_DIR ${CMAKE_SOURCE_DIR}/../HydraAPI CACHE PATH "Path to HydraAPI") #
-set(HYDRA_API_SRC_DIR ${HYDRA_API_ROOT_DIR}/hydra_api)
-set(HYDRA_API_LIB_DIR ${HYDRA_API_ROOT_DIR}/bin)
+set(HYDRA_API_ROOT_DIR      ${CMAKE_SOURCE_DIR}/../HydraAPI CACHE PATH "Path to HydraAPI") #
+set(HYDRA_API_SRC_DIR       ${HYDRA_API_ROOT_DIR}/hydra_api)
+set(HYDRA_API_LIB_DIR       ${HYDRA_API_ROOT_DIR}/bin)
 set(HYDRA_API_UTILS_SRC_DIR ${HYDRA_API_ROOT_DIR}/utils)
 
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+set(ADDITIONAL_INCLUDE_DIRS
+        ${HYDRA_API_ROOT_DIR}/dependencies/include CACHE STRING "Path to HydraAPI dependencies (freeimage and, if OpenGL is used, glfw)")
+if(WIN32)
+  set(ADDITIONAL_LIBRARY_DIRS
+        ${HYDRA_API_ROOT_DIR}/dependencies/lib_x64_win CACHE STRING "Path to HydraAPI dependencies (freeimage and, if OpenGL is used, glfw)")
+else()
+  set(ADDITIONAL_LIBRARY_DIRS
+        ${HYDRA_API_ROOT_DIR}/dependencies/lib_x64_linux CACHE STRING "Path to HydraAPI dependencies (freeimage and, if OpenGL is used, glfw)")
+endif()
+
+include_directories(${ADDITIONAL_INCLUDE_DIRS} ${HYDRA_API_SRC_DIR} ${HYDRA_API_UTILS_SRC_DIR})
+link_directories(${ADDITIONAL_LIBRARY_DIRS})
+
+find_package(OpenGL REQUIRED)
+find_package (Threads REQUIRED)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+
+set(VECTOR_TEX_SUPPORT ON CACHE BOOL "Build with vector textures support extension")
+if(VECTOR_TEX_SUPPORT)
+  set(SOURCE_FILES ${SOURCE_FILES_EXTENSIONS} ${SOURCE_FILES})
+	add_compile_definitions(VECTOR_TEX_SUPPORT)
+endif()
+
+add_executable(hydra_api_tests ${SOURCE_FILES} ${SOURCE_FILES_GL})
+
+find_library(HYDRA_API_LIB_DEBUG            hydra_api  HINTS ${HYDRA_API_LIB_DIR}/Debug ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
+find_library(HYDRA_API_IES_PARSER_LIB_DEBUG ies_parser HINTS ${HYDRA_API_LIB_DIR}/Debug ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
+find_library(HYDRA_API_MIKKTSPACE_DEBUG     mikktspace HINTS ${HYDRA_API_LIB_DIR}/Debug ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
+find_library(HYDRA_API_CORTO_DEBUG          corto      HINTS ${HYDRA_API_LIB_DIR}/Debug ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
+
+find_library(HYDRA_API_LIB_RELEASE            hydra_api  HINTS ${HYDRA_API_LIB_DIR}/Release ${HYDRA_API_LIB_DIR}NO_DEFAULT_PATH)
+find_library(HYDRA_API_IES_PARSER_LIB_RELEASE ies_parser HINTS ${HYDRA_API_LIB_DIR}/Release ${HYDRA_API_LIB_DIR}NO_DEFAULT_PATH)
+find_library(HYDRA_API_MIKKTSPACE_RELEASE     mikktspace HINTS ${HYDRA_API_LIB_DIR}/Release ${HYDRA_API_LIB_DIR}NO_DEFAULT_PATH)
+find_library(HYDRA_API_CORTO_RELEASE          corto      HINTS ${HYDRA_API_LIB_DIR}/Release ${HYDRA_API_LIB_DIR}NO_DEFAULT_PATH)
 
 if(WIN32)
-  link_directories(${ADDITIONAL_LIBRARY_DIRS})
+  find_library(HYDRA_API_CLEW_DEBUG   clew HINTS ${HYDRA_API_LIB_DIR}/Debug ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
+  find_library(HYDRA_API_CLEW_RELEASE clew HINTS ${HYDRA_API_LIB_DIR}/Release ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
 else()
-  find_package(glfw3 REQUIRED)
-  include_directories(${GLFW_INCLUDE_DIRS})
-  set(LIBS ${LIBS} ${GLFW_LIBRARIES})
-
-  find_package (Threads REQUIRED)
-  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(OpenCL REQUIRED)  
 endif()
 
 
-find_package(OpenGL REQUIRED)
-add_executable(hydra_api_tests ${SOURCE_FILES} ${SOURCE_FILES_GL})
-include_directories(${ADDITIONAL_INCLUDE_DIRS} ${HYDRA_API_SRC_DIR} ${HYDRA_API_UTILS_SRC_DIR})
-find_library(HYDRA_API_LIB hydra_api HINTS ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
-find_library(HYDRA_API_IES_PARSER_LIB ies_parser HINTS ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
-find_library(HYDRA_API_MIKKTSPACE mikktspace HINTS ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
-find_library(HYDRA_API_CORTO corto HINTS ${HYDRA_API_LIB_DIR} NO_DEFAULT_PATH)
+target_link_libraries(hydra_api_tests LINK_PUBLIC  ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} freeimage)
 
-find_package(FreeImage REQUIRED)
-include_directories(${FREEIMAGE_INCLUDE_DIRS})
-set(LIBS ${LIBS} ${FREEIMAGE_LIBRARIES})
+target_link_libraries(hydra_api_tests LINK_PUBLIC debug     
+	${HYDRA_API_LIB_DEBUG}
+	${HYDRA_API_IES_PARSER_LIB_DEBUG}
+	${HYDRA_API_MIKKTSPACE_DEBUG}
+	${HYDRA_API_CORTO_DEBUG})
+target_link_libraries(hydra_api_tests LINK_PUBLIC optimized 
+	${HYDRA_API_LIB_RELEASE}
+	${HYDRA_API_IES_PARSER_LIB_RELEASE}
+	${HYDRA_API_MIKKTSPACE_RELEASE}
+	${HYDRA_API_CORTO_RELEASE})
+  
+if(WIN32)
+  target_link_libraries(hydra_api_tests LINK_PUBLIC debug     ${HYDRA_API_CLEW_DEBUG})
+  target_link_libraries(hydra_api_tests LINK_PUBLIC optimized ${HYDRA_API_CLEW_RELEASE})
+else()
+  target_link_libraries(hydra_api_tests LINK_PUBLIC OpenCL::OpenCL)
+endif()
 
+  
+if(VECTOR_TEX_SUPPORT)
+	include_directories(${HYDRA_API_ROOT_DIR}/dependencies/optional/msdfgen/include)
+	include_directories(${HYDRA_API_ROOT_DIR}/dependencies/optional/nanosvg)
+	include_directories(${HYDRA_API_ROOT_DIR}/dependencies/optional/skia/headers)
+	include_directories(${HYDRA_API_ROOT_DIR}/dependencies/optional/skia/headers/include)
+	include_directories(${HYDRA_API_ROOT_DIR}/dependencies/optional/skia/headers/modules)
+	include_directories(${HYDRA_API_ROOT_DIR}/dependencies/optional/skia/headers/src)
+	include_directories(${HYDRA_API_ROOT_DIR}/dependencies/optional/skia/headers/third_party)
 
-target_include_directories(hydra_api_tests PUBLIC ${OPENGL_INCLUDE_DIR})
+	if(WIN32)
+		set(MSDF_LIB_DIR_DEBUG   ${HYDRA_API_ROOT_DIR}/dependencies/optional/msdfgen/lib/win_x64_debug)
+		set(MSDF_LIB_DIR_RELEASE ${HYDRA_API_ROOT_DIR}/dependencies/optional/msdfgen/lib/win_x64_release)
+		set(SKIA_LIB_DIR         ${HYDRA_API_ROOT_DIR}/dependencies/optional/skia/win_x64)
+	else()
+		set(MSDF_LIB_DIR_DEBUG   ${HYDRA_API_ROOT_DIR}/dependencies/optional/msdfgen/lib/linux_x64_debug)
+		set(MSDF_LIB_DIR_RELEASE ${HYDRA_API_ROOT_DIR}/dependencies/optional/msdfgen/lib/linux_x64_release)
+		set(SKIA_LIB_DIR         ${HYDRA_API_ROOT_DIR}/dependencies/optional/skia/linux_x64)
+	endif()
 
+	find_library(MSDF_LIB_DEBUG   NAMES msdfgen REQUIRED HINTS ${MSDF_LIB_DIR_DEBUG})
+	find_library(MSDF_LIB_RELEASE NAMES msdfgen REQUIRED HINTS ${MSDF_LIB_DIR_RELEASE})
+	find_library(SKIA_LIB         NAMES skia.dll skia REQUIRED HINTS ${SKIA_LIB_DIR})
+  
+
+	target_link_libraries(hydra_api_tests LINK_PUBLIC debug     ${MSDF_LIB_DEBUG})  
+	target_link_libraries(hydra_api_tests LINK_PUBLIC optimized ${MSDF_LIB_RELEASE})  
+	target_link_libraries(hydra_api_tests LINK_PUBLIC ${SKIA_LIB})  
+endif()
+
+  
 if(WIN32)
   add_definitions(-DUNICODE -D_UNICODE)
   add_definitions(-DNEED_DIR_CHANGE)
-  target_link_libraries(hydra_api_tests LINK_PUBLIC ${OPENGL_gl_LIBRARY} hydra_api glfw3dll )
+   
+  target_link_libraries(hydra_api_tests LINK_PUBLIC glfw3dll)
 else()
   target_compile_options(hydra_api_tests PRIVATE -fpermissive -Wnarrowing)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
@@ -106,14 +175,7 @@ else()
     MESSAGE( STATUS "WE USE GCC  (main);")
   endif()
 
-  MESSAGE( STATUS "CMAKE_CXX_FLAGS(main): " ${CMAKE_CXX_FLAGS} )
-  target_link_libraries(hydra_api_tests LINK_PUBLIC
-          ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY}
-          ${HYDRA_API_LIB}
-          ${LIBS}
-          ${HYDRA_API_IES_PARSER_LIB} ${HYDRA_API_MIKKTSPACE} ${HYDRA_API_CORTO}
-          Threads::Threads stdc++fs rt dl OpenCL glfw)
-
+  target_link_libraries(hydra_api_tests LINK_PUBLIC Threads::Threads rt dl glfw)
 endif()
 
 
