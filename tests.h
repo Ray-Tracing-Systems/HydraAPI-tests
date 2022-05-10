@@ -203,6 +203,8 @@ bool test97_camera_from_matrices();
 bool test98_motion_blur();                // not implemented
 bool test99_triplanar();
 
+bool test_motion_blur();
+
 bool test100_dummy_hydra_exec();          // not used
 
 namespace GEO_TESTS

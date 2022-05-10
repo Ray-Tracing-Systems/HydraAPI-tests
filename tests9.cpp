@@ -211,6 +211,93 @@ namespace HRUtils
   
 }
 
+bool test_motion_blur()
+{
+  std::wstring libPath = L"tests/motion_blur_lib";
+  std::vector<std::wstring> states = { L"statex_00001.xml", L"statex_00002.xml", L"statex_00003.xml", L"statex_00004.xml",
+                                       L"statex_00005.xml", L"statex_00006.xml", L"statex_00007.xml", L"statex_00008.xml",
+                                       L"statex_00009.xml", L"statex_00010.xml", L"statex_00011.xml", L"statex_00012.xml" };
+  hrErrorCallerPlace(L"HRUtils::test_motion_blur");
+  hrSceneLibraryOpen(libPath.c_str(), HR_OPEN_EXISTING);
+
+  /////////////////////////////////////////////////////////
+  HRRenderRef renderRef;
+  renderRef.id = 0;
+
+  HRSceneInstRef scnRef;
+  scnRef.id = 0;
+  /////////////////////////////////////////////////////////
+
+  hrRenderEnableDevice(renderRef, 0, true);
+
+  const int samplesTotal       = 2048;
+  const int numSubFrames       = states.size();
+  const int samplesPerSubFrame = samplesTotal / numSubFrames;
+  
+
+  float progressStep = 100.0f * float(1.0f) / float(numSubFrames);
+  float frameProgress = 0.0f;
+  std::cout << "test_motion_blur, progressStep = " << progressStep << std::endl;
+
+
+  hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+  {
+    auto node = hrRenderParamNode(renderRef);
+
+    node.force_child(L"maxRaysPerPixel").text() = samplesTotal;
+    node.force_child(L"dont_run").text() = 1;
+    //node.force_child(L"forceGPUFrameBuffer").text() = 0;
+    //node.force_child(L"offline_pt").text() = 1;
+  }
+  hrRenderClose(renderRef);
+
+  hrCommit(scnRef, renderRef);
+
+  int topState = 0;
+  int subFramesDone = 0;
+  while (topState < states.size())
+  {  
+    std::wstringstream strOut;
+    strOut << L"runhydra -cl_device_id " << 0 << L" -contribsamples " << samplesPerSubFrame;
+    strOut << L" -statefile " << states[topState].c_str();
+    auto str = strOut.str();
+    hrRenderCommand(renderRef, str.c_str());
+
+    {
+      while (true)
+      {
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "test_motion_blur, rendering progress = " << info.progress << "% \r"; std::cout.flush();
+          std::cout.flush();
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate || info.progress > 0.9995f * (frameProgress + progressStep))
+        {
+          hrRenderCommand(renderRef, L"exitnow");
+          break;
+        }
+
+      }
+      frameProgress += progressStep;
+
+      std::cout << "sleeping ... "; std::cout.flush();
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+      std::cout << "finish." << std::endl; std::cout.flush();
+    }
+    subFramesDone++;
+    topState++;
+  }
+
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_motion_blur/z_out.png");
+
+  return check_images("test_motion_blur", 1, 50.0f);
+}
+
 /*
 bool test98_motion_blur()
 {
