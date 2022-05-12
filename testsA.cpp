@@ -3788,13 +3788,15 @@ bool test75_repeated_render()
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  constexpr uint32_t WIDTH_1  = 512;
+  constexpr uint32_t HEIGHT_1 = 512;
 
   hrRenderOpen(renderRef, HR_WRITE_DISCARD);
   {
     pugi::xml_node node = hrRenderParamNode(renderRef);
 
-    node.append_child(L"width").text()  = 512;
-    node.append_child(L"height").text() = 512;
+    node.append_child(L"width").text()  = WIDTH_1;
+    node.append_child(L"height").text() = HEIGHT_1;
 
     node.append_child(L"method_primary").text()   = L"pathtracing";
     node.append_child(L"method_secondary").text() = L"pathtracing";
@@ -3854,12 +3856,12 @@ bool test75_repeated_render()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, renderRef);
-  
-  std::vector<int32_t>    image(512 * 512);
-  HydraRender::HDRImage4f hdrImage(512, 512);
 
-  float* data = hdrImage.data();
-  memset(data, 0, 512 * 512 * sizeof(float) * 4);
+  std::vector<int32_t>    image_1(WIDTH_1 * HEIGHT_1);
+  HydraRender::HDRImage4f hdrImage_1(WIDTH_1, HEIGHT_1);
+
+  float* data_1 = hdrImage_1.data();
+  memset(data_1, 0, WIDTH_1 * HEIGHT_1 * sizeof(float) * 4);
 
   while (true)
   {
@@ -3869,10 +3871,10 @@ bool test75_repeated_render()
 
     if (info.haveUpdateFB)
     {
-      for (int y = 0; y < 512; y++)
+      for (int y = 0; y < HEIGHT_1; y++)
       {
-        hrRenderGetFrameBufferLineLDR1i(renderRef, 0, 512, y, &image[y * 512]);
-        hrRenderGetFrameBufferLineHDR4f(renderRef, 0, 512, y, &data[(y * 512) * 4]);
+        hrRenderGetFrameBufferLineLDR1i(renderRef, 0, WIDTH_1, y, &image_1[y * WIDTH_1]);
+        hrRenderGetFrameBufferLineHDR4f(renderRef, 0, WIDTH_1, y, &data_1[(y * WIDTH_1) * 4]);
       }
       
       auto pres = std::cout.precision(2);
@@ -3884,10 +3886,27 @@ bool test75_repeated_render()
       break;
   }
 
-  HydraRender::SaveImageToFile(L"tests_images/test_75/z_out.png", hdrImage);
+  HydraRender::SaveImageToFile(L"tests_images/test_75/z_out.png", hdrImage_1);
+
+  constexpr uint32_t WIDTH_2  = 512;
+  constexpr uint32_t HEIGHT_2 = 512;
+
+  hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+  {
+    pugi::xml_node node = hrRenderParamNode(renderRef);
+
+    node.force_child(L"width").text()  = WIDTH_2;
+    node.force_child(L"height").text() = HEIGHT_2;
+  }
+  hrRenderClose(renderRef);
+
+  std::vector<int32_t>    image_2(WIDTH_2 * HEIGHT_2);
+  HydraRender::HDRImage4f hdrImage_2(WIDTH_2, HEIGHT_2);
+
+  float* data_2 = hdrImage_2.data();
+  memset(data_2, 0, WIDTH_2 * HEIGHT_2 * sizeof(float) * 4);
 
   hrFlush(scnRef, renderRef);
-  memset(data, 0, 512 * 512 * sizeof(float) * 4);
 
   while (true)
   {
@@ -3897,10 +3916,10 @@ bool test75_repeated_render()
 
     if (info.haveUpdateFB)
     {
-      for (int y = 0; y < 512; y++)
+      for (int y = 0; y < HEIGHT_2; y++)
       {
-        hrRenderGetFrameBufferLineLDR1i(renderRef, 0, 512, y, &image[y * 512]);
-        hrRenderGetFrameBufferLineHDR4f(renderRef, 0, 512, y, &data[(y * 512) * 4]);
+        hrRenderGetFrameBufferLineLDR1i(renderRef, 0, WIDTH_2, y, &image_2[y * WIDTH_2]);
+        hrRenderGetFrameBufferLineHDR4f(renderRef, 0, WIDTH_2, y, &data_2[(y * WIDTH_2) * 4]);
       }
       
 
@@ -3913,7 +3932,7 @@ bool test75_repeated_render()
       break;
   }
 
-  HydraRender::SaveImageToFile(L"tests_images/test_75/z_out2.png", hdrImage);                             // it save to ldr image !!!
+  HydraRender::SaveImageToFile(L"tests_images/test_75/z_out2.png", hdrImage_2);                             // it save to ldr image !!!
 
   return check_images("test_75", 2, 20.0f); // #TODO: add check for HDR image
 }

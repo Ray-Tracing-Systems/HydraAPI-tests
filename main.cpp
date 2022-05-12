@@ -128,7 +128,8 @@ int main(int argc, const char** argv)
     //MTL_TESTS::test_103_diffuse_texture();
 
     //run_all_vector_tex_tests();
-    
+//    test75_repeated_render();
+//    test_motion_blur();
     run_all_api_tests();
     //run_all_geo_tests();
     //run_all_mtl_tests();
