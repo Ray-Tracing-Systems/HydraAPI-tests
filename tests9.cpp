@@ -278,7 +278,7 @@ bool test_motion_blur()
 
         if (info.finalUpdate || info.progress > 0.9995f * (frameProgress + progressStep))
         {
-          hrRenderCommand(renderRef, L"exitnow");
+//          hrRenderCommand(renderRef, L"exitnow");
           break;
         }
 
