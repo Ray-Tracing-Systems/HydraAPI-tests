@@ -2130,7 +2130,9 @@ void run_all_vector_tex_tests()
                        &test_ext_vtex_3,
                        &test_ext_vtex_4,
                        &test_ext_vtex_5,
-                       &test_ext_vtex_6
+                       &test_ext_vtex_6,
+                       &test_ext_vtex_7,
+                       &test_ext_vtex_8
   };
 
 
@@ -2140,7 +2142,9 @@ void run_all_vector_tex_tests()
     "test_ext_vtex_3",
     "test_ext_vtex_4",
     "test_ext_vtex_5",
-    "test_ext_vtex_6"
+    "test_ext_vtex_6",
+    "test_ext_vtex_7",
+    "test_ext_vtex_8"
   };
 
 

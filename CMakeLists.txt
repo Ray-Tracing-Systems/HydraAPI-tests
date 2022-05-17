@@ -88,9 +88,9 @@ include_directories(${ADDITIONAL_INCLUDE_DIRS} ${HYDRA_API_SRC_DIR} ${HYDRA_API_
 link_directories(${ADDITIONAL_LIBRARY_DIRS})
 
 find_package(OpenGL REQUIRED)
-find_package(Threads REQUIRED)
 find_package(OpenMP REQUIRED)
 
+find_package (Threads REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 set(VECTOR_TEX_SUPPORT ON CACHE BOOL "Build with vector textures support extension")

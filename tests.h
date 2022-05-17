@@ -394,6 +394,8 @@ namespace EXTENSIONS_TESTS
   bool test_ext_vtex_4(); // combine
   bool test_ext_vtex_5(); // rasterize
   bool test_ext_vtex_6(); // overlapping shapes
+  bool test_ext_vtex_7(); // blend
+  bool test_ext_vtex_8(); // blend 2
 }
 void run_all_vector_tex_tests();
 
