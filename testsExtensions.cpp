@@ -21,7 +21,7 @@ namespace EXTENSIONS_TESTS
     
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode        = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_info.dpi         = 96;
+    vtex_info.resolutionScale = 1;
     vtex_info.sdfCombine  = false;
     vtex_info.sdfAngThres = 3.14;
     vtex_info.drawOutline = false;
@@ -182,10 +182,9 @@ namespace EXTENSIONS_TESTS
 
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_info.dpi = 96;
-    vtex_info.sdfCombine = false;
-    vtex_info.sdfAngThres = 3.14;
-    vtex_info.drawOutline = false;
+    vtex_info.resolutionScale = 2.0f;
+    vtex_info.sdfCombine    = false;
+    vtex_info.drawOutline   = false;
     vtex_info.bgColor[0] = 0.5f; vtex_info.bgColor[1] = 0.5f; vtex_info.bgColor[2] = 0.5f; vtex_info.bgColor[3] = 1.0f;
     vtex_info.textureMatrix[0] = 4.0f; vtex_info.textureMatrix[1] = 0.0f; vtex_info.textureMatrix[2] = 0.5f;
     vtex_info.textureMatrix[3] = 0.0f; vtex_info.textureMatrix[4] = 8.0f; vtex_info.textureMatrix[5] = -0.5f;
@@ -341,10 +340,9 @@ namespace EXTENSIONS_TESTS
 
     SimpleMesh plane = CreatePlane(4.0f);
 
-
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_info.dpi  = 256;
+    vtex_info.resolutionScale  = 4;
     vtex_info.sdfCombine    = false;
     vtex_info.sdfAngThres   = 3.14;
     vtex_info.drawOutline   = true;
@@ -505,7 +503,7 @@ namespace EXTENSIONS_TESTS
 
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_info.dpi = 96;
+    vtex_info.resolutionScale = 1;
     vtex_info.sdfCombine  = true;
     vtex_info.sdfAngThres = 3.14;
     vtex_info.drawOutline = false;
@@ -668,7 +666,7 @@ namespace EXTENSIONS_TESTS
 
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_RASTERIZE;
-    vtex_info.dpi = 200;
+    vtex_info.resolutionScale = 2;
     vtex_info.bgColor[0] = 0.5f; vtex_info.bgColor[1] = 0.5f; vtex_info.bgColor[2] = 0.5f; vtex_info.bgColor[3] = 1.0f;
     vtex_info.textureMatrix[0] = 4.0f * 0.866f; vtex_info.textureMatrix[1] = -0.5f;         vtex_info.textureMatrix[2] = 0.0f;
     vtex_info.textureMatrix[3] = 0.5f;          vtex_info.textureMatrix[4] = 4.0f * 0.866f; vtex_info.textureMatrix[5] = 0.0f;
@@ -826,14 +824,16 @@ namespace EXTENSIONS_TESTS
 
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_info.dpi  = 96;
+    vtex_info.resolutionScale  = 0.5;
     vtex_info.sdfCombine  = false;
     vtex_info.sdfAngThres = 3.14;
     vtex_info.drawOutline = false;
+//    vtex_info.smoothFac = 1.0f/32.0f;
+    vtex_info.distThreshold = 0.5f;
     vtex_info.bgColor[0] = 0.5f; vtex_info.bgColor[1] = 0.5f; vtex_info.bgColor[2] = 0.5f; vtex_info.bgColor[3] = 1.0f;
 
     pugi::xml_node vtex_node;
-    HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/figures4.svg", &vtex_info, &vtex_node);
+    HRTextureNodeRef texSDF = hr_vtex::hrTextureVector2DCreateFromFile(L"data/textures/figures_1024.svg", &vtex_info, &vtex_node);
 
     HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
     hrMaterialOpen(mat0, HR_WRITE_DISCARD);
@@ -904,8 +904,8 @@ namespace EXTENSIONS_TESTS
 
       camNode.append_child(L"up").text().set(L"0 1 0");
       //camNode.append_child(L"position").text().set(L"0 0 3");
-      camNode.append_child(L"position").text().set(L"0 0 10");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
+      camNode.append_child(L"position").text().set(L"0.0 0.0 10");
+      camNode.append_child(L"look_at").text().set(L"0.0 0.0 0");
     }
     hrCameraClose(camRef);
 
@@ -985,7 +985,7 @@ namespace EXTENSIONS_TESTS
 
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_info.dpi  = 96;
+    vtex_info.resolutionScale  = 1;
     vtex_info.sdfCombine  = false;
     vtex_info.sdfAngThres = 3.14;
     vtex_info.drawOutline = false;
@@ -1170,7 +1170,7 @@ namespace EXTENSIONS_TESTS
 
     hr_vtex::VectorTexCreateInfo vtex_mask{};
     vtex_mask.mode = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_mask.dpi  = 64;
+    vtex_mask.resolutionScale  = 4;
     vtex_mask.sdfCombine  = false;
     vtex_mask.sdfAngThres = 3.14;
     vtex_mask.drawOutline = false;
@@ -1181,7 +1181,7 @@ namespace EXTENSIONS_TESTS
 
     hr_vtex::VectorTexCreateInfo vtex_info{};
     vtex_info.mode = hr_vtex::VTEX_MODE::VTEX_MSDF;
-    vtex_info.dpi  = 256;
+    vtex_info.resolutionScale  = 4;
     vtex_info.sdfCombine    = false;
     vtex_info.sdfAngThres   = 3.14;
     vtex_info.drawOutline   = true;
