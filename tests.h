@@ -204,6 +204,7 @@ bool test98_motion_blur();                // not implemented
 bool test99_triplanar();
 
 bool test_motion_blur();
+bool test_mono_framebuff();
 
 bool test100_dummy_hydra_exec();          // not used
 
