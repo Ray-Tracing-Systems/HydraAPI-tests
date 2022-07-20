@@ -398,6 +398,12 @@ namespace EXTENSIONS_TESTS
   bool test_ext_vtex_7(); // blend
   bool test_ext_vtex_8(); // blend 2
 }
+
+namespace SPECTRAL_TESTS
+{
+  bool test_cornell_spectral_1();
+}
+
 void run_all_vector_tex_tests();
 
 //These tests need some scene library to exist in their respective folders

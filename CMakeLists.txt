@@ -95,7 +95,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 set(VECTOR_TEX_SUPPORT ON CACHE BOOL "Build with vector textures support extension")
 if(VECTOR_TEX_SUPPORT)
-  set(SOURCE_FILES ${SOURCE_FILES_EXTENSIONS} ${SOURCE_FILES})
+  set(SOURCE_FILES ${SOURCE_FILES_EXTENSIONS} ${SOURCE_FILES} testsSpectral.cpp)
 	add_compile_definitions(VECTOR_TEX_SUPPORT)
 endif()
 
