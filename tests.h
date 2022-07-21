@@ -401,7 +401,8 @@ namespace EXTENSIONS_TESTS
 
 namespace SPECTRAL_TESTS
 {
-  bool test_cornell_spectral_1();
+  bool test_cornell_RGB();
+  bool test_cornell_spectral_2();
 }
 
 void run_all_vector_tex_tests();
