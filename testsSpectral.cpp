@@ -1,4 +1,6 @@
 #include <cassert>
+#include <filesystem>
+#include <algorithm>
 #include "tests.h"
 
 #include "HydraXMLHelpers.h"
@@ -421,11 +423,11 @@ namespace SPECTRAL_TESTS
     // Render settings
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 1024);
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
     hrRenderOpen(renderRef, HR_OPEN_EXISTING);
     {
       auto node = hrRenderParamNode(renderRef);
-      node.append_child(L"framebuffer_channels").text() = 1;
+      node.append_child(L"framebuffer_channels").text() = 4;
       node.force_child(L"diff_trace_depth").text() = 5;
     }
     hrRenderClose(renderRef);
@@ -485,6 +487,308 @@ namespace SPECTRAL_TESTS
       std::wstringstream imgName;
       imgName << wavelengths[i] << "nm";
       std::wstring basePath = L"tests_images/test_cornell_spectral_2/";
+      const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
+      const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
+
+      hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
+      hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+    }
+
+    return true;
+  }
+
+  std::vector<HRMaterialRef> createSpectralDiffuseMaterialsFromSPD(const std::filesystem::path &spd_file,
+                                                                   const std::vector<int> &wavelengths,
+                                                                   const std::wstring& name = L"mat")
+  {
+    if(!std::filesystem::exists(spd_file))
+    {
+      HrError(L".spd file does not exist");
+      return {};
+    }
+
+    std::vector<int> file_wavelengths;
+    std::vector<float> file_spd;
+
+    std::ifstream in(spd_file);
+    std::string line;
+    while(std::getline(in, line))
+    {
+      auto split_pos = line.find_first_of(' ');
+      int wavelength = std::stoi(line.substr(0, split_pos));
+      float power    = std::stof(line.substr(split_pos + 1, (line.size() - split_pos)));
+
+      file_spd.push_back(power);
+      file_wavelengths.push_back(wavelength);
+    }
+
+    std::vector<float> spd;
+    spd.reserve(wavelengths.size());
+    for(const auto& w: wavelengths)
+    {
+      auto found = std::find_if(file_wavelengths.begin(), file_wavelengths.end(), [w](int x){return x == w;});
+      if(found != file_wavelengths.end())
+      {
+        auto idx = found - file_wavelengths.begin();
+        spd.push_back(file_spd[idx]);
+      }
+      else
+      {
+        // TODO
+      }
+    }
+
+    std::vector<HRMaterialRef> result;
+    result.reserve(spd.size());
+    for(int i = 0 ; i < spd.size(); ++i)
+    {
+      std::wstringstream ws;
+      ws << name << L"_" << wavelengths[i];
+      HRMaterialRef mat = hrMaterialCreate(ws.str().c_str());
+      hrMaterialOpen(mat, HR_WRITE_DISCARD);
+      {
+        auto matNode = hrMaterialParamNode(mat);
+
+        auto diff = matNode.append_child(L"diffuse");
+        diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+        auto color = diff.append_child(L"color");
+        auto val = color.append_attribute(L"val");
+        HydraXMLHelpers::WriteFloat3(val, {spd[i], spd[i], spd[i]});
+        VERIFY_XML(matNode);
+      }
+      hrMaterialClose(mat);
+
+      result.push_back(mat);
+    }
+
+    return result;
+  }
+
+  bool test_macbeth()
+  {
+    hrErrorCallerPlace(L"test_macbeth");
+
+    hrSceneLibraryOpen(L"tests/test_macbeth", HR_WRITE_DISCARD);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Materials
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    std::vector<int> wavelengths = {400, 440, 480, 520, 560, 600, 640, 680};
+    std::vector<std::vector<HRMaterialRef>> materials(24);
+    materials[0]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-1.spd", wavelengths, L"m1");
+    materials[1]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-2.spd", wavelengths, L"m2");
+    materials[2]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-3.spd", wavelengths, L"m3");
+    materials[3]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-4.spd", wavelengths, L"m4");
+    materials[4]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-5.spd", wavelengths, L"m5");
+    materials[5]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-6.spd", wavelengths, L"m6");
+    materials[6]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-7.spd", wavelengths, L"m7");
+    materials[7]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-8.spd", wavelengths, L"m8");
+    materials[8]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-9.spd", wavelengths, L"m9");
+    materials[9]  = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-10.spd", wavelengths, L"m10");
+    materials[10] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-11.spd", wavelengths, L"m11");
+    materials[11] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-12.spd", wavelengths, L"m12");
+    materials[12] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-13.spd", wavelengths, L"m13");
+    materials[13] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-14.spd", wavelengths, L"m14");
+    materials[14] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-15.spd", wavelengths, L"m15");
+    materials[15] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-16.spd", wavelengths, L"m16");
+    materials[16] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-17.spd", wavelengths, L"m17");
+    materials[17] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-18.spd", wavelengths, L"m18");
+    materials[18] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-19.spd", wavelengths, L"m19");
+    materials[19] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-20.spd", wavelengths, L"m20");
+    materials[20] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-21.spd", wavelengths, L"m21");
+    materials[21] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-22.spd", wavelengths, L"m22");
+    materials[22] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-23.spd", wavelengths, L"m23");
+    materials[23] = createSpectralDiffuseMaterialsFromSPD("data/spectral/macbeth-24.spd", wavelengths, L"m24");
+
+    HRMaterialRef matBlack = hrMaterialCreate(L"matBlack");
+    hrMaterialOpen(matBlack, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matBlack);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+//      color.append_attribute(L"val").set_value(L"0.725 0.71 0.68");
+      color.append_attribute(L"val").set_value(L"0.01 0.01 0.01");
+
+      VERIFY_XML(matNode);
+    }
+    hrMaterialClose(matBlack);
+
+    HRMaterialRef matTest = hrMaterialCreate(L"matTest");
+    hrMaterialOpen(matTest, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matTest);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+//      color.append_attribute(L"val").set_value(L"0.725 0.71 0.68");
+      color.append_attribute(L"val").set_value(L"0.8 0.0 0.8");
+
+      VERIFY_XML(matNode);
+    }
+    hrMaterialClose(matTest);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Meshes
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    HRMeshRef chip = TEST_UTILS::HRMeshFromSimpleMesh(L"macbeth_chip", CreatePlane(0.5f), matBlack.id);
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Light
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    HRLightRef sky = hrLightCreate(L"sky");
+
+    hrLightOpen(sky, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sky);
+
+      lightNode.attribute(L"type").set_value(L"sky");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.75 0.75 0.75");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sky);
+
+    HRLightRef sun = hrLightCreate(L"sun");
+
+    hrLightOpen(sun, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sun);
+
+      lightNode.attribute(L"type").set_value(L"directional");
+      lightNode.attribute(L"shape").set_value(L"point");
+      lightNode.attribute(L"distribution").set_value(L"directional");
+
+      auto sizeNode = lightNode.append_child(L"size");
+      sizeNode.append_attribute(L"inner_radius").set_value(L"0.0");
+      sizeNode.append_attribute(L"outer_radius").set_value(L"1000.0");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(4.0);
+
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sun);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Camera
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(L"30");
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"100.0");
+
+      camNode.append_child(L"up").text().set(L"0 1 0");
+      camNode.append_child(L"position").text().set(L"0 0 10");
+      camNode.append_child(L"look_at").text().set(L"0 0 -1");
+    }
+    hrCameraClose(camRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Render settings
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1280, 720, 256, 256);
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      auto node = hrRenderParamNode(renderRef);
+      node.append_child(L"framebuffer_channels").text() = 4;
+      node.force_child(L"diff_trace_depth").text() = 5;
+    }
+    hrRenderClose(renderRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Create scene
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+    hlm::float4x4 mScale, mRotX, mRotY, mT, mRes;
+    hlm::float4x4 identity{};
+
+    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
+    for(int i = 0; i < wavelengths.size(); ++i)
+    {
+      hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+      mRotX = hlm::rotate4x4X(90.0f * DEG_TO_RAD);
+      constexpr uint32_t N_CHIPS_X   = 6;
+      constexpr uint32_t N_CHIPS_Y   = 4;
+      constexpr float    CHIP_SIZE   = 1.0f;
+      constexpr float    BORDER_SIZE = 0.1f;
+      constexpr float    PLATE_X     = N_CHIPS_X * CHIP_SIZE + (N_CHIPS_X + 1) * BORDER_SIZE;
+      constexpr float    PLATE_Y     = N_CHIPS_Y * CHIP_SIZE + (N_CHIPS_Y + 1) * BORDER_SIZE;
+
+      mScale = hlm::scale4x4({PLATE_X, 1.0, PLATE_Y});
+      mT = hlm::translate4x4({0.0f, 0.0f, -0.001f});
+      mRes = mT * mRotX * mScale;
+      hrMeshInstance(scnRef, chip, mRes.L());
+//      hrLightInstance(scnRef, sky, identity.L());
+
+      mT = translate4x4(float3(0.0f, 0.0f, 100.0f));
+      mRotX = rotate4x4X(90.0f*DEG_TO_RAD);
+      mRes = mT * mRotX;
+      hrLightInstance(scnRef, sun, mRes.L());
+
+      for (int x = 0; x < N_CHIPS_X; ++x)
+      {
+        for (int y = 0; y < N_CHIPS_Y; ++y)
+        {
+          float xx = -PLATE_X * 0.5f + float(x) * (CHIP_SIZE + BORDER_SIZE) + CHIP_SIZE * 0.5f + BORDER_SIZE;
+          float yy = +PLATE_Y * 0.5f - float(y) * (CHIP_SIZE + BORDER_SIZE) - CHIP_SIZE * 0.5f - BORDER_SIZE;
+          mT = hlm::translate4x4({xx, yy, 0.0f});
+          mRes = mT * mRotX;
+
+          uint32_t chipId = x + y * N_CHIPS_X;
+          std::vector<int> remapList = {matBlack.id, materials[chipId][i].id};
+          hrMeshInstance(scnRef, chip, mRes.L(), remapList.data(), remapList.size());
+        }
+      }
+
+      ///////////
+
+      hrSceneClose(scnRef);
+
+      hrFlush(scnRef, renderRef, camRef);
+
+      while (true)
+      {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate)
+          break;
+      }
+
+      std::wstringstream imgName;
+      imgName << wavelengths[i] << "nm";
+//      imgName << "_";
+      std::wstring basePath = L"tests_images/test_macbeth/";
       const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
 
