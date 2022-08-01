@@ -1,6 +1,7 @@
 #include <cassert>
 #include <filesystem>
 #include <algorithm>
+#include <numeric>
 #include "tests.h"
 
 #include "HydraXMLHelpers.h"
@@ -791,6 +792,223 @@ namespace SPECTRAL_TESTS
       std::wstring basePath = L"tests_images/test_macbeth/";
       const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
+
+      hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
+      hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+    }
+
+    return true;
+  }
+
+
+  std::vector<HRMaterialRef> createSpectralTextureDiffuseMaterial(const std::vector<int> &wavelengths,
+                                                                  const std::vector<std::filesystem::path> &texPaths,
+                                                                  const hlm::float4x4 &texMatrix,
+                                                                  const std::wstring& name = L"mat")
+  {
+    assert(wavelengths.size() == texPaths.size());
+    std::vector<HRMaterialRef> result;
+    result.reserve(texPaths.size());
+
+    for(int i = 0 ; i < wavelengths.size(); ++i)
+    {
+      std::wstringstream ws;
+      ws << name << L"_" << wavelengths[i];
+
+      auto texRef = hrTexture2DCreateFromFile(texPaths[i].wstring().c_str());
+
+      HRMaterialRef mat = hrMaterialCreate(ws.str().c_str());
+      hrMaterialOpen(mat, HR_WRITE_DISCARD);
+      {
+        auto matNode = hrMaterialParamNode(mat);
+
+        auto diff = matNode.append_child(L"diffuse");
+        diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+        auto color = diff.append_child(L"color");
+        auto val = color.append_attribute(L"val");
+        val.set_value(L"1.0 1.0 1.0");
+
+        color.append_attribute(L"tex_apply_mode") = L"replace";
+
+        auto texNode = hrTextureBind(texRef, color);
+
+        texNode.append_attribute(L"matrix");
+        float samplerMatrix[16] = { texMatrix(0,0), texMatrix(0,1), texMatrix(0,2), texMatrix(0,3),
+                                    texMatrix(1,0), texMatrix(1,1), texMatrix(1,2), texMatrix(1,3),
+                                    texMatrix(2,0), texMatrix(2,1), texMatrix(2,2), texMatrix(2,3),
+                                    texMatrix(3,0), texMatrix(3,1), texMatrix(3,2), texMatrix(3,3), };
+
+        texNode.append_attribute(L"addressing_mode_u").set_value(L"clamp");
+        texNode.append_attribute(L"addressing_mode_v").set_value(L"clamp");
+        texNode.append_attribute(L"input_gamma").set_value(1.0f);
+        texNode.append_attribute(L"input_alpha").set_value(L"rgb");
+
+        HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+        VERIFY_XML(matNode);
+      }
+      hrMaterialClose(mat);
+
+      result.push_back(mat);
+    }
+
+    return result;
+  }
+
+  bool test_texture_1()
+  {
+    hrErrorCallerPlace(L"test_texture_1");
+
+    hrSceneLibraryOpen(L"test_texture_1", HR_WRITE_DISCARD);
+
+    constexpr int TOTAL_WAVELENGTHS = 31;
+    std::vector<int> wavelengths(TOTAL_WAVELENGTHS);
+    std::generate(wavelengths.begin(), wavelengths.end(), [n = 390] () mutable { return n = n + 10; });
+
+    const std::filesystem::path basePath {"data/spectral/glass_tiles"};
+    const std::string baseTexName {"glass_tiles_ms"};
+    std::vector<std::filesystem::path> texPaths(TOTAL_WAVELENGTHS);
+    for(int n = 0; n < TOTAL_WAVELENGTHS ; ++n)
+    {
+      std::stringstream ss;
+      ss << baseTexName << "_" << std::setfill('0') << std::setw(2) << n + 1 << ".png";
+      auto path = basePath;
+      path.append(ss.str());
+      texPaths[n] = path;
+    }
+
+    hlm::float4x4 texMatrix;
+    auto materials = createSpectralTextureDiffuseMaterial(wavelengths, texPaths, texMatrix);
+
+    SimpleMesh plane = CreatePlane(4.0f);
+    HRMeshRef planeRef = hrMeshCreate(L"my_plane");
+    hrMeshOpen(planeRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
+    {
+      hrMeshVertexAttribPointer4f(planeRef, L"pos", &plane.vPos[0]);
+      hrMeshVertexAttribPointer4f(planeRef, L"norm", &plane.vNorm[0]);
+      hrMeshVertexAttribPointer2f(planeRef, L"texcoord", &plane.vTexCoord[0]);
+      hrMeshMaterialId(planeRef, materials[0].id);
+      hrMeshAppendTriangles3(planeRef, int(plane.triIndices.size()), &plane.triIndices[0]);
+    }
+    hrMeshClose(planeRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRLightRef sky = hrLightCreate(L"sky");
+
+    hrLightOpen(sky, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sky);
+
+      lightNode.attribute(L"type").set_value(L"sky");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
+
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sky);
+
+//    HRLightRef sun = hrLightCreate(L"sun");
+//    hrLightOpen(sun, HR_WRITE_DISCARD);
+//    {
+//      auto lightNode = hrLightParamNode(sun);
+//
+//      lightNode.attribute(L"type").set_value(L"directional");
+//      lightNode.attribute(L"shape").set_value(L"point");
+//      lightNode.attribute(L"distribution").set_value(L"directional");
+//
+//      auto sizeNode = lightNode.append_child(L"size");
+//      sizeNode.append_attribute(L"inner_radius").set_value(L"0.0");
+//      sizeNode.append_attribute(L"outer_radius").set_value(L"1000.0");
+//
+//      auto intensityNode = lightNode.append_child(L"intensity");
+//
+//      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+//      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(3.2);
+//
+//      VERIFY_XML(lightNode);
+//    }
+//    hrLightClose(sun);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // camera
+    //
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      xml_node camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(L"30");
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"100.0");
+
+      camNode.append_child(L"up").text().set(L"0 1 0");
+      camNode.append_child(L"position").text().set(L"0 0 14.9");
+      camNode.append_child(L"look_at").text().set(L"0 0 0");
+    }
+    hrCameraClose(camRef);
+
+
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      auto node = hrRenderParamNode(renderRef);
+      node.append_child(L"framebuffer_channels").text() = 1;
+    }
+    hrRenderClose(renderRef);
+    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+
+
+    auto mT = translate4x4(float3(0.0f, 0.0f, 100.0f));
+    auto mRotX = rotate4x4X(90.0f*DEG_TO_RAD);
+    auto sunMatrix = mT * mRotX;
+    hlm::float4x4 identity;
+    auto planeMatrix = hlm::rotate4x4X(-DEG_TO_RAD * 90.0f);
+
+    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
+    for(int i = 0; i < wavelengths.size(); ++i)
+    {
+      hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+      {
+        std::vector<int> remapList = {materials[0].id, materials[i].id};
+        hrMeshInstance(scnRef, planeRef, planeMatrix.L(), remapList.data(), remapList.size());
+
+//        hrLightInstance(scnRef, sun, sunMatrix.L());
+        hrLightInstance(scnRef, sky, identity.L());
+      }
+      hrSceneClose(scnRef);
+
+      hrFlush(scnRef, renderRef, camRef);
+
+      while (true)
+      {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate)
+          break;
+      }
+
+      std::wstringstream imgName;
+      imgName << wavelengths[i] << "nm";
+      const std::wstring outBasePath = L"tests_images/test_texture_1/";
+      const std::wstring ldrName = outBasePath + imgName.str() + std::wstring(L".png");
+      const std::wstring hdrName = outBasePath + imgName.str() + std::wstring(L".exr");
 
       hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
       hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
