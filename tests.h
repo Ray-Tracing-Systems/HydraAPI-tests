@@ -405,6 +405,7 @@ namespace SPECTRAL_TESTS
   bool test_cornell_spectral_2();
   bool test_macbeth();
   bool test_texture_1();
+  bool test_tile();
 }
 
 void run_all_vector_tex_tests();

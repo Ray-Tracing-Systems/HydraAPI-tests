@@ -244,7 +244,7 @@ namespace SPECTRAL_TESTS
     // Materials
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    std::vector<int> wavelengths = {400,        440,       480,      520,      560,      600,      640,        680};
+    std::vector<float> wavelengths = {400,        440,       480,      520,      560,      600,      640,        680};
     std::vector<float> red       = {0.00800717, 0.125122,  1e-05,    1e-05,    1e-05,    0.685583, 0.539043,   0.0597818};
     std::vector<float> green     = {0.00168552, 0.0579974, 0.137609, 0.504929, 0.566779, 0.179425, 0.00949657, 6.65987e-05};
     std::vector<float> light     = {0.0117894,  0.296203,  0.158988, 0.419806, 0.939172, 1.07416,  0.404987,   0.0416185};
@@ -360,7 +360,7 @@ namespace SPECTRAL_TESTS
     {
       auto node = hrRenderParamNode(renderRef);
       node.append_child(L"framebuffer_channels").text() = 1;
-      node.force_child(L"diff_trace_depth").text() = 5;
+//      node.force_child(L"diff_trace_depth").text() = 5;
     }
     hrRenderClose(renderRef);
 
@@ -432,6 +432,15 @@ namespace SPECTRAL_TESTS
     std::filesystem::path rgbPath {"tests_images/test_cornell_spectral_2/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
+    std::filesystem::path avgPath {"tests_images/test_cornell_spectral_2/averageSpectrum.exr"};
+    hr_spectral::AverageSpectralImages(avgPath, savedImages);
+
+    std::filesystem::path avgPath2 {"tests_images/test_cornell_spectral_2/averageSpectrumV2.exr"};
+    hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
+
+    std::filesystem::path yPath {"tests_images/test_cornell_spectral_2/Y.exr"};
+    hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
+
     return check_images("test_cornell_spectral_2", 1, 25);
   }
 
@@ -445,32 +454,37 @@ namespace SPECTRAL_TESTS
     // Materials
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    std::vector<int> wavelengths = {400, 440, 480, 520, 560, 600, 640, 680};
+//    std::vector<int> wavelengths = {400, 440, 480, 520, 560, 600, 640, 680};
+    std::vector<float> wavelengths;
+
+    for(int w = 400; w <= 700; w += 10)
+      wavelengths.push_back(float(w));
+
     std::vector<std::vector<HRMaterialRef>> materials(24);
-    materials[0]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-1.spd", wavelengths, L"m1");
-    materials[1]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-2.spd", wavelengths, L"m2");
-    materials[2]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-3.spd", wavelengths, L"m3");
-    materials[3]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-4.spd", wavelengths, L"m4");
-    materials[4]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-5.spd", wavelengths, L"m5");
-    materials[5]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-6.spd", wavelengths, L"m6");
-    materials[6]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-7.spd", wavelengths, L"m7");
-    materials[7]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-8.spd", wavelengths, L"m8");
-    materials[8]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-9.spd", wavelengths, L"m9");
-    materials[9]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-10.spd", wavelengths, L"m10");
-    materials[10] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-11.spd", wavelengths, L"m11");
-    materials[11] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-12.spd", wavelengths, L"m12");
-    materials[12] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-13.spd", wavelengths, L"m13");
-    materials[13] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-14.spd", wavelengths, L"m14");
-    materials[14] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-15.spd", wavelengths, L"m15");
-    materials[15] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-16.spd", wavelengths, L"m16");
-    materials[16] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-17.spd", wavelengths, L"m17");
-    materials[17] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-18.spd", wavelengths, L"m18");
-    materials[18] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-19.spd", wavelengths, L"m19");
-    materials[19] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-20.spd", wavelengths, L"m20");
-    materials[20] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-21.spd", wavelengths, L"m21");
-    materials[21] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-22.spd", wavelengths, L"m22");
-    materials[22] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-23.spd", wavelengths, L"m23");
-    materials[23] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth-24.spd", wavelengths, L"m24");
+    materials[0]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-1_new.spd", wavelengths, L"m1");
+    materials[1]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-2_new.spd", wavelengths, L"m2");
+    materials[2]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-3_new.spd", wavelengths, L"m3");
+    materials[3]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-4_new.spd", wavelengths, L"m4");
+    materials[4]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-5_new.spd", wavelengths, L"m5");
+    materials[5]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-6_new.spd", wavelengths, L"m6");
+    materials[6]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-7_new.spd", wavelengths, L"m7");
+    materials[7]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-8_new.spd", wavelengths, L"m8");
+    materials[8]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-9_new.spd", wavelengths, L"m9");
+    materials[9]  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-10_new.spd", wavelengths, L"m10");
+    materials[10] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-11_new.spd", wavelengths, L"m11");
+    materials[11] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-12_new.spd", wavelengths, L"m12");
+    materials[12] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-13_new.spd", wavelengths, L"m13");
+    materials[13] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-14_new.spd", wavelengths, L"m14");
+    materials[14] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-15_new.spd", wavelengths, L"m15");
+    materials[15] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-16_new.spd", wavelengths, L"m16");
+    materials[16] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-17_new.spd", wavelengths, L"m17");
+    materials[17] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-18_new.spd", wavelengths, L"m18");
+    materials[18] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-19_new.spd", wavelengths, L"m19");
+    materials[19] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-20_new.spd", wavelengths, L"m20");
+    materials[20] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-21_new.spd", wavelengths, L"m21");
+    materials[21] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-22_new.spd", wavelengths, L"m22");
+    materials[22] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-23_new.spd", wavelengths, L"m23");
+    materials[23] = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-24_new.spd", wavelengths, L"m24");
 
     HRMaterialRef matBlack = hrMaterialCreate(L"matBlack");
     hrMaterialOpen(matBlack, HR_WRITE_DISCARD);
@@ -523,7 +537,7 @@ namespace SPECTRAL_TESTS
 
       auto intensityNode = lightNode.append_child(L"intensity");
 
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.75 0.75 0.75");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
       intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
       VERIFY_XML(lightNode);
     }
@@ -552,6 +566,8 @@ namespace SPECTRAL_TESTS
     }
     hrLightClose(sun);
 
+
+//    auto d65_lights = hr_spectral::CreateSpectralLightsD65(sky, wavelengths);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Camera
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -612,12 +628,15 @@ namespace SPECTRAL_TESTS
       mT = hlm::translate4x4({0.0f, 0.0f, -0.001f});
       mRes = mT * mRotX * mScale;
       hrMeshInstance(scnRef, chip, mRes.L());
-//      hrLightInstance(scnRef, sky, identity.L());
+
+      hrLightInstance(scnRef, sky, identity.L());
+
+//      hrLightInstance(scnRef, d65_lights[i], identity.L());
 
       mT = translate4x4(float3(0.0f, 0.0f, 100.0f));
       mRotX = rotate4x4X(90.0f*DEG_TO_RAD);
       mRes = mT * mRotX;
-      hrLightInstance(scnRef, sun, mRes.L());
+//      hrLightInstance(scnRef, sun, mRes.L());
 
       for (int x = 0; x < N_CHIPS_X; ++x)
       {
@@ -672,6 +691,15 @@ namespace SPECTRAL_TESTS
     std::filesystem::path rgbPath {"tests_images/test_macbeth/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
+    std::filesystem::path avgPath {"tests_images/test_macbeth/averageSpectrum.exr"};
+    hr_spectral::AverageSpectralImages(avgPath, savedImages);
+
+    std::filesystem::path avgPath2 {"tests_images/test_macbeth/averageSpectrumV2.exr"};
+    hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
+
+    std::filesystem::path yPath {"tests_images/test_macbeth/Y.exr"};
+    hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
+
     return check_images("test_macbeth", 1, 25);
   }
 
@@ -679,10 +707,10 @@ namespace SPECTRAL_TESTS
   {
     hrErrorCallerPlace(L"test_texture_1");
 
-    hrSceneLibraryOpen(L"test_texture_1", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_texture_1", HR_WRITE_DISCARD);
 
     constexpr int TOTAL_WAVELENGTHS = 31;
-    std::vector<int> wavelengths(TOTAL_WAVELENGTHS);
+    std::vector<float> wavelengths(TOTAL_WAVELENGTHS);
     std::generate(wavelengths.begin(), wavelengths.end(), [n = 390] () mutable { return n = n + 10; });
 
     const std::filesystem::path basePath {"data/spectral/glass_tiles"};
@@ -815,6 +843,153 @@ namespace SPECTRAL_TESTS
     std::filesystem::path rgbPath {"tests_images/test_texture_1/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
+    std::filesystem::path avgPath {"tests_images/test_texture_1/averageSpectrum.exr"};
+    hr_spectral::AverageSpectralImages(avgPath, savedImages);
+
+    std::filesystem::path avgPath2 {"tests_images/test_texture_1/averageSpectrumV2.exr"};
+    hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
+
+    std::filesystem::path yPath {"tests_images/test_texture_1/Y.exr"};
+    hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
+
     return check_images("test_texture_1", 1, 25);
+  }
+
+  bool test_tile()
+  {
+    hrErrorCallerPlace(L"test_tile");
+
+    hrSceneLibraryOpen(L"tests/test_tile", HR_WRITE_DISCARD);
+
+    std::vector<float> wavelengths;
+    for(int w = 400; w <= 700; w += 10)
+      wavelengths.push_back(float(w));
+    auto materials = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-21_new.spd", wavelengths, L"m21");
+
+    SimpleMesh plane = CreatePlane(4.0f);
+    HRMeshRef planeRef = hrMeshCreate(L"my_plane");
+    hrMeshOpen(planeRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
+    {
+      hrMeshVertexAttribPointer4f(planeRef, L"pos", &plane.vPos[0]);
+      hrMeshVertexAttribPointer4f(planeRef, L"norm", &plane.vNorm[0]);
+      hrMeshVertexAttribPointer2f(planeRef, L"texcoord", &plane.vTexCoord[0]);
+      hrMeshMaterialId(planeRef, materials[0].id);
+      hrMeshAppendTriangles3(planeRef, int(plane.triIndices.size()), &plane.triIndices[0]);
+    }
+    hrMeshClose(planeRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRLightRef sky = hrLightCreate(L"sky");
+
+    hrLightOpen(sky, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sky);
+
+      lightNode.attribute(L"type").set_value(L"sky");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
+
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sky);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // camera
+    //
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      xml_node camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(L"30");
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"100.0");
+
+      camNode.append_child(L"up").text().set(L"0 1 0");
+      camNode.append_child(L"position").text().set(L"0 0 14.9");
+      camNode.append_child(L"look_at").text().set(L"0 0 0");
+    }
+    hrCameraClose(camRef);
+
+
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      auto node = hrRenderParamNode(renderRef);
+      node.append_child(L"framebuffer_channels").text() = 1;
+    }
+    hrRenderClose(renderRef);
+    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+
+
+    auto mT = translate4x4(float3(0.0f, 0.0f, 100.0f));
+    auto mRotX = rotate4x4X(90.0f*DEG_TO_RAD);
+    hlm::float4x4 identity;
+    auto planeMatrix = hlm::rotate4x4X(-DEG_TO_RAD * 90.0f);
+
+    std::vector<std::filesystem::path> savedImages;
+    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
+    for(int i = 0; i < wavelengths.size(); ++i)
+    {
+      hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+      {
+        std::vector<int> remapList = {materials[0].id, materials[i].id};
+        hrMeshInstance(scnRef, planeRef, planeMatrix.L(), remapList.data(), remapList.size());
+
+        hrLightInstance(scnRef, sky, identity.L());
+      }
+      hrSceneClose(scnRef);
+
+      hrFlush(scnRef, renderRef, camRef);
+
+      while (true)
+      {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate)
+          break;
+      }
+
+      std::wstringstream imgName;
+      imgName << wavelengths[i] << "nm";
+      const std::wstring outBasePath = L"tests_images/test_tile/";
+      const std::wstring ldrName = outBasePath + imgName.str() + std::wstring(L".png");
+      const std::wstring hdrName = outBasePath + imgName.str() + std::wstring(L".exr");
+
+      hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
+      hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+      savedImages.push_back(hdrName);
+    }
+
+    std::filesystem::path rgbPath {"tests_images/test_tile/z_out.exr"};
+    hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
+
+    std::filesystem::path avgPath {"tests_images/test_tile/averageSpectrum.exr"};
+    hr_spectral::AverageSpectralImages(avgPath, savedImages);
+
+    std::filesystem::path avgPath2 {"tests_images/test_tile/averageSpectrumV2.exr"};
+    hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
+
+    std::filesystem::path yPath {"tests_images/test_tile/Y.exr"};
+    hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
+
+    return check_images("test_tile", 1, 25);
   }
 }
