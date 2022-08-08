@@ -137,9 +137,13 @@ int main(int argc, const char** argv)
 //  MTL_TESTS::test_103_diffuse_texture();
 //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
 //    test_mono_framebuff();
-    SPECTRAL_TESTS::test_cornell_RGB();
-//    SPECTRAL_TESTS::test_cornell_spectral_2();
-//    run_all_api_tests();
+
+    // SPECTRAL_TESTS::test_cornell_spectral_2();
+    // SPECTRAL_TESTS::test_macbeth();
+    // SPECTRAL_TESTS::test_macbeth_2();
+    // SPECTRAL_TESTS::test_macbeth_3();
+    // SPECTRAL_TESTS::test_texture_1();
+    run_all_api_tests();
     //run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();

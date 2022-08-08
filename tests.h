@@ -30,6 +30,7 @@ inline xml_node force_child(xml_node a_parent, const wchar_t* a_name) ///< helpe
 
 
 bool check_images(const char* a_path, const int a_numImages = 1, const float a_mse = 10.0f);
+bool check_images_HDR(const char* a_path, const int a_numImages = 1, const float a_mse = 10.0f);
 void initGLIfNeeded(int a_width = 512, int a_height = 512, const char* a_name = "glfw demo");
 
 namespace TEST_UTILS

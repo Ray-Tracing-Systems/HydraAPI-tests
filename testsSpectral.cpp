@@ -441,7 +441,7 @@ namespace SPECTRAL_TESTS
     std::filesystem::path yPath {"tests_images/test_cornell_spectral_2/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images("test_cornell_spectral_2", 1, 25);
+    return check_images_HDR("test_cornell_spectral_2", 1, 25);
   }
 
   bool test_macbeth()
@@ -592,7 +592,7 @@ namespace SPECTRAL_TESTS
     // Render settings
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 256);
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1280, 720, 256, 256);
     hrRenderOpen(renderRef, HR_OPEN_EXISTING);
     {
       auto node = hrRenderParamNode(renderRef);
@@ -700,7 +700,7 @@ namespace SPECTRAL_TESTS
     std::filesystem::path yPath {"tests_images/test_macbeth/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images("test_macbeth", 1, 25);
+    return check_images_HDR("test_macbeth", 1, 25);
   }
 
   bool test_texture_1()
@@ -852,7 +852,7 @@ namespace SPECTRAL_TESTS
     std::filesystem::path yPath {"tests_images/test_texture_1/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images("test_texture_1", 1, 25);
+    return check_images_HDR("test_texture_1", 1, 25);
   }
 
   bool test_tile()
@@ -990,7 +990,7 @@ namespace SPECTRAL_TESTS
     std::filesystem::path yPath {"tests_images/test_tile/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images("test_tile", 1, 25);
+    return check_images_HDR("test_tile", 1, 25);
   }
 
   bool test_macbeth_2() // render 3 wavelengths at a time
@@ -1252,7 +1252,7 @@ namespace SPECTRAL_TESTS
     std::filesystem::path yPath {"tests_images/test_macbeth_2/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images("test_macbeth_2", 1, 25);
+    return check_images_HDR("test_macbeth_2", 1, 25);
   }
 
   bool test_macbeth_3() // use hydra api shared framebuffer
@@ -1515,7 +1515,7 @@ namespace SPECTRAL_TESTS
     const std::wstring hdrName = basePath + std::wstring(L"z_out.exr");
     hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
 
-    return check_images("test_macbeth_3", 1, 25);
+    return check_images_HDR("test_macbeth_3", 1, 25);
   }
 
 }
