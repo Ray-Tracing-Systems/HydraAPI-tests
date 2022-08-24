@@ -409,6 +409,7 @@ namespace SPECTRAL_TESTS
   bool test_tile();
   bool test_macbeth_2(); // render 3 wavelengths at a time;
   bool test_macbeth_3(); // use hydra api shared image to accumulate average spectrum
+  bool generate_nerf_data();
 }
 
 void run_all_vector_tex_tests();
