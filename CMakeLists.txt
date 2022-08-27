@@ -50,10 +50,11 @@ set(SOURCE_FILES_GL
         RenderDriverOpenGL1_TestCustomAttributes.cpp
         RenderDriverOpenGL1_TestSplit.cpp
         RenderDriverOpenGL1Debug.cpp
-        RenderDriverOpenGL1DebugDrawRays.cpp tests_mtl6.cpp)
+        RenderDriverOpenGL1DebugDrawRays.cpp)
         
 set(SOURCE_FILES_EXTENSIONS
-        testsExtensions.cpp)
+        testsExtensions.cpp
+        testsSpectral.cpp)
 
 #set (CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG}")
 
@@ -95,7 +96,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 set(VECTOR_TEX_SUPPORT ON CACHE BOOL "Build with vector textures support extension")
 if(VECTOR_TEX_SUPPORT)
-  set(SOURCE_FILES ${SOURCE_FILES_EXTENSIONS} ${SOURCE_FILES} testsSpectral.cpp)
+  set(SOURCE_FILES ${SOURCE_FILES_EXTENSIONS} ${SOURCE_FILES})
 	add_compile_definitions(VECTOR_TEX_SUPPORT)
 endif()
 
