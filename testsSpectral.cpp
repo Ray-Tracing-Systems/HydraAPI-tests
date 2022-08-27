@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <algorithm>
 #include <numeric>
+#include <random>
 #include "tests.h"
 
 #include "HydraXMLHelpers.h"
@@ -1517,5 +1518,283 @@ namespace SPECTRAL_TESTS
 
     return check_images_HDR("test_macbeth_3", 1, 25);
   }
+
+  bool generate_nerf_data()
+  {
+    hrErrorCallerPlace(L"generate_nerf_data");
+
+    hrSceneLibraryOpen(L"tests/generate_nerf_data", HR_WRITE_DISCARD);
+
+    HRMeshRef teapotRef = hrMeshCreateFromFileDL(L"data/meshes/bunny_origin.obj");
+
+    HRTextureNodeRef texChecker = hrTexture2DCreateFromFileDL(L"data/textures/dirt001_diffuse.tif");
+
+    HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
+    hrMaterialOpen(mat0, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat0);
+
+      xml_node diff = matNode.append_child(L"diffuse");
+
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+      diff.append_child(L"color").text().set(L"1 1 1");
+
+      xml_node refl = matNode.append_child(L"reflectivity");
+
+      refl.append_attribute(L"brdf_type").set_value(L"phong");
+      refl.append_child(L"color").text().set(L"0.15 0.15 0.15");
+      refl.append_child(L"glossiness").text().set(L"0.9");
+
+      auto texNode = hrTextureBind(texChecker, diff.child(L"color"));
+      texNode.append_attribute(L"matrix");
+      float samplerMatrix[16] = { 2, 0, 0, 0,
+                                  0, 2, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1 };
+
+      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
+      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
+
+      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+
+      auto displacement = matNode.append_child(L"displacement");
+      auto heightNode   = displacement.append_child(L"height_map");
+
+      displacement.append_attribute(L"type").set_value(L"height_bump");
+      heightNode.append_attribute(L"amount").set_value(0.25f);
+
+      auto texNode2 = hrTextureBind(texChecker, heightNode);
+
+      texNode2.append_attribute(L"matrix");
+      texNode2.append_attribute(L"addressing_mode_u").set_value(L"wrap");
+      texNode2.append_attribute(L"addressing_mode_v").set_value(L"wrap");
+      texNode2.append_attribute(L"input_gamma").set_value(2.2f);
+      texNode2.append_attribute(L"input_alpha").set_value(L"rgb");
+
+      HydraXMLHelpers::WriteMatrix4x4(texNode2, L"matrix", samplerMatrix);
+    }
+    hrMaterialClose(mat0);
+
+    HRMaterialRef mat1 = hrMaterialCreate(L"teapotmat");
+    hrMaterialOpen(mat1, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat1);
+
+      xml_node diff = matNode.append_child(L"diffuse");
+
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+      diff.append_child(L"color").text().set(L"0.207843 0.188235 0");
+
+      xml_node refl = matNode.append_child(L"reflectivity");
+
+      refl.append_attribute(L"brdf_type").set_value(L"phong");
+      refl.append_child(L"color").text().set(L"0.367059 0.345882 0");
+      refl.append_child(L"glossiness").text().set(L"0.75");
+
+      hrTextureBind(texChecker, refl.child(L"color"));
+    }
+    hrMaterialClose(mat1);
+
+    HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/LA_Downtown_Afternoon_Fishing_3k.hdr");
+    HRLightRef skyLight = hrLightCreate(L"my_sky_light");
+
+    hrLightOpen(skyLight, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(skyLight);
+
+      lightNode.attribute(L"type").set_value(L"sky");
+      lightNode.attribute(L"distribution").set_value(L"map");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(L"2.0");
+
+//      auto texNode = hrTextureBind(texEnv, intensityNode.child(L"color"));
+//
+//      texNode.append_attribute(L"matrix");
+//      float samplerMatrix[16] = { 1, 0, 0, 0,
+//                                  0, 1, 0, 0,
+//                                  0, 0, 1, 0,
+//                                  0, 0, 0, 1 };
+//
+//      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
+//      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
+//
+//      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(skyLight);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1 //
+    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
+    {
+      pugi::xml_node node = hrRenderParamNode(renderRef);
+
+      node.append_child(L"width").text() = 400;
+      node.append_child(L"height").text() = 400;
+
+      node.append_child(L"method_primary").text() = L"pathtracing";
+      node.append_child(L"trace_depth").text() = 5;
+      node.append_child(L"diff_trace_depth").text() = 3;
+      node.append_child(L"maxRaysPerPixel").text() = 512;
+      node.append_child(L"evalgbuffer").text() = 1;
+//      node.append_child(L"offline_pt").text()       = 0;
+    }
+    hrRenderClose(renderRef);
+
+    // create scene
+    //
+    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
+
+    hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+    {
+      auto identity = LiteMath::float4x4{};
+      auto teapotM = LiteMath::float4x4{};//LiteMath::translate4x4({0.25f, -0.75f, 0.0f});//
+      hrMeshInstance(scnRef, teapotRef, teapotM.L());
+      hrLightInstance(scnRef, skyLight, identity.L());
+    }
+    hrSceneClose(scnRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    float4x4 projMatrix = LiteMath::perspectiveMatrix(45.0f, 1.0f, 0.01f, 100.0f);
+
+    uint32_t n_points = 150;
+    constexpr float pi = 3.14159265358979323846f;
+    float delta = (2.0f * pi) / ((float)n_points);
+    float radius = 3.0f;
+    std::vector<float4x4> viewMatrices;
+    viewMatrices.reserve(n_points * n_points);
+
+    std::ofstream matrixFile("tests_images/generate_nerf_data/matrices.txt");
+    float3 up_init = float3(0, 1, 0);
+    float3 eye_init = float3(0, 0, 3);
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> phi_dist(-pi, pi);
+    std::uniform_real_distribution<float> theta_dist(0, 2 * pi);
+    for(int i = 0; i < n_points; ++i)
+    {
+      float phi = phi_dist(gen);
+      float theta = theta_dist(gen);
+
+      float3 eye {radius * sinf(phi) * sinf(theta),
+                  radius * cosf(phi),
+                  radius * sinf(phi) * cosf(theta)};
+      if(1.0f - dot(up_init, eye) < 0.001f)
+        up_init = float3{0, 0, 1};
+
+      auto mat = LiteMath::lookAt(eye, float3(0, 0, 0), up_init);
+      auto matInv = LiteMath::inverse4x4(mat);
+      viewMatrices.push_back(mat);
+
+      for(int x = 0; x < 4; ++x)
+      {
+        for(int y = 0; y < 4; ++y)
+        {
+          matrixFile << matInv(x, y) << ' ';
+        }
+      }
+      matrixFile << std::endl;
+    }
+//    for(int i = 0; i < n_points; ++i)
+//    {
+//      float phi = -pi + delta * i;
+////      float phi = phi_dist(gen);
+//      for(int j = 0; j < n_points; ++j)
+//      {
+//        float theta = delta * j;
+////        float theta = theta_dist(gen);
+//        float3 eye {radius * sinf(phi) * sinf(theta),
+//                    radius * cosf(phi),
+//                    radius * sinf(phi) * cosf(theta),
+//        };
+//        if(1.0f - dot(up_init, eye) < 0.001f)
+//          up_init = float3{0, 0, 1};
+//        viewMatrices.push_back(LiteMath::lookAt(eye, float3(0, 0, 0), up_init));
+//
+//        for(int x = 0; x < 4; ++x)
+//        {
+//          for(int y = 0; y < 4; ++y)
+//          {
+//            matrixFile << viewMatrices.back()(x, y) << ' ';
+//          }
+//        }
+//        matrixFile << std::endl;
+//
+//      }
+//    }
+
+    int idx = 0;
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+    for(const auto& view : viewMatrices)
+    {
+//      auto view = LiteMath::lookAt({0, 0, 3}, float3(0, 0, 0), {0, 1, 0});
+      hrCameraOpen(camRef, HR_WRITE_DISCARD);
+      {
+        xml_node camNode = hrCameraParamNode(camRef);
+
+        camNode.attribute(L"type") = L"two_matrices";
+
+        float4x4 projMatrixInv = projMatrix;
+        float4x4 lookAtMatrix = view;
+
+        std::wstringstream mProj, mWorldView;
+        for (int i = 0; i < 16; i++)
+        {
+          mProj << projMatrixInv.L()[i] << L" ";
+          mWorldView << lookAtMatrix.L()[i] << L" ";
+        }
+
+        const std::wstring str1 = mProj.str();
+        const std::wstring str2 = mWorldView.str();
+
+        camNode.force_child(L"mProj").text() = str1.c_str();
+        camNode.force_child(L"mWorldView").text() = str2.c_str();
+      }
+      hrCameraClose(camRef);
+
+      hrFlush(scnRef, renderRef);
+
+      while (true)
+      {
+        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "rendering progress = " << info.progress << "% \r";
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate)
+          break;
+      }
+
+      std::wstringstream ws;
+      ws << std::fixed << L"tests_images/generate_nerf_data/" << std::setfill(L'0') << std::setw(4) << idx << L"_rgb.png";
+
+      hrRenderSaveFrameBufferLDR(renderRef, ws.str().c_str());
+
+      std::wstringstream ws2;
+      ws2 << std::fixed << L"tests_images/generate_nerf_data/" << std::setfill(L'0') << std::setw(4) << idx << L"_alpha.png";
+
+      idx++;
+
+      hrRenderSaveGBufferLayerLDR(renderRef, ws2.str().c_str(), L"alpha");
+    }
+
+    return true;
+  }
+
 
 }
