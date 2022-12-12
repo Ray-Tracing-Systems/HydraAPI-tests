@@ -1797,4 +1797,261 @@ namespace SPECTRAL_TESTS
   }
 
 
+  bool test_virtual_room()
+  {
+    hrErrorCallerPlace(L"test_virtual_room");
+
+    hrSceneLibraryOpen(L"tests/test_virtual_room", HR_WRITE_DISCARD);
+
+
+    // GEO
+    float OBJECT_MATRIX[16] = { 0.985574, 0.0121051, 0.168814, -0.0103193,
+                               -0.0290729, 0.994722, 0.0984061, -0.0210492,
+                               -0.166732, -0.101894, 0.980723, 0.0181473,
+                                0, 0, 0, 1 };
+    std::wstring OBJECT_PATH(L"my_mesh.obj");
+
+    // MAT
+    std::wstring DIFFUSE_TEX(L"diffuse.png");
+    std::wstring GLOSSY_TEX(L"glossiness.png");
+
+    // LIGHT
+    float BASE_INTENSITY = 400.0f;
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Materials
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRTextureNodeRef diffuseTex = hrTexture2DCreateFromFile(DIFFUSE_TEX.c_str());
+    HRTextureNodeRef glossTex   = hrTexture2DCreateFromFile(GLOSSY_TEX.c_str());
+
+    HRMaterialRef matDiffSpecRough = hrMaterialCreate(L"matDiffSpecRough");
+    hrMaterialOpen(matDiffSpecRough, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matDiffSpecRough);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+      color.append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+      hrTextureBind(diffuseTex, color);
+
+      auto texNode = color.child(L"texture");
+      texNode.append_attribute(L"matrix");
+      float samplerMatrix[16] = { 1, 0, 0, 0,
+                                  0, 1, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1 };
+
+      texNode.append_attribute(L"addressing_mode_u").set_value(L"clamp");
+      texNode.append_attribute(L"addressing_mode_v").set_value(L"clamp");
+      texNode.append_attribute(L"input_gamma").set_value(1.0f);
+      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
+
+      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+
+   /*   auto refl = matNode.append_child(L"reflectivity");
+      refl.append_attribute(L"brdf_type").set_value(L"ggx");
+      refl.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+      auto gloss = refl.append_child(L"glossiness");
+      gloss.append_attribute(L"val").set_value(L"1.0");
+      hrTextureBind(glossTex, gloss);
+      texNode = gloss.child(L"texture");
+
+      texNode.append_attribute(L"matrix");
+      texNode.append_attribute(L"addressing_mode_u").set_value(L"clamp");
+      texNode.append_attribute(L"addressing_mode_v").set_value(L"clamp");
+      texNode.append_attribute(L"input_gamma").set_value(1.0f);
+      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
+
+      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+
+      refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
+      refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(1.504f);*/
+
+      VERIFY_XML(matNode);
+    }
+    hrMaterialClose(matDiffSpecRough);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Meshes
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRMeshRef objRef = hrMeshCreateFromFile(OBJECT_PATH.c_str());
+    hrMeshOpen(objRef, HR_TRIANGLE_IND3, HR_OPEN_EXISTING);
+    {
+      hrMeshMaterialId(objRef, matDiffSpecRough.id);
+    }
+    hrMeshClose(objRef);
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Light
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRLightRef rectLight = hrLightCreate(L"softbox");
+    hrLightOpen(rectLight, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(rectLight);
+
+      lightNode.attribute(L"type").set_value(L"area");
+      lightNode.attribute(L"shape").set_value(L"rect");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      auto sizeNode = lightNode.append_child(L"size");
+
+      sizeNode.append_attribute(L"half_length").set_value(L"0.45");
+      sizeNode.append_attribute(L"half_width").set_value(L"0.3");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(5.5f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(rectLight);
+
+    HRLightRef sphereLight_right = hrLightCreate(L"led_right");
+    hrLightOpen(sphereLight_right, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sphereLight_right);
+
+      lightNode.attribute(L"type").set_value(L"sphere");
+      lightNode.attribute(L"shape").set_value(L"sphere");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.04f);
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(BASE_INTENSITY / 2.4f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sphereLight_right);
+
+    HRLightRef sphereLight_left = hrLightCreate(L"led_left");
+    hrLightOpen(sphereLight_left, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sphereLight_left);
+
+      lightNode.attribute(L"type").set_value(L"sphere");
+      lightNode.attribute(L"shape").set_value(L"sphere");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.04f);
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(BASE_INTENSITY);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sphereLight_left);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Camera
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(L"21");
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"1000.0");
+
+      camNode.append_child(L"up").text().set(L"0.0 1.0 0.0");
+      camNode.append_child(L"position").text().set(L"0.0 0.5 0.5");
+      camNode.append_child(L"look_at").text().set(L"0.0 0.0 0.0");
+    }
+    hrCameraClose(camRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Render settings
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1600, 1067, 256, 512);
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      auto node = hrRenderParamNode(renderRef);
+      node.append_child(L"framebuffer_channels").text() = 1;
+      /*node.force_child(L"trace_depth").text() = 2;
+      node.force_child(L"diff_trace_depth").text() = 2;*/
+    }
+    hrRenderClose(renderRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Create scene
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+    hlm::float4x4 objMatrix, lightLeftMatrix, lightRightMatrix, softboxMatrix;
+    hlm::float4x4 identity{};
+
+    objMatrix = hlm::float4x4(OBJECT_MATRIX);
+
+    auto mT = hlm::translate4x4({ -0.46, 0.51, 0.55 });
+    lightLeftMatrix = mT;
+
+    mT = hlm::translate4x4({ 0.46, 0.51, 0.55 });
+    lightRightMatrix= mT;
+
+    auto mRotX = hlm::rotate4x4X(90 * DEG_TO_RAD);
+    auto mRotY = hlm::rotate4x4Y(-79.19 * DEG_TO_RAD);
+    mT = hlm::translate4x4({ -1.1, 0.28, 0.21 });
+    softboxMatrix = mT * mRotY * mRotX; //
+
+ //   std::vector<std::filesystem::path> savedImages;
+    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
+    {
+      hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+
+      hrMeshInstance(scnRef, objRef, objMatrix.L());
+
+      hrLightInstance(scnRef, sphereLight_left, lightLeftMatrix.L());
+      hrLightInstance(scnRef, sphereLight_right, lightRightMatrix.L());
+     // hrLightInstance(scnRef, rectLight, softboxMatrix.L());
+
+      ///////////
+
+      hrSceneClose(scnRef);
+
+      hrFlush(scnRef, renderRef, camRef);
+
+      while (true)
+      {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate)
+          break;
+      }
+
+      std::wstringstream imgName;
+      imgName << "580nm";
+      std::wstring basePath = L"tests_images/test_virtual_room/";
+      const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
+      const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
+
+      hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
+      hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+      //savedImages.push_back(hdrName);
+    }
+
+    return check_images_HDR("test_virtual_room", 1, 25);
+  }
+
 }
