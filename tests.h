@@ -411,6 +411,7 @@ namespace SPECTRAL_TESTS
   bool test_macbeth_3(); // use hydra api shared image to accumulate average spectrum
   bool generate_nerf_data();
   bool test_virtual_room();
+  bool test_object_spectral();
 }
 
 void run_all_vector_tex_tests();

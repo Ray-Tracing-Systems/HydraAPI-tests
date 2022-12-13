@@ -1943,7 +1943,7 @@ namespace SPECTRAL_TESTS
   0.146472, -0.0987958, -0.984269, 0.026813,
   0, 0, 0, 1}
     }; //d
-    std::wstring OBJECT_PATH(L"my_mesh.obj");
+    std::wstring OBJECT_PATH(L"mesh.obj");
 
     float ANGLE_STEP = 50; // 30 // 10
 
@@ -2198,5 +2198,261 @@ namespace SPECTRAL_TESTS
     return check_images_HDR("test_virtual_room", 1, 25);
   }
 
+
+  bool test_object_spectral()
+  {
+    hrErrorCallerPlace(L"test_object_spectral");
+
+    hrSceneLibraryOpen(L"tests/test_object_spectral", HR_WRITE_DISCARD);
+
+    std::wstring OBJECT_PATH(L"mesh.obj");
+    float BASE_INTENSITY = 800.0f;
+    float IOR = 1.504f;
+    float FOV = 21.0f;
+    std::vector<float> OBJECT_MATRIX = { 0.985574, 0.0121051, 0.168814, -0.0103193,
+                                        -0.0290729, 0.994722, 0.0984061, -0.0210492,
+                                        -0.166732, -0.101894, 0.980723, 0.0181473,
+                                         0, 0, 0, 1 };
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Materials
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    constexpr int TOTAL_WAVELENGTHS = 7;
+    std::vector<float> wavelengths = {460, 480, 520, 550, 580, 610, 640};
+
+    const std::filesystem::path basePathDiff{ "diffuse" };
+    const std::filesystem::path basePathGloss{ "gloss" };
+
+    std::vector<std::filesystem::path> diffTexPaths(TOTAL_WAVELENGTHS);
+    std::vector<std::filesystem::path> glossTexPaths(TOTAL_WAVELENGTHS);
+    for (int n = 0; n < TOTAL_WAVELENGTHS; ++n)
+    {
+      std::stringstream ss;
+      ss << int(wavelengths[n]) << ".png";
+      {
+        auto path = basePathDiff;
+        path.append(ss.str());
+        diffTexPaths[n] = path;
+      }
+      {
+        auto path = basePathGloss;
+        path.append(ss.str());
+        glossTexPaths[n] = path;
+      }
+    }
+
+    hlm::float4x4 texMatrix;
+    auto materials = hr_spectral::CreateSpectralTexturedDiffuseRoughSpecMaterials(wavelengths, diffTexPaths, glossTexPaths,
+      texMatrix, texMatrix, IOR);
+
+    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    hrMaterialOpen(matGray, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matGray);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+      //      color.append_attribute(L"val").set_value(L"0.725 0.71 0.68");
+      color.append_attribute(L"val").set_value(L"0.8 0.8 0.8");
+
+      VERIFY_XML(matNode);
+    }
+    hrMaterialClose(matGray);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Meshes
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRMeshRef objRef = hrMeshCreateFromFile(OBJECT_PATH.c_str());
+    hrMeshOpen(objRef, HR_TRIANGLE_IND3, HR_OPEN_EXISTING);
+    {
+      hrMeshMaterialId(objRef, 0);
+    }
+    hrMeshClose(objRef);
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Light
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRLightRef rectLight = hrLightCreate(L"softbox");
+    hrLightOpen(rectLight, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(rectLight);
+
+      lightNode.attribute(L"type").set_value(L"area");
+      lightNode.attribute(L"shape").set_value(L"rect");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      auto sizeNode = lightNode.append_child(L"size");
+
+      sizeNode.append_attribute(L"half_length").set_value(L"0.45");
+      sizeNode.append_attribute(L"half_width").set_value(L"0.3");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(5.5f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(rectLight);
+
+    HRLightRef sphereLight_right = hrLightCreate(L"led_right");
+    hrLightOpen(sphereLight_right, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sphereLight_right);
+
+      lightNode.attribute(L"type").set_value(L"sphere");
+      lightNode.attribute(L"shape").set_value(L"sphere");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.04f);
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(BASE_INTENSITY / 2.4f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sphereLight_right);
+
+    HRLightRef sphereLight_left = hrLightCreate(L"led_left");
+    hrLightOpen(sphereLight_left, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sphereLight_left);
+
+      lightNode.attribute(L"type").set_value(L"sphere");
+      lightNode.attribute(L"shape").set_value(L"sphere");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.04f);
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(BASE_INTENSITY);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sphereLight_left);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Camera
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(FOV);
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"1000.0");
+
+      camNode.append_child(L"up").text().set(L"0.0 1.0 0.0");
+      camNode.append_child(L"position").text().set(L"0.0 0.5 0.5");
+      camNode.append_child(L"look_at").text().set(L"0.0 0.0 0.0");
+    }
+    hrCameraClose(camRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Render settings
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1600, 1067, 256, 512);
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      auto node = hrRenderParamNode(renderRef);
+      node.append_child(L"framebuffer_channels").text() = 1;
+      /*node.force_child(L"trace_depth").text() = 2;
+      node.force_child(L"diff_trace_depth").text() = 2;*/
+    }
+    hrRenderClose(renderRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Create scene
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+    hlm::float4x4 objMatrix, lightLeftMatrix, lightRightMatrix, softboxMatrix;
+    hlm::float4x4 identity{};
+
+    auto mT = hlm::translate4x4({ -0.46, 0.51, 0.55 });
+    lightLeftMatrix = mT;
+
+    mT = hlm::translate4x4({ 0.46, 0.51, 0.55 });
+    lightRightMatrix = mT;
+
+    auto mRotX = hlm::rotate4x4X(90 * DEG_TO_RAD);
+    auto mRotY = hlm::rotate4x4Y(-79.19 * DEG_TO_RAD);
+    mT = hlm::translate4x4({ -1.1, 0.28, 0.21 });
+    softboxMatrix = mT * mRotY * mRotX; 
+
+    objMatrix = hlm::float4x4(OBJECT_MATRIX.data());
+
+    std::vector<std::filesystem::path> savedImages;
+
+    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
+    for (int i = 0; i < wavelengths.size(); ++i)
+    {
+      hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+      std::vector<int> objRemapList = { 0, materials[i].id};
+      hrMeshInstance(scnRef, objRef, objMatrix.L(), objRemapList.data(), objRemapList.size());
+      hrLightInstance(scnRef, sphereLight_left, lightLeftMatrix.L());
+      hrLightInstance(scnRef, sphereLight_right, lightRightMatrix.L());
+      ///////////
+
+      hrSceneClose(scnRef);
+
+      hrFlush(scnRef, renderRef, camRef);
+
+      while (true)
+      {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate)
+          break;
+      }
+
+      std::wstringstream imgName;
+      imgName << wavelengths[i] << "nm";
+      std::wstring basePath = L"tests_images/test_object_spectral/";
+      const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
+      const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
+
+      hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
+      hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+      savedImages.push_back(hdrName);
+    }
+
+    std::filesystem::path rgbPath{ "tests_images/test_object_spectral/z_out.exr" };
+    hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths, true);
+
+    std::filesystem::path avgPath{ "tests_images/test_object_spectral/averageSpectrum.exr" };
+    hr_spectral::AverageSpectralImages(avgPath, savedImages);
+
+    std::filesystem::path avgPath2{ "tests_images/test_object_spectral/averageSpectrumV2.exr" };
+    hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
+
+    std::filesystem::path yPath{ "tests_images/test_object_spectral/Y.exr" };
+    hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths, true);
+
+    std::filesystem::path multiPath{ "tests_images/test_object_spectral/multiLayer.exr" };
+    hr_spectral::SpectralImagesToMultilayerEXR(multiPath, savedImages, wavelengths);
+
+    return check_images_HDR("test_object_spectral", 1, 25);
+  }
 }
 
