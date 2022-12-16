@@ -1796,8 +1796,9 @@ void run_all_geo_tests()
 void run_all_mtl_tests(int a_start)
 {
 	using namespace MTL_TESTS;
-	TestFunc tests[] = {&test_101_diffuse_lambert_orbspec_mat01,
-						           &test_102_diffuse_orennayar,
+	TestFunc tests[] = { &test_100_diffuse_orennayar,
+                       &test_101_diffuse_lambert_orbspec_mat01,
+                       &test_102_mirror_orbspec_mat02,
 						           &test_103_diffuse_texture,
                        &test_104_reflect_phong_orbspec_mat03,
 						           &test_105_reflect_microfacet,
@@ -1874,7 +1875,7 @@ void run_all_mtl_tests(int a_start)
                        &test_171_simple_displacement_triplanar,
                        &test_172_glossy_dark_edges_phong,
                        &test_173_glossy_dark_edges_microfacet,
-                       &test_174_mirror_orbspec_mat03,
+                       &dummy_test,
 
                        &test_175_beckman_isotropic,
                        &test_176_beckman_anisotropic,
@@ -1894,18 +1895,18 @@ void run_all_mtl_tests(int a_start)
 		bool res = tests[i]();
     if (res)
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tPASSED!" << std::endl;;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tPASSED!" << std::endl;;
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tPASSED!" << std::endl;;
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tPASSED!" << std::endl;;
     }
     else if (g_testWasIgnored)
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tSKIPPED!\t\n";
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tSKIPPED!\t\n";
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tSKIPPED!\t\n";
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tSKIPPED!\t\n";
     }
     else
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i + 1 << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
     }
 
     fout.flush();
