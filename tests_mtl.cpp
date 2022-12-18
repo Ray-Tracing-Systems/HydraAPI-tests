@@ -426,7 +426,7 @@ namespace MTL_TESTS
       node.append_child(L"qmc_variant").text()      = 7;
 
       node.append_child(L"trace_depth").text()      = 8;
-      node.append_child(L"diff_trace_depth").text() = 4;
+      node.append_child(L"diff_trace_depth").text() = 6;
       node.append_child(L"maxRaysPerPixel").text()  = 1024;
     }
     hrRenderClose(renderRef);
@@ -605,15 +605,15 @@ namespace MTL_TESTS
    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
    {
      pugi::xml_node node = hrRenderParamNode(renderRef);
-     node.append_child(L"width").text()            = 1024;
-     node.append_child(L"height").text()           = 1024;
+     node.append_child(L"width").text()            = 512;
+     node.append_child(L"height").text()           = 512;
      node.append_child(L"method_primary").text()   = L"pathtracing";
      node.append_child(L"method_secondary").text() = L"pathtracing";
      node.append_child(L"method_tertiary").text()  = L"pathtracing";
      node.append_child(L"method_caustic").text()   = L"pathtracing";
-     node.append_child(L"qmc_variant").text()      = 7;
+     node.append_child(L"qmc_variant").text()      = 1;
      node.append_child(L"trace_depth").text()      = 10;
-     node.append_child(L"diff_trace_depth").text() = 4;
+     node.append_child(L"diff_trace_depth").text() = 6;
      node.append_child(L"maxRaysPerPixel").text()  = 4096;
    }
    hrRenderClose(renderRef);

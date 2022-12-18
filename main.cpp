@@ -126,15 +126,16 @@ int main(int argc, const char** argv)
   {
     //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
     //MTL_TESTS::test_103_diffuse_texture();
+    MTL_TESTS::test_102_mirror_orbspec_mat02();
 
-//    EXTENSIONS_TESTS::test_ext_vtex_7();
-//    EXTENSIONS_TESTS::test_ext_vtex_8();
-//    run_all_vector_tex_tests();
-//    test75_repeated_render();
-//    test_motion_blur();
+    //EXTENSIONS_TESTS::test_ext_vtex_7();
+    //EXTENSIONS_TESTS::test_ext_vtex_8();
+    //run_all_vector_tex_tests();
+    //test75_repeated_render();
+    //test_motion_blur();
     //run_all_api_tests();
     //run_all_geo_tests();
-    run_all_mtl_tests();
+    //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_3dsmax_tests();
