@@ -82,14 +82,14 @@ float toneExposure(float vColor, float average)
 	return result;
 }
 
-bool RD_OGL1_Plain::UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t bpp, const void* a_data, pugi::xml_node a_texNode)
+bool RD_OGL1_Plain::UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t bpp, int32_t chan, const void* a_data, pugi::xml_node a_texNode)
 {
   if (a_data == nullptr) 
     return false; 
 
 	GLubyte *convertedData = nullptr;
 	
-	if (bpp > 4) // well, perhaps this is not error, we just don't support hdr textures in this render
+	if ((bpp == 4 && chan == 1) || bpp > 4) // well, perhaps this is not error, we just don't support hdr textures in this render
 	{
 		convertedData = new GLubyte[w*h*bpp/sizeof(float)];
 
@@ -98,22 +98,30 @@ bool RD_OGL1_Plain::UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t b
 		{
 			for (int x = 0; x < w; x++)
 			{
-				float r = ((float*)a_data)[(y*w + x) * 4 + 0];
-				float g = ((float*)a_data)[(y*w + x) * 4 + 1];
-				float b = ((float*)a_data)[(y*w + x) * 4 + 2];
-				float a = ((float*)a_data)[(y*w + x) * 4 + 3];
 
-				convertedData[(y*w + x) * 4 + 0] = GLubyte(clamp(r, 0.0, 1.0) * 255.0f);
-				convertedData[(y*w + x) * 4 + 1] = GLubyte(clamp(g, 0.0, 1.0) * 255.0f);
-				convertedData[(y*w + x) * 4 + 2] = GLubyte(clamp(b, 0.0, 1.0) * 255.0f);
-				convertedData[(y*w + x) * 4 + 3] = GLubyte(clamp(a, 0.0, 1.0) * 255.0f);
+        for(int c = 0; c < chan; ++c)
+        {
+          float val = ((float*)a_data)[(y*w + x) * chan + c];
+          convertedData[(y*w + x) * chan + c] = GLubyte(clamp(val, 0.0, 1.0) * 255.0f);
+        }
+//				float r = ((float*)a_data)[(y*w + x) * 4 + 0];
+//				float g = ((float*)a_data)[(y*w + x) * 4 + 1];
+//				float b = ((float*)a_data)[(y*w + x) * 4 + 2];
+//				float a = ((float*)a_data)[(y*w + x) * 4 + 3];
+//
+//				convertedData[(y*w + x) * 4 + 0] = GLubyte(clamp(r, 0.0, 1.0) * 255.0f);
+//				convertedData[(y*w + x) * 4 + 1] = GLubyte(clamp(g, 0.0, 1.0) * 255.0f);
+//				convertedData[(y*w + x) * 4 + 2] = GLubyte(clamp(b, 0.0, 1.0) * 255.0f);
+//				convertedData[(y*w + x) * 4 + 3] = GLubyte(clamp(a, 0.0, 1.0) * 255.0f);
 			}
 		}
 	}
     
 
   glBindTexture(GL_TEXTURE_2D, m_texturesList[a_texId]);
-	if (bpp > 4)
+  if (bpp == 4 && chan == 1)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, w, h, 0, GL_RED, GL_UNSIGNED_BYTE, convertedData);
+	else if (bpp > 4)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, convertedData);
 	else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, a_data);
@@ -124,12 +132,14 @@ bool RD_OGL1_Plain::UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t b
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
   //glGenerateMipmap(GL_TEXTURE_2D); // this function is from OpenGL 3.0
-	if (bpp > 4)
+  if (bpp == 4 && chan == 1)
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RED, w, h, GL_RED, GL_UNSIGNED_BYTE, convertedData);
+	else if (bpp > 4)
 		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h, GL_RGBA, GL_UNSIGNED_BYTE, convertedData);
 	else
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h, GL_RGBA, GL_UNSIGNED_BYTE, a_data);
   
-	if (bpp > 4) 
+	if (bpp > 4 || (bpp == 4 && chan == 1))
     delete [] convertedData;
 
   return true;

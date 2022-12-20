@@ -27,7 +27,7 @@ public:
 
 //  HRDriverInfo Info() override;
 
-  bool UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t bpp, const void* a_data, pugi::xml_node a_texNode)  override;
+  bool UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t bpp, int32_t chan, const void* a_data, pugi::xml_node a_texNode)  override;
   bool UpdateImageFromFile(int32_t a_texId, const wchar_t* a_fileName, pugi::xml_node a_texNode) override;
 
 protected:
@@ -72,18 +72,18 @@ bool RD_OGL1_Plain_DelayedLoad::UpdateImageFromFile(int32_t a_texId, const wchar
         return false;
 
       fin.read(data.data(), sizeInBytes);
-      return UpdateImage(a_texId, wh[0], wh[1], 4, data.data(), a_texNode);
+      return UpdateImage(a_texId, wh[0], wh[1], 4, 4, data.data(), a_texNode);
     }
     else
       return false;
   }
   else
   {
-    int width, height, bpp;
-    bool loaded = g_objManager.m_pImgTool->LoadImageFromFile(filename,
-                                                             width, height, bpp, g_objManager.m_tempBuffer);
+    int width, height, bpp, chan;
+    std::vector<unsigned char> tmpBuf;
+    bool loaded = g_objManager.m_pImgTool->LoadImageFromFile(filename, width, height, bpp, chan, tmpBuf);
 
-    const bool res = UpdateImage(a_texId, width, height, bpp, (char*)g_objManager.m_tempBuffer.data(), a_texNode);
+    const bool res = UpdateImage(a_texId, width, height, bpp, chan, tmpBuf.data(), a_texNode);
 
     if (g_objManager.m_tempBuffer.size() > TEMP_BUFFER_MAX_SIZE_DONT_FREE)
       g_objManager.m_tempBuffer = g_objManager.EmptyBuffer();
@@ -92,12 +92,12 @@ bool RD_OGL1_Plain_DelayedLoad::UpdateImageFromFile(int32_t a_texId, const wchar
   }
 }
 
-bool RD_OGL1_Plain_DelayedLoad::UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t bpp, const void* a_data, pugi::xml_node a_texNode)
+bool RD_OGL1_Plain_DelayedLoad::UpdateImage(int32_t a_texId, int32_t w, int32_t h, int32_t bpp, int32_t chan, const void* a_data, pugi::xml_node a_texNode)
 {
   if (a_data == nullptr)
     return false;
 
-  if (bpp != 4) // well, perhaps this is not error, we just don't support hdr textures in this render
+  if (bpp != 4 && chan != 4) // well, perhaps this is not error, we just don't support hdr textures in this render
     return true;
 
   glBindTexture(GL_TEXTURE_2D, m_texturesList[a_texId]);

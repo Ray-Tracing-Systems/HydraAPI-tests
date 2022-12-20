@@ -50,10 +50,11 @@ set(SOURCE_FILES_GL
         RenderDriverOpenGL1_TestCustomAttributes.cpp
         RenderDriverOpenGL1_TestSplit.cpp
         RenderDriverOpenGL1Debug.cpp
-        RenderDriverOpenGL1DebugDrawRays.cpp tests_mtl6.cpp)
+        RenderDriverOpenGL1DebugDrawRays.cpp)
         
 set(SOURCE_FILES_EXTENSIONS
-        testsExtensions.cpp)
+        testsExtensions.cpp
+        testsSpectral.cpp)
 
 #set (CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG}")
 

@@ -30,6 +30,7 @@ inline xml_node force_child(xml_node a_parent, const wchar_t* a_name) ///< helpe
 
 
 bool check_images(const char* a_path, const int a_numImages = 1, const float a_mse = 10.0f);
+bool check_images_HDR(const char* a_path, const int a_numImages = 1, const float a_mse = 10.0f);
 void initGLIfNeeded(int a_width = 512, int a_height = 512, const char* a_name = "glfw demo");
 
 namespace TEST_UTILS
@@ -204,6 +205,7 @@ bool test98_motion_blur();                // not implemented
 bool test99_triplanar();
 
 bool test_motion_blur();
+bool test_mono_framebuff();
 
 bool test100_dummy_hydra_exec();          // not used
 
@@ -396,6 +398,21 @@ namespace EXTENSIONS_TESTS
   bool test_ext_vtex_7(); // blend
   bool test_ext_vtex_8(); // blend 2
 }
+
+namespace SPECTRAL_TESTS
+{
+  bool test_cornell_RGB();
+  bool test_cornell_spectral_2();
+  bool test_macbeth();
+  bool test_texture_1();
+  bool test_tile();
+  bool test_macbeth_2(); // render 3 wavelengths at a time;
+  bool test_macbeth_3(); // use hydra api shared image to accumulate average spectrum
+  bool generate_nerf_data();
+  bool test_virtual_room();
+  bool test_object_spectral();
+}
+
 void run_all_vector_tex_tests();
 
 //These tests need some scene library to exist in their respective folders

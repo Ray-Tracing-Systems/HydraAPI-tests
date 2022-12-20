@@ -90,6 +90,55 @@ bool check_images(const char* a_path, const int a_numImages, const float a_mse)
   return result;
 }
 
+bool check_images_HDR(const char* a_path, const int a_numImages, const float a_mse)
+{
+  g_MSEOutput = 0.0f;
+  bool result = true;
+  for (int i = 0; i < a_numImages; i++)
+  {
+    std::string path1 = std::string("tests_images/") + std::string(a_path) + "/z_out";
+    std::string path2 = std::string("tests_images/") + std::string(a_path) + "/z_ref";
+    std::string path3 = std::string("tests_images/") + std::string(a_path) + "/w_ref";
+
+    if (i > 0)
+    {
+      std::stringstream strOut;
+      strOut << i + 1;
+
+      path1 += strOut.str();
+      path2 += strOut.str();
+      path3 += strOut.str();
+    }
+
+    path1 += ".exr";
+    path2 += ".exr";
+    path3 += ".exr";
+
+    // use w_ref.exr by default, if don't have such, use z_ref.exr
+    //
+    path2 = path3;
+
+    int w1, h1, w2, h2;
+    int chan1, chan2;
+    std::vector<float> image1, image2;
+    bool loaded1 = HydraRender::LoadHDRImageFromFile(path1.c_str(), &w1, &h1, &chan1, image1);
+    bool loaded2 = HydraRender::LoadHDRImageFromFile(path2.c_str(), &w2, &h2, &chan2, image2);
+
+    if (w1 != w2 || h1 != h2 || chan1 != chan2 || !loaded1 || !loaded2)
+    {
+      g_MSEOutput = std::numeric_limits<float>::infinity();
+      return false;
+    }
+
+    const float mseVal = HydraRender::MSE_HDR(image1, image2, chan1);
+    g_MSEOutput = fmax(g_MSEOutput, mseVal);
+    result = result && (mseVal <= a_mse);
+    int a = 2;
+  }
+
+  return result;
+}
+
 ///////////////////////////////////////////////////////////
 
 
