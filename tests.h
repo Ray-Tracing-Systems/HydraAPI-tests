@@ -223,8 +223,9 @@ namespace GEO_TESTS
 
 namespace MTL_TESTS
 {
+  bool test_100_diffuse_orennayar();
   bool test_101_diffuse_lambert_orbspec_mat01();
-  bool test_102_diffuse_orennayar();
+  bool test_102_mirror_orbspec_mat02();
   bool test_103_diffuse_texture();
 
   bool test_104_reflect_phong_orbspec_mat03();
@@ -305,8 +306,6 @@ namespace MTL_TESTS
   bool test_171_simple_displacement_triplanar();
   bool test_172_glossy_dark_edges_phong();
   bool test_173_glossy_dark_edges_microfacet();
-
-  bool test_174_mirror_orbspec_mat03();
   
   bool test_175_beckman_isotropic();
   bool test_176_beckman_anisotropic();
