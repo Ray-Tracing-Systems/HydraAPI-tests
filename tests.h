@@ -411,6 +411,8 @@ namespace SPECTRAL_TESTS
   bool generate_nerf_data();
   bool test_virtual_room();
   bool test_object_spectral();
+  bool test_object_spectral_manyviews();
+  void combine_images();
 }
 
 void run_all_vector_tex_tests();

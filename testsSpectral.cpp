@@ -2454,5 +2454,318 @@ namespace SPECTRAL_TESTS
 
     return check_images_HDR("test_object_spectral", 1, 25);
   }
+
+
+  bool test_object_spectral_manyviews()
+  {
+    hrErrorCallerPlace(L"object_spectral_manyviews");
+
+    std::wstring basePath = L"tests_images/object_spectral_manyviews";
+    hrSceneLibraryOpen(basePath.c_str(), HR_WRITE_DISCARD);
+
+    std::wstring OBJECT_PATH(L"mesh.obj");
+    float BASE_INTENSITY = 800.0f;
+    float IOR = 1.504f;
+    float FOV = 21.0f;
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Materials
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    constexpr int TOTAL_WAVELENGTHS = 7;
+    std::vector<float> wavelengths = { 460, 480, 520, 550, 580, 610, 640 };
+    //std::vector<float> wavelengths = { 580 };
+
+    const std::filesystem::path basePathDiff{ "diffuse_textures_dir" };
+    const std::filesystem::path basePathGloss{ "gloss_textures_dir" };
+
+    std::vector<std::filesystem::path> diffTexPaths(TOTAL_WAVELENGTHS);
+    std::vector<std::filesystem::path> glossTexPaths(TOTAL_WAVELENGTHS);
+    for (int n = 0; n < TOTAL_WAVELENGTHS; ++n)
+    {
+      std::stringstream ss;
+      ss << int(wavelengths[n]) << ".png";
+      {
+        auto path = basePathDiff;
+        path.append(ss.str());
+        diffTexPaths[n] = path;
+      }
+      {
+        auto path = basePathGloss;
+        path.append(ss.str());
+        glossTexPaths[n] = path;
+      }
+    }
+
+    hlm::float4x4 texMatrix;
+    auto materials = hr_spectral::CreateSpectralTexturedDiffuseRoughSpecMaterials(wavelengths, diffTexPaths, glossTexPaths,
+      texMatrix, texMatrix, IOR);
+
+    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    hrMaterialOpen(matGray, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matGray);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+      color.append_attribute(L"val").set_value(L"0.8 0.8 0.8");
+
+      VERIFY_XML(matNode);
+    }
+    hrMaterialClose(matGray);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Meshes
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRMeshRef objRef = hrMeshCreateFromFile(OBJECT_PATH.c_str());
+    hrMeshOpen(objRef, HR_TRIANGLE_IND3, HR_OPEN_EXISTING);
+    {
+      hrMeshMaterialId(objRef, 0);
+    }
+    hrMeshClose(objRef);
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Light
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRLightRef rectLight = hrLightCreate(L"softbox");
+    hrLightOpen(rectLight, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(rectLight);
+
+      lightNode.attribute(L"type").set_value(L"area");
+      lightNode.attribute(L"shape").set_value(L"rect");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      auto sizeNode = lightNode.append_child(L"size");
+
+      sizeNode.append_attribute(L"half_length").set_value(L"0.45");
+      sizeNode.append_attribute(L"half_width").set_value(L"0.3");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(5.5f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(rectLight);
+
+    HRLightRef sphereLight_right = hrLightCreate(L"led_right");
+    hrLightOpen(sphereLight_right, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sphereLight_right);
+
+      lightNode.attribute(L"type").set_value(L"sphere");
+      lightNode.attribute(L"shape").set_value(L"sphere");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.04f);
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(BASE_INTENSITY / 2.4f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sphereLight_right);
+
+    HRLightRef sphereLight_left = hrLightCreate(L"led_left");
+    hrLightOpen(sphereLight_left, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sphereLight_left);
+
+      lightNode.attribute(L"type").set_value(L"sphere");
+      lightNode.attribute(L"shape").set_value(L"sphere");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.04f);
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(BASE_INTENSITY);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sphereLight_left);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Camera
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(FOV);
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"1000.0");
+
+      camNode.append_child(L"up").text().set(L"0.0 1.0 0.0");
+      camNode.append_child(L"position").text().set(L"0.0 0.25 0.5");
+      camNode.append_child(L"look_at").text().set(L"0.0 0.0 0.0");
+    }
+    hrCameraClose(camRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Render settings
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1920, 1080, 512, 512);
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      auto node = hrRenderParamNode(renderRef);
+      node.append_child(L"framebuffer_channels").text() = 1;
+      /*node.force_child(L"trace_depth").text() = 2;
+      node.force_child(L"diff_trace_depth").text() = 2;*/
+    }
+    hrRenderClose(renderRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Create scene
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+    hlm::float4x4 objMatrix, lightLeftMatrix, lightRightMatrix, softboxMatrix;
+    hlm::float4x4 identity{};
+
+    auto mT = hlm::translate4x4({ -0.46, 0.51, 0.55 });
+    lightLeftMatrix = mT;
+
+    mT = hlm::translate4x4({ 0.46, 0.51, 0.55 });
+    lightRightMatrix = mT;
+
+    auto mRotX = hlm::rotate4x4X(90 * DEG_TO_RAD);
+    auto mRotY = hlm::rotate4x4Y(-79.19 * DEG_TO_RAD);
+    mT = hlm::translate4x4({ -1.1, 0.28, 0.21 });
+    softboxMatrix = mT * mRotY * mRotX;
+
+    float delta_angle = 15;
+    int x_angles = 360 / delta_angle;
+    int y_angles = 360 / delta_angle;
+    
+    std::filesystem::create_directory(basePath);
+    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
+    int i = 0;
+    for (int j = 0; j < x_angles * 2; ++j)
+    {
+      //objMatrix = hlm::float4x4(OBJECT_MATRIX.data());
+      if (j < x_angles)
+      {
+        objMatrix = hlm::rotate4x4Y(i * delta_angle * DEG_TO_RAD);
+        i += 1;
+      }
+      else
+      {
+        objMatrix = hlm::rotate4x4X(i * delta_angle * DEG_TO_RAD);
+        i += 1;
+      }
+
+      if (j == x_angles)
+        i = 0;
+
+      std::vector<std::filesystem::path> savedImages;
+
+      for (int i = 0; i < wavelengths.size(); ++i)
+      {
+        hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+        std::vector<int> objRemapList = { 0, materials[i].id };
+        hrMeshInstance(scnRef, objRef, objMatrix.L(), objRemapList.data(), objRemapList.size());
+        hrLightInstance(scnRef, sphereLight_left, lightLeftMatrix.L());
+        hrLightInstance(scnRef, sphereLight_right, lightRightMatrix.L());
+        ///////////
+
+        hrSceneClose(scnRef);
+
+        hrFlush(scnRef, renderRef, camRef);
+
+        while (true)
+        {
+          std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+          HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+          if (info.haveUpdateFB)
+          {
+            auto pres = std::cout.precision(2);
+            std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+            std::cout.precision(pres);
+          }
+
+          if (info.finalUpdate)
+            break;
+        }
+
+        std::wstringstream dirName;
+        dirName << wavelengths[i] << "nm";
+        std::filesystem::path wvDir = basePath;
+        wvDir.append(dirName.str());
+        std::filesystem::create_directory(wvDir);
+
+        std::wstringstream imgName;
+        imgName << wvDir.wstring() << L"/" << std::setfill(L'0') << std::setw(4) << j;
+
+        const std::wstring hdrName = imgName.str() + std::wstring(L".exr");
+
+        hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+        savedImages.push_back(hdrName);
+      }
+
+    }
+
+    return true;
+  }
+
+
+  void combine_images()
+  {
+    hrErrorCallerPlace(L"combine_images");
+
+    hrSceneLibraryOpen(L"tests/combine_images", HR_WRITE_DISCARD);
+
+    constexpr int TOTAL_WAVELENGTHS = 7;
+    std::vector<float> wavelengths = { 460, 480, 520, 550, 580, 610, 640 };
+    constexpr int TOTAL_VIEWS = 73;
+
+    const std::filesystem::path basePath { "image_base_dir" }; // base dir with folders named as wavelengths (i.e. "550nm") and image sequence in each folder
+
+    for (int i = 0; i < TOTAL_VIEWS; ++i)
+    {
+      std::vector <std::filesystem::path> paths;
+      for (int j = 0; j < TOTAL_WAVELENGTHS; ++j)
+      {
+        std::stringstream ss;
+        ss << int(wavelengths[j]) << "nm";
+        auto path = basePath;
+        path.append(ss.str());
+        
+        std::stringstream ss2;
+        ss2 << std::setfill('0') << std::setw(4) << i << ".exr";
+        path.append(ss2.str());
+
+        paths.push_back(path);
+      }
+
+      {
+        std::stringstream imgName;
+        imgName << basePath.string() << "/RGB_" << std::setfill('0') << std::setw(4) << i << ".exr";
+        std::filesystem::path rgbPath = imgName.str();
+        hr_spectral::SpectralImagesToRGB(rgbPath, paths, wavelengths, true);
+      }
+
+      {
+        std::stringstream imgName;
+        imgName << basePath.string() << "/avg_" << std::setfill('0') << std::setw(4) << i << ".exr";
+        std::filesystem::path avgPath = imgName.str();
+        hr_spectral::AverageSpectralImagesV2(avgPath, paths, wavelengths);
+      }
+
+    }
+  }
 }
 
