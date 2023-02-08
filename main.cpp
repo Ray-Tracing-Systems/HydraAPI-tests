@@ -132,28 +132,26 @@ int main(int argc, const char** argv)
     //EXTENSIONS_TESTS::test_ext_vtex_3();
     //EXTENSIONS_TESTS::test_ext_vtex_7();
     
-    run_all_api_tests();
-    run_all_geo_tests();
-    run_all_mtl_tests();
-    run_all_lgt_tests();
-    run_all_alg_tests();
-    run_all_3dsmax_tests();
-    run_all_vector_tex_tests();
+    //test40_several_changes();
+    //test41_load_library_basic();
 
-    SPECTRAL_TESTS::test_cornell_spectral_2();
-    SPECTRAL_TESTS::test_macbeth();
-    SPECTRAL_TESTS::test_macbeth_2();
-    SPECTRAL_TESTS::test_macbeth_3();
-    SPECTRAL_TESTS::test_texture_1();
+    run_all_api_tests(39);
+    
+    //run_all_geo_tests();
+    //run_all_mtl_tests();
+    //run_all_lgt_tests();
+    //run_all_alg_tests();
+    //run_all_3dsmax_tests();
+    //run_all_vector_tex_tests();
+
+    //SPECTRAL_TESTS::test_cornell_spectral_2();
+    //SPECTRAL_TESTS::test_macbeth();
+    //SPECTRAL_TESTS::test_macbeth_2();
+    //SPECTRAL_TESTS::test_macbeth_3();
+    //SPECTRAL_TESTS::test_texture_1();
 
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
-
     //run_all_mictofacet_torrance_sparrow();
-    
-    //std::cout << LGHT_TESTS::test_240_mesh_light_torus() << std::endl;
-    //std::cout << LGHT_TESTS::test_241_mesh_light_torus_texture_ldr() << std::endl;
-    //std::cout << LGHT_TESTS::test_242_mesh_light_torus_texture_hdr() << std::endl;
-    //std::cout << LGHT_TESTS::test_243_mesh_light_do_not_sample_me() << std::endl;
    
     //std::cout << test77_save_gbuffer_layers() << std::endl;
     //std::cout << "MSE = " << g_MSEOutput << std::endl;

@@ -1696,7 +1696,7 @@ bool test39_mmlt_or_ibpt()
     node.append_child(L"method_secondary").text() = L"mmlt"; // L"mmlt";
     node.append_child(L"trace_depth").text()      = 6;
     node.append_child(L"diff_trace_depth").text() = 3;
-    node.append_child(L"maxRaysPerPixel").text()  = 1024;
+    node.append_child(L"maxRaysPerPixel").text()  = 4096;
     node.append_child(L"evalgbuffer").text()      = 0;
   
     node.append_child(L"mmlt_burn_iters").text()     = 256;    // [1024, 2048, 4096, 8192, 16384, 65536]
@@ -1781,9 +1781,7 @@ bool test39_mmlt_or_ibpt()
   std::cout << "[test_39], rendering time = " << timer.getElapsed() << "s " << std::endl;
   std::cout.precision(oldPrecision);
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_39/z_out.bmp");
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_39/z_out.png");
-  hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_39/z_out.hdr");
 
   return check_images("test_39", 1, 40.0f);
 }
