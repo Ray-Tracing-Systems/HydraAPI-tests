@@ -707,9 +707,8 @@ namespace LGHT_TESTS
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
     HRMaterialRef matRefl = hrMaterialCreate(L"matRefl");
-
-
-    HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/23_antwerp_night.hdr");
+    //HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/23_antwerp_night.hdr");
+    HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/23_antwerp_night.exr");
     
 
     hrMaterialOpen(matGray, HR_WRITE_DISCARD);

@@ -127,6 +127,8 @@ int main(int argc, const char** argv)
     //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
     //MTL_TESTS::test_103_diffuse_texture();
     //MTL_TESTS::test_102_mirror_orbspec_mat02();
+    
+    LGHT_TESTS::test_203_sky_hdr();
 
     //EXTENSIONS_TESTS::test_ext_vtex_1();
     //EXTENSIONS_TESTS::test_ext_vtex_3();
@@ -144,17 +146,17 @@ int main(int argc, const char** argv)
     //GEO_TESTS::test_009_import_obj_fullscale();
     
     //run_all_geo_tests();
-    run_all_mtl_tests();
-    run_all_lgt_tests();
-    run_all_alg_tests();
-    run_all_3dsmax_tests();
-    run_all_vector_tex_tests();
+    //run_all_mtl_tests();
+    //run_all_lgt_tests();
+    //run_all_alg_tests();
+    //run_all_3dsmax_tests();
+    //run_all_vector_tex_tests();
     
-    SPECTRAL_TESTS::test_cornell_spectral_2();
-    SPECTRAL_TESTS::test_macbeth();
-    SPECTRAL_TESTS::test_macbeth_2();
-    SPECTRAL_TESTS::test_macbeth_3();
-    SPECTRAL_TESTS::test_texture_1();
+    //SPECTRAL_TESTS::test_cornell_spectral_2();
+    //SPECTRAL_TESTS::test_macbeth();
+    //SPECTRAL_TESTS::test_macbeth_2();
+    //SPECTRAL_TESTS::test_macbeth_3();
+    //SPECTRAL_TESTS::test_texture_1();
 
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
     //run_all_mictofacet_torrance_sparrow();
