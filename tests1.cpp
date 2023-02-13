@@ -1724,18 +1724,18 @@ void run_all_api_tests(const int startTestId)
     bool res = tests[i]();
     if (res)
     {
-      std::cout << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tPASSED!\t\n";
-      fout << std::fixed << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tPASSED!\t\n";
+      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok.\t\n";
+      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok.\t\n";
     }
     else if (g_testWasIgnored)
     {
-      std::cout << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tSKIPPED!" << std::endl;
-      fout << std::fixed << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tSKIPPED!" << std::endl;
+      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tskipped." << std::endl;
+      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tskipped." << std::endl;
     }
     else
     {
-      std::cout << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
     }
 
     fout.flush();

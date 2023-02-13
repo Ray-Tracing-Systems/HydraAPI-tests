@@ -611,7 +611,7 @@ namespace MTL_TESTS
      node.append_child(L"method_secondary").text() = L"pathtracing";
      node.append_child(L"method_tertiary").text()  = L"pathtracing";
      node.append_child(L"method_caustic").text()   = L"pathtracing";
-     node.append_child(L"qmc_variant").text()      = 1;
+     node.append_child(L"qmc_variant").text()      = QMC_ALL;
      node.append_child(L"trace_depth").text()      = 10;
      node.append_child(L"diff_trace_depth").text() = 6;
      node.append_child(L"maxRaysPerPixel").text()  = 4096;
@@ -673,13 +673,13 @@ namespace MTL_TESTS
     // Materials
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRMaterialRef matR = hrMaterialCreate(L"matR");
-    HRMaterialRef matG = hrMaterialCreate(L"matG");
-    HRMaterialRef matB = hrMaterialCreate(L"matB");
+    HRMaterialRef matR    = hrMaterialCreate(L"matR");
+    HRMaterialRef matG    = hrMaterialCreate(L"matG");
+    HRMaterialRef matB    = hrMaterialCreate(L"matB");
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 
-    HRTextureNodeRef texFloor = hrTexture2DCreateFromFile(L"data/textures/diff.jpg");
-    HRTextureNodeRef texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
+    HRTextureNodeRef texFloor    = hrTexture2DCreateFromFile(L"data/textures/diff.jpg");
+    HRTextureNodeRef texChecker  = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
     HRTextureNodeRef texChecker2 = hrTexture2DCreateFromFile(L"data/textures/checker_8x8.gif");
 
     hrMaterialOpen(matR, HR_WRITE_DISCARD);
@@ -1172,7 +1172,7 @@ namespace MTL_TESTS
       node.append_child(L"diff_trace_depth").text() = 4;
       node.append_child(L"maxRaysPerPixel").text()  = 2048;
 
-      node.append_child(L"qmc_variant").text()      = 7;
+      node.append_child(L"qmc_variant").text()      = QMC_ALL;
     }
     hrRenderClose(renderRef);
 
