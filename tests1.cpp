@@ -1801,7 +1801,7 @@ void run_all_mtl_tests(int a_start)
                        &test_102_mirror_orbspec_mat02,
 						           &test_103_diffuse_texture,
                        &test_104_reflect_phong_orbspec_mat03,
-						           &test_105_reflect_microfacet,
+						           &test_105_reflect_torranse_sparrow,
 						           &test_106_reflect_fresnel_ior,
 						           &test_107_reflect_extrusion,
 						           &test_108_reflect_texture,
@@ -1895,13 +1895,13 @@ void run_all_mtl_tests(int a_start)
 		bool res = tests[i]();
     if (res)
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tPASSED!" << std::endl;;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tPASSED!" << std::endl;;
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;;
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;;
     }
     else if (g_testWasIgnored)
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tSKIPPED!\t\n";
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tSKIPPED!\t\n";
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped.\t\n";
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped.\t\n";
     }
     else
     {
@@ -2058,7 +2058,7 @@ void run_all_mictofacet_torrance_sparrow()
                        &test_203_sky_hdr,
                        &test_204_sky_hdr_rotate,
 
-                       &test_105_reflect_microfacet,
+                       &test_105_reflect_torranse_sparrow,
                        &test_107_reflect_extrusion,
                        &test_108_reflect_texture,
                        &test_109_reflect_glossiness_texture,
@@ -2077,7 +2077,7 @@ void run_all_mictofacet_torrance_sparrow()
     "test_203_sky_hdr",
     "test_204_sky_hdr_rotate",
   
-    "test_105_reflect_microfacet",
+    "test_105_reflect_torranse_sparrow",
     "test_107_reflect_extrusion",
     "test_108_reflect_texture",
     "test_109_reflect_glossiness_texture",
@@ -2180,8 +2180,6 @@ void run_all_vector_tex_tests()
   fout.close();
 }
 
-std::vector<std::wstring> hr_listfiles(const wchar_t* a_folder, bool excludeFolders = true);
-std::string ws2s(const std::wstring& wstr);
 
 bool run_single_3dsmax_test(const std::wstring& a_path)
 {

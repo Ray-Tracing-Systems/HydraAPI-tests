@@ -124,11 +124,9 @@ int main(int argc, const char** argv)
   
   try
   {
-    //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
-    //MTL_TESTS::test_103_diffuse_texture();
-    //MTL_TESTS::test_102_mirror_orbspec_mat02();
-    
-    LGHT_TESTS::test_203_sky_hdr();
+    MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+        
+    //LGHT_TESTS::test_203_sky_hdr();
 
     //EXTENSIONS_TESTS::test_ext_vtex_1();
     //EXTENSIONS_TESTS::test_ext_vtex_3();

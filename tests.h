@@ -5,9 +5,12 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <filesystem>
 
 #include "HydraAPI.h"
 #include "HydraXMLVerify.h"
+#include "../hydra_api/HydraXMLHelpers.h"
+#include "linmath.h"
 #include "LiteMath.h"
 
 using namespace LiteMath;
@@ -51,29 +54,53 @@ namespace TEST_UTILS
   //displacement
   struct displace_data_1
   {
-      float mult = 1.0f;
-      float3 global_dir = float3(0.0f, 1.0f, 0.0f);
+    float mult = 1.0f;
+    float3 global_dir = float3(0.0f, 1.0f, 0.0f);
   };
 
-  void customDisplacement1(const float *pos, const float *normal, const HRUtils::BBox &bbox, float displace_vec[3],
-                           void* a_customData, uint32_t a_customDataSize);
-  void customDisplacementSpots(const float *pos, const float *normal, const HRUtils::BBox &bbox, float displace_vec[3],
-                               void* a_customData, uint32_t a_customDataSize);
+  void customDisplacement1(const float* pos, const float* normal, const HRUtils::BBox& bbox, float displace_vec[3],
+    void* a_customData, uint32_t a_customDataSize);
+  void customDisplacementSpots(const float* pos, const float* normal, const HRUtils::BBox& bbox, float displace_vec[3],
+    void* a_customData, uint32_t a_customDataSize);
 
-  void customDisplacementFBM(const float *p, const float *normal, const HRUtils::BBox &bbox, float displace_vec[3],
-                             void* a_customData, uint32_t a_customDataSize);
+  void customDisplacementFBM(const float* p, const float* normal, const HRUtils::BBox& bbox, float displace_vec[3],
+    void* a_customData, uint32_t a_customDataSize);
 
 
   //geometry
   std::vector<HRMeshRef> CreateRandomMeshesArray(int a_size, simplerandom::RandomGen& rgen);
   HRMeshRef HRMeshFromSimpleMesh(const wchar_t* a_name, const SimpleMesh& a_mesh, int a_matId);
+  HRMeshRef CreateCornelBox(const float a_size, HRMaterialRef a_leftWallMat, HRMaterialRef a_rightWallMat,
+    HRMaterialRef a_ceilingMat, HRMaterialRef a_backWallMat, HRMaterialRef a_floorMat);
+
+  //materials
+  void AddDiffuseNode(HAPI pugi::xml_node& matNode, const wchar_t* a_diffuseColor,
+    const wchar_t* a_brdfType = L"lambert", const const wchar_t* a_roughness = L"0.0",
+    HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"clamp",
+    const wchar_t* a_addressingModeV = L"clamp", const float a_inputGamma = 2.2f, const wchar_t* a_inputAlpha = L"rgb");
+
+  //light
+  HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
+    const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,
+    const wchar_t* a_color, const float a_multiplier);
+
+  //camera
+  void CreateCamera(const wchar_t* a_fov, const wchar_t* position, const wchar_t* look_at,
+    const wchar_t* a_name = L"Camera01", const wchar_t* a_nearClipPlane = L"0.01",
+    const wchar_t* a_farClipPlane = L"100.0", const wchar_t* a_up = L"0 1 0");
+
+  //scene  
+  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, float3 pos, float3 rot = float3(0, 0, 0));
+  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_meshRef, float3 pos, float3 rot = float3(0, 0, 0));
 
   //render
   HRRenderRef CreateBasicTestRenderPT(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName = L"HydraModern");
   HRRenderRef CreateBasicTestRenderPTNoCaust(int deviceId, int w, int h, int minRays, int maxRays);
+  HRRenderRef CreateBasicTestRenderPTFastBackground(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName = L"HydraModern");
   HRRenderRef CreateBasicGLRender(int w, int h);
   HRMeshRef CreateTriStrip(int rows, int cols, float size);
- 
+
+  void RenderProgress(HRRenderRef& a_renderRef);
 }
 
 using DrawFuncType = void (*)();
@@ -231,7 +258,7 @@ namespace MTL_TESTS
   bool test_103_diffuse_texture();
 
   bool test_104_reflect_phong_orbspec_mat03();
-  bool test_105_reflect_microfacet();
+  bool test_105_reflect_torranse_sparrow();
   bool test_106_reflect_fresnel_ior();
   bool test_107_reflect_extrusion();
   bool test_108_reflect_texture();

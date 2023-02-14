@@ -501,6 +501,111 @@ namespace TEST_UTILS
   }
 
 
+  void AddDiffuseNode(HAPI pugi::xml_node& matNode, const wchar_t* a_diffuseColor,
+    const wchar_t* a_brdfType, const const wchar_t* a_roughness,
+    HRTextureNodeRef a_texture, const wchar_t* a_addressingModeU,
+    const wchar_t* a_addressingModeV, const float a_inputGamma, const wchar_t* a_inputAlpha)
+  {
+    auto diff  = matNode.append_child(L"diffuse");
+    diff.append_attribute(L"brdf_type").set_value(a_brdfType);
+
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val").set_value(a_diffuseColor);
+    color.append_attribute(L"tex_apply_mode").set_value(L"multiply");
+
+    if (a_brdfType == L"orennayar")
+    {
+      auto rough = diff.append_child(L"roughness");
+      rough.append_attribute(L"val").set_value(a_roughness);
+    }
+
+    if (a_texture.id != -1)
+    {
+
+      hrTextureBind(a_texture, color);
+
+      auto texNode = color.child(L"texture");
+      texNode.append_attribute(L"matrix");
+      float samplerMatrix[16] = { 1, 0, 0, 0,
+                                  0, 1, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1 };
+
+      texNode.append_attribute(L"addressing_mode_u").set_value(a_addressingModeU);
+      texNode.append_attribute(L"addressing_mode_v").set_value(a_addressingModeV);
+      texNode.append_attribute(L"input_gamma").set_value(a_inputGamma);
+      texNode.append_attribute(L"input_alpha").set_value(a_inputAlpha);
+
+      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+    }
+  }
+
+
+  void CreateCamera(const wchar_t* a_fov, const wchar_t* position, const wchar_t* look_at,
+    const wchar_t* a_name, const wchar_t* a_nearClipPlane, const wchar_t* a_farClipPlane, const wchar_t* a_up)
+  {
+    HRCameraRef camRef = hrCameraCreate(a_name);
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(a_fov);
+      camNode.append_child(L"nearClipPlane").text().set(a_nearClipPlane);
+      camNode.append_child(L"farClipPlane").text().set(a_farClipPlane);
+
+      camNode.append_child(L"up").text().set(a_up);
+      camNode.append_child(L"position").text().set(position);
+      camNode.append_child(L"look_at").text().set(look_at);
+    }
+    hrCameraClose(camRef);
+
+    //return camRef;
+  }
+
+  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, float3 pos, float3 rot)
+  {
+    float matrixT[4][4];
+    float mTranslate[4][4];
+    float mRes[4][4];
+    float mRot[4][4];
+
+    mat4x4_identity(mTranslate);
+    mat4x4_identity(mRot);
+
+    mat4x4_translate(mTranslate, pos.x, pos.y, pos.z);
+    mat4x4_rotate_Z(mRot, mRot, rot.z * DEG_TO_RAD);
+    mat4x4_rotate_Y(mRot, mRot, rot.y * DEG_TO_RAD);
+    mat4x4_rotate_X(mRot, mRot, rot.x * DEG_TO_RAD);
+
+    mat4x4_mul(mRes, mTranslate, mRot);
+    mat4x4_transpose(matrixT, mRes); //swap rows and columns
+
+    hrMeshInstance(scnRef, a_meshRef, &matrixT[0][0]);
+  }
+
+  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_lightRef, float3 pos, float3 rot)
+  {
+    float matrixT[4][4];
+    float mTranslate[4][4];
+    float mRes[4][4];
+    float mRot[4][4];
+
+    mat4x4_identity(mTranslate);
+    mat4x4_identity(mRot);
+
+    mat4x4_translate(mTranslate, pos.x, pos.y, pos.z);
+    mat4x4_rotate_Z(mRot, mRot, rot.z * DEG_TO_RAD);
+    mat4x4_rotate_Y(mRot, mRot, rot.y * DEG_TO_RAD);
+    mat4x4_rotate_X(mRot, mRot, rot.x * DEG_TO_RAD);
+
+    mat4x4_mul(mRes, mTranslate, mRot);
+    mat4x4_transpose(matrixT, mRes); //swap rows and columns
+
+    hrLightInstance(scnRef, a_lightRef, &matrixT[0][0]);
+  }
+
+
   HRRenderRef CreateBasicTestRenderPT(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName)
   {
     HRRenderRef renderRef = hrRenderCreate(a_drvName);
@@ -517,6 +622,8 @@ namespace TEST_UTILS
       node.append_child(L"method_secondary").text() = L"pathtracing";
       node.append_child(L"method_tertiary").text()  = L"pathtracing";
       node.append_child(L"method_caustic").text()   = L"pathtracing";
+      node.append_child(L"qmc_variant").text()      = QMC_ALL;
+
 
       node.append_child(L"trace_depth").text()      = 6;
       node.append_child(L"diff_trace_depth").text() = 4;
@@ -548,7 +655,7 @@ namespace TEST_UTILS
 
       node.append_child(L"trace_depth").text()      = L"5";
       node.append_child(L"diff_trace_depth").text() = L"3";
-      node.append_child(L"qmc_variant").text()      = 7;
+      node.append_child(L"qmc_variant").text()      = QMC_ALL;
 
       node.append_child(L"minRaysPerPixel").text() = minRays;
       node.append_child(L"maxRaysPerPixel").text() = maxRays;
@@ -557,6 +664,67 @@ namespace TEST_UTILS
 
     return renderRef;
   }
+
+  HRRenderRef CreateBasicTestRenderPTFastBackground(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName)
+  {
+    HRRenderRef renderRef = hrRenderCreate(a_drvName);
+    hrRenderEnableDevice(renderRef, deviceId, true);
+
+    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
+    {
+      auto node = hrRenderParamNode(renderRef);
+
+      node.append_child(L"width").text()  = w;
+      node.append_child(L"height").text() = h;
+
+      node.append_child(L"method_primary").text()   = L"pathtracing";
+      node.append_child(L"method_secondary").text() = L"pathtracing";
+      node.append_child(L"method_tertiary").text()  = L"pathtracing";
+      node.append_child(L"method_caustic").text()   = L"pathtracing";
+      //node.append_child(L"qmc_variant").text()      = QMC_ALL; not work with offline_pt
+
+
+      node.append_child(L"trace_depth").text()      = 6;
+      node.append_child(L"diff_trace_depth").text() = 4;
+      node.append_child(L"maxRaysPerPixel").text()  = maxRays;
+      node.append_child(L"resources_path").text()   = L"..";
+      node.append_child(L"offline_pt").text()       = 1;
+    }
+    hrRenderClose(renderRef);
+
+    return renderRef;
+  }
+
+  HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
+    const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,
+    const wchar_t* a_color, const float a_multiplier)
+  {
+    HRLightRef light = hrLightCreate(a_name);
+
+    hrLightOpen(light, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(light);
+
+      lightNode.attribute(L"type").set_value(a_type);
+      lightNode.attribute(L"shape").set_value(a_shape);
+      lightNode.attribute(L"distribution").set_value(a_distribution);
+
+      auto sizeNode = lightNode.append_child(L"size");
+
+      sizeNode.append_attribute(L"half_length").set_value(a_halfLength);
+      sizeNode.append_attribute(L"half_width").set_value(a_halfWidth);
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(a_color);
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(a_multiplier);
+			VERIFY_XML(lightNode);
+    }
+    hrLightClose(light);
+
+    return light;
+  }
+
 
 
   HRMeshRef CreateTriStrip(int rows, int cols, float size)
@@ -674,4 +842,24 @@ namespace TEST_UTILS
     return meshRef;
   }
 
+
+  void RenderProgress(HRRenderRef& a_renderRef)
+  {
+    while (true)
+    {
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+      HRRenderUpdateInfo info = hrRenderHaveUpdate(a_renderRef);
+
+      if (info.haveUpdateFB)
+      {
+        auto pres = std::cout.precision(2);
+        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+        std::cout.precision(pres);
+      }
+
+      if (info.finalUpdate)
+        break;
+    }
+  }
 }
