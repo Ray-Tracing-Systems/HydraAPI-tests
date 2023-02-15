@@ -500,11 +500,37 @@ namespace TEST_UTILS
     return meshRef;
   }
 
+  HRMeshRef CreateCornellBox(const float a_size, HRMaterialRef a_leftWallMat, HRMaterialRef a_rightWallMat, HRMaterialRef a_ceilingMat, HRMaterialRef a_backWallMat, HRMaterialRef a_floorMat)
+  {
+    SimpleMesh cubeOpen = CreateCubeOpen(a_size);
+    HRMeshRef meshRef   = hrMeshCreate(L"CornellBox");
+
+    hrMeshOpen(meshRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
+    {
+      hrMeshVertexAttribPointer4f(meshRef, L"pos",      &cubeOpen.vPos[0]);
+      hrMeshVertexAttribPointer4f(meshRef, L"norm",     &cubeOpen.vNorm[0]);
+      hrMeshVertexAttribPointer2f(meshRef, L"texcoord", &cubeOpen.vTexCoord[0]);
+
+      int cubeMatIndices[10] = { 
+        a_ceilingMat.id,    a_ceilingMat.id, 
+        a_backWallMat.id,   a_backWallMat.id, 
+        a_floorMat.id,      a_floorMat.id, 
+        a_rightWallMat.id,  a_rightWallMat.id, 
+        a_leftWallMat.id,   a_leftWallMat.id };
+
+      hrMeshPrimitiveAttribPointer1i(meshRef, L"mind", cubeMatIndices);
+      hrMeshAppendTriangles3(meshRef, int(cubeOpen.triIndices.size()), &cubeOpen.triIndices[0]);
+    }
+    hrMeshClose(meshRef);
+
+    return meshRef;
+  }
+
 
   void AddDiffuseNode(HAPI pugi::xml_node& matNode, const wchar_t* a_diffuseColor,
-    const wchar_t* a_brdfType, const const wchar_t* a_roughness,
-    HRTextureNodeRef a_texture, const wchar_t* a_addressingModeU,
-    const wchar_t* a_addressingModeV, const float a_inputGamma, const wchar_t* a_inputAlpha)
+    const wchar_t* a_brdfType, const float a_roughness, HRTextureNodeRef a_texture, 
+    const wchar_t* a_addressingModeU, const wchar_t* a_addressingModeV,
+    const float a_tileU, const float a_tileV, const float a_inputGamma, const wchar_t* a_inputAlpha)
   {
     auto diff  = matNode.append_child(L"diffuse");
     diff.append_attribute(L"brdf_type").set_value(a_brdfType);
@@ -521,13 +547,12 @@ namespace TEST_UTILS
 
     if (a_texture.id != -1)
     {
-
       hrTextureBind(a_texture, color);
 
       auto texNode = color.child(L"texture");
       texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 1, 0, 0, 0,
-                                  0, 1, 0, 0,
+      float samplerMatrix[16] = { a_tileU, 0, 0, 0,
+                                  0, a_tileV, 0, 0,
                                   0, 0, 1, 0,
                                   0, 0, 0, 1 };
 
@@ -541,8 +566,25 @@ namespace TEST_UTILS
   }
 
 
-  void CreateCamera(const wchar_t* a_fov, const wchar_t* position, const wchar_t* look_at,
-    const wchar_t* a_name, const wchar_t* a_nearClipPlane, const wchar_t* a_farClipPlane, const wchar_t* a_up)
+
+  void AddReflectionNode(HAPI pugi::xml_node& matNode, const wchar_t* a_brdfType, const wchar_t* a_color,
+    const float a_glossiness, const bool a_fresnel, const float a_ior, const wchar_t* a_extrusion, const bool a_energyFix)
+  {
+    auto refl = matNode.append_child(L"reflectivity");
+
+    refl.append_attribute(L"brdf_type").set_value(a_brdfType);
+    refl.append_child(L"color").append_attribute(L"val").set_value(a_color);
+    refl.append_child(L"glossiness").append_attribute(L"val").set_value(a_glossiness);
+    refl.append_child(L"extrusion").append_attribute(L"val").set_value(a_extrusion);
+    refl.append_child(L"fresnel").append_attribute(L"val").set_value((int)(a_fresnel));
+    refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(a_ior);
+    refl.append_child(L"energy_fix").append_attribute(L"val").set_value((int)(a_energyFix));
+  }
+
+
+
+  void CreateCamera(const float a_fov, const wchar_t* position, const wchar_t* look_at,
+    const wchar_t* a_name, const float a_nearClipPlane, const float a_farClipPlane, const wchar_t* a_up)
   {
     HRCameraRef camRef = hrCameraCreate(a_name);
 
@@ -563,60 +605,127 @@ namespace TEST_UTILS
     //return camRef;
   }
 
-  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, float3 pos, float3 rot)
+  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, float3 pos, float3 rot, float3 scale,
+    const int32_t* a_mmListm, int32_t a_mmListSize)
   {
-    float matrixT[4][4];
-    float mTranslate[4][4];
-    float mRes[4][4];
-    float mRot[4][4];
+    float4x4 mRotX;
+    float4x4 mRotY;
+    float4x4 mRotZ;
+    float4x4 mScale;
+    float4x4 mTranslate;
+    float4x4 mRes;
 
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRot);
+    mRotX.identity();
+    mRotY.identity();
+    mRotZ.identity();
+    mScale.identity();
+    mTranslate.identity();
+    mRes.identity();
 
-    mat4x4_translate(mTranslate, pos.x, pos.y, pos.z);
-    mat4x4_rotate_Z(mRot, mRot, rot.z * DEG_TO_RAD);
-    mat4x4_rotate_Y(mRot, mRot, rot.y * DEG_TO_RAD);
-    mat4x4_rotate_X(mRot, mRot, rot.x * DEG_TO_RAD);
+    mRotX      = rotate4x4X(rot.x * DEG_TO_RAD);
+    mRotY      = rotate4x4Y(-rot.y * DEG_TO_RAD);
+    mRotZ      = rotate4x4Z(rot.z * DEG_TO_RAD);
+    mScale     = scale4x4(scale);
+    mTranslate = translate4x4(pos);
 
-    mat4x4_mul(mRes, mTranslate, mRot);
-    mat4x4_transpose(matrixT, mRes); //swap rows and columns
+    mRes       = mul(mRotZ, mRes);
+    mRes       = mul(mRotX, mRes);
+    mRes       = mul(mRotY, mRes);
+    mRes       = mul(mScale, mRes);    
+    mRes       = mul(mTranslate, mRes);
 
-    hrMeshInstance(scnRef, a_meshRef, &matrixT[0][0]);
+    if (a_mmListSize > 0)
+      hrMeshInstance(scnRef, a_meshRef, mRes.L(), a_mmListm, a_mmListSize);
+    else    
+      hrMeshInstance(scnRef, a_meshRef, mRes.L());
+    
+    //float mRot[4][4];
+    //float mTranslate[4][4];
+    //float matrixT[4][4];
+    //float mRes[4][4];
+
+    //mat4x4_identity(mTranslate);
+    //mat4x4_identity(mRot);
+
+    //mat4x4_translate(mTranslate, pos.x, pos.y, pos.z);
+    //mat4x4_rotate_Z(mRot, mRot, rot.z * DEG_TO_RAD);
+    //mat4x4_rotate_Y(mRot, mRot, rot.y * DEG_TO_RAD);
+    //mat4x4_rotate_X(mRot, mRot, rot.x * DEG_TO_RAD);
+
+    //mat4x4_mul(mRes, mTranslate, mRot);
+    //mat4x4_transpose(matrixT, mRes); //swap rows and columns
+
+    //if (a_mmListSize > 0)
+    //  hrMeshInstance(scnRef, a_meshRef, &matrixT[0][0], a_mmListm, a_mmListSize);
+    //else    
+    //  hrMeshInstance(scnRef, a_meshRef, &matrixT[0][0]);
+
   }
 
-  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_lightRef, float3 pos, float3 rot)
+
+  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_lightRef, float3 pos, float3 rot, float3 scale)
   {
-    float matrixT[4][4];
-    float mTranslate[4][4];
-    float mRes[4][4];
-    float mRot[4][4];
+    float4x4 mRotX;
+    float4x4 mRotY;
+    float4x4 mRotZ;
+    float4x4 mScale;
+    float4x4 mTranslate;
+    float4x4 mRes;
 
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRot);
+    mRotX.identity();
+    mRotY.identity();
+    mRotZ.identity();
+    mScale.identity();
+    mTranslate.identity();
+    mRes.identity();
 
-    mat4x4_translate(mTranslate, pos.x, pos.y, pos.z);
-    mat4x4_rotate_Z(mRot, mRot, rot.z * DEG_TO_RAD);
-    mat4x4_rotate_Y(mRot, mRot, rot.y * DEG_TO_RAD);
-    mat4x4_rotate_X(mRot, mRot, rot.x * DEG_TO_RAD);
+    mRotX      = rotate4x4X(rot.x * DEG_TO_RAD);
+    mRotY      = rotate4x4Y(-rot.y * DEG_TO_RAD);
+    mRotZ      = rotate4x4Z(rot.z * DEG_TO_RAD);
+    mScale     = scale4x4(scale);
+    mTranslate = translate4x4(pos);
 
-    mat4x4_mul(mRes, mTranslate, mRot);
-    mat4x4_transpose(matrixT, mRes); //swap rows and columns
+    mRes       = mul(mRotZ, mRes);
+    mRes       = mul(mRotX, mRes);
+    mRes       = mul(mRotY, mRes);
+    mRes       = mul(mScale, mRes);
+    mRes       = mul(mTranslate, mRes);
 
-    hrLightInstance(scnRef, a_lightRef, &matrixT[0][0]);
+    hrLightInstance(scnRef, a_lightRef, mRes.L());
+
+    //float mRot[4][4];
+    //float mTranslate[4][4];
+    //float matrixT[4][4];
+    //float mRes[4][4];
+
+    //mat4x4_identity(mTranslate);
+    //mat4x4_identity(mRot);
+
+    //mat4x4_translate(mTranslate, pos.x, pos.y, pos.z);
+    //mat4x4_rotate_Z(mRot, mRot, rot.z * DEG_TO_RAD);
+    //mat4x4_rotate_Y(mRot, mRot, rot.y * DEG_TO_RAD);
+    //mat4x4_rotate_X(mRot, mRot, rot.x * DEG_TO_RAD);
+
+    //mat4x4_mul(mRes, mTranslate, mRot);
+    //mat4x4_transpose(matrixT, mRes); //swap rows and columns
+
+    //hrLightInstance(scnRef, a_lightRef, &matrixT[0][0]);
+
   }
 
 
-  HRRenderRef CreateBasicTestRenderPT(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName)
+  HRRenderRef CreateBasicTestRenderPT(int a_deviceId, int a_w, int a_h, int a_minRays, int a_maxRays,
+    int a_rayBounce, int a_diffBounce, const wchar_t* a_drvName)
   {
     HRRenderRef renderRef = hrRenderCreate(a_drvName);
-    hrRenderEnableDevice(renderRef, deviceId, true);
+    hrRenderEnableDevice(renderRef, a_deviceId, true);
 
     hrRenderOpen(renderRef, HR_WRITE_DISCARD);
     {
       auto node = hrRenderParamNode(renderRef);
 
-      node.append_child(L"width").text()  = w;
-      node.append_child(L"height").text() = h;
+      node.append_child(L"width").text()  = a_w;
+      node.append_child(L"height").text() = a_h;
 
       node.append_child(L"method_primary").text()   = L"pathtracing";
       node.append_child(L"method_secondary").text() = L"pathtracing";
@@ -625,9 +734,9 @@ namespace TEST_UTILS
       node.append_child(L"qmc_variant").text()      = QMC_ALL;
 
 
-      node.append_child(L"trace_depth").text()      = 6;
-      node.append_child(L"diff_trace_depth").text() = 4;
-      node.append_child(L"maxRaysPerPixel").text()  = maxRays;
+      node.append_child(L"trace_depth").text()      = a_rayBounce;
+      node.append_child(L"diff_trace_depth").text() = a_diffBounce;
+      node.append_child(L"maxRaysPerPixel").text()  = a_maxRays;
       node.append_child(L"resources_path").text()   = L"..";
       node.append_child(L"offline_pt").text()       = 0;
     }

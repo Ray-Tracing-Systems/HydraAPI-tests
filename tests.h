@@ -70,14 +70,19 @@ namespace TEST_UTILS
   //geometry
   std::vector<HRMeshRef> CreateRandomMeshesArray(int a_size, simplerandom::RandomGen& rgen);
   HRMeshRef HRMeshFromSimpleMesh(const wchar_t* a_name, const SimpleMesh& a_mesh, int a_matId);
-  HRMeshRef CreateCornelBox(const float a_size, HRMaterialRef a_leftWallMat, HRMaterialRef a_rightWallMat,
+  HRMeshRef CreateCornellBox(const float a_size, HRMaterialRef a_leftWallMat, HRMaterialRef a_rightWallMat,
     HRMaterialRef a_ceilingMat, HRMaterialRef a_backWallMat, HRMaterialRef a_floorMat);
 
   //materials
   void AddDiffuseNode(HAPI pugi::xml_node& matNode, const wchar_t* a_diffuseColor,
-    const wchar_t* a_brdfType = L"lambert", const const wchar_t* a_roughness = L"0.0",
+    const wchar_t* a_brdfType = L"lambert", const float a_roughness = 0,
     HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"clamp",
-    const wchar_t* a_addressingModeV = L"clamp", const float a_inputGamma = 2.2f, const wchar_t* a_inputAlpha = L"rgb");
+    const wchar_t* a_addressingModeV = L"clamp", const float tileU = 1, const float tileV = 1,
+    const float a_inputGamma = 2.2f, const wchar_t* a_inputAlpha = L"rgb");
+
+  void AddReflectionNode(HAPI pugi::xml_node& matNode, const wchar_t* a_brdfType, const wchar_t* a_color,
+    const float a_glossiness, const bool a_fresnel, const float a_ior = 1.5f, 
+    const wchar_t* a_extrusion = L"maxcolor", const bool a_energyFix = false);
 
   //light
   HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
@@ -85,16 +90,19 @@ namespace TEST_UTILS
     const wchar_t* a_color, const float a_multiplier);
 
   //camera
-  void CreateCamera(const wchar_t* a_fov, const wchar_t* position, const wchar_t* look_at,
-    const wchar_t* a_name = L"Camera01", const wchar_t* a_nearClipPlane = L"0.01",
-    const wchar_t* a_farClipPlane = L"100.0", const wchar_t* a_up = L"0 1 0");
+  void CreateCamera(const float a_fov, const wchar_t* position, const wchar_t* look_at,
+    const wchar_t* a_name = L"Camera01", const float a_nearClipPlane = 0.01,
+    const float a_farClipPlane = 100.0, const wchar_t* a_up = L"0 1 0");
 
   //scene  
-  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, float3 pos, float3 rot = float3(0, 0, 0));
-  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_meshRef, float3 pos, float3 rot = float3(0, 0, 0));
+  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, const float3 pos,
+    const float3 rot = float3(0, 0, 0), const float3 scale = float3(1, 1, 1), const int32_t* a_mmListm = nullptr, int32_t a_mmListSize = 0);
+  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_meshRef, float3 pos, 
+    const float3 rot = float3(0, 0, 0), const float3 scale = float3(1, 1, 1));
 
   //render
-  HRRenderRef CreateBasicTestRenderPT(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName = L"HydraModern");
+  HRRenderRef CreateBasicTestRenderPT(int a_deviceId, int a_w, int a_h, int a_minRays, int a_maxRays, 
+    int a_rayBounce = 6, int a_diffBounce = 4, const wchar_t* a_drvName = L"HydraModern");
   HRRenderRef CreateBasicTestRenderPTNoCaust(int deviceId, int w, int h, int minRays, int maxRays);
   HRRenderRef CreateBasicTestRenderPTFastBackground(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName = L"HydraModern");
   HRRenderRef CreateBasicGLRender(int w, int h);
