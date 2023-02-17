@@ -684,11 +684,11 @@ namespace MTL_TESTS
     // Materials
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRMaterialRef matMirror = hrMaterialCreate(L"matMirror");
+    HRMaterialRef matMirror     = hrMaterialCreate(L"matMirror");
     HRMaterialRef matMetalPhong = hrMaterialCreate(L"matMetalPhong");
-    HRMaterialRef matMetalMF = hrMaterialCreate(L"matMetalMF");
-    HRMaterialRef matBG = hrMaterialCreate(L"matBG");
-    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    HRMaterialRef matMetalMF    = hrMaterialCreate(L"matMetalMF");
+    HRMaterialRef matBG         = hrMaterialCreate(L"matBG");
+    HRMaterialRef matGray       = hrMaterialCreate(L"matGray");
 
     HRTextureNodeRef texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
     HRTextureNodeRef texPattern = hrTexture2DCreateFromFile(L"data/textures/blur_pattern.bmp");
@@ -1754,15 +1754,15 @@ namespace MTL_TESTS
     // Materials
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRMaterialRef matDiffTrans = hrMaterialCreate(L"matDiffTrans");
-    HRMaterialRef matDiffReflTrans = hrMaterialCreate(L"matDiffReflTrans");
+    HRMaterialRef matDiffTrans         = hrMaterialCreate(L"matDiffTrans");
+    HRMaterialRef matDiffReflTrans     = hrMaterialCreate(L"matDiffReflTrans");
     HRMaterialRef matDiffReflTransOpac = hrMaterialCreate(L"matDiffReflTransOpac");
-    HRMaterialRef matBG = hrMaterialCreate(L"matBG");
-    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    HRMaterialRef matBG                = hrMaterialCreate(L"matBG");
+    HRMaterialRef matGray              = hrMaterialCreate(L"matGray");
 
     HRTextureNodeRef texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
     HRTextureNodeRef texPattern = hrTexture2DCreateFromFile(L"data/textures/blur_pattern.bmp");
-    HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/building.hdr");
+    HRTextureNodeRef texEnv     = hrTexture2DCreateFromFile(L"data/textures/building.hdr");
 
 
     hrMaterialOpen(matDiffTrans, HR_WRITE_DISCARD);
@@ -1912,10 +1912,10 @@ namespace MTL_TESTS
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Meshes
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    HRMeshRef sph1 = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64), matDiffTrans.id);
-    HRMeshRef sph2 = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64), matDiffReflTrans.id);
-    HRMeshRef sph3 = HRMeshFromSimpleMesh(L"sph3", CreateSphere(2.0f, 64), matDiffReflTransOpac.id);
-    HRMeshRef boxBG = HRMeshFromSimpleMesh(L"boxBG", CreateCube(1.0f), matBG.id);
+    HRMeshRef sph1     = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64), matDiffTrans.id);
+    HRMeshRef sph2     = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64), matDiffReflTrans.id);
+    HRMeshRef sph3     = HRMeshFromSimpleMesh(L"sph3", CreateSphere(2.0f, 64), matDiffReflTransOpac.id);
+    HRMeshRef boxBG    = HRMeshFromSimpleMesh(L"boxBG", CreateCube(1.0f), matBG.id);
     HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(20.0f), matGray.id);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

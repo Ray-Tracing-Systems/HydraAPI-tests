@@ -124,10 +124,10 @@ int main(int argc, const char** argv)
   
   try
   {
-    MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+    //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+    //MTL_TESTS::test_100_diffuse_orennayar();
         
     //LGHT_TESTS::test_203_sky_hdr();
-
     //EXTENSIONS_TESTS::test_ext_vtex_1();
     //EXTENSIONS_TESTS::test_ext_vtex_3();
     //EXTENSIONS_TESTS::test_ext_vtex_7();
@@ -144,7 +144,7 @@ int main(int argc, const char** argv)
     //GEO_TESTS::test_009_import_obj_fullscale();
     
     //run_all_geo_tests();
-    //run_all_mtl_tests();
+    run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_3dsmax_tests();

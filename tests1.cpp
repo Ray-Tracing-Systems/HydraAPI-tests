@@ -1721,11 +1721,13 @@ void run_all_api_tests(const int startTestId)
 
   for (int i = startTestId2; i < testNum; i++)
   {
+    std::cout << "                                      \r";
+
     bool res = tests[i]();
     if (res)
     {
-      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok.\t\n";
-      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok.\t\n";
+      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok." << std::endl;
+      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok." << std::endl;
     }
     else if (g_testWasIgnored)
     {
@@ -1770,16 +1772,18 @@ void run_all_geo_tests()
 
 	for (int i = 0; i < testNum; i++)
 	{
+    std::cout << "                                      \r";
+
 		bool res = tests[i]();
     if (res)
     {
-      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tPASSED!" << std::endl;
-      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tPASSED!" << std::endl;
+      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tok." << std::endl;
+      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tok." << std::endl;
     }
     else if (g_testWasIgnored)
     {
-      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tSKIPPED!\t\n";
-      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tSKIPPED!\t\n";
+      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tskipped." << std::endl;
+      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tskipped." << std::endl;
     }
     else
     {
@@ -1892,16 +1896,18 @@ void run_all_mtl_tests(int a_start)
 
 	for (int i = a_start; i < testNum; i++)
 	{
-		bool res = tests[i]();
+    std::cout << "                                      \r";
+		
+    bool res = tests[i]();
     if (res)
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;;
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;
     }
     else if (g_testWasIgnored)
     {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped.\t\n";
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped.\t\n";
+      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped." << std::endl;
+      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped." << std::endl;
     }
     else
     {
@@ -1978,16 +1984,18 @@ void run_all_lgt_tests(int a_start)
 
   for (int i = a_start; i < testNum; i++)
   {
+    std::cout << "                                      \r";
+
     bool res = tests[i]();
     if (res)
     {
-      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!" << std::endl;
-      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tPASSED!" << std::endl;
+      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tok." << std::endl;
+      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tok." << std::endl;
     }
     else if (g_testWasIgnored)
     {
-      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tSKIPPED!\t\n";
-      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tSKIPPED!\t\n";
+      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tskipped." << std::endl;;
+      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tskipped." << std::endl;;
     }
     else
     {
@@ -2022,16 +2030,18 @@ void run_all_alg_tests(int a_start)
   
   for (int i = a_start; i < testNum; i++)
   {
+    std::cout << "                                      \r";
+
     bool res = tests[i]();
     if (res)
     {
-      std::cout          << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tPASSED!\t\n";
-      fout << std::fixed << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tPASSED!\t\n";
+      std::cout          << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tok." << std::endl;
+      fout << std::fixed << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tok." << std::endl;
     }
     else if (g_testWasIgnored)
     {
-      std::cout          << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tSKIPPED!\t\n";
-      fout << std::fixed << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tSKIPPED!\t\n";
+      std::cout          << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tskipped." << std::endl;
+      fout << std::fixed << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tskipped." << std::endl;
     }
     else
     {
@@ -2097,16 +2107,18 @@ void run_all_mictofacet_torrance_sparrow()
   
   for (int i = 0; i < testNum; i++)
   {
+    std::cout << "                                      \r";
+
     bool res = tests[i]();
     if (res)
     {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
+      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok." << std::endl;
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok." << std::endl;
     }
     else if (g_testWasIgnored)
     {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
+      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tskipped." << std::endl;
+      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tskipped." << std::endl;
     }
     else
     {
@@ -2155,21 +2167,23 @@ void run_all_vector_tex_tests()
 
   for (int i = 0; i < testNum; i++)
   {
+    std::cout << "                                      \r";
+
     bool res = tests[i]();
     if (res)
     {
-      std::cout << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tPASSED!\t\n";
+      std::cout           << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok."  << std::endl;
+      fout << std::fixed  << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok."  << std::endl;
     }
     else if (g_testWasIgnored)
     {
-      std::cout << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!\t\n";
+      std::cout           << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!" << std::endl;
+      fout << std::fixed  << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!" << std::endl;
     }
     else
     {
-      std::cout << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      std::cout           << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed  << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
     }
 
     fout.flush();
@@ -2278,20 +2292,22 @@ void run_all_3dsmax_tests(int a_start)
     std::string name = ws2s(f);
     const bool res   = run_single_3dsmax_test(f);
     
+    std::cout << "                                      \r";
+
     if (res)
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\ok\t\n";
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tok\t\n";
+      std::cout           << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\ok\t\n";
+      fout << std::fixed  << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tok\t\n";
     }
     else if (g_testWasIgnored)
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
+      std::cout           << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
+      fout << std::fixed  << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
     }
     else
     {
-      std::cout << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      std::cout           << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
+      fout << std::fixed  << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
     }
 
     fout.flush();
