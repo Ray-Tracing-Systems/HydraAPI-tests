@@ -563,6 +563,7 @@ namespace TEST_UTILS
 
       HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
     }
+    VERIFY_XML(matNode);
   }
 
 
@@ -579,6 +580,7 @@ namespace TEST_UTILS
     refl.append_child(L"fresnel").append_attribute(L"val").set_value((int)(a_fresnel));
     refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(a_ior);
     refl.append_child(L"energy_fix").append_attribute(L"val").set_value((int)(a_energyFix));
+    VERIFY_XML(matNode);
   }
 
 
@@ -586,7 +588,7 @@ namespace TEST_UTILS
   void CreateCamera(const float a_fov, const wchar_t* position, const wchar_t* look_at,
     const wchar_t* a_name, const float a_nearClipPlane, const float a_farClipPlane, const wchar_t* a_up)
   {
-    HRCameraRef camRef = hrCameraCreate(a_name);
+    auto camRef = hrCameraCreate(a_name);
 
     hrCameraOpen(camRef, HR_WRITE_DISCARD);
     {
@@ -599,10 +601,9 @@ namespace TEST_UTILS
       camNode.append_child(L"up").text().set(a_up);
       camNode.append_child(L"position").text().set(position);
       camNode.append_child(L"look_at").text().set(look_at);
+      VERIFY_XML(camNode); 
     }
     hrCameraClose(camRef);
-
-    //return camRef;
   }
 
   void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, float3 pos, float3 rot, float3 scale,
@@ -663,7 +664,8 @@ namespace TEST_UTILS
   }
 
 
-  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_lightRef, float3 pos, float3 rot, float3 scale)
+  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_lightRef, const float3 a_pos, 
+    const float3 a_rot, const float3 a_scale)
   {
     float4x4 mRotX;
     float4x4 mRotY;
@@ -679,11 +681,11 @@ namespace TEST_UTILS
     mTranslate.identity();
     mRes.identity();
 
-    mRotX      = rotate4x4X(rot.x * DEG_TO_RAD);
-    mRotY      = rotate4x4Y(-rot.y * DEG_TO_RAD);
-    mRotZ      = rotate4x4Z(rot.z * DEG_TO_RAD);
-    mScale     = scale4x4(scale);
-    mTranslate = translate4x4(pos);
+    mRotX      = rotate4x4X(a_rot.x * DEG_TO_RAD);
+    mRotY      = rotate4x4Y(-a_rot.y * DEG_TO_RAD);
+    mRotZ      = rotate4x4Z(a_rot.z * DEG_TO_RAD);
+    mScale     = scale4x4(a_scale);
+    mTranslate = translate4x4(a_pos);
 
     mRes       = mul(mRotZ, mRes);
     mRes       = mul(mRotX, mRes);
@@ -808,7 +810,7 @@ namespace TEST_UTILS
     const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,
     const wchar_t* a_color, const float a_multiplier)
   {
-    HRLightRef light = hrLightCreate(a_name);
+    auto light = hrLightCreate(a_name);
 
     hrLightOpen(light, HR_WRITE_DISCARD);
     {
@@ -958,7 +960,7 @@ namespace TEST_UTILS
     {
       std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(a_renderRef);
+      auto info = hrRenderHaveUpdate(a_renderRef);
 
       if (info.haveUpdateFB)
       {
@@ -968,7 +970,10 @@ namespace TEST_UTILS
       }
 
       if (info.finalUpdate)
+      {
+        std::cout << "                                           \r";
         break;
+      }
     }
   }
 }

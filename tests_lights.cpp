@@ -696,44 +696,34 @@ namespace LGHT_TESTS
 
   bool test_203_sky_hdr()
   {
-    hrErrorCallerPlace(L"test_203");
+    std::wstring nameTest                = L"test_203";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_203", HR_WRITE_DISCARD);
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-
-    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
-    HRMaterialRef matRefl = hrMaterialCreate(L"matRefl");
-    //HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/23_antwerp_night.hdr");
-    HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/23_antwerp_night.exr");
+    auto matGray = hrMaterialCreate(L"matGray");
+    auto matRefl = hrMaterialCreate(L"matRefl");
+    //auto texEnv = hrTexture2DCreateFromFile(L"data/textures/23_antwerp_night.hdr");
+    auto texEnv = hrTexture2DCreateFromFile(L"data/textures/23_antwerp_night.exr");
     
 
     hrMaterialOpen(matGray, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matGray);
-
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5");
     }
     hrMaterialClose(matGray);
 
     hrMaterialOpen(matRefl, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matRefl);
-
-      auto refl = matNode.append_child(L"reflectivity");
-      refl.append_attribute(L"brdf_type").set_value(L"torranse_sparrow");
-      refl.append_child(L"color").append_attribute(L"val").set_value(L"0.9 0.9 0.9");
-      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.98");
-      refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
-      refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
-      refl.append_child(L"fresnel_IOR").append_attribute(L"val").set_value(8.0f);
+      AddReflectionNode(matNode, L"torranse_sparrow", L"0.9 0.9 0.9", 0.98, true, 8);
     }
     hrMaterialClose(matRefl);
 
@@ -741,15 +731,16 @@ namespace LGHT_TESTS
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Meshes
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    HRMeshRef cubeR    = HRMeshFromSimpleMesh(L"cubeR", CreateCube(2.0f), matGray.id);
-    HRMeshRef sphereG  = HRMeshFromSimpleMesh(L"sphereG", CreateSphere(4.0f, 64), matRefl.id);
-    HRMeshRef torusB   = HRMeshFromSimpleMesh(L"torusB", CreateTorus(0.8f, 2.0f, 64, 64), matGray.id);
-    HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(20.0f), matGray.id);
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    auto cubeR    = HRMeshFromSimpleMesh(L"cubeR", CreateCube(2.0f), matGray.id);
+    auto sphereG  = HRMeshFromSimpleMesh(L"sphereG", CreateSphere(4.0f, 64), matRefl.id);
+    auto torusB   = HRMeshFromSimpleMesh(L"torusB", CreateTorus(0.8f, 2.0f, 64, 64), matGray.id);
+    auto planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(20.0f), matGray.id);
+    
+    ////////////////////
     // Light
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-    HRLightRef sky = hrLightCreate(L"sky");
+    auto sky = hrLightCreate(L"sky");
 
     hrLightOpen(sky, HR_WRITE_DISCARD);
     {
@@ -781,136 +772,48 @@ namespace LGHT_TESTS
     hrLightClose(sky);
 
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Camera
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
+    CreateCamera(45, L"0 8 20", L"0 2 0");
 
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      auto camNode = hrCameraParamNode(camRef);
-
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 13 16");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
-    }
-    hrCameraClose(camRef);
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Render settings
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 512, 512, 512, 4096);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Create scene
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-
-    using namespace LiteMath;
-
-    float4x4 mRot, mRot2;
-    float4x4 mTranslate;
-    float4x4 mScale;
-    float4x4 mRes;
-
-    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
 
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
-    ///////////
 
-    mTranslate.identity();
-    mRes.identity();
-    mRot.identity();
-
-
-    mTranslate = translate4x4(float3(0.0f, -1.0f, 0.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, planeRef, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-    mRot.identity();
-
-    mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
-    mRes = mul(mTranslate, mRot);
-
-    hrMeshInstance(scnRef, cubeR, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-    mRot.identity();
-    mRot2.identity();
-
-    mTranslate = translate4x4(float3(4.0f, 1.0f, 5.5f));
-    mRot = rotate4x4Y(-60.0f*DEG_TO_RAD);
-    mRot2 = rotate4x4X(90.0f*DEG_TO_RAD);
-    mRes = mul(mRot, mRot2);
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, torusB, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-    mRot.identity();
-
-    mTranslate = translate4x4(float3(0.0f, 2.0f, -1.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, sphereG, mRes.L());
-
-    ///////////
-
-    mRes.identity();
-
-    hrLightInstance(scnRef, sky, mRes.L());
-
-    ///////////
+    AddMeshToScene(scnRef, planeRef);
+    AddMeshToScene(scnRef, cubeR, float3(-4.75f, 2.0f, 5.0f), float3(0, 60, 0));
+    AddMeshToScene(scnRef, torusB, float3(4.0f, 2.0f, 5.5f), float3(90, -60, 0));
+    AddMeshToScene(scnRef, sphereG, float3(0.0f, 4.0f, -1.0f));
+    AddLightToScene(scnRef, sky);
 
     hrSceneClose(scnRef);
-
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-        
-        
-      }
-
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_203/z_out.png");
-
-    return check_images("test_203", 1, 20);
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
+
+
 
   bool test_204_sky_hdr_rotate()
   {

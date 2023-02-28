@@ -54,7 +54,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(mat01);
       AddDiffuseNode(matNode, L"0.8 0.8 0.8", L"orennayar", 0);
-			VERIFY_XML(matNode);
     }
     hrMaterialClose(mat01);
 
@@ -62,7 +61,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(mat02);
       AddDiffuseNode(matNode, L"0.8 0.8 0.8", L"orennayar", 0.5f);
-      VERIFY_XML(matNode);
     }
     hrMaterialClose(mat02);
 
@@ -70,7 +68,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(mat03);
       AddDiffuseNode(matNode, L"0.8 0.8 0.8", L"orennayar", 1);
-			VERIFY_XML(matNode);
     }
     hrMaterialClose(mat03);
 
@@ -78,7 +75,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(matGray);
       AddDiffuseNode(matNode, L"0.5 0.5 0.5");
-			VERIFY_XML(matNode);
     }
     hrMaterialClose(matGray);
 
@@ -263,7 +259,7 @@ namespace MTL_TESTS
     hrMaterialOpen(mat2, HR_WRITE_DISCARD);
     {
       xml_node matNode = hrMaterialParamNode(mat2);
-      AddDiffuseNode(matNode, L"0.0 0.5 0.0");
+      AddDiffuseNode(matNode, L"0.0 0.5 0.0");			
     }
     hrMaterialClose(mat2);
 
@@ -363,7 +359,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(matR);
       AddDiffuseNode(matNode, L"0.95 0.05 0.05", L"lambert", 0, texChecker);
-			VERIFY_XML(matNode);
     }
     hrMaterialClose(matR);
 
@@ -371,7 +366,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(matG);
       AddDiffuseNode(matNode, L"0.05 0.95 0.05", L"lambert", 0, texChecker, L"wrap", L"wrap", 4, 4);
-			VERIFY_XML(matNode);
     }
     hrMaterialClose(matG);
 
@@ -379,7 +373,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(matB);
       AddDiffuseNode(matNode, L"0.05 0.05 0.95", L"lambert", 0, texChecker, L"wrap", L"wrap", 4, 4);
-			VERIFY_XML(matNode);
     }
     hrMaterialClose(matB);
 
@@ -387,7 +380,6 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(matGray);
       AddDiffuseNode(matNode, L"1.0 1.0 1.0", L"lambert", 0, texFloor);
-			VERIFY_XML(matNode);
     }
     hrMaterialClose(matGray);
 
@@ -395,10 +387,10 @@ namespace MTL_TESTS
     // Meshes
     ////////////////////
 
-    HRMeshRef cubeR    = HRMeshFromSimpleMesh(L"cubeR",    CreateCube(2.0f), matR.id);
-    HRMeshRef sphereG  = HRMeshFromSimpleMesh(L"sphereG",  CreateSphere(4.0f, 64), matG.id);
-    HRMeshRef torusB   = HRMeshFromSimpleMesh(L"torusB",   CreateTorus(0.8f, 2.0f, 64, 64), matB.id);
-    HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(10.0f), matGray.id);
+    auto cubeR    = HRMeshFromSimpleMesh(L"cubeR",    CreateCube(2.0f), matR.id);
+    auto sphereG  = HRMeshFromSimpleMesh(L"sphereG",  CreateSphere(4.0f, 64), matG.id);
+    auto torusB   = HRMeshFromSimpleMesh(L"torusB",   CreateTorus(0.8f, 2.0f, 64, 64), matB.id);
+    auto planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(10.0f), matGray.id);
 
     ////////////////////
     // Light

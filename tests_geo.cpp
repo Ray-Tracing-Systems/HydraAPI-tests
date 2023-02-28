@@ -38,54 +38,42 @@ namespace GEO_TESTS
   
   bool test_001_mesh_from_memory()
   {
-    hrErrorCallerPlace(L"test_001");
+    std::wstring nameTest                = L"test_001";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
     
-    
-    hrSceneLibraryOpen(L"tests_f/test_001", HR_WRITE_DISCARD);
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRMaterialRef mat0 = hrMaterialCreate(L"mat0");
-    HRMaterialRef mat1 = hrMaterialCreate(L"mat1");
+    auto mat0 = hrMaterialCreate(L"mat0");
+    auto mat1 = hrMaterialCreate(L"mat1");
     
     hrMaterialOpen(mat0, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat0);
-      
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.5 0.75 0.5");
-      
-      VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.5 0.75 0.5");
     }
     hrMaterialClose(mat0);
     
     hrMaterialOpen(mat1, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat1);
-      
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.25 0.25 0.25");
-      
-      VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.25 0.25 0.25");
     }
     hrMaterialClose(mat1);
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Meshes
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    SimpleMesh cube = CreateCube(0.75f);
-    SimpleMesh plane = CreatePlane(10.0f);
-    HRMeshRef cubeRef = hrMeshCreate(L"my_cube");
-    HRMeshRef planeRef = hrMeshCreate(L"my_plane");
+    ////////////////////
     
+    auto cube     = CreateCube(0.75f);
+    auto plane    = CreatePlane(4.0f);
+    auto cubeRef  = hrMeshCreate(L"my_cube");
+    auto planeRef = hrMeshCreate(L"my_plane");    
     
     hrMeshOpen(cubeRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
     {
@@ -110,425 +98,200 @@ namespace GEO_TESTS
     }
     hrMeshClose(planeRef);
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Light
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRLightRef rectLight = hrLightCreate(L"my_area_light");
-    
-    hrLightOpen(rectLight, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(rectLight);
-      
-      lightNode.attribute(L"type").set_value(L"area");
-      lightNode.attribute(L"shape").set_value(L"rect");
-      lightNode.attribute(L"distribution").set_value(L"diffuse");
-      
-      auto sizeNode = lightNode.append_child(L"size");
-      
-      sizeNode.append_attribute(L"half_length").set_value(1.0f);
-      sizeNode.append_attribute(L"half_width").set_value(1.0f);
-      
-      auto intensityNode = lightNode.append_child(L"intensity");
-      
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(8.0f*IRRADIANCE_TO_RADIANCE);
-      
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(rectLight);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    auto rectLight = CreateLight(L"Light01", L"area", L"rect", L"diffuse", 1.0f, 1.0f, L"1 1 1", 8.0f * IRRADIANCE_TO_RADIANCE);
+        
+    ////////////////////
     // Camera
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
+    CreateCamera(30, L"0 1.5 15", L"0 1.5 0");        
     
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      auto camNode = hrCameraParamNode(camRef);
-      
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-      
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 0 15");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
-      
-      VERIFY_XML(camNode);
-    }
-    hrCameraClose(camRef);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Render settings
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 2048);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 256);
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Create scene
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    
-    float matrixT[4][4];
-    float mTranslate[4][4];
-    float mRes[4][4];
-    float mRes2[4][4];
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
     
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     
-    ///////////
+    AddMeshToScene(scnRef, planeRef, float3(0, -1, 0));
+    AddMeshToScene(scnRef, cubeRef, float3(-2, 0, 0));
+    AddMeshToScene(scnRef, cubeRef, float3(2, 0, 0));
+    AddLightToScene(scnRef, rectLight, float3(0, 3.85f, 0));
     
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRes);
-    
-    mat4x4_translate(mTranslate, 0.0f, -1.0f, 0.0f);
-    mat4x4_mul(mRes2, mTranslate, mRes);
-    mat4x4_transpose(matrixT, mRes2);
-    
-    hrMeshInstance(scnRef, planeRef, &matrixT[0][0]);
-    
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRes);
-    
-    mat4x4_translate(mTranslate, -2.0f, 0.0f, 0.0f);
-    mat4x4_mul(mRes2, mTranslate, mRes);
-    mat4x4_transpose(matrixT, mRes2);
-    
-    hrMeshInstance(scnRef, cubeRef, &matrixT[0][0]);
-    
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRes);
-    
-    mat4x4_translate(mTranslate, 2.0f, 0.0f, 0.0f);
-    mat4x4_mul(mRes2, mTranslate, mRes);
-    mat4x4_transpose(matrixT, mRes2); //swap rows and columns
-    
-    hrMeshInstance(scnRef, cubeRef, &matrixT[0][0]);
-    
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_translate(mTranslate, 0, 3.85f, 0);
-    mat4x4_transpose(matrixT, mTranslate);
-    
-    hrLightInstance(scnRef, rectLight, &matrixT[0][0]);
-    
-    ///////////
-    
-    hrSceneClose(scnRef);
-    
+    hrSceneClose(scnRef);    
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-        
-        
-        
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_001/z_out.png");
-    
-    return check_images("test_001");
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str());
   }
   
+
+
   bool test_002_mesh_from_vsgf()
   {
-    hrErrorCallerPlace(L"test_002");
+    std::wstring nameTest                = L"test_002";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
     
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    hrSceneLibraryOpen(L"tests_f/test_002", HR_WRITE_DISCARD);
+    ////////////////////
     
     //the mesh we're going to load has material id attribute set to 1
     //so we first need to add the material with id 0 and then add material for the mesh
-    HRMaterialRef mat0_unused = hrMaterialCreate(L"mat0_unused");
-    HRMaterialRef mat1 = hrMaterialCreate(L"mat1");
+    auto mat0_unused = hrMaterialCreate(L"mat0_unused");
+    auto mat1        = hrMaterialCreate(L"mat1");
     
     hrMaterialOpen(mat1, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat1);
-      
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.3 0.3 0.85");
-      
-      VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.3 0.3 0.7");
     }
     hrMaterialClose(mat1);
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Meshes
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRMeshRef lucyRef = hrMeshCreateFromFileDL(L"data/meshes/lucy.vsgf");
-    
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    auto lucyRef = hrMeshCreateFromFileDL(L"data/meshes/lucy.vsgf");
+        
+    ////////////////////
     // Light
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    HRLightRef rectLight = hrLightCreate(L"my_area_light");
-    
-    hrLightOpen(rectLight, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(rectLight);
-      
-      lightNode.attribute(L"type").set_value(L"area");
-      lightNode.attribute(L"shape").set_value(L"rect");
-      lightNode.attribute(L"distribution").set_value(L"diffuse");
-      
-      auto sizeNode = lightNode.append_child(L"size");
-      
-      sizeNode.append_attribute(L"half_length").set_value(5.0f);
-      sizeNode.append_attribute(L"half_width").set_value(5.0f);
-      
-      auto intensityNode = lightNode.append_child(L"intensity");
-      
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(8.0f*IRRADIANCE_TO_RADIANCE);
-      
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(rectLight);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
+
+    auto rectLight = CreateLight(L"Light01", L"area", L"rect", L"diffuse", 5.0f, 5.0f, L"1 1 1", 4.0f * IRRADIANCE_TO_RADIANCE);
+        
+    ////////////////////
     // Camera
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
+    CreateCamera(35, L"0 0 15", L"0 0 0");
     
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      auto camNode = hrCameraParamNode(camRef);
-      
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-      
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 0 15");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
-      
-      VERIFY_XML(camNode);
-    }
-    hrCameraClose(camRef);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Render settings
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 2048);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 1024);
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Create scene
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    
-    float matrixT[4][4];
-    float mTranslate[4][4];
-    float mRes[4][4];
-    float mRes2[4][4];
-    
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+        
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRes);
-    
-    mat4x4_translate(mTranslate, 0.0f, -5.0f, 0.0f);
-    mat4x4_mul(mRes2, mTranslate, mRes);
-    mat4x4_transpose(matrixT, mRes2);
-    
-    hrMeshInstance(scnRef, lucyRef, &matrixT[0][0]);
-    
-    
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_translate(mTranslate, 0, 10.0f, 0);
-    mat4x4_transpose(matrixT, mTranslate);
-    
-    hrLightInstance(scnRef, rectLight, &matrixT[0][0]);
-    
-    ///////////
-    
-    hrSceneClose(scnRef);
-    
+    AddMeshToScene(scnRef, lucyRef, float3(-0.5f, -4.0f, 0.0f));
+    AddLightToScene(scnRef, rectLight, float3(0, 10.0f, 0));
+            
+    hrSceneClose(scnRef);    
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-        
-        
-        
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_002/z_out.png");
-    
-    return check_images("test_002");
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str());
   }
   
+
+
   bool test_003_compute_normals()
   {
-    hrErrorCallerPlace(L"test_003");
-    hrSceneLibraryOpen(L"tests_f/test_003", HR_WRITE_DISCARD);
+    std::wstring nameTest                = L"test_003";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Materials
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    HRMaterialRef mat0 = hrMaterialCreate(L"mat0");
-    HRMaterialRef mat1 = hrMaterialCreate(L"mat1");
+    auto mat0 = hrMaterialCreate(L"mat0");
+    auto mat1 = hrMaterialCreate(L"mat1");
     
     hrMaterialOpen(mat0, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat0);
-      
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
-      
-      VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5");      
     }
     hrMaterialClose(mat0);
     
     hrMaterialOpen(mat1, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat1);
-      
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.3 0.3 0.85");
-      
-      VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.3 0.3 0.85");      
     }
     hrMaterialClose(mat1);
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Meshes
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRMeshRef teapotRef = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/teapot.vsgf");
-    HRMeshRef lucyRef   = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/lucy.vsgf");
+    auto teapotRef = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/teapot.vsgf");
+    auto lucyRef   = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/lucy.vsgf");
 
-/*
-    HRMeshRef teapotRef = hrMeshCreateFromFileDL(L"data/meshes/teapot.vsgf");
-    HRMeshRef lucyRef = hrMeshCreateFromFileDL(L"data/meshes/lucy.vsgf");
-
-    */
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //auto teapotRef = hrMeshCreateFromFileDL(L"data/meshes/teapot.vsgf");
+    //auto lucyRef = hrMeshCreateFromFileDL(L"data/meshes/lucy.vsgf");
+    
+    ////////////////////
     // Light
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    HRLightRef rectLight = hrLightCreate(L"my_area_light");
-    
-    hrLightOpen(rectLight, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(rectLight);
-      
-      lightNode.attribute(L"type").set_value(L"area");
-      lightNode.attribute(L"shape").set_value(L"rect");
-      lightNode.attribute(L"distribution").set_value(L"diffuse");
-      
-      auto sizeNode = lightNode.append_child(L"size");
-      
-      sizeNode.append_attribute(L"half_length").set_value(5.0f);
-      sizeNode.append_attribute(L"half_width").set_value(5.0f);
-      
-      auto intensityNode = lightNode.append_child(L"intensity");
-      
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(8.0*IRRADIANCE_TO_RADIANCE);
-      
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(rectLight);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
+
+    auto rectLight = CreateLight(L"Light01", L"area", L"rect", L"diffuse", 5, 5, L"1 1 1", 8.0f * IRRADIANCE_TO_RADIANCE);
+        
+    ////////////////////
     // Camera
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
+
+    CreateCamera(45, L"0 0 15", L"0 0 0");
     
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
-    
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      auto camNode = hrCameraParamNode(camRef);
-      
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-      
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 0 15");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
-      
-      VERIFY_XML(camNode);
-    }
-    hrCameraClose(camRef);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Render settings
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 2048);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 2048);
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Create scene
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
-    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
+    auto scnRef = hrSceneCreate(L"my scene");
     
     float matrixT[4][4];
     float mTranslate[4][4];
     float mRes[4][4];
     float mRes2[4][4];
     float mScale[4][4];
-    
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
-    
     
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     
@@ -571,32 +334,18 @@ namespace GEO_TESTS
     
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-        
-        
-        
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_003/z_out.png");
-    
-    return check_images("test_003");
-    
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str());    
   }
   
+
   bool test_004_dof()
   {
     hrErrorCallerPlace(L"test_004");

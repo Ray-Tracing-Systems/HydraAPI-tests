@@ -95,10 +95,10 @@ namespace TEST_UTILS
     const float a_farClipPlane = 100.0, const wchar_t* a_up = L"0 1 0");
 
   //scene  
-  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, const float3 pos,
+  void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, const float3 pos = float3(0, 0, 0),
     const float3 rot = float3(0, 0, 0), const float3 scale = float3(1, 1, 1), const int32_t* a_mmListm = nullptr, int32_t a_mmListSize = 0);
-  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_meshRef, float3 pos, 
-    const float3 rot = float3(0, 0, 0), const float3 scale = float3(1, 1, 1));
+  void AddLightToScene(HRSceneInstRef& scnRef, HRLightRef& a_lightRef, const float3 a_pos = float3(0, 0, 0),
+    const float3 a_rot = float3(0, 0, 0), const float3 a_scale = float3(1, 1, 1));
 
   //render
   HRRenderRef CreateBasicTestRenderPT(int a_deviceId, int a_w, int a_h, int a_minRays, int a_maxRays, 
