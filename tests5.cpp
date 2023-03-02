@@ -30,16 +30,16 @@
 #include "HR_HDRImageTool.h"
 #include "tests.h"
 
+///////////////////////////////////////////////////////////////////////////////////
 
 #pragma warning(disable:4838)
 
 using namespace TEST_UTILS;
 extern GLFWwindow* g_window;
 
+
 bool test31_procedural_texture_LDR()
 {
-	
-
 	hrErrorCallerPlace(L"test31");
 
 	HRCameraRef    camRef;

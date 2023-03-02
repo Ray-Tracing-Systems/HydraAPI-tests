@@ -33,6 +33,8 @@
 #include "HR_HDRImageTool.h"
 #include "HydraXMLHelpers.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 #pragma warning(disable:4996)
 using namespace TEST_UTILS;
 

@@ -10,8 +10,8 @@
 
 //------------------------------------------------------------------------
 
-double Timer::s_ticksToSecsCoef    = -1.0;
-long long int Timer::s_prevTicks          = 0;
+double Timer::s_ticksToSecsCoef  = -1.0;
+long long int Timer::s_prevTicks = 0;
 
 //------------------------------------------------------------------------
 

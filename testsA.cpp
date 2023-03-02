@@ -31,8 +31,9 @@
 #include "HR_HDRImageTool.h"
 #include "LiteMath.h"
 
-using namespace TEST_UTILS;
+///////////////////////////////////////////////////////////////////////////////////
 
+using namespace TEST_UTILS;
 extern GLFWwindow* g_window;
 
 

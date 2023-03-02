@@ -20,20 +20,19 @@
 #include "HR_HDRImageTool.h"
 #include "HydraXMLHelpers.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 #pragma warning(disable:4996)
 
 extern GLFWwindow* g_window;
-
 using namespace TEST_UTILS;
-
+namespace hlm = LiteMath;
 
 HAPI HRMeshRef hrMeshCreateFromFileDL_NoNormals(const wchar_t* a_fileName);
 
-namespace hlm = LiteMath;
 
 namespace GEO_TESTS
-{
-  
+{  
   static const int TEST_IMG_SIZE = 512;
   
   bool test_001_mesh_from_memory()
@@ -231,10 +230,10 @@ namespace GEO_TESTS
 
     hrErrorCallerPlace(nameTest.c_str());
     hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     
     auto mat0 = hrMaterialCreate(L"mat0");
     auto mat1 = hrMaterialCreate(L"mat1");
@@ -348,26 +347,17 @@ namespace GEO_TESTS
 
   bool test_004_dof()
   {
-    hrErrorCallerPlace(L"test_004");
-    
-    HRCameraRef    camRef;
-    HRSceneInstRef scnRef;
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    hrSceneLibraryOpen(L"tests_f/test_004", HR_WRITE_DISCARD);
-    
-    // geometry
-    //
-    HRMeshRef cubeRef  = HRMeshFromSimpleMesh(L"my_cube", CreateCube(0.25f), 1);
-    HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(20.0f), 2);
-    HRMeshRef sphRef   = HRMeshFromSimpleMesh(L"my_sphere", CreateSphere(0.5f, 32), 3);
-    HRMeshRef torRef   = HRMeshFromSimpleMesh(L"my_torus", CreateTorus(0.1f, 0.3f, 32, 32), 0);
-    
-    // material and textures
-    //
+    std::wstring nameTest                = L"test_004";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+        
+    ////////////////////
+    // Materials
+    ////////////////////
+
     HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_red.bmp");
     
     HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
@@ -471,7 +461,7 @@ namespace GEO_TESTS
     
     // camera
     //
-    camRef = hrCameraCreate(L"my camera");
+    auto camRef = hrCameraCreate(L"my camera");
     
     hrCameraOpen(camRef, HR_WRITE_DISCARD);
     {
@@ -490,11 +480,18 @@ namespace GEO_TESTS
     }
     hrCameraClose(camRef);
     
-    
+        
+    // geometry
+    //
+    auto cubeRef  = HRMeshFromSimpleMesh(L"my_cube", CreateCube(0.25f), 1);
+    auto planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(20.0f), 2);
+    auto sphRef   = HRMeshFromSimpleMesh(L"my_sphere", CreateSphere(0.5f, 32), 3);
+    auto torRef   = HRMeshFromSimpleMesh(L"my_torus", CreateTorus(0.1f, 0.3f, 32, 32), 0);
+
     
     // create scene
     //
-    scnRef = hrSceneCreate(L"my scene");
+    auto scnRef = hrSceneCreate(L"my scene");
     
     float	rtri = 25.0f; // Angle For The Triangle ( NEW )
     float	rquad = 40.0f;
@@ -613,42 +610,31 @@ namespace GEO_TESTS
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_004/z_out.png");
-    
-    return check_images("test_004", 1, 20);
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
   
+
   bool test_005_instancing()
   {
-    hrErrorCallerPlace(L"test_005");
-    
-    hrSceneLibraryOpen(L"tests_f/test_005", HR_WRITE_DISCARD);
-    
-    HRTextureNodeRef texPattern = hrTexture2DCreateFromFile(L"data/textures/bigleaf3.tga");
-    HRTextureNodeRef texture1   = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    std::wstring nameTest                = L"test_005";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+        
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////    
     
     HRMaterialRef matGray     = hrMaterialCreate(L"matGray");
     HRMaterialRef matTrunk    = hrMaterialCreate(L"Trunk");
@@ -659,6 +645,9 @@ namespace GEO_TESTS
     HRMaterialRef matCanopy   = hrMaterialCreate(L"Canopy");
     HRMaterialRef matCube     = hrMaterialCreate(L"CubeMap");
     
+    HRTextureNodeRef texPattern = hrTexture2DCreateFromFile(L"data/textures/bigleaf3.tga");
+    HRTextureNodeRef texture1   = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
+
     hrMaterialOpen(matCube, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matCube);
@@ -972,42 +961,36 @@ namespace GEO_TESTS
     
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-        
-        
-        
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_005/z_out.png");
-    
-    return check_images("test_005", 1, 20.0f);
-    
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
   
+
   bool test_006_points_on_mesh()
   {
-    hrErrorCallerPlace(L"test_006");
-    hrSceneLibraryOpen(L"tests_f/test_006", HR_WRITE_DISCARD);
+    std::wstring nameTest                = L"test_006";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+        
+    ////////////////////
+    // Materials
+    ////////////////////    
     
     HRMaterialRef mat1 = hrMaterialCreate(L"mat1");
     HRMaterialRef mat2 = hrMaterialCreate(L"mat2");
     
-    int rep = 8;
-    
+    int rep = 8;    
     HRTextureNodeRef tex = hrTexture2DCreateBakedLDR(&procTexCheckerLDR, (void *) (&rep), sizeof(int), 32, 32);
     
     hrMaterialOpen(mat1, HR_WRITE_DISCARD);
@@ -1197,40 +1180,32 @@ namespace GEO_TESTS
     
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r";
-        std::cout.precision(pres);
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_006/z_out.png");
-    
-    return check_images("test_006", 1, 50);
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 50);
   }
+
   
   bool test_007_import_obj()
   {
-    hrErrorCallerPlace(L"test_007");
-    
-    HRCameraRef    camRef;
-    HRSceneInstRef scnRef;
-    
-    hrSceneLibraryOpen(L"tests_f/test_007", HR_WRITE_DISCARD);
-    
-    /**********************************************  Setting materials  ***********************************************/
-    
-    // Material and textures
+    std::wstring nameTest                = L"test_007";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+        
+    ////////////////////
+    // Materials
+    ////////////////////    
+
     HRMaterialRef mat0 = hrMaterialCreate(L"default");
     HRMaterialRef mat1 = hrMaterialCreate(L"wood");
     
@@ -1319,7 +1294,7 @@ namespace GEO_TESTS
     
     /**********************************************  Setting the camera  **********************************************/
     
-    camRef = hrCameraCreate(L"my camera");
+    auto camRef = hrCameraCreate(L"my camera");
     
     hrCameraOpen(camRef, HR_WRITE_DISCARD);
     {
@@ -1336,7 +1311,7 @@ namespace GEO_TESTS
     hrCameraClose(camRef);
     
     /***********************************************  Setting the scene  **********************************************/
-    scnRef = hrSceneCreate(L"my scene");
+    auto scnRef = hrSceneCreate(L"my scene");
     
     const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
     
@@ -1399,44 +1374,32 @@ namespace GEO_TESTS
     
     hrFlush(scnRef, renderRef);
     
-    /******************************************************************************************************************/
-    
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    /*******************************************  Saving the output data  *********************************************/
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_007/z_out.png");
-    
-    return check_images("test_007", 1, 20);
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
   
+
   bool test_008_import_obj_w_mtl()
   {
-    hrErrorCallerPlace(L"test_008");
-    
-    HRCameraRef    camRef;
-    HRSceneInstRef scnRef;
-    
-    hrSceneLibraryOpen(L"tests_f/test_008", HR_WRITE_DISCARD);
-    
-    /**********************************************  Setting materials  ***********************************************/
-    
-    // Material and textures
+    std::wstring nameTest                = L"test_008";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+        
+    ////////////////////
+    // Materials
+    ////////////////////    
+        
     HRMaterialRef mat0 = hrMaterialCreate(L"default");
     HRMaterialRef mat1 = hrMaterialCreate(L"wood");
     
@@ -1525,7 +1488,7 @@ namespace GEO_TESTS
     
     /**********************************************  Setting the camera  **********************************************/
     
-    camRef = hrCameraCreate(L"my camera");
+    auto camRef = hrCameraCreate(L"my camera");
     
     hrCameraOpen(camRef, HR_WRITE_DISCARD);
     {
@@ -1542,7 +1505,7 @@ namespace GEO_TESTS
     hrCameraClose(camRef);
     
     /***********************************************  Setting the scene  **********************************************/
-    scnRef = hrSceneCreate(L"my scene");
+    auto scnRef = hrSceneCreate(L"my scene");
     
     const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
     
@@ -1604,44 +1567,32 @@ namespace GEO_TESTS
     
     hrFlush(scnRef, renderRef);
     
-    /******************************************************************************************************************/
-    
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    /*******************************************  Saving the output data  *********************************************/
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_008/z_out.png");
-    
-    return check_images("test_008", 1, 20);
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
   
+
   bool test_009_import_obj_fullscale()
   {
-    hrErrorCallerPlace(L"test_009");
+    std::wstring nameTest                = L"test_009";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+        
+    ////////////////////
+    // Materials
+    ////////////////////    
     
-    HRCameraRef    camRef;
-    HRSceneInstRef scnRef;
-    
-    hrSceneLibraryOpen(L"tests_f/test_009", HR_WRITE_DISCARD);
-    
-    /**********************************************  Setting materials  ***********************************************/
-    
-    // Material and textures
     HRMaterialRef mat0 = hrMaterialCreate(L"default");
     HRMaterialRef mat1 = hrMaterialCreate(L"wood");
     
@@ -1730,7 +1681,7 @@ namespace GEO_TESTS
     
     /**********************************************  Setting the camera  **********************************************/
     
-    camRef = hrCameraCreate(L"my camera");
+    auto camRef = hrCameraCreate(L"my camera");
     
     hrCameraOpen(camRef, HR_WRITE_DISCARD);
     {
@@ -1747,7 +1698,7 @@ namespace GEO_TESTS
     hrCameraClose(camRef);
     
     /***********************************************  Setting the scene  **********************************************/
-    scnRef = hrSceneCreate(L"my scene");
+    auto scnRef = hrSceneCreate(L"my scene");
     
     const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
     
@@ -1809,30 +1760,16 @@ namespace GEO_TESTS
     
     hrFlush(scnRef, renderRef);
     
-    /******************************************************************************************************************/
-    
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-      
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
-      
-      if (info.finalUpdate)
-        break;
-    }
-    
-    /*******************************************  Saving the output data  *********************************************/
-    
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_009/z_out.png");
-    
-    return check_images("test_009", 1, 20);
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
   
 }

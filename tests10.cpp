@@ -28,11 +28,13 @@
 
 #include "tests.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 #pragma warning(disable:4996)
 using namespace TEST_UTILS;
 using HydraRender::SaveImageToFile;
-
 extern GLFWwindow* g_window;
+
 
 bool test1000_loadlibrary_and_edit()
 {

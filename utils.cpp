@@ -11,13 +11,14 @@
 #include "HR_HDRImageTool.h"
 #include "HydraTextureUtils.h"
 
-using HDRImage4f = HydraRender::HDRImage4f;
+///////////////////////////////////////////////////////////////////////////////////
 
 #pragma warning(disable:4838)
+using HDRImage4f = HydraRender::HDRImage4f;
+
 
 namespace TEST_UTILS
-{
-  
+{  
   void show_me_texture_ldr(const std::string& a_inFleName, const std::string& a_outFleName)
   {
     int32_t wh[2];
@@ -452,6 +453,7 @@ namespace TEST_UTILS
     return res;
   }
 
+
   void CreateStripedImageFile(const char* a_fileName, unsigned int* a_colors, int a_stripsNum, int w, int h)
   {
     std::vector<unsigned int> imageData = CreateStripedImageData(a_colors, a_stripsNum, w, h);
@@ -719,7 +721,7 @@ namespace TEST_UTILS
   HRRenderRef CreateBasicTestRenderPT(int a_deviceId, int a_w, int a_h, int a_minRays, int a_maxRays,
     int a_rayBounce, int a_diffBounce, const wchar_t* a_drvName)
   {
-    HRRenderRef renderRef = hrRenderCreate(a_drvName);
+    auto renderRef = hrRenderCreate(a_drvName);
     hrRenderEnableDevice(renderRef, a_deviceId, true);
 
     hrRenderOpen(renderRef, HR_WRITE_DISCARD);
@@ -749,7 +751,7 @@ namespace TEST_UTILS
 
   HRRenderRef CreateBasicTestRenderPTNoCaust(int deviceId, int w, int h, int minRays, int maxRays)
   {
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
+    auto renderRef = hrRenderCreate(L"HydraModern");
     hrRenderEnableDevice(renderRef, deviceId, true);
 
     hrRenderOpen(renderRef, HR_WRITE_DISCARD);
@@ -778,7 +780,7 @@ namespace TEST_UTILS
 
   HRRenderRef CreateBasicTestRenderPTFastBackground(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName)
   {
-    HRRenderRef renderRef = hrRenderCreate(a_drvName);
+    auto renderRef = hrRenderCreate(a_drvName);
     hrRenderEnableDevice(renderRef, deviceId, true);
 
     hrRenderOpen(renderRef, HR_WRITE_DISCARD);

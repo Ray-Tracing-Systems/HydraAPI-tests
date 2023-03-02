@@ -13,9 +13,10 @@
 #include "HR_HDRImage.h"
 #include "HR_HDRImageTool.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 namespace HydraRender
 {
-
   void MyCustomFilter(pugi::xml_node a_settings, const HDRImage4f& a_inImage,
                       HDRImage4f* a_outImage)
   {

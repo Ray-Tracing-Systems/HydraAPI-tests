@@ -1,17 +1,19 @@
 #include "input.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 Input::Input()
 {
-  enableOpenGL1    = true;
-  noWindow         = false;
-  exitStatus       = false;
+  enableOpenGL1      = true;
+  noWindow           = false;
+  exitStatus         = false;
 
-  inputLibraryPath = L"D:/PROG/HydraAPI/main/tests_f/test_201";
-  inputRenderName  = L"opengl1";
+  inputLibraryPath   = L"D:/PROG/HydraAPI/main/tests_f/test_201";
+  inputRenderName    = L"opengl1";
 
 
-  camMoveSpeed     = 7.5f;
-  mouseSensitivity = 0.1f;
+  camMoveSpeed       = 7.5f;
+  mouseSensitivity   = 0.1f;
 
   // dynamic data
   //
@@ -19,7 +21,7 @@ Input::Input()
   cameraFreeze       = false;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 
 /**
 \brief  Read bool from hash map. if no value was found (by key), don't overwrite 'pParam'
@@ -69,12 +71,9 @@ static std::string ReadStringCmd(const std::unordered_map<std::string, std::stri
     return std::string("");
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 
 void Input::ParseCommandLineParams(const std::unordered_map<std::string, std::string>& a_params)
 {
   ReadBoolCmd(a_params, "-nowindow", &noWindow);
-
-
 }
-

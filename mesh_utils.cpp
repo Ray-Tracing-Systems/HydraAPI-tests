@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <cmath>
 
+///////////////////////////////////////////////////////////////////////////////////
+
 SimpleMesh CreatePlane(float a_size)
 {
   SimpleMesh plane;

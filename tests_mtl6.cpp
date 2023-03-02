@@ -23,15 +23,13 @@
 #include "LiteMath.h"
 #include "HydraXMLHelpers.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 using LiteMath::float2;
 using LiteMath::float3;
 using LiteMath::float4;
 
 namespace hlm = LiteMath;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct InputMaterialTestParams
 {
@@ -44,6 +42,7 @@ struct InputMaterialTestParams
   float initialAniso;
   float initialRot;
 };
+
 
 bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
 {
@@ -314,32 +313,33 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
 bool MTL_TESTS::test_175_beckman_isotropic()
 {
   InputMaterialTestParams params;
-  params.testName  = L"test_175";
-  params.brdfName  = L"beckmann";
-  params.paramName = L"glossiness";
-  params.values[0] = 0.25f;
-  params.values[1] = 0.5f;
-  params.values[2] = 0.75f;
-  params.values[3] = 0.90f;
-  params.maxMSE    = 25.0f;
+  params.testName         = L"test_175";
+  params.brdfName         = L"beckmann";
+  params.paramName        = L"glossiness";
+  params.values[0]        = 0.25f;
+  params.values[1]        = 0.5f;
+  params.values[2]        = 0.75f;
+  params.values[3]        = 0.90f;
+  params.maxMSE           = 25.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
   
   return PefrormMaterialTest(params);
 }
+
 
 bool MTL_TESTS::test_176_beckman_anisotropic()
 {
   InputMaterialTestParams params;
-  params.testName  = L"test_176";
-  params.brdfName  = L"beckmann";
-  params.paramName = L"anisotropy";
-  params.values[0] = 0.25f;
-  params.values[1] = 0.5f;
-  params.values[2] = 0.75f;
-  params.values[3] = 1.0f;
-  params.maxMSE    = 25.0f;
+  params.testName         = L"test_176";
+  params.brdfName         = L"beckmann";
+  params.paramName        = L"anisotropy";
+  params.values[0]        = 0.25f;
+  params.values[1]        = 0.5f;
+  params.values[2]        = 0.75f;
+  params.values[3]        = 1.0f;
+  params.maxMSE           = 25.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
@@ -347,17 +347,18 @@ bool MTL_TESTS::test_176_beckman_anisotropic()
   return PefrormMaterialTest(params);
 }
 
+
 bool MTL_TESTS::test_177_beckman_aniso_rot()
 {
   InputMaterialTestParams params;
-  params.testName  = L"test_177";
-  params.brdfName  = L"beckmann";
-  params.paramName = L"rot";
-  params.values[0] = 0.25f;
-  params.values[1] = 0.5f;
-  params.values[2] = 0.75f;
-  params.values[3] = 1.0f;
-  params.maxMSE    = 25.0f;
+  params.testName         = L"test_177";
+  params.brdfName         = L"beckmann";
+  params.paramName        = L"rot";
+  params.values[0]        = 0.25f;
+  params.values[1]        = 0.5f;
+  params.values[2]        = 0.75f;
+  params.values[3]        = 1.0f;
+  params.maxMSE           = 25.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 1.0f;
   params.initialRot       = 0.0f;
@@ -365,35 +366,37 @@ bool MTL_TESTS::test_177_beckman_aniso_rot()
   return PefrormMaterialTest(params);
 }
 
+
 bool MTL_TESTS::test_178_trggx_isotropic()
 {
   InputMaterialTestParams params;
-  params.testName  = L"test_178";
-  params.brdfName  = L"trggx";
-  params.paramName = L"glossiness";
-  params.values[0] = 0.25f;
-  params.values[1] = 0.5f;
-  params.values[2] = 0.75f;
-  params.values[3] = 0.90f;
-  params.maxMSE    = 25.0f;
+  params.testName         = L"test_178";
+  params.brdfName         = L"trggx";
+  params.paramName        = L"glossiness";
+  params.values[0]        = 0.25f;
+  params.values[1]        = 0.5f;
+  params.values[2]        = 0.75f;
+  params.values[3]        = 0.90f;
+  params.maxMSE           = 25.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
   
   return PefrormMaterialTest(params);
 }
+
 
 bool MTL_TESTS::test_179_trggx_anisotropic()
 {
   InputMaterialTestParams params;
-  params.testName  = L"test_179";
-  params.brdfName  = L"trggx";
-  params.paramName = L"anisotropy";
-  params.values[0] = 0.25f;
-  params.values[1] = 0.5f;
-  params.values[2] = 0.75f;
-  params.values[3] = 0.90f;
-  params.maxMSE    = 25.0f;
+  params.testName         = L"test_179";
+  params.brdfName         = L"trggx";
+  params.paramName        = L"anisotropy";
+  params.values[0]        = 0.25f;
+  params.values[1]        = 0.5f;
+  params.values[2]        = 0.75f;
+  params.values[3]        = 0.90f;
+  params.maxMSE           = 25.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
@@ -401,17 +404,18 @@ bool MTL_TESTS::test_179_trggx_anisotropic()
   return PefrormMaterialTest(params);
 }
 
+
 bool MTL_TESTS::test_180_trggx_aniso_rot()
 {
   InputMaterialTestParams params;
-  params.testName  = L"test_180";
-  params.brdfName  = L"trggx";
-  params.paramName = L"rot";
-  params.values[0] = 0.25f;
-  params.values[1] = 0.5f;
-  params.values[2] = 0.75f;
-  params.values[3] = 1.0f;
-  params.maxMSE    = 25.0f;
+  params.testName         = L"test_180";
+  params.brdfName         = L"trggx";
+  params.paramName        = L"rot";
+  params.values[0]        = 0.25f;
+  params.values[1]        = 0.5f;
+  params.values[2]        = 0.75f;
+  params.values[3]        = 1.0f;
+  params.maxMSE           = 25.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 1.0f;
   params.initialRot       = 0.0f;

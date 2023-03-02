@@ -17,6 +17,9 @@
 
 #include "../hydra_api/HR_HDRImageTool.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
+
 bool check_dups(pugi::xml_node a_lib) // check that each object with some id have only one xml node.
 {
   std::set<int32_t> idSet; 
@@ -32,6 +35,7 @@ bool check_dups(pugi::xml_node a_lib) // check that each object with some id hav
 
   return true;
 }
+
 
 bool check_dups_attr(pugi::xml_node a_lib) // check that each object with some id have only one xml node.
 {
@@ -156,6 +160,7 @@ bool test01_materials_add()
 
   return check_test_01(L"tests/test_01/statex_00001.xml") && check_test_01(L"tests/test_01/change_00000.xml");
 }
+
 
 bool check_test_02(const std::wstring a_fileName)
 {
@@ -310,6 +315,7 @@ bool test03_lights_add()
   return check_test_03();
 }
 
+
 bool check_test_04()
 {
   pugi::xml_document doc;
@@ -342,6 +348,7 @@ bool check_test_04_changes()
 
   return (l1 != nullptr) && (l2 != nullptr) && (l3 == nullptr);
 }
+
 
 bool test04_lights_add_change()
 {
@@ -427,6 +434,7 @@ bool check_05_06_mesh_cube(const wchar_t* a_path) // L"tests/test_64/statex_0000
   return (vertNum == 24) && (indNum == 36) && (triNum == 12) && (norm != nullptr) && (texcoords != nullptr);
 }
 
+
 bool check_test_05(const wchar_t* path)
 {
   bool cubeIsOk = check_05_06_mesh_cube(path);
@@ -498,6 +506,7 @@ bool check_test_05_changes1()
   const bool res = (matrixIsOk && (mesh == nullptr));
   return res;
 }
+
 
 bool test05_instances_write_discard()
 {
@@ -677,6 +686,7 @@ bool test05_instances_write_discard()
   return check_test_05(L"tests/test_05/statex_00003.xml") && check_test_05_changes() && check_test_05_changes1() && noDups1 && noDups2;
 }
 
+
 bool check_test_06()
 {
   const wchar_t* path = L"tests/test_06/statex_00003.xml";
@@ -707,6 +717,7 @@ bool check_test_06()
 
   return matrix1IsOk && matrix2IsOk && matrix3IsOk;
 }
+
 
 bool test06_instances_open_existent()
 {
@@ -886,6 +897,7 @@ bool test06_instances_open_existent()
   return check_test_06() && noDups1 && noDups2;
 }
 
+
 bool check_test_07(const wchar_t* a_path)
 {
   pugi::xml_document doc;
@@ -900,6 +912,7 @@ bool check_test_07(const wchar_t* a_path)
 
   return ok1 && ok2;
 }
+
 
 bool test07_camera_add()
 {
@@ -946,6 +959,7 @@ bool test07_camera_add()
   return check_test_07(L"tests/test_07/statex_00001.xml") && check_test_07(L"tests/test_07/change_00000.xml");
 }
 
+
 bool check_test_08_1(const wchar_t* a_fileName)
 {
   pugi::xml_document doc;
@@ -961,6 +975,7 @@ bool check_test_08_1(const wchar_t* a_fileName)
   return ok1 && ok2;
 }
 
+
 bool check_test_08_2(const wchar_t* a_fileName)
 {
   pugi::xml_document doc;
@@ -975,6 +990,7 @@ bool check_test_08_2(const wchar_t* a_fileName)
 
   return ok1 && ok2;
 }
+
 
 bool test08_camera_add_change()
 {
@@ -1046,6 +1062,7 @@ bool test08_camera_add_change()
   return check_test_08_1(L"tests/test_08/change_00000.xml") && check_test_08_1(L"tests/test_08/statex_00001.xml") &&
          check_test_08_2(L"tests/test_08/change_00001.xml") && check_test_08_2(L"tests/test_08/statex_00002.xml") && noDups1 && noDups2;
 }
+
 
 bool check_test_09()
 {
@@ -1167,7 +1184,6 @@ bool test09_render_ogl()
 
   return check_test_09();
 }
-
 
 
 bool check_test_16()
@@ -1392,9 +1408,7 @@ bool test17_falloff()
 	}
 	hrMaterialClose(mat);
 
-
 	hrFlush();
-
 
 	return check_test_17();
 }
@@ -1751,6 +1765,7 @@ void run_all_api_tests(const int startTestId)
   glfwTerminate();
 }
 
+
 void run_all_geo_tests()
 {
 	using namespace GEO_TESTS;
@@ -1796,6 +1811,7 @@ void run_all_geo_tests()
 
   fout.close();
 }
+
 
 void run_all_mtl_tests(int a_start)
 {
@@ -1923,6 +1939,7 @@ void run_all_mtl_tests(int a_start)
   fout.close();
 	
 }
+
 
 void run_all_lgt_tests(int a_start)
 {
@@ -2058,6 +2075,7 @@ void run_all_alg_tests(int a_start)
   
 }
 
+
 void run_all_mictofacet_torrance_sparrow()
 {
   using namespace LGHT_TESTS;
@@ -2133,6 +2151,7 @@ void run_all_mictofacet_torrance_sparrow()
   
   fout.close();
 }
+
 
 void run_all_vector_tex_tests()
 {

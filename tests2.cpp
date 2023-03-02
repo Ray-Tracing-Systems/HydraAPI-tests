@@ -31,15 +31,15 @@
 
 #include "../hydra_api/HR_HDRImageTool.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 static GLFWwindow* g_window = nullptr;
 static int         g_width  = 1024;
 static int         g_height = 768;
 
 using namespace TEST_UTILS;
-
-///////////////////////////////////////////////////////////
-
 extern float g_MSEOutput;
+
 
 bool check_images(const char* a_path, const int a_numImages, const float a_mse)
 {

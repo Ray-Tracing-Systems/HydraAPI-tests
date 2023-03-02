@@ -37,16 +37,15 @@
 #include "LiteMath.h"
 #include "HydraXMLHelpers.h"
 
-using namespace TEST_UTILS;
+///////////////////////////////////////////////////////////////////////////////////
 
+using namespace TEST_UTILS;
 namespace hlm = LiteMath;
 extern GLFWwindow* g_window;
 
 using LiteMath::float2;
 using LiteMath::float3;
 using LiteMath::float4;
-
-
 
 
 bool test_x1_displace_car_by_noise()

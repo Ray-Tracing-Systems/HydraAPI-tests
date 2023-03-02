@@ -20,12 +20,13 @@
 #include "HR_HDRImageTool.h"
 #include "HydraXMLHelpers.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 #pragma warning(disable:4996)
 #pragma warning(disable:4838)
 #pragma warning(disable:4244)
 
 extern GLFWwindow* g_window;
-
 using namespace TEST_UTILS;
 
 
@@ -33,13 +34,16 @@ namespace LGHT_TESTS
 {
   bool test_200_spot()
   {
-    hrErrorCallerPlace(L"test_200");
+    std::wstring nameTest                = L"test_200";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_200", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 
@@ -258,43 +262,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-        
-        
-      }
-
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_200/z_out.png");
-
-    return check_images("test_200", 1, 15);
+    return check_images(ws2s(nameTest).c_str(), 1, 15);
   }
+
 
   bool test_201_sphere()
   {
+    std::wstring nameTest                = L"test_201";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
     
-
-    hrErrorCallerPlace(L"test_201");
-
-    hrSceneLibraryOpen(L"tests_f/test_201", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 
@@ -466,40 +458,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-        
-        
-      }
-
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_201/z_out.png");
-
-    return check_images("test_201", 1, 40);
+    return check_images(ws2s(nameTest).c_str(), 1, 40);
   }
+
 
   bool test_202_sky_color()
   {
-    hrErrorCallerPlace(L"test_202");
+    std::wstring nameTest                = L"test_202";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_202", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -672,27 +655,18 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_202/z_out.png");
-
-    return check_images("test_202", 1, 10);
+    return check_images(ws2s(nameTest).c_str(), 1, 10);
   }
+
 
   bool test_203_sky_hdr()
   {
@@ -814,16 +788,18 @@ namespace LGHT_TESTS
   }
 
 
-
   bool test_204_sky_hdr_rotate()
   {
-    hrErrorCallerPlace(L"test_204");
+    std::wstring nameTest                = L"test_204";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_204", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -1034,15 +1010,19 @@ namespace LGHT_TESTS
     return check_images("test_204", 1, 25);
   }
 
+
   bool test_205_sky_and_directional_sun()
   {
-    hrErrorCallerPlace(L"test_205");
+    std::wstring nameTest                = L"test_205";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_205", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -1281,40 +1261,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-        
-        
-      }
-
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_205/z_out.png");
-
-    return check_images("test_205", 1, 20);
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
+
 
   bool test_206_ies1()
   {
-    hrErrorCallerPlace(L"test_206");
+    std::wstring nameTest                = L"test_206";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_206", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 
@@ -1520,37 +1491,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_206/z_out.png");
-
-    return check_images("test_206", 1, 40);
+    return check_images(ws2s(nameTest).c_str(), 1, 40);
   }
+
 
   bool test_207_ies2()
   {
-    hrErrorCallerPlace(L"test_207");
+    std::wstring nameTest                = L"test_207";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_207", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -1750,37 +1715,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_207/z_out.png");
-
-    return check_images("test_207", 1, 40);
+    return check_images(ws2s(nameTest).c_str(), 1, 40);
   }
+
 
   bool test_208_ies3()
   {
-    hrErrorCallerPlace(L"test_208");
+    std::wstring nameTest                = L"test_208";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_208", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -1980,37 +1939,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_208/z_out.png");
-
-    return check_images("test_208", 1, 40);
+    return check_images(ws2s(nameTest).c_str(), 1, 40);
   }
+
 
   bool test_209_skyportal()
   {
-    hrErrorCallerPlace(L"test_209");
+    std::wstring nameTest                = L"test_209";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_209", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -2330,37 +2283,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_209/z_out.png");
-
-    return check_images("test_209", 1, 50);
+    return check_images(ws2s(nameTest).c_str(), 1, 50);
   }
+
 
   bool test_210_skyportal_hdr()
   {
-    hrErrorCallerPlace(L"test_210");
+    std::wstring nameTest                = L"test_210";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_210", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -2698,37 +2645,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_210/z_out.png");
-
-    return check_images("test_210", 1, 270); // #TODO: double ckeck this later; sky portals = shit;
+    return check_images(ws2s(nameTest).c_str(), 1, 270); // #TODO: double ckeck this later; sky portals = shit;
   }
+
 
   bool test_211_sky_and_sun_perez()
   {
-    hrErrorCallerPlace(L"test_211");
+    std::wstring nameTest                = L"test_211";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_211", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -2978,37 +2919,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_211/z_out.png");
-
-    return check_images("test_211", 1, 20);
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
+
 
   bool test_212_skyportal_sun()
   {
-    hrErrorCallerPlace(L"test_212");
+    std::wstring nameTest                = L"test_212";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_212", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -3372,37 +3307,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
     
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_212/z_out.png");
-
-    return check_images("test_212", 1, 50);
+    return check_images(ws2s(nameTest).c_str(), 1, 50);
   }
+
 
   bool test_213_point_omni()
   {
-    hrErrorCallerPlace(L"test_213");
+    std::wstring nameTest                = L"test_213";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_213", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -3570,38 +3499,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_213/z_out.png");
-
-    return check_images("test_213", 1, 30);
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
   }
 
 
 	bool test_214_sky_ldr()
 	{
-		hrErrorCallerPlace(L"test_214");
+    std::wstring nameTest                = L"test_214";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-		hrSceneLibraryOpen(L"tests_f/test_214", HR_WRITE_DISCARD);
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Materials
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
+    // Materials
+    ////////////////////
 
 
 		HRMaterialRef matGray = hrMaterialCreate(L"matGray");
@@ -3788,38 +3710,31 @@ namespace LGHT_TESTS
 
 		hrFlush(scnRef, renderRef);
 
-		while (true)
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-			HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-			if (info.haveUpdateFB)
-			{
-				auto pres = std::cout.precision(2);
-				std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-				std::cout.precision(pres);
-			}
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-			if (info.finalUpdate)
-				break;
-		}
-
-		hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_214/z_out.png");
-
-		return check_images("test_214", 1, 30);
-	}
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
+  }
 
 
 	bool test_215_light_scale_intensity()
 	{
-		hrErrorCallerPlace(L"test_215");
+    std::wstring nameTest                = L"test_215";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		hrSceneLibraryOpen(L"tests_f/test_215", HR_WRITE_DISCARD);
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
+    // Materials
+    ////////////////////
 
 		SimpleMesh cube     = CreateCube(0.75f);
 		SimpleMesh plane    = CreatePlane(10.0f);
@@ -4238,37 +4153,31 @@ namespace LGHT_TESTS
 
 		hrFlush(scnRef, renderRef);
 
-		while (true)
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-			HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-			if (info.haveUpdateFB)
-			{
-				auto pres = std::cout.precision(2);
-				std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-				std::cout.precision(pres);
-			}
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-			if (info.finalUpdate)
-				break;
-		}
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
+  }
 
-		hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_215/z_out.png");
-
-		return check_images("test_215", 1, 20.0f);
-	}
 
 	bool test_216_ies4()
 	{
-		hrErrorCallerPlace(L"test_216");
+    std::wstring nameTest                = L"test_216";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-		hrSceneLibraryOpen(L"tests_f/test_216", HR_WRITE_DISCARD);
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Materials
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
+    // Materials
+    ////////////////////
 
 		HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 
@@ -4461,39 +4370,31 @@ namespace LGHT_TESTS
 
 		hrFlush(scnRef, renderRef);
 		
-		while (true)
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-			HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-			if (info.haveUpdateFB)
-			{
-				auto pres = std::cout.precision(2);
-				std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-				std::cout.precision(pres);
-			}
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-			if (info.finalUpdate)
-				break;
-		}
-
-		hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_216/z_out.png");
-
-		return check_images("test_216", 1, 15);
-	}
+    return check_images(ws2s(nameTest).c_str(), 1, 15);
+  }
  
-
 
   bool test_217_cylinder()
   {
-    hrErrorCallerPlace(L"test_217");
+    std::wstring nameTest                = L"test_217";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_f/test_217", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 
@@ -4676,36 +4577,31 @@ namespace LGHT_TESTS
 
     hrFlush(scnRef, renderRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_217/z_out.png");
-
-    return check_images("test_217", 1, 25);
+    return check_images(ws2s(nameTest).c_str(), 1, 25);
   }
+
 
   bool test_218_cylinder2()
   {
-    hrErrorCallerPlace(L"test_218");
-    hrSceneLibraryOpen(L"tests_f/test_218", HR_WRITE_DISCARD);
+    std::wstring nameTest                = L"test_218";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
     HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 
@@ -4905,32 +4801,15 @@ namespace LGHT_TESTS
     
     int counter = 0;
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-        counter++;
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
 
-      if (info.finalUpdate)
-        break;
-
-      // if (counter == 10)
-      // {
-      //   hrRenderCommand(renderRef, L"exitnow");
-      //   break;
-      // }
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_218/z_out.png");
-
-    return check_images("test_218", 1, 25);
+    return check_images(ws2s(nameTest).c_str(), 1, 25);
   }
 }

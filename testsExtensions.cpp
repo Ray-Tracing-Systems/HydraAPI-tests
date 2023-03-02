@@ -6,6 +6,8 @@
 #include "HydraXMLHelpers.h"
 #include "LiteMath.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 namespace EXTENSIONS_TESTS
 {
   namespace hlm = LiteMath;

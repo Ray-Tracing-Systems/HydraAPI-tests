@@ -27,19 +27,18 @@
 
 #include "Timer.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 #pragma warning(disable:4996)
 #pragma warning(disable:4838)
 #pragma warning(disable:4244)
 
 extern GLFWwindow* g_window;
-
 using namespace TEST_UTILS;
 
 
 bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
-{
-  
-  
+{ 
   hrErrorCallerPlace(L"test_401");
   
   hrSceneLibraryOpen(L"tests_a/test_401", HR_WRITE_DISCARD);

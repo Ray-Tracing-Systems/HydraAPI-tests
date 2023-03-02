@@ -32,8 +32,9 @@
 #include "LiteMath.h"
 #include "HydraXMLHelpers.h"
 
-using namespace TEST_UTILS;
+///////////////////////////////////////////////////////////////////////////////////
 
+using namespace TEST_UTILS;
 extern GLFWwindow* g_window;
 
 using LiteMath::float2;
@@ -45,16 +46,19 @@ namespace hlm = LiteMath;
 
 bool MTL_TESTS::test_162_shadow_matte_back1()
 {
+  std::wstring nameTest                = L"test_162";
+  std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
   const int IMG_WIDTH  = 1024;
   const int IMG_HEIGHT = 682;
   
-  hrErrorCallerPlace(L"test_162");
-
-  hrSceneLibraryOpen(L"tests_f/test_162", HR_WRITE_DISCARD);
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
 
   HRMaterialRef matR = hrMaterialCreate(L"matR");
   HRMaterialRef matG = hrMaterialCreate(L"matG");
@@ -359,13 +363,16 @@ bool check_test_163(const wchar_t* a_path)
 
 bool MTL_TESTS::test_163_diffuse_texture_recommended_res()
 {
-  hrErrorCallerPlace(L"test_163");
+  std::wstring nameTest                = L"test_163";
+  std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-  hrSceneLibraryOpen(L"tests_f/test_163", HR_WRITE_DISCARD);
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
 
   HRMaterialRef matR     = hrMaterialCreate(L"matR");
   HRMaterialRef matG     = hrMaterialCreate(L"matG");
@@ -739,13 +746,16 @@ bool check_test_168(const wchar_t* a_path)
 
 bool MTL_TESTS::test_168_diffuse_texture_recommended_res2()
 {
-  hrErrorCallerPlace(L"test_168");
+  std::wstring nameTest                = L"test_168";
+  std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-  hrSceneLibraryOpen(L"tests_f/test_168", HR_WRITE_DISCARD);
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
 
   HRMaterialRef matR     = hrMaterialCreate(L"matR");
   HRMaterialRef matG     = hrMaterialCreate(L"matG");
@@ -1138,15 +1148,19 @@ bool MTL_TESTS::test_168_diffuse_texture_recommended_res2()
   return check_test_168(L"tests_f/test_168/statex_00001_fixed.xml"); // check_images("test_168", 1, 30); // &&
 }
 
+
 bool MTL_TESTS::test_170_fresnel_blend()
 {
-  hrErrorCallerPlace(L"test_170");
-  
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  hrSceneLibraryOpen(L"tests_f/test_170", HR_WRITE_DISCARD);
+  std::wstring nameTest                = L"test_170";
+  std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+  ////////////////////
+  // Materials
+  ////////////////////
   
   SimpleMesh sphere   = CreateSphere(2.0f, 128);
   SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
@@ -1436,12 +1450,16 @@ bool MTL_TESTS::test_170_fresnel_blend()
 
 bool MTL_TESTS::test_172_glossy_dark_edges_phong()
 {
-  hrErrorCallerPlace(L"test_172");
-  hrSceneLibraryOpen(L"tests_f/test_172", HR_WRITE_DISCARD);
+  std::wstring nameTest                = L"test_172";
+  std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
 
   HRMaterialRef matGray = hrMaterialCreate(L"matGray");
   HRMaterialRef matRefl = hrMaterialCreate(L"matRefl");
@@ -1617,14 +1635,19 @@ bool MTL_TESTS::test_172_glossy_dark_edges_phong()
   return check_images("test_172", 1, 20);
 }
 
+
 bool MTL_TESTS::test_173_glossy_dark_edges_microfacet()
 {
-  hrErrorCallerPlace(L"test_173");
-  hrSceneLibraryOpen(L"tests_f/test_173", HR_WRITE_DISCARD);
+  std::wstring nameTest                = L"test_173";
+  std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+    
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
 
   HRMaterialRef matGray = hrMaterialCreate(L"matGray");
   HRMaterialRef matRefl = hrMaterialCreate(L"matRefl");

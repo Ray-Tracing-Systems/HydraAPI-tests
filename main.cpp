@@ -7,12 +7,14 @@
 
 using pugi::xml_node;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////// just leave this it as it is :)
+/////////////////////// just leave this it as it is :)
+
 #include "HydraRenderDriverAPI.h"
 #include "RenderDrivers.h"
 
 IHRRenderDriver* CreateDriverRTE(const wchar_t* a_cfg) { return nullptr; }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////
 
 #if defined WIN32
 #include <windows.h> // for SetConsoleCtrlHandler
@@ -20,6 +22,9 @@ IHRRenderDriver* CreateDriverRTE(const wchar_t* a_cfg) { return nullptr; }
 #include <unistd.h>
 #include <signal.h>
 #endif
+
+///////////////////////////////////////////////////////////////////////////////////
+
 
 void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level)
 {
@@ -32,11 +37,13 @@ void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERIT
   }
 }
 
+
 void destroy()
 {
   std::cout << "call destroy() --> hrSceneLibraryClose()" << std::endl;
   hrSceneLibraryClose();
 }
+
 
 #ifdef WIN32
 BOOL WINAPI HandlerExit(_In_ DWORD fdwControl)
@@ -74,6 +81,7 @@ void init()
   registerAllGL1Drivers();
 //  printAllAvailableDrivers();
 }
+
 
 int main(int argc, const char** argv)
 {
@@ -134,7 +142,7 @@ int main(int argc, const char** argv)
     //GEO_TESTS::test_001_mesh_from_memory();
     //GEO_TESTS::test_002_mesh_from_vsgf();    
     //GEO_TESTS::test_003_compute_normals(); // hangs!
-    GEO_TESTS::test_004_dof();
+    //GEO_TESTS::test_004_dof();
     //GEO_TESTS::test_005_instancing();
     //GEO_TESTS::test_006_points_on_mesh();
     //GEO_TESTS::test_007_import_obj();
@@ -145,9 +153,9 @@ int main(int argc, const char** argv)
     // MTL_TESTS
     /////////////////////
 
-    //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
     //MTL_TESTS::test_100_diffuse_orennayar();
-        
+    //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+    //MTL_TESTS::test_102_mirror_orbspec_mat02();
     /////////////////////    
     // LGHT_TESTS
     /////////////////////
@@ -180,7 +188,7 @@ int main(int argc, const char** argv)
 
     //run_all_geo_tests();
     //run_all_mtl_tests();
-    //run_all_lgt_tests();
+    run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_3dsmax_tests();
     //run_all_vector_tex_tests();
@@ -205,8 +213,6 @@ int main(int argc, const char** argv)
   }
 
   hrErrorCallerPlace(L"main"); // for debug needs only
-
   hrSceneLibraryClose();
-
   return 0;
 }

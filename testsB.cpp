@@ -32,14 +32,14 @@
 #include "LiteMath.h"
 #include "HydraXMLHelpers.h"
 
-using namespace TEST_UTILS;
+///////////////////////////////////////////////////////////////////////////////////
 
+using namespace TEST_UTILS;
 extern GLFWwindow* g_window;
 
 using LiteMath::float2;
 using LiteMath::float3;
 using LiteMath::float4;
-
 
 
 bool test81_custom_attributes()
@@ -675,10 +675,9 @@ bool test38_save_mesh_and_delayed_load()
   return check_images("test_38", 1, 10);
 }
 
+
 bool test82_proc_texture()
 {
-  
-
   hrErrorCallerPlace(L"test_82");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1303,8 +1302,6 @@ bool test83_proc_texture2()
 
 bool test84_proc_texture2()
 {
-  
-
   hrErrorCallerPlace(L"test_84");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

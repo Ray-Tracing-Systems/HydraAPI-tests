@@ -26,15 +26,18 @@
 
 #include "HydraXMLHelpers.h"
 #include <algorithm>
+
+///////////////////////////////////////////////////////////////////////////////////
+
 using namespace HydraXMLHelpers;
 
 extern Input       g_input;
-static GLFWwindow* g_window = nullptr;
-static int         g_width = 1024;
-static int         g_height = 1024;
-static int            g_filling = 0;
+static GLFWwindow* g_window  = nullptr;
+static int         g_width   = 1024;
+static int         g_height  = 1024;
+static int         g_filling = 0;
 
-// 
+
 static void key(GLFWwindow* window, int k, int s, int action, int mods)
 {
   if (action != GLFW_PRESS) return;

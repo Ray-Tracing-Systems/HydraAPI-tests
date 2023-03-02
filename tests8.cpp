@@ -34,12 +34,13 @@
 
 #include "Timer.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
 #pragma warning(disable:4996)
 using namespace TEST_UTILS;
-
 extern GLFWwindow* g_window;
-
 namespace hlm = LiteMath;
+
 
 bool test90_proc_tex_normalmap()
 {
