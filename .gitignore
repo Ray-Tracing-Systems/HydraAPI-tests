@@ -1,29 +1,53 @@
-tests.VC.db
-tests.VC.VC.opendb
-tests.vcxproj.user
+# Prerequisites
+*.d
 
-z_microfacet.txt
-z_3dsmax_tests.txt
-z_test_*.txt
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
 
-z_out*.png
+# Precompiled Headers
+*.gch
+*.pch
 
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#Folders
 .vs/
 x64/
-cmake-build-release/
-cmake-build-debug/
+.vscode/
+cmake-build-*/
 build_generated/
 data/textures_gen/
-
 3dsMaxTests/rendered/
 tests/
 tests_a/
 tests_ext/
 tests_f/
 
-tests_images/test_111/w_ref_old.png
-tests_images/test_109/w_ref_old.png
-
-
+#Files
+z_microfacet.txt
+z_3dsmax_tests.txt
+z_test_*.txt
+z_out*.png
 
 
