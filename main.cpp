@@ -90,7 +90,7 @@ int main(int argc, const char** argv)
   hrErrorCallerPlace(L"main");  // for debug needs only
 
   std::string workingDir = "..";
-  if(argc > 1)
+  if (argc > 1)
     workingDir = std::string(argv[1]);
 
   atexit(&destroy);                           // if application will terminated you have to call hrSceneLibraryClose to free all connections with hydra.exe
@@ -104,37 +104,53 @@ int main(int argc, const char** argv)
   std::wcout << L"[main]: curr_dir = " << NPath << std::endl;
 #else
 
-  if(chdir(workingDir.c_str()) != 0)
+  if (chdir(workingDir.c_str()) != 0)
     std::cout << "[main]: chdir have failed for some reason ... " << std::endl;
 
   char cwd[1024];
   if (getcwd(cwd, sizeof(cwd)) != nullptr)
-    std::cout << "[main]: curr_dir = " << cwd <<std::endl;
+    std::cout << "[main]: curr_dir = " << cwd << std::endl;
   else
-    std::cout << "getcwd() error" <<std::endl;
+    std::cout << "getcwd() error" << std::endl;
 
   {
     struct sigaction sigIntHandler;
     sigIntHandler.sa_handler = sig_handler;
     sigemptyset(&sigIntHandler.sa_mask);
     sigIntHandler.sa_flags = SA_RESETHAND;
-    sigaction(SIGINT,  &sigIntHandler, NULL);
+    sigaction(SIGINT, &sigIntHandler, NULL);
     sigaction(SIGSTOP, &sigIntHandler, NULL);
     sigaction(SIGABRT, &sigIntHandler, NULL);
-    sigaction(SIGILL,  &sigIntHandler, NULL);
+    sigaction(SIGILL, &sigIntHandler, NULL);
     sigaction(SIGTERM, &sigIntHandler, NULL);
     sigaction(SIGSEGV, &sigIntHandler, NULL);
-    sigaction(SIGFPE,  &sigIntHandler, NULL);
+    sigaction(SIGFPE, &sigIntHandler, NULL);
   }
 #endif
-  
-  std::cout << "sizeof(size_t) = " << sizeof(size_t) <<std::endl;
-  
+
+  std::cout << "sizeof(size_t) = " << sizeof(size_t) << std::endl;
+
   try
   {
     //test40_several_changes();
     //test41_load_library_basic();
-    
+
+    /////////////////////    
+    // API_TESTS
+    /////////////////////
+
+    //test82_proc_texture(); // error
+    test83_proc_texture2();
+    //test84_proc_texture2();
+    //test85_proc_texture_ao();
+    //test86_proc_texture_ao_dirt();
+    //test87_proc_texture_reflect();
+    //test88_proc_texture_convex_rust();
+    //test89_proc_texture_dirty();
+    //test90_proc_tex_normalmap();
+    //test91_proc_tex_bump();
+    //test92_proc_tex_bump2();
+
     /////////////////////    
     // GEO_TESTS
     /////////////////////
@@ -161,7 +177,7 @@ int main(int argc, const char** argv)
     /////////////////////
 
     //LGHT_TESTS::test_203_sky_hdr();
-   
+
 
     /////////////////////    
     // EXTENSIONS_TESTS
@@ -170,7 +186,7 @@ int main(int argc, const char** argv)
     //EXTENSIONS_TESTS::test_ext_vtex_1();
     //EXTENSIONS_TESTS::test_ext_vtex_3();
     //EXTENSIONS_TESTS::test_ext_vtex_7();
-    
+
 
     /////////////////////    
     // SPECTRAL_TESTS
@@ -186,9 +202,10 @@ int main(int argc, const char** argv)
     // All tests
     /////////////////////
 
+    //run_all_api_tests();
     //run_all_geo_tests();
     //run_all_mtl_tests();
-    run_all_lgt_tests();
+    //run_all_lgt_tests();
     //run_all_alg_tests();
     //run_all_3dsmax_tests();
     //run_all_vector_tex_tests();
@@ -196,12 +213,12 @@ int main(int argc, const char** argv)
 
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
     //run_all_mictofacet_torrance_sparrow();
-   
+
     //std::cout << test77_save_gbuffer_layers() << std::endl;
     //std::cout << "MSE = " << g_MSEOutput << std::endl;
 
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
-	  terminate_opengl();
+    terminate_opengl();
   }
   catch (std::runtime_error& e)
   {
