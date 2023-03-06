@@ -257,10 +257,10 @@ namespace GEO_TESTS
     ////////////////////
     
     auto teapotRef = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/teapot.vsgf");
-    auto lucyRef   = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/lucy.vsgf");
+    //auto lucyRef   = hrMeshCreateFromFileDL_NoNormals(L"data/meshes/lucy.vsgf");
 
     //auto teapotRef = hrMeshCreateFromFileDL(L"data/meshes/teapot.vsgf");
-    //auto lucyRef = hrMeshCreateFromFileDL(L"data/meshes/lucy.vsgf");
+    auto lucyRef = hrMeshCreateFromFileDL(L"data/meshes/lucy.vsgf");
     
     ////////////////////
     // Light
