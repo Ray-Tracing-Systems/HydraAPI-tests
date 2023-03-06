@@ -13,8 +13,8 @@ set(SOURCE_FILES
         mesh_utils.h mesh_utils.cpp
         main.cpp
         tests.h
-        test_mtl_adv.cpp
-        test_image_processing.cpp
+        tests_mtl_adv.cpp
+        tests_image_processing.cpp
         tests1.cpp
         tests2.cpp
         tests3.cpp
@@ -28,11 +28,11 @@ set(SOURCE_FILES
         testsA.cpp
         testsB.cpp
         tests_geo.cpp
-        tests_lights.cpp
+        tests_lights1.cpp
         tests_lights2.cpp
-        test_lights3.cpp
-        test_lights4.cpp
-        tests_mtl.cpp
+        tests_lights3.cpp
+        tests_lights4.cpp
+        tests_mtl1.cpp
         tests_mtl2.cpp
         tests_mtl3.cpp
         tests_mtl4.cpp
