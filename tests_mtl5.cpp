@@ -51,7 +51,7 @@ bool MTL_TESTS::test_162_shadow_matte_back1()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   const int IMG_WIDTH  = 1024;
   const int IMG_HEIGHT = 682;
@@ -368,7 +368,7 @@ bool MTL_TESTS::test_163_diffuse_texture_recommended_res()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -751,7 +751,7 @@ bool MTL_TESTS::test_168_diffuse_texture_recommended_res2()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -1156,7 +1156,7 @@ bool MTL_TESTS::test_170_fresnel_blend()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -1455,7 +1455,7 @@ bool MTL_TESTS::test_172_glossy_dark_edges_phong()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -1643,7 +1643,7 @@ bool MTL_TESTS::test_173_glossy_dark_edges_microfacet()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials

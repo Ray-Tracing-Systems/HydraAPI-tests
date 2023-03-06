@@ -51,7 +51,7 @@ bool MTL_TESTS::test_158_proc_dirt1()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   const int THIS_TEST_WIDTH  = 1024;
   const int THIS_TEST_HEIGHT = 1024;
@@ -629,7 +629,7 @@ bool MTL_TESTS::test_158_proc_dirt1()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 25);
 }
@@ -642,7 +642,7 @@ bool MTL_TESTS::test_159_proc_dirt2()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   const int THIS_TEST_WIDTH  = 1024;
   const int THIS_TEST_HEIGHT = 1024;
@@ -1250,7 +1250,7 @@ bool MTL_TESTS::test_159_proc_dirt2()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 25);
 }
@@ -1263,7 +1263,7 @@ bool MTL_TESTS::test_160_proc_dirt3()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   const int THIS_TEST_WIDTH  = 1024;
   const int THIS_TEST_HEIGHT = 1024;
@@ -1927,7 +1927,7 @@ bool MTL_TESTS::test_160_proc_dirt3()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 25);
 }
@@ -1940,7 +1940,7 @@ bool MTL_TESTS::test_161_simple_displacement()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -2156,7 +2156,7 @@ bool MTL_TESTS::test_161_simple_displacement()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 50);
 }
@@ -2169,7 +2169,7 @@ bool MTL_TESTS::test_164_simple_displacement_proctex()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -2378,7 +2378,7 @@ bool MTL_TESTS::test_164_simple_displacement_proctex()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 100);
 }
@@ -2391,7 +2391,7 @@ bool MTL_TESTS::test_165_simple_displacement_mesh()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -2609,7 +2609,7 @@ bool MTL_TESTS::test_165_simple_displacement_mesh()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 30);
 }
@@ -2622,7 +2622,7 @@ bool MTL_TESTS::test_166_displace_by_noise()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -2847,7 +2847,7 @@ bool MTL_TESTS::test_166_displace_by_noise()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 30);
 }
@@ -2860,7 +2860,7 @@ bool MTL_TESTS::test_167_subdiv()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -3184,7 +3184,7 @@ bool MTL_TESTS::test_167_subdiv()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 20);
 }
@@ -3197,7 +3197,7 @@ bool MTL_TESTS::test_169_displace_custom_callback()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -3426,7 +3426,7 @@ bool MTL_TESTS::test_169_displace_custom_callback()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 20);
 }
@@ -3439,7 +3439,7 @@ bool MTL_TESTS::test_171_simple_displacement_triplanar()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -3667,7 +3667,7 @@ bool MTL_TESTS::test_171_simple_displacement_triplanar()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 20);
 }

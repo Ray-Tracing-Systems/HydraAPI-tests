@@ -37,7 +37,7 @@ bool MTL_TESTS::test_150_gloss_mirror_cos_div()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -345,7 +345,7 @@ bool MTL_TESTS::test_150_gloss_mirror_cos_div()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 60);
 }
@@ -358,7 +358,7 @@ bool MTL_TESTS::test_151_gloss_mirror_cos_div2()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -661,7 +661,7 @@ bool MTL_TESTS::test_151_gloss_mirror_cos_div2()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 60);
 }
@@ -674,7 +674,7 @@ bool MTL_TESTS::test_152_texture_color_replace_mode()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -929,7 +929,7 @@ bool MTL_TESTS::test_152_texture_color_replace_mode()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str());
 }
@@ -946,7 +946,7 @@ bool MTL_TESTS::test_153_opacity_shadow_matte_opacity()
   std::filesystem::path saveRenderFile5 = L"tests_images/" + nameTest + L"/z_out5.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -1216,11 +1216,11 @@ bool MTL_TESTS::test_153_opacity_shadow_matte_opacity()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef,  saveRenderFile.c_str());
-  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile2.c_str(), L"depth");
-  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile3.c_str(), L"diffcolor");
-  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile4.c_str(), L"alpha");
-  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile5.c_str(), L"shadow");
+  hrRenderSaveFrameBufferLDR(renderRef,  saveRenderFile.wstring().c_str());
+  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile2.wstring().c_str(), L"depth");
+  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile3.wstring().c_str(), L"diffcolor");
+  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile4.wstring().c_str(), L"alpha");
+  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile5.wstring().c_str(), L"shadow");
 
   return check_images(ws2s(nameTest).c_str(), 5, 25);  
 }
@@ -1233,7 +1233,7 @@ bool MTL_TESTS::test_154_baked_checker_precomp()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -1533,7 +1533,7 @@ bool MTL_TESTS::test_154_baked_checker_precomp()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 60);
 }
@@ -1546,7 +1546,7 @@ bool MTL_TESTS::test_155_baked_checker_HDR_precomp()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -1842,7 +1842,7 @@ bool MTL_TESTS::test_155_baked_checker_HDR_precomp()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 60);
 }
@@ -1855,7 +1855,7 @@ bool MTL_TESTS::test_156_baked_checker_precomp_update()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -2159,7 +2159,7 @@ bool MTL_TESTS::test_156_baked_checker_precomp_update()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 60);
 }
@@ -2172,7 +2172,7 @@ bool MTL_TESTS::test_157_baked_checker_precomp_remap()
   std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
   hrErrorCallerPlace(nameTest.c_str());
-  hrSceneLibraryOpen(libraryPath.c_str(), HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
     
   ////////////////////
   // Materials
@@ -2605,7 +2605,7 @@ bool MTL_TESTS::test_157_baked_checker_precomp_remap()
   RenderProgress(renderRef);
 
   std::filesystem::create_directories(saveRenderFile.parent_path());
-  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.c_str());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   return check_images(ws2s(nameTest).c_str(), 1, 60);
 }
