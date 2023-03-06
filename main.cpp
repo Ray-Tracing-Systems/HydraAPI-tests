@@ -140,7 +140,7 @@ int main(int argc, const char** argv)
     /////////////////////
 
     //test82_proc_texture(); // error
-    test83_proc_texture2();
+    //test83_proc_texture2();
     //test84_proc_texture2();
     //test85_proc_texture_ao();
     //test86_proc_texture_ao_dirt();
@@ -157,7 +157,7 @@ int main(int argc, const char** argv)
 
     //GEO_TESTS::test_001_mesh_from_memory();
     //GEO_TESTS::test_002_mesh_from_vsgf();    
-    //GEO_TESTS::test_003_compute_normals(); // hangs!
+    //GEO_TESTS::test_003_compute_normals(); 
     //GEO_TESTS::test_004_dof();
     //GEO_TESTS::test_005_instancing();
     //GEO_TESTS::test_006_points_on_mesh();
@@ -203,7 +203,7 @@ int main(int argc, const char** argv)
     /////////////////////
 
     //run_all_api_tests();
-    //run_all_geo_tests();
+    run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();

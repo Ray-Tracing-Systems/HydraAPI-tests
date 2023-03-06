@@ -278,59 +278,21 @@ namespace GEO_TESTS
     // Render settings
     ////////////////////
     
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 2048);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 1024);
     
     ////////////////////
     // Create scene
     ////////////////////
     
-    auto scnRef = hrSceneCreate(L"my scene");
-    
-    float matrixT[4][4];
-    float mTranslate[4][4];
-    float mRes[4][4];
-    float mRes2[4][4];
-    float mScale[4][4];
-    
+    auto scnRef = hrSceneCreate((L"scene_"+ nameTest).c_str());
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+    AddMeshToScene (scnRef, lucyRef,   float3(3, -5, 0));
+    AddMeshToScene (scnRef, teapotRef,  float3(-3, -1, 0), float3(), float3(4,4,4));
+    AddLightToScene(scnRef, rectLight, float3(0, 10, 0));
     
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRes);
-    
-    mat4x4_translate(mTranslate, 3.0f, -5.0f, 0.0f);
-    mat4x4_mul(mRes2, mTranslate, mRes);
-    mat4x4_transpose(matrixT, mRes2);
-    
-    hrMeshInstance(scnRef, lucyRef, &matrixT[0][0]);
-    
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRes);
-    mat4x4_identity(mScale);
-    
-    mat4x4_translate(mTranslate, -3.0f, -1.0f, 0.0f);
-    mat4x4_scale(mScale, mScale, 4.0f);
-    mat4x4_mul(mRes2, mTranslate, mScale);
-    mat4x4_transpose(matrixT, mRes2);
-    
-    hrMeshInstance(scnRef, teapotRef, &matrixT[0][0]);
-    
-    
-    ///////////
-    
-    mat4x4_identity(mTranslate);
-    mat4x4_translate(mTranslate, 0, 10.0f, 0);
-    mat4x4_transpose(matrixT, mTranslate);
-    
-    hrLightInstance(scnRef, rectLight, &matrixT[0][0]);
-    
-    ///////////
-    
-    hrSceneClose(scnRef);
-    
+    hrSceneClose(scnRef);    
     hrFlush(scnRef, renderRef);
     
     ////////////////////

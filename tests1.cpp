@@ -1769,16 +1769,15 @@ void run_all_api_tests(const int startTestId)
 void run_all_geo_tests()
 {
 	using namespace GEO_TESTS;
-	TestFunc tests[] = { &test_001_mesh_from_memory,
-						           &test_002_mesh_from_vsgf,
-						           &test_003_compute_normals,
+  TestFunc tests[] = { &test_001_mesh_from_memory,
+                       &test_002_mesh_from_vsgf,
+                       &test_003_compute_normals,
                        &test_004_dof,
                        &test_005_instancing,
                        &test_006_points_on_mesh,
-    
                        &test_007_import_obj,
                        &test_008_import_obj_w_mtl,
-                       &test_009_import_obj_fullscale};
+                       &test_009_import_obj_fullscale };
 
 
 	int testNum = sizeof(tests) / sizeof(TestFunc);

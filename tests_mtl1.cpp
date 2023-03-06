@@ -120,7 +120,6 @@ namespace MTL_TESTS
     AddLightToScene(scnRef, rectLight, float3(0.0f, 16.0f, 0.0f));
 
     hrSceneClose(scnRef);
-
     hrFlush(scnRef, renderRef);
 
     ////////////////////
