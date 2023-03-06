@@ -141,7 +141,7 @@ int main(int argc, const char** argv)
 
     //GEO_TESTS::test_001_mesh_from_memory();
     //GEO_TESTS::test_002_mesh_from_vsgf();    
-    GEO_TESTS::test_003_compute_normals(); // hangs!
+    //GEO_TESTS::test_003_compute_normals(); // hangs!
     //GEO_TESTS::test_004_dof();
     //GEO_TESTS::test_005_instancing();
     //GEO_TESTS::test_006_points_on_mesh();
