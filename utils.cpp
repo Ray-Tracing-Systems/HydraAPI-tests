@@ -539,7 +539,6 @@ namespace TEST_UTILS
 
     auto color = diff.append_child(L"color");
     color.append_attribute(L"val").set_value(a_diffuseColor);
-    color.append_attribute(L"tex_apply_mode").set_value(L"multiply");
 
     if (a_brdfType == L"orennayar")
     {
@@ -549,14 +548,15 @@ namespace TEST_UTILS
 
     if (a_texture.id != -1)
     {
+      color.append_attribute(L"tex_apply_mode").set_value(L"multiply");
       hrTextureBind(a_texture, color);
 
       auto texNode = color.child(L"texture");
       texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { a_tileU, 0, 0, 0,
-                                  0, a_tileV, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
+      float samplerMatrix[16] = { a_tileU, 0,       0,       0,
+                                  0,       a_tileV, 0,       0,
+                                  0,       0,       1,       0,
+                                  0,       0,       0,       1 };
 
       texNode.append_attribute(L"addressing_mode_u").set_value(a_addressingModeU);
       texNode.append_attribute(L"addressing_mode_v").set_value(a_addressingModeV);
@@ -587,22 +587,27 @@ namespace TEST_UTILS
 
 
 
-  void CreateCamera(const float a_fov, const wchar_t* position, const wchar_t* look_at,
-    const wchar_t* a_name, const float a_nearClipPlane, const float a_farClipPlane, const wchar_t* a_up)
+  void CreateCamera(const float a_fov, const wchar_t* a_position, const wchar_t* a_lookAt,
+    const wchar_t* a_name, const float a_nearClipPlane, const float a_farClipPlane, const wchar_t* a_up,
+    const bool a_dof, const float a_dofLensRadius)
   {
     auto camRef = hrCameraCreate(a_name);
 
     hrCameraOpen(camRef, HR_WRITE_DISCARD);
     {
-      auto camNode = hrCameraParamNode(camRef);
+      auto camNode                                    = hrCameraParamNode(camRef);
 
-      camNode.append_child(L"fov").text().set(a_fov);
-      camNode.append_child(L"nearClipPlane").text().set(a_nearClipPlane);
-      camNode.append_child(L"farClipPlane").text().set(a_farClipPlane);
+      camNode.append_child(L"fov").text()             = a_fov;
+      camNode.append_child(L"nearClipPlane").text()   = a_nearClipPlane;
+      camNode.append_child(L"farClipPlane").text()    = a_farClipPlane;
 
-      camNode.append_child(L"up").text().set(a_up);
-      camNode.append_child(L"position").text().set(position);
-      camNode.append_child(L"look_at").text().set(look_at);
+      camNode.append_child(L"up").text()              = a_up;
+      camNode.append_child(L"position").text()        = a_position;
+      camNode.append_child(L"look_at").text()         = a_lookAt;
+
+      camNode.append_child(L"enable_dof").text()      = (int)(a_dof);
+      camNode.append_child(L"dof_lens_radius").text() = a_dofLensRadius;
+
       VERIFY_XML(camNode); 
     }
     hrCameraClose(camRef);
@@ -810,7 +815,8 @@ namespace TEST_UTILS
 
   HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
     const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,
-    const wchar_t* a_color, const float a_multiplier)
+    const wchar_t* a_color, const float a_multiplier, const bool a_spot,
+    const float a_innerRadius, const float a_outerRadius)
   {
     auto light = hrLightCreate(a_name);
 
@@ -818,24 +824,55 @@ namespace TEST_UTILS
     {
       auto lightNode = hrLightParamNode(light);
 
-      lightNode.attribute(L"type").set_value(a_type);
-      lightNode.attribute(L"shape").set_value(a_shape);
-      lightNode.attribute(L"distribution").set_value(a_distribution);
+      lightNode.attribute(L"type")         = a_type;
+      lightNode.attribute(L"shape")        = a_shape;
+      lightNode.attribute(L"distribution") = a_distribution;
 
       auto sizeNode = lightNode.append_child(L"size");
 
-      sizeNode.append_attribute(L"half_length").set_value(a_halfLength);
-      sizeNode.append_attribute(L"half_width").set_value(a_halfWidth);
+      if (a_shape == L"rect")
+      {
+        sizeNode.force_attribute(L"half_length") = a_halfLength;
+        sizeNode.force_attribute(L"half_width")  = a_halfWidth;
+      }
+      else if (a_shape == L"sphere")
+      {
+        lightNode.force_child(L"size").force_attribute(L"radius") = a_halfLength;
+      }
 
-      auto intensityNode = lightNode.append_child(L"intensity");
+      if (a_spot)
+      {
+        sizeNode.force_attribute(L"inner_radius") = 10.0f;
+        sizeNode.force_attribute(L"outer_radius") = 20.0f;
+      }
 
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(a_color);
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(a_multiplier);
+      auto intensityNode = lightNode.force_child(L"intensity");
+
+      intensityNode.force_child(L"color").force_attribute(L"val")      = a_color;
+      intensityNode.force_child(L"multiplier").force_attribute(L"val") = a_multiplier;
 			VERIFY_XML(lightNode);
     }
     hrLightClose(light);
 
     return light;
+  }
+
+  HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier)
+  {
+    HRLightRef sky = hrLightCreate(a_name);
+
+    hrLightOpen(sky, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(sky);
+      lightNode.attribute(L"type").set_value(L"sky");
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val") = a_color;
+      intensityNode.append_child(L"multiplier").append_attribute(L"val") = a_multiplier;
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(sky);
+
+    return sky;
   }
 
 

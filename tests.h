@@ -76,8 +76,8 @@ namespace TEST_UTILS
   //materials
   void AddDiffuseNode(HAPI pugi::xml_node& matNode, const wchar_t* a_diffuseColor,
     const wchar_t* a_brdfType = L"lambert", const float a_roughness = 0,
-    HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"clamp",
-    const wchar_t* a_addressingModeV = L"clamp", const float tileU = 1, const float tileV = 1,
+    HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"wrap",
+    const wchar_t* a_addressingModeV = L"wrap", const float tileU = 1, const float tileV = 1,
     const float a_inputGamma = 2.2f, const wchar_t* a_inputAlpha = L"rgb");
 
   void AddReflectionNode(HAPI pugi::xml_node& matNode, const wchar_t* a_brdfType, const wchar_t* a_color,
@@ -87,12 +87,16 @@ namespace TEST_UTILS
   //light
   HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
     const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,
-    const wchar_t* a_color, const float a_multiplier);
+    const wchar_t* a_color, const float a_multiplier, const bool a_spot = false, 
+    const float a_innerRadius = 40, const float a_outerRadius = 60);
+
+  HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier);
 
   //camera
-  void CreateCamera(const float a_fov, const wchar_t* position, const wchar_t* look_at,
-    const wchar_t* a_name = L"Camera01", const float a_nearClipPlane = 0.01,
-    const float a_farClipPlane = 100.0, const wchar_t* a_up = L"0 1 0");
+  void CreateCamera(const float a_fov, const wchar_t* a_position, const wchar_t* a_lookAt,
+    const wchar_t* a_name = L"Camera01", const float a_nearClipPlane = 0.01F,
+    const float a_farClipPlane = 100.0F, const wchar_t* a_up = L"0 1 0", const bool a_dof = false, 
+    const float a_dofLensRadius = 0.1F);
 
   //scene  
   void AddMeshToScene(HRSceneInstRef& scnRef, HRMeshRef& a_meshRef, const float3 pos = float3(0, 0, 0),

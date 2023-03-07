@@ -162,8 +162,8 @@ int main(int argc, const char** argv)
     //GEO_TESTS::test_005_instancing();
     //GEO_TESTS::test_006_points_on_mesh();
     //GEO_TESTS::test_007_import_obj();
-    //GEO_TESTS::test_008_import_obj_w_mtl();
-    //GEO_TESTS::test_009_import_obj_fullscale();
+    GEO_TESTS::test_008_import_obj_w_mtl(); // The bike is black.
+    //GEO_TESTS::test_009_import_obj_fullscale(); // The bottle is black.
 
     /////////////////////    
     // MTL_TESTS
@@ -203,7 +203,7 @@ int main(int argc, const char** argv)
     /////////////////////
 
     //run_all_api_tests();
-    run_all_geo_tests();
+    //run_all_geo_tests();
     //run_all_mtl_tests();
     //run_all_lgt_tests();
     //run_all_alg_tests();
@@ -218,6 +218,7 @@ int main(int argc, const char** argv)
     //std::cout << "MSE = " << g_MSEOutput << std::endl;
 
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
+
     terminate_opengl();
   }
   catch (std::runtime_error& e)
