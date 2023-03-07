@@ -1184,7 +1184,7 @@ bool test83_proc_texture2()
   // Render settings
   ////////////////////
 
-  auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 256);
+  auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
 
   ////////////////////
   // Create scene
@@ -1475,31 +1475,12 @@ bool test84_proc_texture2()
   }
   hrCameraClose(camRef);
 
-  // set up render settings
-  //
-  HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
-  hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  //hrRenderLogDir(renderRef, L"/home/frol/hydra/logs/", false);
+  ////////////////////
+  // Render settings
+  ////////////////////
 
+  auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 1024);
 
-  hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-  {
-    pugi::xml_node node = hrRenderParamNode(renderRef);
-
-    node.append_child(L"width").text() = L"512";
-    node.append_child(L"height").text() = L"512";
-
-    node.append_child(L"method_primary").text() = L"pathtracing";
-    node.append_child(L"method_secondary").text() = L"pathtracing";
-    node.append_child(L"method_tertiary").text() = L"pathtracing";
-    node.append_child(L"method_caustic").text() = L"pathtracing";
-    node.append_child(L"shadows").text() = L"1";
-
-    node.append_child(L"trace_depth").text()      = 8;
-    node.append_child(L"diff_trace_depth").text() = 4;
-    node.append_child(L"maxRaysPerPixel").text()  = 512;
-  }
-  hrRenderClose(renderRef);
 
   // create scene
   //

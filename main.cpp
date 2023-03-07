@@ -162,7 +162,7 @@ int main(int argc, const char** argv)
     //GEO_TESTS::test_005_instancing();
     //GEO_TESTS::test_006_points_on_mesh();
     //GEO_TESTS::test_007_import_obj();
-    GEO_TESTS::test_008_import_obj_w_mtl(); // The bike is black.
+    //GEO_TESTS::test_008_import_obj_w_mtl(); // The bike is black.
     //GEO_TESTS::test_009_import_obj_fullscale(); // The bottle is black.
 
     /////////////////////    
@@ -203,12 +203,12 @@ int main(int argc, const char** argv)
     /////////////////////
 
     //run_all_api_tests();
-    //run_all_geo_tests();
-    //run_all_mtl_tests();
-    //run_all_lgt_tests();
-    //run_all_alg_tests();
-    //run_all_3dsmax_tests();
-    //run_all_vector_tex_tests();
+    run_all_geo_tests();
+    run_all_mtl_tests();
+    run_all_lgt_tests();
+    run_all_alg_tests();
+    run_all_3dsmax_tests();
+    run_all_vector_tex_tests();
 
 
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
