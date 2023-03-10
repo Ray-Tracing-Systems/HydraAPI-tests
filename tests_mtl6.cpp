@@ -168,7 +168,7 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
   // Render settings
   ////////////////////
 
-  auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 340, 256, 4096);
+  auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
 
   ////////////////////
   // Create scene

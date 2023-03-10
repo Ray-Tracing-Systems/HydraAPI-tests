@@ -260,7 +260,7 @@ bool MTL_TESTS::test_162_shadow_matte_back1()
   // Render settings
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  HRRenderRef renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, IMG_WIDTH, IMG_HEIGHT, 256, 2048);
+  HRRenderRef renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, IMG_WIDTH, IMG_HEIGHT, 256, 512);
 
   hrRenderOpen(renderRef, HR_OPEN_EXISTING);
   {
