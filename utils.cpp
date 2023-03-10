@@ -830,14 +830,14 @@ namespace TEST_UTILS
 
       auto sizeNode = lightNode.append_child(L"size");
 
-      if (a_shape == L"rect")
+      if (std::wstring(a_shape) == L"rect")
       {
         sizeNode.force_attribute(L"half_length") = a_halfLength;
         sizeNode.force_attribute(L"half_width")  = a_halfWidth;
       }
-      else if (a_shape == L"sphere")
+      else if (std::wstring(a_shape) == L"sphere")
       {
-        lightNode.force_child(L"size").force_attribute(L"radius") = a_halfLength;
+        sizeNode.force_attribute(L"radius") = a_halfLength;
       }
 
       if (a_spot)

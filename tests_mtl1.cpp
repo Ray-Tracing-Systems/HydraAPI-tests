@@ -7160,20 +7160,20 @@ namespace MTL_TESTS
     // Materials
     ////////////////////
 
-    HRMaterialRef mat025 = hrMaterialCreate(L"mat025");
-    HRMaterialRef mat050 = hrMaterialCreate(L"mat050");
-    HRMaterialRef mat090 = hrMaterialCreate(L"mat090");
-    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    auto mat025 = hrMaterialCreate(L"mat025");
+    auto mat050 = hrMaterialCreate(L"mat050");
+    auto mat090 = hrMaterialCreate(L"mat090");
+    auto matGray = hrMaterialCreate(L"matGray");
 
-    HRTextureNodeRef texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
-    HRTextureNodeRef tex = hrTexture2DCreateFromFile(L"data/textures/ornament.jpg");
+    auto texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
+    auto tex        = hrTexture2DCreateFromFile(L"data/textures/ornament.jpg");
 
     hrMaterialOpen(mat025, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat025);
-
-      auto diffuse = matNode.append_child(L"diffuse");
-      diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5");
+      //auto diffuse = matNode.append_child(L"diffuse");
+      //diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
 
       auto displacement = matNode.append_child(L"displacement");
       auto heightNode   = displacement.append_child(L"height_map");
@@ -7202,9 +7202,10 @@ namespace MTL_TESTS
     hrMaterialOpen(mat050, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat050);
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5");
 
-      auto diffuse = matNode.append_child(L"diffuse");
-      diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+      //auto diffuse = matNode.append_child(L"diffuse");
+      //diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
 
       auto displacement = matNode.append_child(L"displacement");
       auto heightNode   = displacement.append_child(L"height_map");
@@ -7233,9 +7234,10 @@ namespace MTL_TESTS
     hrMaterialOpen(mat090, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat090);
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5");
 
-      auto diffuse = matNode.append_child(L"diffuse");
-      diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+      //auto diffuse = matNode.append_child(L"diffuse");
+      //diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
 
       auto displacement = matNode.append_child(L"displacement");
       auto heightNode   = displacement.append_child(L"height_map");
@@ -7302,61 +7304,25 @@ namespace MTL_TESTS
     // Light
     ////////////////////
 
-    HRLightRef rectLight = hrLightCreate(L"my_area_light");
-
-    hrLightOpen(rectLight, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(rectLight);
-
-      lightNode.attribute(L"type").set_value(L"area");
-      lightNode.attribute(L"shape").set_value(L"rect");
-      lightNode.attribute(L"distribution").set_value(L"diffuse");
-
-      auto sizeNode = lightNode.append_child(L"size");
-
-      sizeNode.append_attribute(L"half_length").set_value(L"10.0");
-      sizeNode.append_attribute(L"half_width").set_value(L"10.0");
-
-      auto intensityNode = lightNode.append_child(L"intensity");
-
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(2.0*IRRADIANCE_TO_RADIANCE);
-			VERIFY_XML(lightNode);
-    }
-    hrLightClose(rectLight);
+    auto rectLight = CreateLight(L"Light01", L"area", L"rect", L"diffuse", 10, 10, L"1 1 1", 2.0f * IRRADIANCE_TO_RADIANCE);
 
     ////////////////////
     // Camera
     ////////////////////
 
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
-
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      auto camNode = hrCameraParamNode(camRef);
-
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 10 8");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
-    }
-    hrCameraClose(camRef);
+    CreateCamera(45, L"0 10 8", L"0 0 0");
 
     ////////////////////
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 2048);
-
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 768, 256, 512);
 
     ////////////////////
     // Create scene
     ////////////////////
 
-    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
+    auto scnRef = hrSceneCreate(L"my scene");
 
     using namespace LiteMath;
 
