@@ -7165,13 +7165,12 @@ namespace MTL_TESTS
     auto matGray    = hrMaterialCreate(L"matGray");
     auto texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
     auto texBump    = hrTexture2DCreateFromFile(L"data/textures/ornament.jpg");
-
-    
+        
 
     hrMaterialOpen(mat025, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat025);
-      AddDiffuseNode(matNode, L"0.5 0.5 0.5");      
+      AddDiffuseNode(matNode, L"0.7 0.7 0.7");      
       AddReliefNode(matNode, L"height_bump", 0.25F, texBump, L"wrap", L"wrap", 2, 2);
     }
     hrMaterialClose(mat025);
@@ -7179,7 +7178,7 @@ namespace MTL_TESTS
     hrMaterialOpen(mat050, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat050);
-      AddDiffuseNode(matNode, L"0.5 0.5 0.5");
+      AddDiffuseNode(matNode, L"0.7 0.7 0.7");
       AddReliefNode(matNode, L"height_bump", 0.5F, texBump, L"wrap", L"wrap", 2, 2);
     }
     hrMaterialClose(mat050);
@@ -7187,7 +7186,7 @@ namespace MTL_TESTS
     hrMaterialOpen(mat090, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat090);
-      AddDiffuseNode(matNode, L"0.5 0.5 0.5");
+      AddDiffuseNode(matNode, L"0.7 0.7 0.7");
       AddReliefNode(matNode, L"height_bump", 0.9F, texBump, L"wrap", L"wrap", 2, 2);
     }
     hrMaterialClose(mat090);
@@ -7195,7 +7194,7 @@ namespace MTL_TESTS
     hrMaterialOpen(matGray, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matGray);
-      AddDiffuseNode(matNode, L"0.5 0.5 0.5", L"Lambert", 0, texChecker, L"wrap", L"wrap", 16, 16);
+      AddDiffuseNode(matNode, L"0.7 0.7 0.7", L"Lambert", 0, texChecker, L"wrap", L"wrap", 16, 16);
     }
     hrMaterialClose(matGray);
 
@@ -7212,19 +7211,19 @@ namespace MTL_TESTS
     // Light
     ////////////////////
 
-    auto rectLight = CreateLight(L"Light01", L"area", L"rect", L"diffuse", 10, 10, L"1 1 1", 2.0f * IRRADIANCE_TO_RADIANCE);
+    auto rectLight = CreateLight(L"Light01", L"area", L"rect", L"diffuse", 10, 10, L"1 1 1", 1.25f * IRRADIANCE_TO_RADIANCE);
 
     ////////////////////
     // Camera
     ////////////////////
 
-    CreateCamera(45, L"0 10 8", L"0 0 0");
+    CreateCamera(25, L"0 10 10", L"0 1 0");
 
     ////////////////////
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 768, 64, 64);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 512, 256, 256, 512);
 
     ////////////////////
     // Create scene
@@ -7252,9 +7251,7 @@ namespace MTL_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
-
-    return check_images(ws2s(nameTest).c_str(), 1);
+    return check_images(ws2s(nameTest).c_str());
   }
 
 

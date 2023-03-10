@@ -1740,8 +1740,8 @@ void run_all_api_tests(const int startTestId)
     bool res = tests[i]();
     if (res)
     {
-      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok." << std::endl;
-      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\ok." << std::endl;
+      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tok." << std::endl;
+      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tok." << std::endl;
     }
     else if (g_testWasIgnored)
     {

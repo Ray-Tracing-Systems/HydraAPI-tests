@@ -1025,6 +1025,8 @@ namespace TEST_UTILS
 
   void RenderProgress(HRRenderRef& a_renderRef)
   {
+    std::cout << std::endl;
+
     while (true)
     {
       std::this_thread::sleep_for(std::chrono::milliseconds(500));

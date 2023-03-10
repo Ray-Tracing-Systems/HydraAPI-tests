@@ -43,6 +43,8 @@ extern float g_MSEOutput;
 
 bool check_images(const char* a_path, const int a_numImages, const float a_mse)
 {
+  std::cout << std::endl;
+
   g_MSEOutput = 0.0f;
   bool result = true;
   for (int i = 0; i < a_numImages; i++)
@@ -87,7 +89,6 @@ bool check_images(const char* a_path, const int a_numImages, const float a_mse)
     result             = result && (mseVal <= a_mse);
     int a = 2;
   }
-  std::cout << std::endl;
   return result;
 }
 

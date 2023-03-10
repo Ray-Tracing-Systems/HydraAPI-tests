@@ -154,15 +154,13 @@ int main(int argc, const char** argv)
     // MTL_TESTS
     /////////////////////
         
-    MTL_TESTS::test_126_bump_amount();
+    //MTL_TESTS::test_126_bump_amount();    
     
-
     /////////////////////    
     // LGHT_TESTS
     /////////////////////
 
     //LGHT_TESTS::test_203_sky_hdr();
-
 
     /////////////////////    
     // EXTENSIONS_TESTS
@@ -187,13 +185,13 @@ int main(int argc, const char** argv)
     // All tests
     /////////////////////
 
-    //run_all_api_tests();
-    //run_all_geo_tests();
-    //run_all_mtl_tests();
-    //run_all_lgt_tests();
-    //run_all_alg_tests();
-    //run_all_3dsmax_tests();
-    //run_all_vector_tex_tests();
+    run_all_api_tests();
+    run_all_geo_tests();
+    run_all_mtl_tests();
+    run_all_lgt_tests();
+    run_all_alg_tests();
+    run_all_3dsmax_tests();
+    run_all_vector_tex_tests();
 
 
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
