@@ -168,11 +168,10 @@ int main(int argc, const char** argv)
     /////////////////////    
     // MTL_TESTS
     /////////////////////
+        
+    MTL_TESTS::test_126_bump_amount();
+    
 
-    //MTL_TESTS::test_100_diffuse_orennayar();
-    //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
-    //MTL_TESTS::test_102_mirror_orbspec_mat02();
-    MTL_TESTS::test_177_beckman_aniso_rot();
     /////////////////////    
     // LGHT_TESTS
     /////////////////////

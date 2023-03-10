@@ -67,18 +67,11 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
   SimpleMesh sphere   = CreateSphere(2.5f, 128);
   SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
   
-  HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
   HRMaterialRef mat1 = hrMaterialCreate(L"red");
   HRMaterialRef mat2 = hrMaterialCreate(L"green");
   HRMaterialRef mat3 = hrMaterialCreate(L"white");
   HRMaterialRef mat4 = hrMaterialCreate(L"glossy");
   
-  hrMaterialOpen(mat0, HR_WRITE_DISCARD);
-  {
-    xml_node matNode = hrMaterialParamNode(mat0);
-    AddDiffuseNode(matNode, L"0.5 0.5 0.5");
-  }
-  hrMaterialClose(mat0);
   
   hrMaterialOpen(mat1, HR_WRITE_DISCARD);
   {
@@ -97,7 +90,7 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
   hrMaterialOpen(mat3, HR_WRITE_DISCARD);
   {
     xml_node matNode = hrMaterialParamNode(mat3);
-    AddDiffuseNode(matNode, L"0.5 0.5 0.5");
+    AddDiffuseNode(matNode, L"0.7 0.7 0.7");
   }
   hrMaterialClose(mat3);
   
@@ -168,7 +161,7 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
   // Render settings
   ////////////////////
 
-  auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
+  auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 512, 512, 256, 512);
 
   ////////////////////
   // Create scene
@@ -210,7 +203,7 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
     hrRenderSaveFrameBufferLDR(renderRef, names[iter].c_str());    
   }
     
-  return check_images(ws2s(nameTest).c_str(), 4, testParams.maxMSE);
+  return check_images(ws2s(nameTest).c_str(), 4);
 }
 
 
