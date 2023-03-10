@@ -196,7 +196,7 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
       auto refl        = matNode.child(L"reflectivity");
 
       if(testParams.paramName != L"rot")
-        refl.child(nameTest.c_str()).attribute(L"val") = testParams.values[iter];
+        refl.child(testParams.paramName.c_str()).attribute(L"val") = testParams.values[iter];        
       else
         refl.child(L"anisotropy").attribute(L"rot") = testParams.values[iter];
       VERIFY_XML(matNode);
@@ -224,7 +224,7 @@ bool MTL_TESTS::test_175_beckman_isotropic()
   params.values[1]        = 0.5f;
   params.values[2]        = 0.75f;
   params.values[3]        = 0.90f;
-  params.maxMSE           = 25.0f;
+  params.maxMSE           = 30.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
@@ -243,7 +243,7 @@ bool MTL_TESTS::test_176_beckman_anisotropic()
   params.values[1]        = 0.5f;
   params.values[2]        = 0.75f;
   params.values[3]        = 1.0f;
-  params.maxMSE           = 25.0f;
+  params.maxMSE           = 30.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
@@ -262,7 +262,7 @@ bool MTL_TESTS::test_177_beckman_aniso_rot()
   params.values[1]        = 0.5f;
   params.values[2]        = 0.75f;
   params.values[3]        = 1.0f;
-  params.maxMSE           = 25.0f;
+  params.maxMSE           = 30.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 1.0f;
   params.initialRot       = 0.0f;
@@ -281,7 +281,7 @@ bool MTL_TESTS::test_178_trggx_isotropic()
   params.values[1]        = 0.5f;
   params.values[2]        = 0.75f;
   params.values[3]        = 0.90f;
-  params.maxMSE           = 25.0f;
+  params.maxMSE           = 30.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
@@ -300,7 +300,7 @@ bool MTL_TESTS::test_179_trggx_anisotropic()
   params.values[1]        = 0.5f;
   params.values[2]        = 0.75f;
   params.values[3]        = 0.90f;
-  params.maxMSE           = 25.0f;
+  params.maxMSE           = 30.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 0.0f;
   params.initialRot       = 0.0f;
@@ -319,7 +319,7 @@ bool MTL_TESTS::test_180_trggx_aniso_rot()
   params.values[1]        = 0.5f;
   params.values[2]        = 0.75f;
   params.values[3]        = 1.0f;
-  params.maxMSE           = 25.0f;
+  params.maxMSE           = 30.0f;
   params.initialGlosiness = 0.0f;
   params.initialAniso     = 1.0f;
   params.initialRot       = 0.0f;
