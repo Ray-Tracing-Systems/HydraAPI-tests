@@ -627,30 +627,12 @@ namespace MTL_TESTS
     }
     hrCameraClose(camRef);
 
-    // set up render settings
-    //
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
 
-      node.append_child(L"width").text()  = 512;
-      node.append_child(L"height").text() = 512;
-
-      node.append_child(L"method_primary").text()   = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text()  = L"pathtracing";
-      node.append_child(L"method_caustic").text()   = L"pathtracing";
-
-      node.append_child(L"trace_depth").text()      = 8;
-      node.append_child(L"diff_trace_depth").text() = 4;
-      node.append_child(L"maxRaysPerPixel").text()  = 2048;
-
-      node.append_child(L"qmc_variant").text()      = QMC_ALL;
-    }
-    hrRenderClose(renderRef);
 
     // create scene
     //
