@@ -1151,7 +1151,7 @@ bool test57_single_instance()
   // Render settings
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 2048);
+  HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 256);
 
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1166,8 +1166,6 @@ bool test57_single_instance()
   float4x4 mTranslate;
   float4x4 mScale;
   float4x4 mRes;
-
-  const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
 
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
   ///////////
