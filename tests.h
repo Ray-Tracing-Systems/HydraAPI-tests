@@ -84,6 +84,11 @@ namespace TEST_UTILS
     const float a_glossiness, const bool a_fresnel, const float a_ior = 1.5f, 
     const wchar_t* a_extrusion = L"maxcolor", const bool a_energyFix = false);
 
+  void AddReliefNode(HAPI pugi::xml_node& matNode, const wchar_t* a_type, const float a_amount,
+    HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"wrap",
+    const wchar_t* a_addressingModeV = L"wrap", const float tileU = 1, const float tileV = 1,
+    const float a_inputGamma = 2.2f, const wchar_t* a_inputAlpha = L"rgb");
+
   //light
   HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
     const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,

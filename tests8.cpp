@@ -44,22 +44,26 @@ namespace hlm = LiteMath;
 
 bool test90_proc_tex_normalmap()
 {
-  initGLIfNeeded(512, 512);
-  hrErrorCallerPlace(L"test_90");
+  //initGLIfNeeded(512, 512);
+
+  std::wstring nameTest                 = L"test_90";
+  std::filesystem::path libraryPath     = L"tests_f/"      + nameTest;
+  std::filesystem::path saveRenderFile  = L"tests_images/" + nameTest + L"/z_out.png";
+  std::filesystem::path saveRenderFile2 = L"tests_images/" + nameTest + L"/z_out2.png";
+
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
+
+  ////////////////////
+  // Materials
+  ////////////////////  
   
-  hrSceneLibraryOpen(L"tests/test_90", HR_WRITE_DISCARD);
+  auto texBitmap1 = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
+  auto texNormal  = hrTexture2DCreateFromFile(L"data/textures/normal_map2.jpg");
   
-  SimpleMesh sphere   = CreateSphere(2.0f, 128);
-  SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
-  
-  // textures
-  //
-  HRTextureNodeRef texBitmap1 = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
-  HRTextureNodeRef texNormal  = hrTexture2DCreateFromFile(L"data/textures/normal_map2.jpg");
-  
-  HRTextureNodeRef texProc    = hrTextureCreateAdvanced(L"proc", L"my_custom_tex");
-  HRTextureNodeRef texProc2   = hrTextureCreateAdvanced(L"proc", L"my_custom_tex2");
-  HRTextureNodeRef texProcNM  = hrTextureCreateAdvanced(L"proc", L"my_custom_normalmap");
+  auto texProc    = hrTextureCreateAdvanced(L"proc", L"my_custom_tex");
+  auto texProc2   = hrTextureCreateAdvanced(L"proc", L"my_custom_tex2");
+  auto texProcNM  = hrTextureCreateAdvanced(L"proc", L"my_custom_normalmap");
   
   hrTextureNodeOpen(texProc, HR_WRITE_DISCARD);
   {
@@ -94,11 +98,11 @@ bool test90_proc_tex_normalmap()
   
   // other as usual in this test
   //
-  HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
-  HRMaterialRef mat1 = hrMaterialCreate(L"red");
-  HRMaterialRef mat2 = hrMaterialCreate(L"green");
-  HRMaterialRef mat3 = hrMaterialCreate(L"white");
-  HRMaterialRef mat4 = hrMaterialCreate(L"normalmaptest");
+  auto mat0 = hrMaterialCreate(L"mysimplemat");
+  auto mat1 = hrMaterialCreate(L"red");
+  auto mat2 = hrMaterialCreate(L"green");
+  auto mat3 = hrMaterialCreate(L"white");
+  auto mat4 = hrMaterialCreate(L"normalmaptest");
 
   hrMaterialOpen(mat4, HR_WRITE_DISCARD);
   {
@@ -272,27 +276,20 @@ bool test90_proc_tex_normalmap()
       p1.append_attribute(L"size") = 1;
       p1.append_attribute(L"val")  = texNormal.id;
     }
-
   }
   hrMaterialClose(mat1);
   
   hrMaterialOpen(mat2, HR_WRITE_DISCARD);
   {
     xml_node matNode = hrMaterialParamNode(mat2);
-    xml_node diff = matNode.append_child(L"diffuse");
-    
-    diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").append_attribute(L"val").set_value(L"0.0 0.5 0.0");
+    AddDiffuseNode(matNode, L"0.0 0.5 0.0");    
   }
   hrMaterialClose(mat2);
   
   hrMaterialOpen(mat3, HR_WRITE_DISCARD);
   {
     xml_node matNode = hrMaterialParamNode(mat3);
-    xml_node diff = matNode.append_child(L"diffuse");
-    
-    diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+    AddDiffuseNode(matNode, L"0.5 0.5 0.5");
   }
   hrMaterialClose(mat3);
   
@@ -300,10 +297,12 @@ bool test90_proc_tex_normalmap()
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  auto  sphere     = CreateSphere(2.0f, 128);
+  auto  cubeOpen   = CreateCubeOpen(4.0f);
   
-  HRMeshRef cubeOpenRef = hrMeshCreate(L"my_box");
-  HRMeshRef planeRef = hrMeshCreate(L"my_plane");
-  HRMeshRef sphereRef = hrMeshCreate(L"my_sphere");
+  auto cubeOpenRef = hrMeshCreate(L"my_box");
+  auto planeRef    = hrMeshCreate(L"my_plane");
+  auto sphereRef   = hrMeshCreate(L"my_sphere");
   
   hrMeshOpen(cubeOpenRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
   {
@@ -333,57 +332,24 @@ bool test90_proc_tex_normalmap()
   }
   hrMeshClose(sphereRef);
   
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
+  // Light
+  ////////////////////
+
+  auto rectLight = CreateLight(L"Light01", L"area", L"rect", L"diffuse", 1, 1, L"1 1 1", 8.0f * IRRADIANCE_TO_RADIANCE);
   
-  HRLightRef rectLight = hrLightCreate(L"my_area_light");
-  
-  hrLightOpen(rectLight, HR_WRITE_DISCARD);
-  {
-    pugi::xml_node lightNode = hrLightParamNode(rectLight);
-    
-    lightNode.attribute(L"type").set_value(L"area");
-    lightNode.attribute(L"shape").set_value(L"rect");
-    lightNode.attribute(L"distribution").set_value(L"diffuse");
-    
-    pugi::xml_node sizeNode = lightNode.append_child(L"size");
-    
-    sizeNode.append_attribute(L"half_length") = 1.0f;
-    sizeNode.append_attribute(L"half_width") = 1.0f;
-    
-    pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
-    
-    intensityNode.append_child(L"color").append_attribute(L"val")      = L"1 1 1";
-    intensityNode.append_child(L"multiplier").append_attribute(L"val") = 8.0f*IRRADIANCE_TO_RADIANCE;
-  }
-  hrLightClose(rectLight);
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  // camera
-  //
-  HRCameraRef camRef = hrCameraCreate(L"my camera");
-  
-  hrCameraOpen(camRef, HR_WRITE_DISCARD);
-  {
-    xml_node camNode = hrCameraParamNode(camRef);
-    
-    camNode.append_child(L"fov").text().set(L"45");
-    camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-    camNode.append_child(L"farClipPlane").text().set(L"100.0");
-    
-    camNode.append_child(L"up").text().set(L"0 1 0");
-    camNode.append_child(L"position").text().set(L"0 0 14");
-    camNode.append_child(L"look_at").text().set(L"0 0 0");
-  }
-  hrCameraClose(camRef);
-  
-  // set up render settings
-  //
-  HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
+  ////////////////////
+  // Camera
+  ////////////////////
+
+  CreateCamera(45, L"0 0 14", L"0 0 0");
+
+
+  ////////////////////
+  // Render settings
+  ////////////////////
+
+  auto renderRef = hrRenderCreate(L"HydraModern"); // opengl1
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
   
   hrRenderOpen(renderRef, HR_WRITE_DISCARD);
@@ -396,64 +362,47 @@ bool test90_proc_tex_normalmap()
     node.append_child(L"method_primary").text()   = L"pathtracing";
     node.append_child(L"method_secondary").text() = L"pathtracing";
     node.append_child(L"method_tertiary").text()  = L"pathtracing";
-    node.append_child(L"method_caustic").text()   = L"pathtracing";
+    node.append_child(L"method_caustic").text()   = L"none";
     node.append_child(L"shadows").text()          = L"1";
     
-    node.append_child(L"trace_depth").text()      = L"8";
-    node.append_child(L"diff_trace_depth").text() = L"4";
-    node.append_child(L"maxRaysPerPixel").text()  = 1024;
+    node.append_child(L"trace_depth").text()      = L"5";
+    node.append_child(L"diff_trace_depth").text() = L"3";
+    node.append_child(L"qmc_variant").text()      = QMC_ALL;
+
+    node.append_child(L"maxRaysPerPixel").text()  = 512;
     node.append_child(L"evalgbuffer").text()      = 1;
   }
   hrRenderClose(renderRef);
   
+  
+  ////////////////////
+  // Create scene
+  ////////////////////
+
+  auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+
+  hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+  AddMeshToScene(scnRef, sphereRef, float3(0, -2, 1));
+  AddMeshToScene(scnRef, cubeOpenRef, float3(), float3(0, 180, 0));
+  AddLightToScene(scnRef, rectLight, float3(0, 3.85f, 0));
+
+  hrSceneClose(scnRef);  
+  hrFlush(scnRef, renderRef);
+  
+  ////////////////////
+  // Rendering, save and check image
+  ////////////////////
+
+  RenderProgress(renderRef);
+
+  std::filesystem::create_directories(saveRenderFile.parent_path());
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());   
+  hrRenderSaveGBufferLayerLDR(renderRef, saveRenderFile2.wstring().c_str(), L"diffcolor");
+  
   //hrRenderLogDir(renderRef, L"/home/frol/hydra/", true);
   
-  // create scene
-  //
-  HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-  
-  const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
-  
-  hrSceneOpen(scnRef, HR_WRITE_DISCARD);
-  {
-    // instance sphere and cornell box
-    //
-    auto mtranslate = hlm::translate4x4(hlm::float3(0, -2, 1));
-    hrMeshInstance(scnRef, sphereRef, mtranslate.L());
-    
-    auto mrot = hlm::rotate4x4Y(180.0f*DEG_TO_RAD);
-    hrMeshInstance(scnRef, cubeOpenRef, mrot.L());
-    
-    //// instance light (!!!)
-    //
-    mtranslate = hlm::translate4x4(hlm::float3(0, 3.85f, 0));
-    hrLightInstance(scnRef, rectLight, mtranslate.L());
-  }
-  hrSceneClose(scnRef);
-  
-  hrFlush(scnRef, renderRef, camRef);
-  
-  while (true)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    
-    HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-    
-    if (info.haveUpdateFB)
-    {
-      auto pres = std::cout.precision(2);
-      std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-      std::cout.precision(pres);
-    }
-    
-    if (info.finalUpdate)
-      break;
-  }
-  
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_90/z_out.png");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_90/z_out2.png", L"diffcolor");
-  
-  return check_images("test_90", 1, 10);
+  return check_images(ws2s(nameTest).c_str(), 1);  
 }
 
 

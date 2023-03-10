@@ -315,7 +315,6 @@ namespace MTL_TESTS
     AddLightToScene(scnRef, rectLight, float3(0.0f, 3.85f, 0.0f));
 
     hrSceneClose(scnRef);
-
     hrFlush(scnRef, renderRef);
 
     ////////////////////
@@ -7160,42 +7159,20 @@ namespace MTL_TESTS
     // Materials
     ////////////////////
 
-    auto mat025 = hrMaterialCreate(L"mat025");
-    auto mat050 = hrMaterialCreate(L"mat050");
-    auto mat090 = hrMaterialCreate(L"mat090");
-    auto matGray = hrMaterialCreate(L"matGray");
-
+    auto mat025     = hrMaterialCreate(L"mat025");
+    auto mat050     = hrMaterialCreate(L"mat050");
+    auto mat090     = hrMaterialCreate(L"mat090");
+    auto matGray    = hrMaterialCreate(L"matGray");
     auto texChecker = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
-    auto tex        = hrTexture2DCreateFromFile(L"data/textures/ornament.jpg");
+    auto texBump    = hrTexture2DCreateFromFile(L"data/textures/ornament.jpg");
+
+    
 
     hrMaterialOpen(mat025, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(mat025);
-      AddDiffuseNode(matNode, L"0.5 0.5 0.5");
-      //auto diffuse = matNode.append_child(L"diffuse");
-      //diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
-
-      auto displacement = matNode.append_child(L"displacement");
-      auto heightNode   = displacement.append_child(L"height_map");
-
-      displacement.append_attribute(L"type").set_value(L"height_bump");
-      heightNode.append_attribute(L"amount").set_value(0.25f);
-
-			auto texNode = hrTextureBind(tex, heightNode);
-
-      texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 2, 0, 0, 0,
-                                  0, 2, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
-      
-      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
-      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
-      texNode.append_attribute(L"input_gamma").set_value(2.2f);
-      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-
-      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
-			VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5");      
+      AddReliefNode(matNode, L"height_bump", 0.25F, texBump, L"wrap", L"wrap", 2, 2);
     }
     hrMaterialClose(mat025);
 
@@ -7203,31 +7180,7 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(mat050);
       AddDiffuseNode(matNode, L"0.5 0.5 0.5");
-
-      //auto diffuse = matNode.append_child(L"diffuse");
-      //diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
-
-      auto displacement = matNode.append_child(L"displacement");
-      auto heightNode   = displacement.append_child(L"height_map");
-
-      displacement.append_attribute(L"type").set_value(L"height_bump");
-      heightNode.append_attribute(L"amount").set_value(0.5f);
-
-      auto texNode = hrTextureBind(tex, heightNode);
-
-      texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 2, 0, 0, 0,
-                                  0, 2, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
-
-      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
-      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
-      texNode.append_attribute(L"input_gamma").set_value(2.2f);
-      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-
-      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
-			VERIFY_XML(matNode);
+      AddReliefNode(matNode, L"height_bump", 0.5F, texBump, L"wrap", L"wrap", 2, 2);
     }
     hrMaterialClose(mat050);
 
@@ -7235,70 +7188,25 @@ namespace MTL_TESTS
     {
       auto matNode = hrMaterialParamNode(mat090);
       AddDiffuseNode(matNode, L"0.5 0.5 0.5");
-
-      //auto diffuse = matNode.append_child(L"diffuse");
-      //diffuse.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
-
-      auto displacement = matNode.append_child(L"displacement");
-      auto heightNode   = displacement.append_child(L"height_map");
-
-      displacement.append_attribute(L"type").set_value(L"height_bump");
-      heightNode.append_attribute(L"amount").set_value(0.9f);
-
-      auto texNode = hrTextureBind(tex, heightNode);
-
-      texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 2, 0, 0, 0,
-                                  0, 2, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
-
-      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
-      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
-      texNode.append_attribute(L"input_gamma").set_value(2.2f);
-      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-
-      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
-			VERIFY_XML(matNode);
+      AddReliefNode(matNode, L"height_bump", 0.9F, texBump, L"wrap", L"wrap", 2, 2);
     }
     hrMaterialClose(mat090);
 
     hrMaterialOpen(matGray, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matGray);
-
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-
-      auto color = diff.append_child(L"color");
-      color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
-      color.append_attribute(L"tex_apply_mode ").set_value(L"multiply");
-
-			auto texNode = hrTextureBind(texChecker, color);
-
-      texNode.append_attribute(L"matrix");
-      float samplerMatrix[16] = { 16, 0, 0, 0,
-                                  0, 16, 0, 0,
-                                  0, 0, 1, 0,
-                                  0, 0, 0, 1 };
-
-      texNode.append_attribute(L"addressing_mode_u").set_value(L"wrap");
-      texNode.append_attribute(L"addressing_mode_v").set_value(L"wrap");
-      texNode.append_attribute(L"input_gamma").set_value(2.2f);
-      texNode.append_attribute(L"input_alpha").set_value(L"rgb");
-
-      HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
-			VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5", L"Lambert", 0, texChecker, L"wrap", L"wrap", 16, 16);
     }
     hrMaterialClose(matGray);
 
     ////////////////////
     // Meshes
     ////////////////////
-    HRMeshRef sph1 = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64), mat025.id);
-    HRMeshRef sph2 = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64), mat050.id);
-    HRMeshRef sph3 = HRMeshFromSimpleMesh(L"sph3", CreateSphere(2.0f, 64), mat090.id);
-    HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(20.0f), matGray.id);
+
+    auto sph1Ref  = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2, 64), mat025.id);
+    auto sph2Ref  = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2, 64), mat050.id);
+    auto sph3Ref  = HRMeshFromSimpleMesh(L"sph3", CreateSphere(2, 64), mat090.id);
+    auto planeRef = HRMeshFromSimpleMesh(L"plane", CreatePlane(20), matGray.id);
 
     ////////////////////
     // Light
@@ -7316,77 +7224,23 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 768, 256, 512);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 768, 64, 64);
 
     ////////////////////
     // Create scene
     ////////////////////
 
-    auto scnRef = hrSceneCreate(L"my scene");
-
-    using namespace LiteMath;
-
-    float4x4 mRot;
-    float4x4 mTranslate;
-    float4x4 mScale;
-    float4x4 mRes;
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
 
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
 
-    ///////////
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(0.0f, -1.0f, 0.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, planeRef, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(-4.25f, 1.25f, 0.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, sph1, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(0.0f, 1.25f, 0.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, sph2, mRes.L());
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(4.25f, 1.25f, 0.0f));
-    mRes = mul(mTranslate, mRes);
-
-    hrMeshInstance(scnRef, sph3, mRes.L());
-
-
-    ///////////
-
-    mTranslate.identity();
-    mRes.identity();
-
-    mTranslate = translate4x4(float3(0, 17.0f, 0.0));
-    mRes = mul(mTranslate, mRes);
-
-    hrLightInstance(scnRef, rectLight, mRes.L());
-
-    ///////////
+    AddMeshToScene(scnRef, planeRef, float3(0, -1, 0));
+    AddMeshToScene(scnRef, sph1Ref, float3(-4.25f, 1.25f, 0));
+    AddMeshToScene(scnRef, sph2Ref, float3(0, 1.25f, 0));
+    AddMeshToScene(scnRef, sph3Ref, float3(4.25f, 1.25f, 0));
+    AddLightToScene(scnRef, rectLight, float3(0, 17, 0));
 
     hrSceneClose(scnRef);
-
     hrFlush(scnRef, renderRef);
 
     ////////////////////
@@ -7398,7 +7252,9 @@ namespace MTL_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 30);
+    hrRenderLogDir(renderRef, L"C:/[Hydra]/logs/", true);
+
+    return check_images(ws2s(nameTest).c_str(), 1);
   }
 
 

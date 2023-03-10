@@ -569,7 +569,6 @@ namespace TEST_UTILS
   }
 
 
-
   void AddReflectionNode(HAPI pugi::xml_node& matNode, const wchar_t* a_brdfType, const wchar_t* a_color,
     const float a_glossiness, const bool a_fresnel, const float a_ior, const wchar_t* a_extrusion, const bool a_energyFix)
   {
@@ -585,6 +584,37 @@ namespace TEST_UTILS
     VERIFY_XML(matNode);
   }
 
+
+  void AddReliefNode(HAPI pugi::xml_node& matNode, const wchar_t* a_type, const float a_amount,
+    HRTextureNodeRef a_texture, const wchar_t* a_addressingModeU, const wchar_t* a_addressingModeV,
+    const float a_tileU, const float a_tileV, const float a_inputGamma, const wchar_t* a_inputAlpha)
+  {
+    auto displacement = matNode.append_child(L"displacement");
+    
+    pugi::xml_node heightNode;
+
+    if      (std::wstring(a_type) == L"height_bump") heightNode = displacement.append_child(L"height_map");
+    else if (std::wstring(a_type) == L"normal_bump") heightNode = displacement.append_child(L"normal_map");    
+
+    displacement.append_attribute(L"type") = a_type;
+    heightNode.append_attribute(L"amount") = a_amount;
+
+    auto texNode = hrTextureBind(a_texture, heightNode);
+
+    texNode.append_attribute(L"matrix");
+    float samplerMatrix[16] = { a_tileU,  0,       0,      0,
+                                0,  a_tileV,       0,      0,
+                                0,        0,       1,      0,
+                                0,        0,       0,      1 };
+
+    texNode.append_attribute(L"addressing_mode_u") = a_addressingModeU;
+    texNode.append_attribute(L"addressing_mode_v") = a_addressingModeV;
+    texNode.append_attribute(L"input_gamma")       = a_inputGamma;
+    texNode.append_attribute(L"input_alpha")       = a_inputAlpha;
+
+    HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+    VERIFY_XML(matNode);
+  }
 
 
   void CreateCamera(const float a_fov, const wchar_t* a_position, const wchar_t* a_lookAt,

@@ -140,28 +140,13 @@ int main(int argc, const char** argv)
     /////////////////////
 
     //test82_proc_texture(); // error
-    //test83_proc_texture2();
-    //test84_proc_texture2();
-    //test85_proc_texture_ao();
-    //test86_proc_texture_ao_dirt();
     //test87_proc_texture_reflect();
-    //test88_proc_texture_convex_rust();
-    //test89_proc_texture_dirty();
     //test90_proc_tex_normalmap();
-    //test91_proc_tex_bump();
-    //test92_proc_tex_bump2();
 
     /////////////////////    
     // GEO_TESTS
     /////////////////////
 
-    //GEO_TESTS::test_001_mesh_from_memory();
-    //GEO_TESTS::test_002_mesh_from_vsgf();    
-    //GEO_TESTS::test_003_compute_normals(); 
-    //GEO_TESTS::test_004_dof();
-    //GEO_TESTS::test_005_instancing();
-    //GEO_TESTS::test_006_points_on_mesh();
-    //GEO_TESTS::test_007_import_obj();
     //GEO_TESTS::test_008_import_obj_w_mtl(); // The bike is black.
     //GEO_TESTS::test_009_import_obj_fullscale(); // The bottle is black.
 
