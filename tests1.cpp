@@ -1625,18 +1625,25 @@ void PrintResultSingleTest(const bool a_res, std::ofstream& a_fout, std::string 
 
   std::ostringstream outBuff;
 
-  if (a_res)  
-    outBuff << std::setw(60) << std::left << a_nameTest << std::setw(20) << std::left << "ok." ;
+  if (a_res)
+  {
+    std::string str = "mse = " + std::to_string((int)(g_MSEOutput));
+    outBuff << std::setw(60) << std::left << a_nameTest;
+    outBuff << std::setw(10) << std::left << "ok.";
+    outBuff << std::setw(20) << str;
+    outBuff << "Render time: " << a_renderTimeSeconds << " sec.";
+  }
   else if (g_testWasIgnored)  
-    outBuff << std::setw(60) << std::left << a_nameTest << std::setw(20) << std::left << "skipped.";
+    outBuff << std::setw(60) << std::left << a_nameTest << "skipped.";
   else
   {
-    std::string str = "FAILED! MSE = " + std::to_string((int)(g_MSEOutput));
-    outBuff << std::setw(60) << std::left << a_nameTest << std::setw(20) << std::left << str;
+    std::string str = "MSE = " + std::to_string((int)(g_MSEOutput));
+    outBuff << std::setw(60) << std::left << a_nameTest;
+    outBuff << std::setw(10) << std::left << "FAILED!";
+    outBuff << std::setw(20) << str;
+    outBuff << "Render time: " << a_renderTimeSeconds << " sec.";
   }
   
-  outBuff << "Render time: " << a_renderTimeSeconds << " sec.";    
-
   std::cout << outBuff.str() << std::endl;
   a_fout    << outBuff.str() << std::endl;
   

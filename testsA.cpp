@@ -5772,11 +5772,11 @@ bool test80_lt_rect_image()
   }
   hrCameraClose(camRef);
 
-  // set up render settings
-  //
-  HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1 // 
+  ////////////////////
+  // Render settings
+  ////////////////////
 
-                                                          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1 // 
 
   auto pList = hrRenderGetDeviceList(renderRef);
 
@@ -5796,7 +5796,7 @@ bool test80_lt_rect_image()
     pugi::xml_node node = hrRenderParamNode(renderRef);
 
     node.append_child(L"width").text()  = 1024;
-    node.append_child(L"height").text() = 512;
+    node.append_child(L"height").text() = 1024;
 
     node.append_child(L"method_primary").text()   = L"lighttracing"; // L"pathtracing"; // L"lighttracing"; // IBPT
     node.append_child(L"trace_depth").text()      = 5;

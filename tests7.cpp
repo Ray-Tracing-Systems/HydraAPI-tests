@@ -270,7 +270,6 @@ bool test42_load_mesh_compressed()
   //
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
   
-  const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
   
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
   {

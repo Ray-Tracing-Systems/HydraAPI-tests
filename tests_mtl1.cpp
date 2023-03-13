@@ -2990,7 +2990,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 2048);
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 1024);
 
     hrRenderOpen(renderRef, HR_OPEN_EXISTING);
     {
@@ -3065,7 +3065,6 @@ namespace MTL_TESTS
     mRes.identity();
     mRot.identity();
 
-    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
 
     mTranslate = translate4x4(float3(0.0f, 1.0f, -4.0f));
     mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
@@ -3099,7 +3098,7 @@ namespace MTL_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 60);
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
   }
 
 
@@ -3323,8 +3322,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 512, 4096);
-
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 512, 1024);
 
     ////////////////////
     // Create scene
@@ -3420,7 +3418,7 @@ namespace MTL_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 70);
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
   }
 
 
@@ -3644,8 +3642,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 2048);
-
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 1024);
 
     ////////////////////
     // Create scene
@@ -3741,7 +3738,7 @@ namespace MTL_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 85);
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
   }
 
 
@@ -3967,8 +3964,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 512, 4096);
-
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 512, 1024);
 
     ////////////////////
     // Create scene
@@ -4064,7 +4060,7 @@ namespace MTL_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 75);
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
   }
 
 
@@ -4288,8 +4284,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 2048);
-
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 1024);
 
     ////////////////////
     // Create scene
@@ -4351,7 +4346,6 @@ namespace MTL_TESTS
     mRes.identity();
     mRot.identity();
 
-    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
 
     mTranslate = translate4x4(float3(0.0f, 1.0f, -4.0f));
     mScale = scale4x4(float3(16.0f, 8.0f, 0.5f));
@@ -4385,7 +4379,7 @@ namespace MTL_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 100);
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
   }
 
 
@@ -8311,8 +8305,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 2048);
-
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 1024);
 
     ////////////////////
     // Create scene

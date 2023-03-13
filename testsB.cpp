@@ -4136,39 +4136,17 @@ bool test95_bump()
   }
   hrCameraClose(camRef);
 
-  // set up render settings
-  //
-  HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
-  hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-  //hrRenderLogDir(renderRef, L"/tmp/hydra_logs", true);
-  
-  const int w = 1024;
-  const int h = 1024;
+  ////////////////////
+  // Render settings
+  ////////////////////
 
-  hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-  {
-    pugi::xml_node node = hrRenderParamNode(renderRef);
+  HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 1024, 256, 1024);
 
-    node.append_child(L"width").text()  = w;
-    node.append_child(L"height").text() = h;
-
-    node.append_child(L"method_primary").text()   = L"pathtracing";
-    node.append_child(L"method_secondary").text() = L"pathtracing";
-    node.append_child(L"method_tertiary").text()  = L"pathtracing";
-    node.append_child(L"method_caustic").text()   = L"pathtracing";
-    node.append_child(L"shadows").text()          = L"1";
-
-    node.append_child(L"trace_depth").text()      = L"4";
-    node.append_child(L"diff_trace_depth").text() = L"4";
-    node.append_child(L"maxRaysPerPixel").text()  = 2048;
-  }
-  hrRenderClose(renderRef);
 
   // create scene
   //
   HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
 
-  const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
   {

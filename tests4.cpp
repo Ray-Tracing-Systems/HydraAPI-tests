@@ -337,7 +337,6 @@ bool test24_many_textures_big_data()
   float g_FPS = 60.0f;
   int   frameCounter = 0;
 
-  const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
   float matrixT[4][4], matrixT2[4][4], matrixT3[4][4], matrixT4[4][4];
   float mRot1[4][4], mTranslate[4][4], mRes[4][4];
