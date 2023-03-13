@@ -1029,7 +1029,7 @@ namespace TEST_UTILS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       auto info = hrRenderHaveUpdate(a_renderRef);
 

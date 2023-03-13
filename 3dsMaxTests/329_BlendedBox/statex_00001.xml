@@ -92,7 +92,7 @@
 </lights_lib>
 <cam_lib>
   <camera id="0" name="PhysCamera001" type="uvn">
-    <fov>45.0005035</fov>
+    <fov>40</fov>
     <nearClipPlane>0.00999999978</nearClipPlane>
     <farClipPlane>100</farClipPlane>
     <enable_dof>0</enable_dof>
@@ -108,8 +108,8 @@
 </cam_lib>
 <render_lib>
   <render_settings type="HydraModern" id="0">
-    <width>800</width>
-    <height>800</height>
+    <width>512</width>
+    <height>512</height>
     <method_primary>pathtracing</method_primary>
     <method_secondary>pathtracing</method_secondary>
     <method_tertiary>pathtracing</method_tertiary>
@@ -119,7 +119,7 @@
     <diff_trace_depth>8</diff_trace_depth>
     <pt_error>2.5</pt_error>
     <minRaysPerPixel>256</minRaysPerPixel>
-    <maxRaysPerPixel>12560</maxRaysPerPixel>
+    <maxRaysPerPixel>256</maxRaysPerPixel>
     <qmc_variant>1</qmc_variant>
     <mmlt_burn_iters>1024</mmlt_burn_iters>
     <mmlt_step_power>normal</mmlt_step_power>

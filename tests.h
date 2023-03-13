@@ -505,7 +505,7 @@ static const int CURR_RENDER_DEVICE = 0;
 
 //void image_p_sandbox();
 
-void run_all_mictofacet_torrance_sparrow();
+void run_all_microfacet_torrance_sparrow();
 void run_all_3dsmax_tests(int a_start = 0);
 bool run_single_3dsmax_test(const std::wstring& a_path);
 

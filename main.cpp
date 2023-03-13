@@ -195,7 +195,7 @@ int main(int argc, const char** argv)
 
 
     //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
-    //run_all_mictofacet_torrance_sparrow();
+    //run_all_microfacet_torrance_sparrow();
 
     //std::cout << test77_save_gbuffer_layers() << std::endl;
     //std::cout << "MSE = " << g_MSEOutput << std::endl;

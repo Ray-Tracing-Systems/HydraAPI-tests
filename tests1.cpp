@@ -1608,6 +1608,8 @@ void test03_open_scene()
   */
 }
 
+
+float g_MSEOutput = 0.0f;
 bool g_testWasIgnored = false;
 
 bool dummy_test() 
@@ -1616,116 +1618,175 @@ bool dummy_test()
   return false; 
 }
 
+void PrintResultSingleTest(const bool a_res, std::ofstream& a_fout, std::string a_nameTest,
+  const int a_renderTimeSeconds)
+{
+  std::cout << "                                      \r";
 
-typedef bool(*TestFunc)();
+  std::ostringstream outBuff;
 
-float g_MSEOutput = 0.0f;
+  if (a_res)  
+    outBuff << std::setw(60) << std::left << a_nameTest << std::setw(20) << std::left << "ok." ;
+  else if (g_testWasIgnored)  
+    outBuff << std::setw(60) << std::left << a_nameTest << std::setw(20) << std::left << "skipped.";
+  else
+  {
+    std::string str = "FAILED! MSE = " + std::to_string((int)(g_MSEOutput));
+    outBuff << std::setw(60) << std::left << a_nameTest << std::setw(20) << std::left << str;
+  }
+  
+  outBuff << "Render time: " << a_renderTimeSeconds << " sec.";    
+
+  std::cout << outBuff.str() << std::endl;
+  a_fout    << outBuff.str() << std::endl;
+  
+  g_testWasIgnored = false;
+}
+
+
+struct TestFunc
+{
+  bool(*func)();
+  std::string name;
+
+  TestFunc(bool(*a_func)(), std::string a_name) 
+  {
+    func = a_func;
+    name = a_name;
+  }
+};
+
+
+void PrintResultTest(const int a_startTestsId, std::vector<TestFunc>& a_tests, std::ofstream& a_fout,
+  std::string a_nameGroupTests)
+{  
+  std::ostringstream outBuff;
+  auto now      = std::chrono::system_clock::now();
+  auto currData = std::chrono::system_clock::to_time_t(now);
+  
+  outBuff << a_nameGroupTests << std::endl;  
+  outBuff << std::ctime(&currData);
+    
+  std::cout << outBuff.str() << std::endl;
+  a_fout    << outBuff.str() << std::endl;
+
+  for (int i = a_startTestsId; i < a_tests.size(); ++i)
+  {       
+    const auto start = std::chrono::system_clock::now();        
+    const bool res   = a_tests[i].func();    
+    const auto end   = std::chrono::system_clock::now();    
+
+    std::chrono::duration<float> rendTime = end - start;
+
+    PrintResultSingleTest(res, a_fout, a_tests[i].name, rendTime.count());    
+  }
+}
+
 
 void run_all_api_tests(const int startTestId)
 {
-  TestFunc tests[] = { &test01_materials_add,
-                       &test02_materials_changes_open_mode,
-                       &test03_lights_add,
-                       &test04_lights_add_change,
-                       &test05_instances_write_discard,
-                       &test06_instances_open_existent,
-                       &test07_camera_add,
-                       &test08_camera_add_change,
-                       &test09_render_ogl,
-                       &test10_render_ogl_cube,
-                       &test11_render_ogl_some_figures,
-                       &test12_render_ogl_100_random_figures,
-                       &test13_render_ogl_some_figures_diff_mats_prom_ptr,
-                       &test14_bad_material_indices,
-                       &test15_main_scene_and_mat_editor,
-											 &test16_texture_add_change,
-											 &test17_falloff,
-                       &test18_camera_move,
-                       &test19_material_change,
-                       &test20_mesh_change,
-                       &test21_add_same_textures_from_file,
-                       &test22_can_not_load_texture,
-                       &test23_texture_from_memory,
-                       &test24_many_textures_big_data,
-                       &test25_many_textures_big_data,
-                       &test26_many_textures_big_data,
-                       &test27_many_textures_big_data_from_mem,
-                       &test28_compute_normals,
-                       &test29_many_textures_and_meshes,
-                       &test30_many_textures_and_meshes,
-                       &test31_procedural_texture_LDR,
-                       &test32_procedural_texture_HDR,
-											 &test33_update_from_file,
-                       &test34_delayed_textures_does_not_exists,
-                       &test35_cornell_with_light,
-											 &test36_update_from_memory,
-                       &test37_cornell_with_light_different_image_layers,
-                       &test38_save_mesh_and_delayed_load,
-                       &test39_mmlt_or_ibpt,
-                       &test40_several_changes,
-                       &test41_load_library_basic,
-                       &test42_load_mesh_compressed,
-                       &test43_test_direct_light,
-                       &test44_four_lights_and_compressed_mesh,
-                       &test45_mesh_from_vsgf_opengl_bug_teapot,
-                       &test46_light_geom_rect,
-                       &test47_light_geom_disk,
-                       &test48_light_geom_sphere,
-	                     &test49_light_geom_disk,
-	                     &test50_open_library_several_times,
-                       &dummy_test,                 // 51
-                       &dummy_test,                 // 52
-                       &dummy_test,                 // 53
-                       &dummy_test,                 // 54
-                       &test55_clear_scene,
-                       &test56_mesh_change_open_existing,
-                       &test57_single_instance,
-                       &dummy_test,                 // 58
-                       &test59_cornell_water_mlt,
-                       &test60_debug_print_and_cant_load_mesh, // 60
-                       &test61_cornell_with_light_near_wall_and_glossy_wall,  
-                       &dummy_test,                            // 62
-                       &dummy_test,
-                       &test64_several_changes_light_area,
-                       &test65_several_changes_light_rect,
-                       &test66_fast_render_no_final_update,
-                       &test67_fast_empty_scene,
-                       &test68_scene_library_file_info,
-                       &test69_pause_and_resume,
-                       &test70_area_lights16,
-                       &test71_out_of_memory,
-                       &dummy_test,                  // 72
-                       &dummy_test,                  // 73 test73_big_resolution
-                       &test74_frame_buffer_line,
-                       &test75_repeated_render,
-                       &test76_empty_mesh,
-                       &test77_save_gbuffer_layers,
-                       &test78_material_remap_list1,
-                       &test79_material_remap_list2,
-                       &test80_lt_rect_image,
-                       &test81_custom_attributes,
-                       &test82_proc_texture,
-                       &test83_proc_texture2,
-                       &test84_proc_texture2,
-                       &test85_proc_texture_ao,
-                       &test86_proc_texture_ao_dirt,
-                       &test87_proc_texture_reflect,
-                       &test88_proc_texture_convex_rust,
-                       &test89_proc_texture_dirty,
-                       &test90_proc_tex_normalmap,
-                       &test91_proc_tex_bump,
-                       &test92_proc_tex_bump2,
-                       &dummy_test,
-                       &dummy_test,
-                       &test95_bump,
-                       &test96_hexaplanar,
-                       &test97_camera_from_matrices,
-                       &dummy_test,                  // correct implementation of motion blur is not yet finished
-                       &test99_triplanar,
+  std::vector<TestFunc> tests = 
+  {
+    { &test01_materials_add                               ,"test01_materials_add" },
+    { &test02_materials_changes_open_mode                 ,"test02_materials_changes_open_mode" },
+    { &test03_lights_add                                  ,"test03_lights_add" },
+    { &test04_lights_add_change                           ,"test04_lights_add_change" },
+    { &test05_instances_write_discard                     ,"test05_instances_write_discard" },
+    { &test06_instances_open_existent                     ,"test06_instances_open_existent" },
+    { &test07_camera_add                                  ,"test07_camera_add" },
+    { &test08_camera_add_change                           ,"test08_camera_add_change" },
+    { &test09_render_ogl                                  ,"test09_render_ogl" },
+    { &test10_render_ogl_cube                             ,"test10_render_ogl_cube" },
+    { &test11_render_ogl_some_figures                     ,"test11_render_ogl_some_figures" },
+    { &test12_render_ogl_100_random_figures               ,"test12_render_ogl_100_random_figures" },
+    { &test13_render_ogl_some_figures_diff_mats_prom_ptr  ,"test13_render_ogl_some_figures_diff_mats_prom_ptr" },
+    { &test14_bad_material_indices                        ,"test14_bad_material_indices" },
+    { &test15_main_scene_and_mat_editor                   ,"test15_main_scene_and_mat_editor" },
+    { &test16_texture_add_change                          ,"test16_texture_add_change" },
+    { &test17_falloff                                     ,"test17_falloff" },
+    { &test18_camera_move                                 ,"test18_camera_move" },
+    { &test19_material_change                             ,"test19_material_change" },
+    { &test20_mesh_change                                 ,"test20_mesh_change" },
+    { &test21_add_same_textures_from_file                 ,"test21_add_same_textures_from_file" },
+    { &test22_can_not_load_texture                        ,"test22_can_not_load_texture" },
+    { &test23_texture_from_memory                         ,"test23_texture_from_memory" },
+    { &test24_many_textures_big_data                      ,"test24_many_textures_big_data" },
+    { &test25_many_textures_big_data                      ,"test25_many_textures_big_data" },
+    { &test26_many_textures_big_data                      ,"test26_many_textures_big_data" },
+    { &test27_many_textures_big_data_from_mem             ,"test27_many_textures_big_data_from_mem" },
+    { &test28_compute_normals                             ,"test28_compute_normals" },
+    { &test29_many_textures_and_meshes                    ,"test29_many_textures_and_meshes" },
+    { &test30_many_textures_and_meshes                    ,"test30_many_textures_and_meshes" },
+    { &test31_procedural_texture_LDR                      ,"test31_procedural_texture_LDR" },
+    { &test32_procedural_texture_HDR                      ,"test32_procedural_texture_HDR" },
+    { &test33_update_from_file                            ,"test33_update_from_file" },
+    { &test34_delayed_textures_does_not_exists            ,"test34_delayed_textures_does_not_exists" },
+    { &test35_cornell_with_light                          ,"test35_cornell_with_light" },
+    { &test36_update_from_memory                          ,"test36_update_from_memory" },
+    { &test37_cornell_with_light_different_image_layers   ,"test37_cornell_with_light_different_image_layers" },
+    { &test38_save_mesh_and_delayed_load                  ,"test38_save_mesh_and_delayed_load" },
+    { &test39_mmlt_or_ibpt                                ,"test39_mmlt_or_ibpt" },
+    { &test40_several_changes                             ,"test40_several_changes" },
+    { &test41_load_library_basic                          ,"test41_load_library_basic" },
+    { &test42_load_mesh_compressed                        ,"test42_load_mesh_compressed" },
+    { &test43_test_direct_light                           ,"test43_test_direct_light" },
+    { &test44_four_lights_and_compressed_mesh             ,"test44_four_lights_and_compressed_mesh" },
+    { &test45_mesh_from_vsgf_opengl_bug_teapot            ,"test45_mesh_from_vsgf_opengl_bug_teapot" },
+    { &test46_light_geom_rect                             ,"test46_light_geom_rect" },
+    { &test47_light_geom_disk                             ,"test47_light_geom_disk" },
+    { &test48_light_geom_sphere                           ,"test48_light_geom_sphere" },
+    { &test49_light_geom_disk                             ,"test49_light_geom_disk" },
+    { &test50_open_library_several_times                  ,"test50_open_library_several_times" },
+    { &dummy_test                                         ,"dummy_test" },                                          // 51
+    { &dummy_test                                         ,"dummy_test" },                                          // 52
+    { &dummy_test                                         ,"dummy_test" },                                          // 53
+    { &dummy_test                                         ,"dummy_test" },                                          // 54
+    { &test55_clear_scene                                 ,"test55_clear_scene" },
+    { &test56_mesh_change_open_existing                   ,"test56_mesh_change_open_existing" },
+    { &test57_single_instance                             ,"test57_single_instance" },
+    { &dummy_test                                         ,"dummy_test" },                                          // 58
+    { &test59_cornell_water_mlt                           ,"test59_cornell_water_mlt" },
+    { &test60_debug_print_and_cant_load_mesh              ,"test60_debug_print_and_cant_load_mesh" },               // 60
+    { &test61_cornell_with_light_near_wall_and_glossy_wall,"test61_cornell_with_light_near_wall_and_glossy_wall" },
+    { &dummy_test                                         ,"dummy_test" },                                          // 62
+    { &dummy_test                                         ,"dummy_test" },                                          // 63
+    { &test64_several_changes_light_area                  ,"test64_several_changes_light_area" },
+    { &test65_several_changes_light_rect                  ,"test65_several_changes_light_rect" },
+    { &test66_fast_render_no_final_update                 ,"test66_fast_render_no_final_update" },
+    { &test67_fast_empty_scene                            ,"test67_fast_empty_scene" },
+    { &test68_scene_library_file_info                     ,"test68_scene_library_file_info" },
+    { &test69_pause_and_resume                            ,"test69_pause_and_resume" },
+    { &test70_area_lights16                               ,"test70_area_lights16" },
+    { &test71_out_of_memory                               ,"test71_out_of_memory" },
+    { &dummy_test                                         ,"dummy_test" },                                          // 72
+    { &dummy_test                                         ,"dummy_test" },                                          // 73 test73_big_resolution
+    { &test74_frame_buffer_line                           ,"test74_frame_buffer_line" },
+    { &test75_repeated_render                             ,"test75_repeated_render" },
+    { &test76_empty_mesh                                  ,"test76_empty_mesh" },
+    { &test77_save_gbuffer_layers                         ,"test77_save_gbuffer_layers" },
+    { &test78_material_remap_list1                        ,"test78_material_remap_list1" },
+    { &test79_material_remap_list2                        ,"test79_material_remap_list2" },
+    { &test80_lt_rect_image                               ,"test80_lt_rect_image" },
+    { &test81_custom_attributes                           ,"test81_custom_attributes" },
+    { &test82_proc_texture                                ,"test82_proc_texture" },
+    { &test83_proc_texture2                               ,"test83_proc_texture2" },
+    { &test84_proc_texture2                               ,"test84_proc_texture2" },
+    { &test85_proc_texture_ao                             ,"test85_proc_texture_ao" },
+    { &test86_proc_texture_ao_dirt                        ,"test86_proc_texture_ao_dirt" },
+    { &test87_proc_texture_reflect                        ,"test87_proc_texture_reflect" },
+    { &test88_proc_texture_convex_rust                    ,"test88_proc_texture_convex_rust" },
+    { &test89_proc_texture_dirty                          ,"test89_proc_texture_dirty" },
+    { &test90_proc_tex_normalmap                          ,"test90_proc_tex_normalmap" },
+    { &test91_proc_tex_bump                               ,"test91_proc_tex_bump" },
+    { &test92_proc_tex_bump2                              ,"test92_proc_tex_bump2" },
+    { &dummy_test                                         ,"dummy_test" },
+    { &dummy_test                                         ,"dummy_test" },
+    { &test95_bump                                        ,"test95_bump" },
+    { &test96_hexaplanar                                  ,"test96_hexaplanar" },
+    { &test97_camera_from_matrices                        ,"test97_camera_from_matrices" },
+    { &dummy_test                                         ,"dummy_test" },  // correct implementation of motion blur is not yet finished
+    { &test99_triplanar                                   ,"test99_triplanar" }
   };
-
-
-  int testNum = sizeof(tests) / sizeof(TestFunc);
 
   int startTestId2 = startTestId - 1;
   if (startTestId2 < 0) 
@@ -1733,35 +1794,9 @@ void run_all_api_tests(const int startTestId)
 
   std::ofstream fout("z_test_api.txt");
 
-  for (int i = startTestId2; i < testNum; i++)
-  {
-    std::cout << "                                      \r";
-
-    bool res = tests[i]();
-    if (res)
-    {
-      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tok." << std::endl;
-      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tok." << std::endl;
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tskipped." << std::endl;
-      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tskipped." << std::endl;
-    }
-    else
-    {
-      std::cout           << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed  << "api_test_" << std::setfill('0') << std::setw(2) << i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-    }
-
-    fout.flush();
-
-    g_testWasIgnored = false;
-  }
+  PrintResultTest(startTestId2, tests, fout, "API tests.");
 
   fout.close();
-
-
   glfwTerminate();
 }
 
@@ -1769,44 +1804,22 @@ void run_all_api_tests(const int startTestId)
 void run_all_geo_tests()
 {
 	using namespace GEO_TESTS;
-  TestFunc tests[] = { &test_001_mesh_from_memory,
-                       &test_002_mesh_from_vsgf,
-                       &test_003_compute_normals,
-                       &test_004_dof,
-                       &test_005_instancing,
-                       &test_006_points_on_mesh,
-                       &test_007_import_obj,
-                       &test_008_import_obj_w_mtl,
-                       &test_009_import_obj_fullscale };
-
-
-	int testNum = sizeof(tests) / sizeof(TestFunc);
+  std::vector<TestFunc> tests =
+  {
+    { &test_001_mesh_from_memory,     "test_001_mesh_from_memory" },
+    { &test_002_mesh_from_vsgf,       "test_002_mesh_from_vsgf" },
+    { &test_003_compute_normals,      "test_003_compute_normals" },
+    { &test_004_dof,                  "test_004_dof" },
+    { &test_005_instancing,           "test_005_instancing" },
+    { &test_006_points_on_mesh,       "test_006_points_on_mesh" },
+    { &test_007_import_obj,           "test_007_import_obj" },
+    { &test_008_import_obj_w_mtl,     "test_008_import_obj_w_mtl" },
+    { &test_009_import_obj_fullscale, "test_009_import_obj_fullscale" }
+  };
 
   std::ofstream fout("z_test_geometry.txt");
 
-	for (int i = 0; i < testNum; i++)
-	{
-    std::cout << "                                      \r";
-
-		bool res = tests[i]();
-    if (res)
-    {
-      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tok." << std::endl;
-      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tok." << std::endl;
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tskipped." << std::endl;
-      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tskipped." << std::endl;
-    }
-    else
-    {
-      std::cout << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tFAILED!\t MSE = " << g_MSEOutput << std::endl;
-      fout      << "geo_test_" << std::setfill('0') << std::setw(3) << i + 1 << "\tFAILED!\t MSE = " << g_MSEOutput << std::endl;
-    }
-
-    g_testWasIgnored = false;
-	}
+  PrintResultTest(0, tests, fout, "Geo tests.");
 
   fout.close();
 }
@@ -1815,339 +1828,207 @@ void run_all_geo_tests()
 void run_all_mtl_tests(int a_start)
 {
 	using namespace MTL_TESTS;
-	TestFunc tests[] = { &test_100_diffuse_orennayar,
-                       &test_101_diffuse_lambert_orbspec_mat01,
-                       &test_102_mirror_orbspec_mat02,
-						           &test_103_diffuse_texture,
-                       &test_104_reflect_phong_orbspec_mat03,
-						           &test_105_reflect_torranse_sparrow,
-						           &test_106_reflect_fresnel_ior,
-						           &test_107_reflect_extrusion,
-						           &test_108_reflect_texture,
-						           &test_109_reflect_glossiness_texture,
-                       &test_110_texture_sampler,
-                       &test_111_glossiness_texture_sampler,
-	                     &test_112_transparency,
-	                     &test_113_transparency_ior,
-                       &test_114_transparency_fog,
-                       &test_115_transparency_fog_mult,
-                       &test_116_transparency_thin,
-                       &test_117_transparency_texture,
-                       &test_118_transparency_glossiness_texture,
-                       &test_119_opacity_texture,
-                       &test_120_opacity_shadow_matte,
-                       &test_121_translucency,
-                       &test_122_translucency_texture,
-                       &test_123_emission,
-                       &test_124_emission_texture,
-                       &test_125_emission_cast_gi,
-                       &test_126_bump_amount,
-                       &test_127_normal_map_height,
-                       &test_128_bump_radius,
-                       &test_129_phong_energy_fix,
-                       &test_130_bump_invert_normalY,
-                       &test_131_blend_simple,
-                       &test_132_blend_recursive,
-		                   &test_133_emissive_and_diffuse,
-		                   &test_134_diff_refl_transp,
-                       &test_135_opacity_metal,
-                       &test_136_opacity_glass,
-                       &test_137_cam_mapped_diffuse,
-                       &test_138_translucency_and_diffuse,
-                       &test_139_glass_and_bump,
-                       &test_140_blend_emission,
-                       &test_141_opacity_smooth,
-                       &dummy_test,               // 142
-                       &dummy_test,               // 143
-                       &dummy_test,               // 144
-                       &dummy_test,               // 145
-                       &dummy_test,               // 146
-                       &dummy_test,               // 147
-                       &dummy_test,               // 148
-                       &dummy_test,               // 149
-                       &test_150_gloss_mirror_cos_div,
-                       &test_151_gloss_mirror_cos_div2,
-
-                       &test_152_texture_color_replace_mode,
-                       &test_153_opacity_shadow_matte_opacity,
-
-                       &test_154_baked_checker_precomp,
-                       &test_155_baked_checker_HDR_precomp,
-                       &test_156_baked_checker_precomp_update,
-                       &test_157_baked_checker_precomp_remap,
-                       
-                       &test_158_proc_dirt1,
-                       &test_159_proc_dirt2,
-                       &test_160_proc_dirt3,
-
-                       &test_161_simple_displacement,
-                       &test_162_shadow_matte_back1,
-                       &test_163_diffuse_texture_recommended_res,
-
-                       &test_164_simple_displacement_proctex,
-                       &test_165_simple_displacement_mesh,
-                       &test_166_displace_by_noise,
-                       &test_167_subdiv,
-                       &test_168_diffuse_texture_recommended_res2,
-                       &test_169_displace_custom_callback,
-                       &test_170_fresnel_blend,
-                       &test_171_simple_displacement_triplanar,
-                       &test_172_glossy_dark_edges_phong,
-                       &test_173_glossy_dark_edges_microfacet,
-                       &dummy_test,
-
-                       &test_175_beckman_isotropic,
-                       &test_176_beckman_anisotropic,
-                       &test_177_beckman_aniso_rot,
-                       &test_178_trggx_isotropic,
-                       &test_179_trggx_anisotropic,
-                       &test_180_trggx_aniso_rot,
-	                   };
-
-
-	const int testNum = sizeof(tests) / sizeof(TestFunc);
+  std::vector<TestFunc> tests =
+  {
+    { &test_100_diffuse_orennayar               , "test_100_diffuse_orennayar" },
+    { &test_101_diffuse_lambert_orbspec_mat01   , "test_101_diffuse_lambert_orbspec_mat01" },
+    { &test_102_mirror_orbspec_mat02            , "test_102_mirror_orbspec_mat02" },
+    { &test_103_diffuse_texture                 , "test_103_diffuse_texture" },
+    { &test_104_reflect_phong_orbspec_mat03     , "test_104_reflect_phong_orbspec_mat03" },
+    { &test_105_reflect_torranse_sparrow        , "test_105_reflect_torranse_sparrow" },
+    { &test_106_reflect_fresnel_ior             , "test_106_reflect_fresnel_ior" },
+    { &test_107_reflect_extrusion               , "test_107_reflect_extrusion" },
+    { &test_108_reflect_texture                 , "test_108_reflect_texture" },
+    { &test_109_reflect_glossiness_texture      , "test_109_reflect_glossiness_texture" },
+    { &test_110_texture_sampler                 , "test_110_texture_sampler" },
+    { &test_111_glossiness_texture_sampler      , "test_111_glossiness_texture_sampler" },
+    { &test_112_transparency                    , "test_112_transparency" },
+    { &test_113_transparency_ior                , "test_113_transparency_ior" },
+    { &test_114_transparency_fog                , "test_114_transparency_fog" },
+    { &test_115_transparency_fog_mult           , "test_115_transparency_fog_mult" },
+    { &test_116_transparency_thin               , "test_116_transparency_thin" },
+    { &test_117_transparency_texture            , "test_117_transparency_texture" },
+    { &test_118_transparency_glossiness_texture , "test_118_transparency_glossiness_texture" },
+    { &test_119_opacity_texture                 , "test_119_opacity_texture" },
+    { &test_120_opacity_shadow_matte            , "test_120_opacity_shadow_matte" },
+    { &test_121_translucency                    , "test_121_translucency" },
+    { &test_122_translucency_texture            , "test_122_translucency_texture" },
+    { &test_123_emission                        , "test_123_emission" },
+    { &test_124_emission_texture                , "test_124_emission_texture" },
+    { &test_125_emission_cast_gi                , "test_125_emission_cast_gi" },
+    { &test_126_bump_amount                     , "test_126_bump_amount" },
+    { &test_127_normal_map_height               , "test_127_normal_map_height" },
+    { &test_128_bump_radius                     , "test_128_bump_radius" },
+    { &test_129_phong_energy_fix                , "test_129_phong_energy_fix" },
+    { &test_130_bump_invert_normalY             , "test_130_bump_invert_normalY" },
+    { &test_131_blend_simple                    , "test_131_blend_simple" },
+    { &test_132_blend_recursive                 , "test_132_blend_recursive" },
+    { &test_133_emissive_and_diffuse            , "test_133_emissive_and_diffuse" },
+    { &test_134_diff_refl_transp                , "test_134_diff_refl_transp" },
+    { &test_135_opacity_metal                   , "test_135_opacity_metal" },
+    { &test_136_opacity_glass                   , "test_136_opacity_glass" },
+    { &test_137_cam_mapped_diffuse              , "test_137_cam_mapped_diffuse" },
+    { &test_138_translucency_and_diffuse        , "test_138_translucency_and_diffuse" },
+    { &test_139_glass_and_bump                  , "test_139_glass_and_bump" },
+    { &test_140_blend_emission                  , "test_140_blend_emission" },
+    { &test_141_opacity_smooth                  , "test_141_opacity_smooth" },
+    { &dummy_test                               , "dummy_test" },              // 142
+    { &dummy_test                               , "dummy_test" },              // 143
+    { &dummy_test                               , "dummy_test" },              // 144
+    { &dummy_test                               , "dummy_test" },              // 145
+    { &dummy_test                               , "dummy_test" },              // 146
+    { &dummy_test                               , "dummy_test" },              // 147
+    { &dummy_test                               , "dummy_test" },              // 148
+    { &dummy_test                               , "dummy_test" },              // 149
+    { &test_150_gloss_mirror_cos_div            , "test_150_gloss_mirror_cos_div" },
+    { &test_151_gloss_mirror_cos_div2           , "test_151_gloss_mirror_cos_div2" },
+    { &test_152_texture_color_replace_mode      , "test_152_texture_color_replace_mode" },
+    { &test_153_opacity_shadow_matte_opacity    , "test_153_opacity_shadow_matte_opacity" },
+    { &test_154_baked_checker_precomp           , "test_154_baked_checker_precomp" },
+    { &test_155_baked_checker_HDR_precomp       , "test_155_baked_checker_HDR_precomp" },
+    { &test_156_baked_checker_precomp_update    , "test_156_baked_checker_precomp_update" },
+    { &test_157_baked_checker_precomp_remap     , "test_157_baked_checker_precomp_remap" },
+    { &test_158_proc_dirt1                      , "test_158_proc_dirt1" },
+    { &test_159_proc_dirt2                      , "test_159_proc_dirt2" },
+    { &test_160_proc_dirt3                      , "test_160_proc_dirt3" },
+    { &test_161_simple_displacement             , "test_161_simple_displacement" },
+    { &test_162_shadow_matte_back1              , "test_162_shadow_matte_back1" },
+    { &test_163_diffuse_texture_recommended_res , "test_163_diffuse_texture_recommended_res" },
+    { &test_164_simple_displacement_proctex     , "test_164_simple_displacement_proctex" },
+    { &test_165_simple_displacement_mesh        , "test_165_simple_displacement_mesh" },
+    { &test_166_displace_by_noise               , "test_166_displace_by_noise" },
+    { &test_167_subdiv                          , "test_167_subdiv" },
+    { &test_168_diffuse_texture_recommended_res2, "test_168_diffuse_texture_recommended_res2" },
+    { &test_169_displace_custom_callback        , "test_169_displace_custom_callback" },
+    { &test_170_fresnel_blend                   , "test_170_fresnel_blend" },
+    { &test_171_simple_displacement_triplanar   , "test_171_simple_displacement_triplanar" },
+    { &test_172_glossy_dark_edges_phong         , "test_172_glossy_dark_edges_phong" },
+    { &test_173_glossy_dark_edges_microfacet    , "test_173_glossy_dark_edges_microfacet" },
+    { &dummy_test                               , "dummy_test" },
+    { &test_175_beckman_isotropic               , "test_175_beckman_isotropic" },
+    { &test_176_beckman_anisotropic             , "test_176_beckman_anisotropic" },
+    { &test_177_beckman_aniso_rot               , "test_177_beckman_aniso_rot" },
+    { &test_178_trggx_isotropic                 , "test_178_trggx_isotropic" },
+    { &test_179_trggx_anisotropic               , "test_179_trggx_anisotropic" },
+    { &test_180_trggx_aniso_rot                 , "test_180_trggx_aniso_rot" },
+  };
 
   std::ofstream fout("z_test_materials.txt");
 
-	for (int i = a_start; i < testNum; i++)
-	{
-    std::cout << "                                      \r";
-		
-    bool res = tests[i]();
-    if (res)
-    {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tok." << std::endl;
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped." << std::endl;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tskipped." << std::endl;
-    }
-    else
-    {
-      std::cout          << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << "mtl_test_" << std::setfill('0') << std::setw(3) << 100 + i << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
-    }
+  PrintResultTest(a_start, tests, fout, "Materials tests.");
 
-    fout.flush();
-
-    g_testWasIgnored = false;
-	}
-
-  fout.close();
-	
+  fout.close();	
 }
 
 
 void run_all_lgt_tests(int a_start)
 {
   using namespace LGHT_TESTS;
-  TestFunc tests[] = { &test_200_spot,
-                       &test_201_sphere,
-                       &test_202_sky_color,
-                       &test_203_sky_hdr,
-                       &test_204_sky_hdr_rotate,
-                       &test_205_sky_and_directional_sun,
-                       &test_206_ies1,
-                       &test_207_ies2,
-                       &test_208_ies3,
-                       &test_209_skyportal,
-                       &test_210_skyportal_hdr,
-                       &test_211_sky_and_sun_perez,
-                       &test_212_skyportal_sun,
-                       &test_213_point_omni,
-	                     &test_214_sky_ldr,
-	                     &test_215_light_scale_intensity,
-	                     &test_216_ies4,
-                       &test_217_cylinder,
-                       &test_218_cylinder2,
-                       &test_219_cylinder_tex,
-                       &test_220_cylinder_tex2,
-                       &test_221_cylinder_tex3,
-                       &test_222_cylinder_with_end_face,
-
-                       &test_223_rotated_area_light,
-                       &test_224_rotated_area_light2,
-                       &test_225_point_spot_simple,
-                       &test_226_area_spot_simple,
-                       &test_227_point_spot_glossy_wall,
-                       &test_228_point_ies_for_bpt,
-                       &test_229_point_ies_for_bpt,
-                       &test_230_area_ies_for_bpt,
-                       &test_231_direct_soft_shadow,
-                      
-                       &test_232_point_area_ies,
-                       &test_233_light_group_point_area_ies,
-                       &test_234_light_group_light_inst_cust_params,
-                       &test_235_stadium,
-                       &test_236_light_group_point_area_ies2,
-                       &test_237_cubemap_ldr,
-                       
-                       &test_238_mesh_light_one_triangle,
-                       &test_239_mesh_light_two_triangle,
-                       &test_240_mesh_light_torus,
-                       &test_241_mesh_light_torus_texture_ldr,
-                       &test_242_mesh_light_torus_texture_hdr,
-                       &test_243_mesh_light_do_not_sample_me,
-                       &test_244_do_not_sample_me,
-                       &test_245_cylinder_tex_nearest,
+  std::vector<TestFunc> tests =
+  {
+    { &test_200_spot                              , "test_200_spot" },
+    { &test_201_sphere                            , "test_201_sphere" },
+    { &test_202_sky_color                         , "test_202_sky_color" },
+    { &test_203_sky_hdr                           , "test_203_sky_hdr" },
+    { &test_204_sky_hdr_rotate                    , "test_204_sky_hdr_rotate" },
+    { &test_205_sky_and_directional_sun           , "test_205_sky_and_directional_sun" },
+    { &test_206_ies1                              , "test_206_ies1" },
+    { &test_207_ies2                              , "test_207_ies2" },
+    { &test_208_ies3                              , "test_208_ies3" },
+    { &test_209_skyportal                         , "test_209_skyportal" },
+    { &test_210_skyportal_hdr                     , "test_210_skyportal_hdr" },
+    { &test_211_sky_and_sun_perez                 , "test_211_sky_and_sun_perez" },
+    { &test_212_skyportal_sun                     , "test_212_skyportal_sun" },
+    { &test_213_point_omni                        , "test_213_point_omni" },
+    { &test_214_sky_ldr                           , "test_214_sky_ldr" },
+    { &test_215_light_scale_intensity             , "test_215_light_scale_intensity" },
+    { &test_216_ies4                              , "test_216_ies4" },
+    { &test_217_cylinder                          , "test_217_cylinder" },
+    { &test_218_cylinder2                         , "test_218_cylinder2" },
+    { &test_219_cylinder_tex                      , "test_219_cylinder_tex" },
+    { &test_220_cylinder_tex2                     , "test_220_cylinder_tex2" },
+    { &test_221_cylinder_tex3                     , "test_221_cylinder_tex3" },
+    { &test_222_cylinder_with_end_face            , "test_222_cylinder_with_end_face" },
+    { &test_223_rotated_area_light                , "test_223_rotated_area_light" },
+    { &test_224_rotated_area_light2               , "test_224_rotated_area_light2" },
+    { &test_225_point_spot_simple                 , "test_225_point_spot_simple" },
+    { &test_226_area_spot_simple                  , "test_226_area_spot_simple" },
+    { &test_227_point_spot_glossy_wall            , "test_227_point_spot_glossy_wall" },
+    { &test_228_point_ies_for_bpt                 , "test_228_point_ies_for_bpt" },
+    { &test_229_point_ies_for_bpt                 , "test_229_point_ies_for_bpt" },
+    { &test_230_area_ies_for_bpt                  , "test_230_area_ies_for_bpt" },
+    { &test_231_direct_soft_shadow                , "test_231_direct_soft_shadow" },
+    { &test_232_point_area_ies                    , "test_232_point_area_ies" },
+    { &test_233_light_group_point_area_ies        , "test_233_light_group_point_area_ies" },
+    { &test_234_light_group_light_inst_cust_params, "test_234_light_group_light_inst_cust_params" },
+    { &test_235_stadium                           , "test_235_stadium" },
+    { &test_236_light_group_point_area_ies2       , "test_236_light_group_point_area_ies2" },
+    { &test_237_cubemap_ldr                       , "test_237_cubemap_ldr" },
+    { &test_238_mesh_light_one_triangle           , "test_238_mesh_light_one_triangle" },
+    { &test_239_mesh_light_two_triangle           , "test_239_mesh_light_two_triangle" },
+    { &test_240_mesh_light_torus                  , "test_240_mesh_light_torus" },
+    { &test_241_mesh_light_torus_texture_ldr      , "test_241_mesh_light_torus_texture_ldr" },
+    { &test_242_mesh_light_torus_texture_hdr      , "test_242_mesh_light_torus_texture_hdr" },
+    { &test_243_mesh_light_do_not_sample_me       , "test_243_mesh_light_do_not_sample_me" },
+    { &test_244_do_not_sample_me                  , "test_244_do_not_sample_me" },
+    { &test_245_cylinder_tex_nearest              , "test_245_cylinder_tex_nearest" },
   };
 
   std::ofstream fout("z_test_lights.txt");
-
-  const int testNum = sizeof(tests) / sizeof(TestFunc);
-
-  for (int i = a_start; i < testNum; i++)
-  {
-    std::cout << "                                      \r";
-
-    bool res = tests[i]();
-    if (res)
-    {
-      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tok." << std::endl;
-      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tok." << std::endl;
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tskipped." << std::endl;;
-      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tskipped." << std::endl;;
-    }
-    else
-    {
-      std::cout          << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << "light_test_" << std::setfill('0') << std::setw(3) << 200 + i << "\tFAILED!\tMSE = " << g_MSEOutput << std::endl;
-    }
-
-    fout.flush();
-
-    g_testWasIgnored = false;
-  }
+  
+  PrintResultTest(a_start, tests, fout, "Lights tests.");
 
   fout.close();
-
 }
 
 
 void run_all_alg_tests(int a_start)
 {
   using namespace ALGR_TESTS;
-  TestFunc tests[] = { &test_401_ibpt_and_glossy_glass,
-                       &test_402_ibpt_and_glossy_double_glass,
-                       &test_403_light_inside_double_glass,
-                       &test_404_cornell_glossy,
-                       &test_405_cornell_with_mirror,
-                       &test_406_env_glass_ball_caustic,
+  std::vector<TestFunc> tests =
+  {
+    { &test_401_ibpt_and_glossy_glass       , "test_401_ibpt_and_glossy_glass" },
+    { &test_402_ibpt_and_glossy_double_glass, "test_402_ibpt_and_glossy_double_glass" },
+    { &test_403_light_inside_double_glass   , "test_403_light_inside_double_glass" },
+    { &test_404_cornell_glossy              , "test_404_cornell_glossy" },
+    { &test_405_cornell_with_mirror         , "test_405_cornell_with_mirror" },
+    { &test_406_env_glass_ball_caustic      , "test_406_env_glass_ball_caustic" }
   };
   
-  std::ofstream fout("z_test_ralgs.txt");
+  std::ofstream fout("z_test_ralgs.txt");  
   
-  const int testNum = sizeof(tests) / sizeof(TestFunc);
+  PrintResultTest(a_start, tests, fout, "Render algorithm tests.");
   
-  for (int i = a_start; i < testNum; i++)
-  {
-    std::cout << "                                      \r";
-
-    bool res = tests[i]();
-    if (res)
-    {
-      std::cout          << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tok." << std::endl;
-      fout << std::fixed << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tok." << std::endl;
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout          << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tskipped." << std::endl;
-      fout << std::fixed << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tskipped." << std::endl;
-    }
-    else
-    {
-      std::cout          << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << "rend_alg_test_" << std::setfill('0') << std::setw(3) << 400 + i + 1 << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-    }
-    
-    fout.flush();
-    
-    g_testWasIgnored = false;
-  }
-  
-  fout.close();
-  
+  fout.close();  
 }
 
 
-void run_all_mictofacet_torrance_sparrow()
+void run_all_microfacet_torrance_sparrow()
 {
   using namespace LGHT_TESTS;
   using namespace MTL_TESTS;
   
-  TestFunc tests[] = {
-                       &test_202_sky_color,
-                       &test_203_sky_hdr,
-                       &test_204_sky_hdr_rotate,
-
-                       &test_105_reflect_torranse_sparrow,
-                       &test_107_reflect_extrusion,
-                       &test_108_reflect_texture,
-                       &test_109_reflect_glossiness_texture,
-                       &test_111_glossiness_texture_sampler,
-                       
-                       &test_130_bump_invert_normalY,
-                       &test_135_opacity_metal,
-                       &test_151_gloss_mirror_cos_div2,
-                       &test_166_displace_by_noise,
-                       &test_169_displace_custom_callback,
-  };
-  
-  
-  std::string names[] = {
-    "test_202_sky_color",
-    "test_203_sky_hdr",
-    "test_204_sky_hdr_rotate",
-  
-    "test_105_reflect_torranse_sparrow",
-    "test_107_reflect_extrusion",
-    "test_108_reflect_texture",
-    "test_109_reflect_glossiness_texture",
-    "test_111_glossiness_texture_sampler",
-  
-    "test_130_bump_invert_normalY",
-    "test_135_opacity_metal",
-    "test_151_gloss_mirror_cos_div2",
-    "test_166_displace_by_noise",
-    "test_169_displace_custom_callback",
-  };
-  
-  
-  std::ofstream fout("z_microfacet.txt");
-  
-  const int testNum = sizeof(tests) / sizeof(TestFunc);
-  
-  for (int i = 0; i < testNum; i++)
+  std::vector<TestFunc> tests =
   {
-    std::cout << "                                      \r";
+    { &test_202_sky_color                 , "test_202_sky_color" },
+    { &test_203_sky_hdr                   , "test_203_sky_hdr" },
+    { &test_204_sky_hdr_rotate            , "test_204_sky_hdr_rotate" },
+    { &test_105_reflect_torranse_sparrow  , "test_105_reflect_torranse_sparrow" },
+    { &test_107_reflect_extrusion         , "test_107_reflect_extrusion" },
+    { &test_108_reflect_texture           , "test_108_reflect_texture" },
+    { &test_109_reflect_glossiness_texture, "test_109_reflect_glossiness_texture" },
+    { &test_111_glossiness_texture_sampler, "test_111_glossiness_texture_sampler" },
+    { &test_130_bump_invert_normalY       , "test_130_bump_invert_normalY" },
+    { &test_135_opacity_metal             , "test_135_opacity_metal" },
+    { &test_151_gloss_mirror_cos_div2     , "test_151_gloss_mirror_cos_div2" },
+    { &test_166_displace_by_noise         , "test_166_displace_by_noise" },
+    { &test_169_displace_custom_callback  , "test_169_displace_custom_callback" },
+  };
+        
+  std::ofstream fout("z_microfacet.txt");    
 
-    bool res = tests[i]();
-    if (res)
-    {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok." << std::endl;
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok." << std::endl;
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tskipped." << std::endl;
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tskipped." << std::endl;
-    }
-    else
-    {
-      std::cout          << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-    }
-    
-    fout.flush();
-    
-    g_testWasIgnored = false;
-  }
-  
+  PrintResultTest(0, tests, fout, "Microfacet Torrance-Sparrow tests.");
+
   fout.close();
 }
 
@@ -2155,59 +2036,21 @@ void run_all_mictofacet_torrance_sparrow()
 void run_all_vector_tex_tests()
 {
   using namespace EXTENSIONS_TESTS;
-  TestFunc tests[] = {
-                       &test_ext_vtex_1,
-                       &test_ext_vtex_2,
-                       &test_ext_vtex_3,
-                       &test_ext_vtex_4,
-                       &test_ext_vtex_5,
-                       &test_ext_vtex_6,
-                       &test_ext_vtex_7,
-                       &test_ext_vtex_8
+  std::vector<TestFunc> tests =
+  {
+    { &test_ext_vtex_1, "test_ext_vtex_1" },
+    { &test_ext_vtex_2, "test_ext_vtex_2" },
+    { &test_ext_vtex_3, "test_ext_vtex_3" },
+    { &test_ext_vtex_4, "test_ext_vtex_4" },
+    { &test_ext_vtex_5, "test_ext_vtex_5" },
+    { &test_ext_vtex_6, "test_ext_vtex_6" },
+    { &test_ext_vtex_7, "test_ext_vtex_7" },
+    { &test_ext_vtex_8, "test_ext_vtex_8" }
   };
-
-
-  std::string names[] = {
-    "test_ext_vtex_1",
-    "test_ext_vtex_2",
-    "test_ext_vtex_3",
-    "test_ext_vtex_4",
-    "test_ext_vtex_5",
-    "test_ext_vtex_6",
-    "test_ext_vtex_7",
-    "test_ext_vtex_8"
-  };
-
 
   std::ofstream fout("z_vector_textures.txt");
 
-  const int testNum = sizeof(tests) / sizeof(TestFunc);
-
-  for (int i = 0; i < testNum; i++)
-  {
-    std::cout << "                                      \r";
-
-    bool res = tests[i]();
-    if (res)
-    {
-      std::cout           << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok."  << std::endl;
-      fout << std::fixed  << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tok."  << std::endl;
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout           << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!" << std::endl;
-      fout << std::fixed  << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tSKIPPED!" << std::endl;
-    }
-    else
-    {
-      std::cout           << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed  << names[i].c_str() << " " << std::setfill('0') << std::setw(3) << i << "\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-    }
-
-    fout.flush();
-
-    g_testWasIgnored = false;
-  }
+  PrintResultTest(0, tests, fout, "Vector textures tests.");
 
   fout.close();
 }
@@ -2233,21 +2076,7 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
 
   hrFlush(scnRef, renderRef);
 
-  while (true)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-
-    if (info.haveUpdateFB)
-    {
-      auto pres = std::cout.precision(2);
-      std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-      std::cout.precision(pres);
-    }
-
-    if (info.finalUpdate)
-      break;
-  }
+  TEST_UTILS::RenderProgress(renderRef);
 
   hrRenderSaveFrameBufferLDR(renderRef, outPath.c_str());
 
@@ -2295,47 +2124,33 @@ void run_all_3dsmax_tests(int a_start)
   
   std::ofstream fout("z_3dsmax_tests.txt");
 
-  const int testNum = filesFiltered.size();
+  std::ostringstream outBuff;
 
-  int i = 0;
-  for (auto f : filesFiltered)
-  {
+  auto now      = std::chrono::system_clock::now();
+  auto currData = std::chrono::system_clock::to_time_t(now);
 
-    if (i < a_start)
-    {
-      i++;
-      continue;
-    }
+  outBuff << "3DS Max tests." << std::endl;
+  outBuff << std::ctime(&currData);
 
-    std::string name = ws2s(f);
-    const bool res   = run_single_3dsmax_test(f);
+  std::cout << outBuff.str() << std::endl;
+  fout      << outBuff.str() << std::endl;
+
+  for (int i = a_start; i < filesFiltered.size(); ++i)
+  {    
+    const auto start = std::chrono::system_clock::now();        
+
+    const std::string name = ws2s(filesFiltered[i]);
+    const bool res         = run_single_3dsmax_test(filesFiltered[i]);
     
-    std::cout << "                                      \r";
-
-    if (res)
-    {
-      std::cout           << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\ok\t\n";
-      fout << std::fixed  << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tok\t\n";
-    }
-    else if (g_testWasIgnored)
-    {
-      std::cout           << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
-      fout << std::fixed  << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tskipped\t\n";
-    }
-    else
-    {
-      std::cout           << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-      fout << std::fixed  << name.c_str() << " " << std::setfill('0') << std::setw(3) << i << "\t\t\tFAILED! :-: MSE = " << g_MSEOutput << std::endl;
-    }
-
-    fout.flush();
-
-    g_testWasIgnored = false;
-    i++;
+    const auto end   = std::chrono::system_clock::now();    
+    std::chrono::duration<float> rendTime = end - start;
+    
+    PrintResultSingleTest(res, fout, name.c_str(), rendTime.count());
   }
 
   fout.close();
 }
+
 
 void terminate_opengl()
 {
