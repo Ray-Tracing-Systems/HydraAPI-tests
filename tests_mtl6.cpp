@@ -178,8 +178,10 @@ bool PefrormMaterialTest(const InputMaterialTestParams& testParams)
   hrSceneClose(scnRef);
   
   
-  const std::wstring names[4] = { saveRenderFile1.c_str(), saveRenderFile2.c_str(), 
-    saveRenderFile3.c_str(), saveRenderFile4.c_str()};
+  const std::wstring names[4] = { saveRenderFile1.wstring().c_str(), 
+                                  saveRenderFile2.wstring().c_str(), 
+                                  saveRenderFile3.wstring().c_str(), 
+                                  saveRenderFile4.wstring().c_str()};
   
   for(int iter = 0; iter < 4; iter++)
   {
