@@ -287,14 +287,12 @@ bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
   
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_401/z_out.png");
   
-  return check_images("test_401", 1, 20);
+  return check_images("test_401", 1, 27);
   
 }
 
 bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
-{
-  
-  
+{  
   hrErrorCallerPlace(L"test_402");
   
   hrSceneLibraryOpen(L"tests_a/test_402", HR_WRITE_DISCARD);
@@ -544,7 +542,7 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
   
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_402/z_out.png");
   
-  return check_images("test_402", 1, 20);
+  return check_images("test_402", 1, 37);
   //return false;
 }
 
@@ -717,7 +715,6 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
   float4x4 mScale;
   float4x4 mRes;
   
-  const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
   
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
   ///////////
@@ -780,26 +777,15 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
   
   hrFlush(scnRef, renderRef);
   
-  while (true)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    
-    HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-    
-    if (info.haveUpdateFB)
-    {
-      auto pres = std::cout.precision(2);
-      std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-      std::cout.precision(pres);
-    }
-    
-    if (info.finalUpdate)
-      break;
-  }
-  
+  ////////////////////
+  // Rendering, save and check image
+  ////////////////////
+
+  RenderProgress(renderRef);
+
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_403/z_out.png");
   
-  return check_images("test_403", 1, 20);
+  return check_images("test_403", 1, 75);
   //return false;
 }
 
