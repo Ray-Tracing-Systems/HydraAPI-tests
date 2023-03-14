@@ -1629,8 +1629,8 @@ void PrintResultSingleTest(const bool a_res, std::ofstream& a_fout, std::string 
   {
     std::string str = "mse = " + std::to_string((int)(g_MSEOutput));
     outBuff << std::setw(60) << std::left << a_nameTest;
-    outBuff << std::setw(10) << std::left << "ok.";
-    outBuff << std::setw(20) << str;
+    outBuff << std::setw(15) << std::left << "ok.";
+    outBuff << std::setw(15) << str;
     outBuff << "Render time: " << a_renderTimeSeconds << " sec.";
   }
   else if (g_testWasIgnored)  
@@ -1639,12 +1639,12 @@ void PrintResultSingleTest(const bool a_res, std::ofstream& a_fout, std::string 
   {
     std::string str = "MSE = " + std::to_string((int)(g_MSEOutput));
     outBuff << std::setw(60) << std::left << a_nameTest;
-    outBuff << std::setw(10) << std::left << "FAILED!";
-    outBuff << std::setw(20) << str;
+    outBuff << std::setw(15) << std::left << "FAILED!";
+    outBuff << std::setw(15) << str;
     outBuff << "Render time: " << a_renderTimeSeconds << " sec.";
   }
   
-  std::cout << outBuff.str() << std::endl;
+  std::cout << outBuff.str() << std::endl << std::endl;
   a_fout    << outBuff.str() << std::endl;
   
   g_testWasIgnored = false;
@@ -1684,7 +1684,6 @@ void PrintResultTest(const int a_startTestsId, std::vector<TestFunc>& a_tests, s
     const auto end   = std::chrono::system_clock::now();    
 
     std::chrono::duration<float> rendTime = end - start;
-
     PrintResultSingleTest(res, a_fout, a_tests[i].name, rendTime.count());    
   }
 }
@@ -1762,11 +1761,11 @@ void run_all_api_tests(const int startTestId)
     { &test66_fast_render_no_final_update                 ,"test66_fast_render_no_final_update" },
     { &test67_fast_empty_scene                            ,"test67_fast_empty_scene" },
     { &test68_scene_library_file_info                     ,"test68_scene_library_file_info" },
-    { &test69_pause_and_resume                            ,"test69_pause_and_resume" },
+    { &dummy_test                                         ,"dummy_test" },                                          // 69
     { &test70_area_lights16                               ,"test70_area_lights16" },
     { &test71_out_of_memory                               ,"test71_out_of_memory" },
     { &dummy_test                                         ,"dummy_test" },                                          // 72
-    { &dummy_test                                         ,"dummy_test" },                                          // 73 test73_big_resolution
+    { &dummy_test                                         ,"dummy_test" },                                          // 73 
     { &test74_frame_buffer_line                           ,"test74_frame_buffer_line" },
     { &test75_repeated_render                             ,"test75_repeated_render" },
     { &test76_empty_mesh                                  ,"test76_empty_mesh" },

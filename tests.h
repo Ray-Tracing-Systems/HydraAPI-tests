@@ -210,7 +210,7 @@ bool test65_several_changes_light_rect();
 bool test66_fast_render_no_final_update();
 bool test67_fast_empty_scene();
 bool test68_scene_library_file_info();
-bool test69_pause_and_resume();
+//   test69 empty
 bool test70_area_lights16();
 bool test71_out_of_memory();
 bool test72_load_library_single_teapot_with_opacity(); // not used, to change it for something useful

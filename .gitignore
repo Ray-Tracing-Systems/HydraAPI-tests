@@ -48,6 +48,6 @@ tests_f/
 z_microfacet.txt
 z_3dsmax_tests.txt
 z_test_*.txt
-z_out*.png
+z_out*.*
 
 
