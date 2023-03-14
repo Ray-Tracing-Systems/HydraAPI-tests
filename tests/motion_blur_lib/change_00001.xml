@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<textures_lib />
+<materials_lib />
+<geometry_lib />
+<lights_lib />
+<cam_lib />
+<render_lib />
+<scenes>
+  <scene id="0" name="my scene" discard="1" bbox="  -inf inf -inf inf -inf inf">
+    <instance id="0" mesh_id="0" rmap_id="-1" scn_id="0" scn_sid="0" matrix="3.65 0 0 0 0 3.65 0 -2.555 0 0 3.65 0 0 0 0 1 " />
+    <instance id="1" mesh_id="1" rmap_id="-1" scn_id="0" scn_sid="0" matrix="-1 0 8.74228e-08 0 0 1 0 0 -8.74228e-08 0 -1 0 0 0 0 1 " />
+    <instance_light id="0" light_id="0" matrix="1 0 0 0 0 1 0 3.85 0 0 1 0 0 0 0 1 " lgroup_id="-1" />
+    <instance id="2" mesh_id="5" rmap_id="-1" matrix="1 0 0 0 0 1 0 3.85 0 0 1 0 0 0 0 1 " light_id="0" linst_id="0" />
+  </scene>
+</scenes>

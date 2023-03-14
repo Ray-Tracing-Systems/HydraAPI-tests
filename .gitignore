@@ -40,14 +40,30 @@ build_generated/
 data/textures_gen/
 3dsMaxTests/rendered/
 tests/
-tests_a/
+tests_algorithm/
 tests_ext/
 tests_f/
+
+#--------------- dont delete, load from disk ------------------------------------------
+
+!tests/motion_blur_lib 			# for test_motion_blur()	
+!tests/test_35 					# for test68_scene_library_file_info()
+!tests/test_41 					# for test41_load_library_basic()
+!tests/test_72					# for test72_load_library_single_teapot_with_opacity()
+!tests/test_78 					# for test78_material_remap_list1()
+!tests/test_1015_lib_to_merge 	# for test1015_merge_scene_with_remaps()
+
+!tests_algorithm/test_404		
+!tests_algorithm/test_405		
+!tests_algorithm/test_406        
+
+#--------------------------------------------------------------------------------------
 
 #Files
 z_microfacet.txt
 z_3dsmax_tests.txt
 z_test_*.txt
+z_vector*.txt
 z_out*.*
 
 

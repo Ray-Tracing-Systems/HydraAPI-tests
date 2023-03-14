@@ -128,8 +128,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -154,7 +154,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -289,8 +289,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -315,7 +315,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -450,8 +450,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -476,7 +476,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -613,8 +613,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -639,7 +639,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -771,8 +771,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -797,7 +797,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -933,8 +933,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -959,7 +959,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -1118,8 +1118,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -1144,7 +1144,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -1321,8 +1321,8 @@ namespace EXTENSIONS_TESTS
       node.append_child(L"trace_depth").text() = L"4";
       node.append_child(L"diff_trace_depth").text() = L"2";
       node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"512";
-      node.append_child(L"maxRaysPerPixel").text() = L"512";
+      node.append_child(L"minRaysPerPixel").text() = L"256";
+      node.append_child(L"maxRaysPerPixel").text() = L"256";
     }
     hrRenderClose(renderRef);
 
@@ -1347,7 +1347,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 
@@ -1509,7 +1509,7 @@ namespace EXTENSIONS_TESTS
 
     while (true)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
 

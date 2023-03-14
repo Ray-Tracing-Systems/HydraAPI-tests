@@ -41,7 +41,7 @@ bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
 { 
   hrErrorCallerPlace(L"test_401");
   
-  hrSceneLibraryOpen(L"tests_a/test_401", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests_algorithm/test_401", HR_WRITE_DISCARD);
   
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -295,7 +295,7 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
 {  
   hrErrorCallerPlace(L"test_402");
   
-  hrSceneLibraryOpen(L"tests_a/test_402", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests_algorithm/test_402", HR_WRITE_DISCARD);
   
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -550,7 +550,7 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
 {
   hrErrorCallerPlace(L"test_403");
   
-  hrSceneLibraryOpen(L"tests_a/test_403", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests_algorithm/test_403", HR_WRITE_DISCARD);
   
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -886,7 +886,7 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
 bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test should check situation when scene is not found.
 {
   hrErrorCallerPlace(L"test404");                            // scene not found ?
-  if(!hrSceneLibraryOpen(L"tests_a/test_404", HR_OPEN_EXISTING))
+  if(!hrSceneLibraryOpen(L"tests_algorithm/test_404", HR_OPEN_EXISTING))
     return false;
 
   /////////////////////////////////////////////////////////
@@ -906,13 +906,13 @@ bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test 
 
   test_three_algorithms(scnRef, renderRef, outNames);
 
-  remove("tests_a/test_404/statex_00002.xml");
-  remove("tests_a/test_404/statex_00003.xml");
-  remove("tests_a/test_404/statex_00004.xml");
+  remove("tests_algorithm/test_404/statex_00002.xml");
+  remove("tests_algorithm/test_404/statex_00003.xml");
+  remove("tests_algorithm/test_404/statex_00004.xml");
 
-  remove("tests_a/test_404/change_00001.xml");
-  remove("tests_a/test_404/change_00002.xml");
-  remove("tests_a/test_404/change_00003.xml");
+  remove("tests_algorithm/test_404/change_00001.xml");
+  remove("tests_algorithm/test_404/change_00002.xml");
+  remove("tests_algorithm/test_404/change_00003.xml");
 
   return check_images("test_404", 3, 50);
 }
@@ -921,7 +921,7 @@ bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test 
 bool ALGR_TESTS::test_405_cornell_with_mirror()
 {
   hrErrorCallerPlace(L"test405");                            // scene not found ?
-  if(!hrSceneLibraryOpen(L"tests_a/test_405", HR_OPEN_EXISTING))
+  if(!hrSceneLibraryOpen(L"tests_algorithm/test_405", HR_OPEN_EXISTING))
     return false;
 
   /////////////////////////////////////////////////////////
@@ -941,13 +941,13 @@ bool ALGR_TESTS::test_405_cornell_with_mirror()
 
   test_three_algorithms(scnRef, renderRef, outNames);
 
-  remove("tests_a/test_405/statex_00002.xml");
-  remove("tests_a/test_405/statex_00003.xml");
-  remove("tests_a/test_405/statex_00004.xml");
+  remove("tests_algorithm/test_405/statex_00002.xml");
+  remove("tests_algorithm/test_405/statex_00003.xml");
+  remove("tests_algorithm/test_405/statex_00004.xml");
 
-  remove("tests_a/test_405/change_00001.xml");
-  remove("tests_a/test_405/change_00002.xml");
-  remove("tests_a/test_405/change_00003.xml");
+  remove("tests_algorithm/test_405/change_00001.xml");
+  remove("tests_algorithm/test_405/change_00002.xml");
+  remove("tests_algorithm/test_405/change_00003.xml");
 
   return check_images("test_405", 3, 50);
 }
@@ -955,7 +955,7 @@ bool ALGR_TESTS::test_405_cornell_with_mirror()
 bool ALGR_TESTS::test_406_env_glass_ball_caustic()
 {
   hrErrorCallerPlace(L"test406");                            // scene not found ?
-  if(!hrSceneLibraryOpen(L"tests_a/test_406", HR_OPEN_EXISTING))
+  if(!hrSceneLibraryOpen(L"tests_algorithm/test_406", HR_OPEN_EXISTING))
     return false;
 
   /////////////////////////////////////////////////////////
@@ -975,13 +975,13 @@ bool ALGR_TESTS::test_406_env_glass_ball_caustic()
 
   test_three_algorithms(scnRef, renderRef, outNames);
 
-  remove("tests_a/test_406/statex_00002.xml");
-  remove("tests_a/test_406/statex_00003.xml");
-  remove("tests_a/test_406/statex_00004.xml");
+  remove("tests_algorithm/test_406/statex_00002.xml");
+  remove("tests_algorithm/test_406/statex_00003.xml");
+  remove("tests_algorithm/test_406/statex_00004.xml");
 
-  remove("tests_a/test_406/change_00001.xml");
-  remove("tests_a/test_406/change_00002.xml");
-  remove("tests_a/test_406/change_00003.xml");
+  remove("tests_algorithm/test_406/change_00001.xml");
+  remove("tests_algorithm/test_406/change_00002.xml");
+  remove("tests_algorithm/test_406/change_00003.xml");
 
-  return check_images("test_406", 3, 50);
+  return check_images("test_406", 3, 40);
 }
