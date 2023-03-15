@@ -11,6 +11,7 @@
 #include "HRExtensions_Spectral.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
+using namespace TEST_UTILS;
 
 namespace SPECTRAL_TESTS
 {
@@ -448,13 +449,16 @@ namespace SPECTRAL_TESTS
 
   bool test_macbeth()
   {
-    hrErrorCallerPlace(L"test_macbeth");
+    std::wstring nameTest                = L"test_macbeth";
+    std::filesystem::path libraryPath    = L"tests/"        + nameTest;
+    std::filesystem::path saveRenderPath = L"tests_images/" + nameTest;
+    
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
-    hrSceneLibraryOpen(L"tests/test_macbeth", HR_WRITE_DISCARD);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////
     // Materials
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////
 
 //    std::vector<int> wavelengths = {400, 440, 480, 520, 560, 600, 640, 680};
     std::vector<float> wavelengths;
@@ -492,15 +496,7 @@ namespace SPECTRAL_TESTS
     hrMaterialOpen(matBlack, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matBlack);
-
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-
-      auto color = diff.append_child(L"color");
-//      color.append_attribute(L"val").set_value(L"0.725 0.71 0.68");
-      color.append_attribute(L"val").set_value(L"0.01 0.01 0.01");
-
-      VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.01 0.01 0.01");      
     }
     hrMaterialClose(matBlack);
 
@@ -508,137 +504,74 @@ namespace SPECTRAL_TESTS
     hrMaterialOpen(matTest, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matTest);
-
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-
-      auto color = diff.append_child(L"color");
-//      color.append_attribute(L"val").set_value(L"0.725 0.71 0.68");
-      color.append_attribute(L"val").set_value(L"0.8 0.0 0.8");
-
-      VERIFY_XML(matNode);
+      AddDiffuseNode(matNode, L"0.8 0.0 0.8");
+      //AddDiffuseNode(matNode, L"0.725 0.71 0.68");
     }
     hrMaterialClose(matTest);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Meshes
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    HRMeshRef chip = TEST_UTILS::HRMeshFromSimpleMesh(L"macbeth_chip", CreatePlane(0.5f), matBlack.id);
+    ////////////////////
 
+    auto chip = HRMeshFromSimpleMesh(L"macbeth_chip", CreatePlane(0.5f), matBlack.id);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Light
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    HRLightRef sky = hrLightCreate(L"sky");
+    ////////////////////
 
-    hrLightOpen(sky, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(sky);
+    auto sky = CreateSky(L"sky", L"1.0 1.0 1.0", 1);
 
-      lightNode.attribute(L"type").set_value(L"sky");
-
-      auto intensityNode = lightNode.append_child(L"intensity");
-
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(sky);
-
-    HRLightRef sun = hrLightCreate(L"sun");
-
-    hrLightOpen(sun, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(sun);
-
-      lightNode.attribute(L"type").set_value(L"directional");
-      lightNode.attribute(L"shape").set_value(L"point");
-      lightNode.attribute(L"distribution").set_value(L"directional");
-
-      auto sizeNode = lightNode.append_child(L"size");
-      sizeNode.append_attribute(L"inner_radius").set_value(L"0.0");
-      sizeNode.append_attribute(L"outer_radius").set_value(L"1000.0");
-
-      auto intensityNode = lightNode.append_child(L"intensity");
-
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(4.0);
-
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(sun);
-
+    auto sun = CreateLight(L"Light01", L"directional", L"point", L"diffuse", 0, 0, L"1 1 1",
+      4, true, 0, 1000);
 
 //    auto d65_lights = hr_spectral::CreateSpectralLightsD65(sky, wavelengths);
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////
     // Camera
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
+    CreateCamera(30, L"0 0 10", L"0 0 -1");
 
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      auto camNode = hrCameraParamNode(camRef);
-
-      camNode.append_child(L"fov").text().set(L"30");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 0 10");
-      camNode.append_child(L"look_at").text().set(L"0 0 -1");
-    }
-    hrCameraClose(camRef);
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Render settings
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1280, 720, 256, 256);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1280, 720, 64, 64);
+    
     hrRenderOpen(renderRef, HR_OPEN_EXISTING);
     {
       auto node = hrRenderParamNode(renderRef);
       node.append_child(L"framebuffer_channels").text() = 1;
-      node.force_child(L"diff_trace_depth").text() = 5;
+      node.force_child(L"diff_trace_depth").text()      = 1;
     }
     hrRenderClose(renderRef);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Create scene
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
 
-    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+
     hlm::float4x4 mScale, mRotX, mRotY, mT, mRes;
     hlm::float4x4 identity{};
 
     std::vector<std::filesystem::path> savedImages;
 
-    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
     for(int i = 0; i < wavelengths.size(); ++i)
     {
       hrSceneOpen(scnRef, HR_WRITE_DISCARD);
 
-      mRotX = hlm::rotate4x4X(90.0f * DEG_TO_RAD);
       constexpr uint32_t N_CHIPS_X   = 6;
       constexpr uint32_t N_CHIPS_Y   = 4;
       constexpr float    CHIP_SIZE   = 1.0f;
       constexpr float    BORDER_SIZE = 0.1f;
       constexpr float    PLATE_X     = N_CHIPS_X * CHIP_SIZE + (N_CHIPS_X + 1) * BORDER_SIZE;
       constexpr float    PLATE_Y     = N_CHIPS_Y * CHIP_SIZE + (N_CHIPS_Y + 1) * BORDER_SIZE;
-
-      mScale = hlm::scale4x4({PLATE_X, 1.0, PLATE_Y});
-      mT = hlm::translate4x4({0.0f, 0.0f, -0.001f});
-      mRes = mT * mRotX * mScale;
-      hrMeshInstance(scnRef, chip, mRes.L());
-
-//      hrLightInstance(scnRef, sky, identity.L());
-
-//      hrLightInstance(scnRef, d65_lights[i], identity.L());
-
-      mT = translate4x4(float3(0.0f, 0.0f, 100.0f));
-      mRotX = rotate4x4X(90.0f*DEG_TO_RAD);
-      mRes = mT * mRotX;
-      hrLightInstance(scnRef, sun, mRes.L());
+            
+      AddMeshToScene(scnRef, chip, float3(0, 0, -0.001F), float3(90, 0, 0), float3(PLATE_X, PLATE_Y, 1));            
+      AddLightToScene(scnRef, sun, float3(0, 0, 100), float3(90, 0, 0));
+      //hrLightInstance(scnRef, sky, identity.L());
+      //hrLightInstance(scnRef, d65_lights[i], identity.L());
 
       for (int x = 0; x < N_CHIPS_X; ++x)
       {
@@ -646,64 +579,49 @@ namespace SPECTRAL_TESTS
         {
           float xx = -PLATE_X * 0.5f + float(x) * (CHIP_SIZE + BORDER_SIZE) + CHIP_SIZE * 0.5f + BORDER_SIZE;
           float yy = +PLATE_Y * 0.5f - float(y) * (CHIP_SIZE + BORDER_SIZE) - CHIP_SIZE * 0.5f - BORDER_SIZE;
-          mT = hlm::translate4x4({xx, yy, 0.0f});
-          mRes = mT * mRotX;
 
           uint32_t chipId = x + y * N_CHIPS_X;
+
+          //const int j = clamp(i, 6, 24); // 460 - 640 nm.
           std::vector<int> remapList = {matBlack.id, materials[chipId][i].id};
-          hrMeshInstance(scnRef, chip, mRes.L(), remapList.data(), remapList.size());
+
+          AddMeshToScene(scnRef, chip, float3(xx, yy, 0), float3(90, 0, 0), float3(1, 1, 1), remapList.data(), remapList.size());
         }
       }
 
       ///////////
 
       hrSceneClose(scnRef);
+      hrFlush(scnRef, renderRef);
 
-      hrFlush(scnRef, renderRef, camRef);
-
-      while (true)
-      {
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-
-        if (info.haveUpdateFB)
-        {
-          auto pres = std::cout.precision(2);
-          std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-          std::cout.precision(pres);
-        }
-
-        if (info.finalUpdate)
-          break;
-      }
+      RenderProgress(renderRef);
 
       std::wstringstream imgName;
       imgName << wavelengths[i] << "nm";
 //      imgName << "_";
-      std::wstring basePath = L"tests_images/test_macbeth/";
-      const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
-      const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
+      const std::filesystem::path ldrName = saveRenderPath / (imgName.str() + std::wstring(L".png"));
+      const std::filesystem::path hdrName = saveRenderPath / (imgName.str() + std::wstring(L".exr"));
 
-      hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
-      hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+      hrRenderSaveFrameBufferLDR(renderRef, ldrName.wstring().c_str());
+      hrRenderSaveFrameBufferHDR(renderRef, hdrName.wstring().c_str());
       savedImages.push_back(hdrName);
     }
 
-    std::filesystem::path rgbPath {"tests_images/test_macbeth/z_out.exr"};
+    std::filesystem::path rgbPath = saveRenderPath / "z_out.exr";
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
-    std::filesystem::path avgPath {"tests_images/test_macbeth/averageSpectrum.exr"};
+    std::filesystem::path avgPath = saveRenderPath / "averageSpectrum.exr";
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
 
-    std::filesystem::path avgPath2 {"tests_images/test_macbeth/averageSpectrumV2.exr"};
+    std::filesystem::path avgPath2 = saveRenderPath / "averageSpectrumV2.exr";
     hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
 
-    std::filesystem::path yPath {"tests_images/test_macbeth/Y.exr"};
+    std::filesystem::path yPath = saveRenderPath / "Y.exr";
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images_HDR("test_macbeth", 1, 25);
+    return check_images_HDR(ws2s(nameTest).c_str(), 1, 25);
   }
+
 
   bool test_texture_1()
   {
@@ -1403,7 +1321,6 @@ namespace SPECTRAL_TESTS
     // Create scenes
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
     hlm::float4x4 mScale, mRotX, mRotY, mT, mRes;
     hlm::float4x4 identity{};
 

@@ -1265,7 +1265,7 @@ namespace LGHT_TESTS
       pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
 
       auto colorNode = intensityNode.append_child(L"color");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val") = 4.0f*IRRADIANCE_TO_RADIANCE;
+      intensityNode.append_child(L"multiplier").append_attribute(L"val") = 8.0f*IRRADIANCE_TO_RADIANCE;
 
       colorNode.append_attribute(L"val") = L"1 1 1";
 
@@ -1331,7 +1331,7 @@ namespace LGHT_TESTS
 
       node.append_child(L"pt_error").text() = L"2";
       node.append_child(L"minRaysPerPixel").text() = 256;
-      node.append_child(L"maxRaysPerPixel").text() = 2048;
+      node.append_child(L"maxRaysPerPixel").text() = 4096;
 
       node.append_child(L"draw_tiles").text() = L"0";
     }
@@ -1346,7 +1346,6 @@ namespace LGHT_TESTS
     static float    g_FPS = 60.0f;
     static int      frameCounter = 0;
 
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
 
     float matrixT[4][4];
     float mRot1[4][4], mTranslate[4][4], mRes[4][4];
@@ -1418,7 +1417,7 @@ namespace LGHT_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 42);
+    return check_images(ws2s(nameTest).c_str(), 1, 40);
   }
 
 
