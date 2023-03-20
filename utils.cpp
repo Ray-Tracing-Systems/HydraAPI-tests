@@ -540,7 +540,7 @@ namespace TEST_UTILS
     auto color = diff.append_child(L"color");
     color.append_attribute(L"val").set_value(a_diffuseColor);
 
-    if (a_brdfType == L"orennayar")
+    if (std::wstring(a_brdfType) == L"orennayar")
     {
       auto rough = diff.append_child(L"roughness");
       rough.append_attribute(L"val").set_value(a_roughness);
@@ -676,6 +676,7 @@ namespace TEST_UTILS
       hrMeshInstance(scnRef, a_meshRef, mRes.L(), a_mmListm, a_mmListSize);
     else    
       hrMeshInstance(scnRef, a_meshRef, mRes.L());
+
     
     //float mRot[4][4];
     //float mTranslate[4][4];
@@ -697,7 +698,6 @@ namespace TEST_UTILS
     //  hrMeshInstance(scnRef, a_meshRef, &matrixT[0][0], a_mmListm, a_mmListSize);
     //else    
     //  hrMeshInstance(scnRef, a_meshRef, &matrixT[0][0]);
-
   }
 
 
@@ -740,16 +740,15 @@ namespace TEST_UTILS
     //mat4x4_identity(mTranslate);
     //mat4x4_identity(mRot);
 
-    //mat4x4_translate(mTranslate, pos.x, pos.y, pos.z);
-    //mat4x4_rotate_Z(mRot, mRot, rot.z * DEG_TO_RAD);
-    //mat4x4_rotate_Y(mRot, mRot, rot.y * DEG_TO_RAD);
-    //mat4x4_rotate_X(mRot, mRot, rot.x * DEG_TO_RAD);
+    //mat4x4_translate(mTranslate, a_pos.x, a_pos.y, a_pos.z);
+    //mat4x4_rotate_Z(mRot, mRot, a_rot.z * DEG_TO_RAD);
+    //mat4x4_rotate_Y(mRot, mRot, a_rot.y * DEG_TO_RAD);
+    //mat4x4_rotate_X(mRot, mRot, a_rot.x * DEG_TO_RAD);
 
     //mat4x4_mul(mRes, mTranslate, mRot);
     //mat4x4_transpose(matrixT, mRes); //swap rows and columns
 
     //hrLightInstance(scnRef, a_lightRef, &matrixT[0][0]);
-
   }
 
 
@@ -846,7 +845,7 @@ namespace TEST_UTILS
   HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
     const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,
     const wchar_t* a_color, const float a_multiplier, const bool a_spot,
-    const float a_innerRadius, const float a_outerRadius)
+    const float a_innerRadius, const float a_outerRadius, const float a_shadowSoft)
   {
     auto light = hrLightCreate(a_name);
 
@@ -857,6 +856,7 @@ namespace TEST_UTILS
       lightNode.attribute(L"type")         = a_type;
       lightNode.attribute(L"shape")        = a_shape;
       lightNode.attribute(L"distribution") = a_distribution;
+      lightNode.force_child(L"shadow_softness").force_attribute(L"val") = a_shadowSoft;
 
       auto sizeNode = lightNode.append_child(L"size");
 
@@ -872,14 +872,14 @@ namespace TEST_UTILS
 
       if (a_spot)
       {
-        sizeNode.force_attribute(L"inner_radius") = 10.0f;
-        sizeNode.force_attribute(L"outer_radius") = 20.0f;
+        sizeNode.force_attribute(L"inner_radius") = a_innerRadius;
+        sizeNode.force_attribute(L"outer_radius") = a_outerRadius;
       }
 
       auto intensityNode = lightNode.force_child(L"intensity");
 
-      intensityNode.force_child(L"color").force_attribute(L"val")      = a_color;
-      intensityNode.force_child(L"multiplier").force_attribute(L"val") = a_multiplier;
+      intensityNode.force_child(L"color").force_attribute(L"val")        = a_color;
+      intensityNode.force_child(L"multiplier").force_attribute(L"val")   = a_multiplier;
 			VERIFY_XML(lightNode);
     }
     hrLightClose(light);
@@ -887,7 +887,8 @@ namespace TEST_UTILS
     return light;
   }
 
-  HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier)
+  HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier, 
+    const wchar_t* a_distribution, const int a_sunId, const float a_turbidity)
   {
     HRLightRef sky = hrLightCreate(a_name);
 
@@ -895,9 +896,19 @@ namespace TEST_UTILS
     {
       auto lightNode = hrLightParamNode(sky);
       lightNode.attribute(L"type").set_value(L"sky");
+      lightNode.attribute(L"distribution") = a_distribution;
+      
       auto intensityNode = lightNode.append_child(L"intensity");
-      intensityNode.append_child(L"color").append_attribute(L"val") = a_color;
+      intensityNode.append_child(L"color").append_attribute(L"val")      = a_color;
       intensityNode.append_child(L"multiplier").append_attribute(L"val") = a_multiplier;
+
+      if (std::wstring(a_distribution) == L"perez")
+      {
+        auto sunModel = lightNode.append_child(L"perez");
+        sunModel.append_attribute(L"sun_id")    = a_sunId;
+        sunModel.append_attribute(L"turbidity") = a_turbidity;
+      }
+
       VERIFY_XML(lightNode);
     }
     hrLightClose(sky);

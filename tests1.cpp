@@ -1667,10 +1667,15 @@ struct TestFunc
 void PrintResultTest(const int a_startTestsId, std::vector<TestFunc>& a_tests, std::ofstream& a_fout,
   std::string a_nameGroupTests)
 {  
+  using time      = std::chrono::system_clock;
+  using timeFloat = std::chrono::duration<float>;
+
+  int failedTests    = 0;
   std::ostringstream outBuff;
-  auto now      = std::chrono::system_clock::now();
-  auto currData = std::chrono::system_clock::to_time_t(now);
-  
+  auto now           = time::now();
+  auto currData      = time::to_time_t(now);
+  int totalRenderSec = 0;
+
   outBuff << a_nameGroupTests << std::endl;  
   outBuff << std::ctime(&currData);
     
@@ -1679,13 +1684,29 @@ void PrintResultTest(const int a_startTestsId, std::vector<TestFunc>& a_tests, s
 
   for (int i = a_startTestsId; i < a_tests.size(); ++i)
   {       
-    const auto start = std::chrono::system_clock::now();        
-    const bool res   = a_tests[i].func();    
-    const auto end   = std::chrono::system_clock::now();    
+    const auto start         = time::now();
+    const bool res           = a_tests[i].func();    
+    const auto end           = time::now();
 
-    std::chrono::duration<float> rendTime = end - start;
+    failedTests             += (res == true) ? 0 : 1;
+    const timeFloat rendTime = end - start;
+    totalRenderSec          += rendTime.count();
     PrintResultSingleTest(res, a_fout, a_tests[i].name, rendTime.count());    
   }
+      
+  const float rendTimeMinutes     = totalRenderSec / 60.0F;
+  const int   rendTimeSec         = (int)((rendTimeMinutes - (int)(rendTimeMinutes)) * 60.0F);
+
+  std::ostringstream outBuff2;
+
+  outBuff2 << std::endl;
+  outBuff2 << std::setw(20) << std::left << "Tests complete."   << std::endl;
+  outBuff2 << std::setw(20) << std::left << "All render time: " << (int)(rendTimeMinutes) << " min. " << rendTimeSec    << " sec." << std::endl;
+  outBuff2 << std::setw(20) << std::left << "Failed tests: "    << failedTests            << " from " << a_tests.size() << " tests." << std::endl;
+  outBuff2 << std::setw(20) << std::left << "Failed tests: "    << (int)(failedTests * 100.0F / max(a_tests.size(), 1)) << " %";
+
+  std::cout << outBuff2.str() << std::endl;
+  a_fout    << outBuff2.str() << std::endl;
 }
 
 

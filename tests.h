@@ -93,9 +93,11 @@ namespace TEST_UTILS
   HRLightRef CreateLight(const wchar_t* a_name, const wchar_t* a_type, const wchar_t* a_shape,
     const wchar_t* a_distribution, const float a_halfLength, const float a_halfWidth,
     const wchar_t* a_color, const float a_multiplier, const bool a_spot = false, 
-    const float a_innerRadius = 40, const float a_outerRadius = 60);
+    const float a_innerRadius = 40, const float a_outerRadius = 60, const float a_shadowSoft = 0);
 
-  HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier);
+  HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier,
+    const wchar_t* a_distribution = L"uniform", const int sun_id = 0, const float a_turbidity = 2.0F);
+    
 
   //camera
   void CreateCamera(const float a_fov, const wchar_t* a_position, const wchar_t* a_lookAt,

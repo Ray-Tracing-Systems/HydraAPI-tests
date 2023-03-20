@@ -113,7 +113,7 @@ namespace GEO_TESTS
     // Render settings
     ////////////////////
     
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 256);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 64, 64);
     
     ////////////////////
     // Create scene
@@ -192,7 +192,7 @@ namespace GEO_TESTS
     // Render settings
     ////////////////////
     
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 1024);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 256);
     
     ////////////////////
     // Create scene
@@ -278,7 +278,7 @@ namespace GEO_TESTS
     // Render settings
     ////////////////////
     
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 1024);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 300, 300);
     
     ////////////////////
     // Create scene
@@ -460,76 +460,57 @@ namespace GEO_TESTS
     // Materials
     ////////////////////    
     
-    HRMaterialRef matGray     = hrMaterialCreate(L"matGray");
-    HRMaterialRef matTrunk    = hrMaterialCreate(L"Trunk");
-    HRMaterialRef matWigglers = hrMaterialCreate(L"Wigglers");
-    HRMaterialRef matBranches = hrMaterialCreate(L"Branches");
-    HRMaterialRef matPllarRts = hrMaterialCreate(L"PillarRoots");
-    HRMaterialRef matLeaves   = hrMaterialCreate(L"Leaves");
-    HRMaterialRef matCanopy   = hrMaterialCreate(L"Canopy");
-    HRMaterialRef matCube     = hrMaterialCreate(L"CubeMap");
+    auto matGray     = hrMaterialCreate(L"matGray");
+    auto matTrunk    = hrMaterialCreate(L"Trunk");
+    auto matWigglers = hrMaterialCreate(L"Wigglers");
+    auto matBranches = hrMaterialCreate(L"Branches");
+    auto matPllarRts = hrMaterialCreate(L"PillarRoots");
+    auto matLeaves   = hrMaterialCreate(L"Leaves");
+    auto matCanopy   = hrMaterialCreate(L"Canopy");
+    auto matCube     = hrMaterialCreate(L"CubeMap");
     
-    HRTextureNodeRef texPattern = hrTexture2DCreateFromFile(L"data/textures/bigleaf3.tga");
-    HRTextureNodeRef texture1   = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
+    auto texPattern  = hrTexture2DCreateFromFile(L"data/textures/bigleaf3.tga");
+    auto texture1    = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
 
     hrMaterialOpen(matCube, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matCube);
-      
-      auto diff = matNode.append_child(L"diffuse");
-      
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
-      
-      hrTextureBind(texture1, diff.child(L"color"));
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5", L"lambert", 0, texture1);      
     }
     hrMaterialClose(matCube);
     
     hrMaterialOpen(matGray, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matGray);
-      
-      auto diff = matNode.append_child(L"diffuse");
-      
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.5 0.5");
-      
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5");      
     }
     hrMaterialClose(matGray);
     
     hrMaterialOpen(matTrunk, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matTrunk);
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.345098 0.215686 0.0117647");
+      AddDiffuseNode(matNode, L"0.345098 0.215686 0.0117647");
     }
     hrMaterialClose(matTrunk);
     
     hrMaterialOpen(matWigglers, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matWigglers);
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.345098 0.215686 0.0117647");
+      AddDiffuseNode(matNode, L"0.345098 0.215686 0.0117647");
     }
     hrMaterialClose(matWigglers);
     
     hrMaterialOpen(matBranches, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matBranches);
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.345098 0.215686 0.0117647");
+      AddDiffuseNode(matNode, L"0.345098 0.215686 0.0117647");
     }
     hrMaterialClose(matBranches);
     
     hrMaterialOpen(matPllarRts, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matPllarRts);
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.345098 0.215686 0.0117647");
+      AddDiffuseNode(matNode, L"0.345098 0.215686 0.0117647");
     }
     hrMaterialClose(matPllarRts);
     
@@ -538,10 +519,7 @@ namespace GEO_TESTS
     hrMaterialOpen(matLeaves, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matLeaves);
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.0533333 0.208627 0.00627451");
-      
+      AddDiffuseNode(matNode, L"0.0533333 0.208627 0.00627451");      
       auto opacity = matNode.append_child(L"opacity");
       auto texNode = hrTextureBind(texPattern, opacity);
       
@@ -551,9 +529,7 @@ namespace GEO_TESTS
     hrMaterialOpen(matCanopy, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matCanopy);
-      auto diff = matNode.append_child(L"diffuse");
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.0941176 0.4 0");
+      AddDiffuseNode(matNode, L"0.0941176 0.4 0");
     }
     hrMaterialClose(matCanopy);
     
@@ -562,136 +538,68 @@ namespace GEO_TESTS
     // Meshes
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    HRMeshRef cubeR    = HRMeshFromSimpleMesh(L"cubeR", CreateCube(2.0f), matCube.id);
-    HRMeshRef pillar   = HRMeshFromSimpleMesh(L"pillar", CreateCube(1.0f), matGray.id);
-    HRMeshRef sphereG  = HRMeshFromSimpleMesh(L"sphereG", CreateSphere(4.0f, 64), matTrunk.id);
-    HRMeshRef torusB   = HRMeshFromSimpleMesh(L"torusB", CreateTorus(0.8f, 2.0f, 64, 64), matTrunk.id);
-    HRMeshRef planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(10000.0f), matGray.id);
+    auto cubeR    = HRMeshFromSimpleMesh(L"cubeR", CreateCube(2.0f), matCube.id);
+    auto pillar   = HRMeshFromSimpleMesh(L"pillar", CreateCube(1.0f), matGray.id);
+    auto sphereG  = HRMeshFromSimpleMesh(L"sphereG", CreateSphere(4.0f, 64), matTrunk.id);
+    auto torusB   = HRMeshFromSimpleMesh(L"torusB", CreateTorus(0.8f, 2.0f, 64, 64), matTrunk.id);
+    auto planeRef = HRMeshFromSimpleMesh(L"my_plane", CreatePlane(10000.0f), matGray.id);
     
-    HRMeshRef treeRef  = hrMeshCreateFromFileDL(L"data/meshes/bigtree.vsgf");
+    auto treeRef  = hrMeshCreateFromFileDL(L"data/meshes/bigtree.vsgf");
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Light
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
+
+    auto sun = CreateLight(L"Light01", L"directional", L"point", L"directional", 0, 0, L"1.0 0.85 0.64",
+      2.0f * IRRADIANCE_TO_RADIANCE, true, 0, 10000, 1);
+
+    auto sky = CreateSky(L"sky", L"1 1 1", 1, L"perez", sun.id, 2);
     
-    HRLightRef sky = hrLightCreate(L"sky");
-    HRLightRef sun = hrLightCreate(L"sun");
-    
-    hrLightOpen(sky, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(sky);
-      
-      lightNode.attribute(L"type").set_value(L"sky");
-      lightNode.attribute(L"distribution").set_value(L"perez");
-      
-      auto intensityNode = lightNode.append_child(L"intensity");
-      
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
-      
-      auto sunModel = lightNode.append_child(L"perez");
-      
-      sunModel.append_attribute(L"sun_id").set_value(sun.id);
-      sunModel.append_attribute(L"turbidity").set_value(2.0f);
-      
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(sky);
-    
-    hrLightOpen(sun, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(sun);
-      
-      lightNode.attribute(L"type").set_value(L"directional");
-      lightNode.attribute(L"shape").set_value(L"point");
-      lightNode.attribute(L"distribution").set_value(L"directional");
-      
-      auto sizeNode = lightNode.append_child(L"size");
-      sizeNode.append_attribute(L"inner_radius").set_value(L"0.0");
-      sizeNode.append_attribute(L"outer_radius").set_value(L"10000.0");
-      
-      auto intensityNode = lightNode.append_child(L"intensity");
-      
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 0.85 0.64");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(2.0f*IRRADIANCE_TO_RADIANCE);
-      
-      lightNode.append_child(L"shadow_softness").append_attribute(L"val").set_value(1.0f);
-      
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(sun);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Camera
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
+
+    CreateCamera(45, L"0 15 25", L"5 10 0");
     
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
-    
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      auto camNode = hrCameraParamNode(camRef);
-      
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-      
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 15 25");
-      camNode.append_child(L"look_at").text().set(L"5 10 0");
-    }
-    hrCameraClose(camRef);
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
     // Render settings
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    //HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 2048);
-    
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
+
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_IMG_SIZE, TEST_IMG_SIZE, 256, 256);
+        
+    ////////////////////
     // Create scene
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    
-    using namespace LiteMath;
+    ////////////////////
+
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+
+    hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+        
+    AddMeshToScene(scnRef, planeRef, float3(0, -1, 0));    
     
     float4x4 mRot, mRot2;
     float4x4 mTranslate;
     float4x4 mScale;
-    float4x4 mRes;
-    
-    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
-    
-    hrSceneOpen(scnRef, HR_WRITE_DISCARD);
-    ///////////
+    float4x4 mRes;    
     
     mTranslate.identity();
     mRes.identity();
-    mRot.identity();
-    
-    
-    mTranslate = translate4x4(float3(0.0f, -1.0f, 0.0f));
-    mRes = mul(mTranslate, mRes);
-    
-    hrMeshInstance(scnRef, planeRef, mRes.L());
-    
-    ///////////
-    
-    mTranslate.identity();
-    mRes.identity();
-    mRot.identity();
-    
+    mRot.identity();    
     mTranslate = translate4x4(float3(-4.75f, 1.0f, 5.0f));
-    mRot = rotate4x4Y(60.0f*DEG_TO_RAD);
-    mRes = mul(mTranslate, mRot);
-    
+    mRot       = rotate4x4Y(60.0f*DEG_TO_RAD);
+    mRes       = mul(mTranslate, mRot);
     hrMeshInstance(scnRef, cubeR, mRes.L());
+
+    //AddMeshToScene(scnRef, cubeR, float3(-4.75f, 1, 5), float3(0.0F, -60.0F, 0.0F)); // correct with rot. Y -60, why?
     
     auto rgen = simplerandom::RandomGenInit(125);
     
     {
-      const float dist1 = 40.0f;
+      mTranslate.identity();
+      mRes.identity();
+      mRot.identity();
+
+      const float dist1     = 40.0f;
       const int SQUARESIZE1 = 100;
       
       for (int i = -SQUARESIZE1; i < SQUARESIZE1; i++)
@@ -704,15 +612,20 @@ namespace GEO_TESTS
           mTranslate = translate4x4(float3(pos.x, 1.0f, pos.z));
           mRot       = rotate4x4Y(simplerandom::rnd(rgen, -180.0f*DEG_TO_RAD, +180.0f*DEG_TO_RAD));
           mRes       = mul(mTranslate, mRot);
-          
+
           hrMeshInstance(scnRef, cubeR, mRes.L());
+          //AddMeshToScene(scnRef, cubeR, float3(pos.x, 1, pos.z), float3(0, simplerandom::rnd(rgen, -180.0f * DEG_TO_RAD, 180.0f * DEG_TO_RAD), 0)); // why move trees?
         }
       }
     }
     
     ///////////
     {
-      const float dist = 40.0f;
+      mTranslate.identity();
+      mRes.identity();
+      mRot.identity();
+
+      const float dist     = 40.0f;
       const int SQUARESIZE = 100;
       
       for (int i = -SQUARESIZE; i < SQUARESIZE; i++)
@@ -729,17 +642,14 @@ namespace GEO_TESTS
           
           if ((simplerandom::rnd(rgen, 0.0f, 1.0f) > 0.5f))
             hrMeshInstance(scnRef, treeRef, mRes.L());
+            //AddMeshToScene(scnRef, treeRef, pos, float3(0, simplerandom::rnd(rgen, -180.0f * DEG_TO_RAD, +180.0f * DEG_TO_RAD), 0), float3(5, 5, 5)); // not equals with ref.
         }
       }
     }
     
     ///////////
-    ///////////
     
-    mRes.identity();
-    hrLightInstance(scnRef, sky, mRes.L());
-    
-    ///////////
+    AddLightToScene(scnRef, sky);
     
     mTranslate.identity();
     mRes.identity();
@@ -751,38 +661,11 @@ namespace GEO_TESTS
     mRot2 = rotate4x4Z(30.f*DEG_TO_RAD);
     mRes  = mul(mRot2, mRot);
     mRes  = mul(mTranslate, mRes);
-    
-    hrLightInstance(scnRef, sun, mRes.L());
-    
-    
-    hrSceneClose(scnRef);
-    
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-    
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      auto node = hrRenderParamNode(renderRef);
-      
-      node.append_child(L"width").text()  = TEST_IMG_SIZE;
-      node.append_child(L"height").text() = TEST_IMG_SIZE;
-      
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-      
-      node.append_child(L"trace_depth").text() = L"5";
-      node.append_child(L"diff_trace_depth").text() = L"3";
-      
-      node.append_child(L"pt_error").text() = L"2";
-      node.append_child(L"minRaysPerPixel").text() = 256;
-      node.append_child(L"maxRaysPerPixel").text() = 2048;
-    }
-    hrRenderClose(renderRef);
-    
+    hrLightInstance(scnRef, sun, mRes.L());    
+    //AddLightToScene(scnRef, sun, float3(200.0f, 200.0f, -100.0f), float3(10, 0, 30)); // small offset, why?!
+        
+    ///////////
+    hrSceneClose(scnRef);        
     hrFlush(scnRef, renderRef);
     
     ////////////////////
@@ -794,7 +677,7 @@ namespace GEO_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 20);
+    return check_images(ws2s(nameTest).c_str(), 1, 27);
   }
   
 
@@ -931,7 +814,7 @@ namespace GEO_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 50);
+    return check_images(ws2s(nameTest).c_str());
   }
 
   
@@ -1000,7 +883,7 @@ namespace GEO_TESTS
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 64, 64);
 
     ////////////////////
     // Create scene
@@ -1027,7 +910,7 @@ namespace GEO_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 20);
+    return check_images(ws2s(nameTest).c_str());
   }
   
 
@@ -1096,7 +979,7 @@ namespace GEO_TESTS
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 128, 128);
         
     ////////////////////
     // Create scene
@@ -1123,7 +1006,7 @@ namespace GEO_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 20);
+    return check_images(ws2s(nameTest).c_str());
   }
   
 
@@ -1192,7 +1075,7 @@ namespace GEO_TESTS
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 128, 128);
 
     ////////////////////
     // Create scene
@@ -1219,7 +1102,6 @@ namespace GEO_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 20);
-  }
-  
+    return check_images(ws2s(nameTest).c_str());
+  }  
 }

@@ -132,13 +132,13 @@ int main(int argc, const char** argv)
 
   try
   {
-    //test40_several_changes();
-    //test41_load_library_basic();
-
     /////////////////////    
     // API_TESTS
     /////////////////////
 
+    //test40_several_changes();
+    //test41_load_library_basic();
+    //test77_save_gbuffer_layers();
     //test82_proc_texture(); // error
     //test87_proc_texture_reflect();
     //test90_proc_tex_normalmap();
@@ -163,13 +163,18 @@ int main(int argc, const char** argv)
     //LGHT_TESTS::test_203_sky_hdr();
 
     /////////////////////    
+    // 3DSMAX_TESTS
+    /////////////////////
+
+    //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
+    
+    /////////////////////    
     // EXTENSIONS_TESTS
     /////////////////////
 
     //EXTENSIONS_TESTS::test_ext_vtex_1();
     //EXTENSIONS_TESTS::test_ext_vtex_3();
     //EXTENSIONS_TESTS::test_ext_vtex_7();
-
 
     /////////////////////    
     // SPECTRAL_TESTS
@@ -184,7 +189,7 @@ int main(int argc, const char** argv)
     /////////////////////
     // All tests
     /////////////////////
-
+    
     run_all_api_tests();
     run_all_geo_tests();
     run_all_mtl_tests();
@@ -192,13 +197,10 @@ int main(int argc, const char** argv)
     run_all_alg_tests();
     run_all_3dsmax_tests();
     run_all_vector_tex_tests();
+    run_all_microfacet_torrance_sparrow();
 
 
-    //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
-    //run_all_microfacet_torrance_sparrow();
 
-    //std::cout << test77_save_gbuffer_layers() << std::endl;
-    //std::cout << "MSE = " << g_MSEOutput << std::endl;
 
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
 

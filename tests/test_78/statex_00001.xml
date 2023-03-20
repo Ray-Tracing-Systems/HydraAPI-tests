@@ -114,10 +114,18 @@
 </render_lib>
 <scenes>
   <scene id="0" name="my scene" discard="1" bbox="-2.19693 2.74329 -1.2 1.19856 -7 -3">
-    <instance id="0" mesh_id="3" rmap_id="-1" scn_id="0" scn_sid="0" matrix="-0.766044 0 0.642788 0 -0.413176 -0.766044 -0.492404 0.25 0.492404 -0.642788 0.586824 -5 0 0 0 1 " />
-    <instance id="1" mesh_id="3" rmap_id="-1" scn_id="0" scn_sid="0" matrix="0.766044 0 -0.642788 -1.5 0 1 0 -0.5 0.642788 0 0.766044 -4 0 0 0 1 " />
-    <instance id="2" mesh_id="3" rmap_id="-1" scn_id="0" scn_sid="0" matrix="0.939693 0 0.34202 2 0.219846 0.766044 -0.604023 0.25 -0.262003 0.642788 0.719846 -5 0 0 0 1 " />
-    <instance id="3" mesh_id="1" rmap_id="-1" scn_id="0" scn_sid="0" matrix="1 0 0 0 0 1 0 -1 0 0 1 -5 0 0 0 1 " />
+    <instance id="0" mesh_id="3" rmap_id="-1" scn_id="0" scn_sid="0" matrix="-0.766044 0 0.642788 0 -0.413176 -0.766044 -0.492404 0.25 0.492404 -0.642788 0.586824 -5 0 0 0 1 ">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance>
+    <instance id="1" mesh_id="3" rmap_id="-1" scn_id="0" scn_sid="0" matrix="0.766044 0 -0.642788 -1.5 0 1 0 -0.5 0.642788 0 0.766044 -4 0 0 0 1 ">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance>
+    <instance id="2" mesh_id="3" rmap_id="-1" scn_id="0" scn_sid="0" matrix="0.939693 0 0.34202 2 0.219846 0.766044 -0.604023 0.25 -0.262003 0.642788 0.719846 -5 0 0 0 1 ">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance>
+    <instance id="3" mesh_id="1" rmap_id="-1" scn_id="0" scn_sid="0" matrix="1 0 0 0 0 1 0 -1 0 0 1 -5 0 0 0 1 ">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance>
     <instance_light id="0" light_id="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " lgroup_id="-1" />
   </scene>
 </scenes>
