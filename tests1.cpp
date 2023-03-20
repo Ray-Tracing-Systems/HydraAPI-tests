@@ -1702,7 +1702,7 @@ void PrintResultTest(const int a_startTestsId, std::vector<TestFunc>& a_tests, s
   outBuff2 << std::endl;
   outBuff2 << std::setw(20) << std::left << "Tests complete."   << std::endl;
   outBuff2 << std::setw(20) << std::left << "All render time: " << (int)(rendTimeMinutes) << " min. " << rendTimeSec    << " sec." << std::endl;
-  outBuff2 << std::setw(20) << std::left << "Failed tests: "    << failedTests            << " from " << a_tests.size() << " tests." << std::endl;
+  outBuff2 << std::setw(20) << std::left << "Failed tests: "    << failedTests            << " of " << a_tests.size() << " tests." << std::endl;
   outBuff2 << std::setw(20) << std::left << "Failed tests: "    << (int)(failedTests * 100.0F / max(a_tests.size(), 1)) << " %";
 
   std::cout << outBuff2.str() << std::endl;

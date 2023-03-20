@@ -268,28 +268,13 @@ bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
   
   hrFlush(scnRef, renderRef);
   
-  while (true)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    
-    HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-    
-    if (info.haveUpdateFB)
-    {
-      auto pres = std::cout.precision(2);
-      std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-      std::cout.precision(pres);
-    }
-    
-    if (info.finalUpdate)
-      break;
-  }
-  
+  RenderProgress(renderRef);
+
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_401/z_out.png");
   
-  return check_images("test_401", 1, 27);
-  
+  return check_images("test_401", 1, 27);  
 }
+
 
 bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
 {  
@@ -523,28 +508,13 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
   
   hrFlush(scnRef, renderRef);
   
-  while (true)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    
-    HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-    
-    if (info.haveUpdateFB)
-    {
-      auto pres = std::cout.precision(2);
-      std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-      std::cout.precision(pres);
-    }
-    
-    if (info.finalUpdate)
-      break;
-  }
-  
+  RenderProgress(renderRef);
+
   hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_402/z_out.png");
   
-  return check_images("test_402", 1, 37);
-  //return false;
+  return check_images("test_402", 1, 37);  
 }
+
 
 bool ALGR_TESTS::test_403_light_inside_double_glass()
 {
@@ -800,13 +770,14 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
       {
         hrRenderOpen(renderRef, HR_OPEN_EXISTING);   
         {
-          auto node = hrRenderParamNode(renderRef);
+          auto node                                    = hrRenderParamNode(renderRef);
           node.force_child(L"method_primary").text()   = L"pathtracing";
           node.force_child(L"method_secondary").text() = L"pathtracing";
           node.force_child(L"method_tertiary").text()  = L"pathtracing";
           node.force_child(L"method_caustic").text()   = L"pathtracing";
+          node.force_child(L"qmc_variant").text()      = QMC_ALL;
 
-          node.force_child(L"maxRaysPerPixel").text()  = 1024;
+          node.force_child(L"maxRaysPerPixel").text()  = 2048;
         }
         hrRenderClose(renderRef);
       }
@@ -816,11 +787,12 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
       {
         hrRenderOpen(renderRef, HR_OPEN_EXISTING);  
         {
-          auto node = hrRenderParamNode(renderRef);
+          auto node                                    = hrRenderParamNode(renderRef);
           node.force_child(L"method_primary").text()   = L"IBPT";
           node.force_child(L"method_secondary").text() = L"IBPT";
           node.force_child(L"method_tertiary").text()  = L"IBPT";
           node.force_child(L"method_caustic").text()   = L"IBPT";
+          node.force_child(L"qmc_variant").text()      = QMC_ALL;
 
           node.force_child(L"maxRaysPerPixel").text()  = 512;
         }
@@ -833,15 +805,16 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
       {
         hrRenderOpen(renderRef, HR_OPEN_EXISTING);    // disable automatic process run for hrCommit, ... probably need to add custom params to tis function
         {
-          auto node = hrRenderParamNode(renderRef);
+          auto node                                    = hrRenderParamNode(renderRef);
           node.force_child(L"method_primary").text()   = L"mmlt";
           node.force_child(L"method_secondary").text() = L"mmlt";
           node.force_child(L"method_tertiary").text()  = L"mmlt";
           node.force_child(L"method_caustic").text()   = L"mmlt";
+          node.force_child(L"qmc_variant").text()      = QMC_ALL;
 
-          node.append_child(L"mmlt_burn_iters").text() = 256;
-          node.append_child(L"mmlt_step_power").text() = 1024.0f;
-          node.append_child(L"mmlt_step_size").text()  = 0.5f;    
+          node.force_child(L"mmlt_burn_iters").text() = 256;
+          node.force_child(L"mmlt_step_power").text() = 1024.0f;
+          node.force_child(L"mmlt_step_size").text()  = 0.5f;    
 
           node.force_child(L"maxRaysPerPixel").text()  = 1024;
         }
@@ -856,31 +829,14 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
 
     Timer timer(true);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
-
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
-
-      if (info.finalUpdate)
-        break;
-    }
+    RenderProgress(renderRef);
 
     hrRenderSaveFrameBufferLDR(renderRef, a_outPath[algId].c_str());
 
     std::cout << std::endl << "render time = " << timer.getElapsed() << " sec " << std::endl;
-    std::cout << std::endl << "<--- next algorithm --->" << std::endl;
-    
+    std::cout << std::endl << "<--- next algorithm --->" << std::endl;    
   }
 }
-
 
 
 bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test should check situation when scene is not found.
@@ -920,7 +876,7 @@ bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test 
 
 bool ALGR_TESTS::test_405_cornell_with_mirror()
 {
-  hrErrorCallerPlace(L"test405");                            // scene not found ?
+  hrErrorCallerPlace(L"test405");                            
   if(!hrSceneLibraryOpen(L"tests_algorithm/test_405", HR_OPEN_EXISTING))
     return false;
 
@@ -949,12 +905,13 @@ bool ALGR_TESTS::test_405_cornell_with_mirror()
   remove("tests_algorithm/test_405/change_00002.xml");
   remove("tests_algorithm/test_405/change_00003.xml");
 
-  return check_images("test_405", 3, 50);
+  return check_images("test_405", 3, 30);
 }
+
 
 bool ALGR_TESTS::test_406_env_glass_ball_caustic()
 {
-  hrErrorCallerPlace(L"test406");                            // scene not found ?
+  hrErrorCallerPlace(L"test406");                            
   if(!hrSceneLibraryOpen(L"tests_algorithm/test_406", HR_OPEN_EXISTING))
     return false;
 
@@ -983,5 +940,5 @@ bool ALGR_TESTS::test_406_env_glass_ball_caustic()
   remove("tests_algorithm/test_406/change_00002.xml");
   remove("tests_algorithm/test_406/change_00003.xml");
 
-  return check_images("test_406", 3, 40);
+  return check_images("test_406", 3, 20);
 }

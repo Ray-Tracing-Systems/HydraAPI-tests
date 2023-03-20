@@ -163,10 +163,16 @@ int main(int argc, const char** argv)
     //LGHT_TESTS::test_203_sky_hdr();
 
     /////////////////////    
+    // ALGR_TESTS
+    /////////////////////
+    
+    
+   
+    /////////////////////    
     // 3DSMAX_TESTS
     /////////////////////
-
-    //run_single_3dsmax_test(L"3dsMaxTests/012_glossy_zero");
+        
+    //run_single_3dsmax_test(L"3dsMaxTests/327_Anisotropy_and_AreaLight_2") - crash?
     
     /////////////////////    
     // EXTENSIONS_TESTS
@@ -190,14 +196,14 @@ int main(int argc, const char** argv)
     // All tests
     /////////////////////
     
-    run_all_api_tests();
-    run_all_geo_tests();
-    run_all_mtl_tests();
-    run_all_lgt_tests();
-    run_all_alg_tests();
-    run_all_3dsmax_tests();
-    run_all_vector_tex_tests();
-    run_all_microfacet_torrance_sparrow();
+    //run_all_api_tests();
+    //run_all_geo_tests();
+    //run_all_mtl_tests();
+    //run_all_lgt_tests();
+    //run_all_alg_tests();
+    //run_all_3dsmax_tests(); 
+    //run_all_vector_tex_tests(); all wrong - need inv. gamma (pow 2.2) as textures for linear result.
+    //run_all_microfacet_torrance_sparrow();
 
 
 

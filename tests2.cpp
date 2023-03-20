@@ -85,12 +85,12 @@ bool check_images(const char* a_path, const int a_numImages, const float a_mse)
 
     const float mseVal = HydraRender::MSE_RGB_LDR(image1, image2);
     g_MSEOutput        = fmax(g_MSEOutput, mseVal);    
-    std::cout << path1.c_str() << " MSE: " << g_MSEOutput << std::endl;
-    result             = result && (mseVal <= a_mse);
-    int a = 2;
+    std::cout << path1.c_str() << " MSE: " << mseVal << std::endl;
+    result = result && (mseVal <= a_mse);
   }
   return result;
 }
+
 
 bool check_images_HDR(const char* a_path, const int a_numImages, const float a_mse)
 {
