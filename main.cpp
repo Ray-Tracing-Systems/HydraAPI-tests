@@ -166,7 +166,7 @@ int main(int argc, const char** argv)
     // ALGR_TESTS
     /////////////////////
     
-    
+    //ALGR_TESTS::test_404_cornell_glossy(); - IBPT and MMLT not equal with PT.
    
     /////////////////////    
     // 3DSMAX_TESTS
@@ -203,11 +203,10 @@ int main(int argc, const char** argv)
     //run_all_alg_tests();
     //run_all_3dsmax_tests(); 
     //run_all_vector_tex_tests(); all wrong - need inv. gamma (pow 2.2) as textures for linear result.
+
+
+
     //run_all_microfacet_torrance_sparrow();
-
-
-
-
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
 
     terminate_opengl();

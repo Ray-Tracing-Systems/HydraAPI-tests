@@ -816,7 +816,7 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
           node.force_child(L"mmlt_step_power").text() = 1024.0f;
           node.force_child(L"mmlt_step_size").text()  = 0.5f;    
 
-          node.force_child(L"maxRaysPerPixel").text()  = 1024;
+          node.force_child(L"maxRaysPerPixel").text() = 1024;
         }
         hrRenderClose(renderRef);
       }
@@ -839,9 +839,9 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
 }
 
 
-bool ALGR_TESTS::test_404_cornell_glossy()                   // todo: this test should check situation when scene is not found.
+bool ALGR_TESTS::test_404_cornell_glossy()                   
 {
-  hrErrorCallerPlace(L"test404");                            // scene not found ?
+  hrErrorCallerPlace(L"test404");                            
   if(!hrSceneLibraryOpen(L"tests_algorithm/test_404", HR_OPEN_EXISTING))
     return false;
 
