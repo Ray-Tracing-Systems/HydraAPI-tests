@@ -23,6 +23,8 @@
     <instance id="3" mesh_id="1" rmap_id="-1" scn_id="0" scn_sid="0" matrix="1 0 0 0 0 1 0 -1 0 0 1 -5 0 0 0 1 ">
       <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
     </instance>
-    <instance_light id="0" light_id="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " lgroup_id="-1" />
+    <instance_light id="0" light_id="0" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 " lgroup_id="-1">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance_light>
   </scene>
 </scenes>

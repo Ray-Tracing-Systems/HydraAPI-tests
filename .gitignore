@@ -60,10 +60,6 @@ tests_f/
 #--------------------------------------------------------------------------------------
 
 #Files
-z_microfacet.txt
-z_3dsmax_tests.txt
-z_test_*.txt
-z_vector*.txt
 z_out*.*
 tests_images/test_macbeth/*
 !tests_images/test_macbeth*/w_ref*.*

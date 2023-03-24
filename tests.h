@@ -120,6 +120,54 @@ namespace TEST_UTILS
   HRMeshRef CreateTriStrip(int rows, int cols, float size);
 
   void RenderProgress(HRRenderRef& a_renderRef);
+
+  //Generate Report
+  struct ResultTest
+  {
+  public:
+    int          m_renderTime  = 0.0F;
+    std::wstring m_nameTest    = L"dummy test";
+    std::wstring m_linkRefImg  = L"link ref image.";
+    std::wstring m_linkRendImg = L"link render image";
+
+    void SetMse(const float a_mse)
+    {
+      m_mse = round(a_mse * 100.0F) * 0.01F;
+    }
+
+    float GetMse() { return m_mse; }
+
+    void SetStrResult(const bool a_res, const bool a_skip)
+    {
+      if (a_skip)
+      {
+        m_result      = L"skipped";
+        m_mse         = 0;
+        m_renderTime  = 0;
+        m_linkRefImg  = L"";
+        m_linkRendImg = L"";
+      }
+      else if (a_res == true)
+      {
+        m_result      = L"ok";
+        m_linkRefImg  = L"";
+        m_linkRendImg = L"";
+      }
+      else
+        m_result = L"FAILED!";
+    }
+
+    std::wstring GetStrResult() { return m_result; }
+
+  private:
+    float        m_mse = 0.0F;
+    std::wstring m_result;
+  };
+
+
+  void CreateHtmlHeaderTable(const std::vector<std::wstring>& a_header, std::wofstream& a_fileOut);
+  void AddRowHtmlTable(ResultTest a_data, std::wofstream& a_fileOut);
+  void CloseHtmlTable(std::wofstream& a_fileOut);
 }
 
 using DrawFuncType = void (*)();

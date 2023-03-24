@@ -916,6 +916,43 @@ namespace TEST_UTILS
     return sky;
   }
 
+  void CreateHtmlHeaderTable(const std::vector<std::wstring>& a_header, std::wofstream& a_fileOut)
+  {
+    a_fileOut << "<head>\n";
+    a_fileOut << "<link rel = \"stylesheet\" href = \"reportStyle.css\">\n";
+    a_fileOut << "</head>\n";
+
+    a_fileOut << "<table border=\"1\">";// \" id=\"cssTable\">\n";
+    
+    a_fileOut << "  <tr>\n";
+
+    for (auto head : a_header) 
+      a_fileOut << "    <th>" << head.c_str() << "</th>\n";
+
+    a_fileOut << "  </tr>\n";
+    a_fileOut.flush();
+  }
+
+  void AddRowHtmlTable(ResultTest a_data, std::wofstream& a_fileOut)
+  {
+    a_fileOut << "  <tr>\n";
+
+    a_fileOut << "    <td>" << a_data.m_nameTest      << "</td>\n";    
+    a_fileOut << "    <td style=\"text-align: center;\">" << a_data.GetStrResult()  << "</td>\n";
+    a_fileOut << "    <td style=\"text-align: center;\">" << a_data.GetMse()        << "</td>\n";
+    a_fileOut << "    <td style=\"text-align: center;\">" << a_data.m_renderTime    << " sec. </td>\n";
+    a_fileOut << "    <td>" << a_data.m_linkRefImg    << "</td>\n";
+    a_fileOut << "    <td>" << a_data.m_linkRendImg   << "</td>\n";
+
+    a_fileOut << "  </tr>\n";
+    a_fileOut.flush();
+  }
+
+
+  void CloseHtmlTable(std::wofstream& a_fileOut)
+  {
+    a_fileOut << "</table>\n";
+  }
 
 
   HRMeshRef CreateTriStrip(int rows, int cols, float size)
