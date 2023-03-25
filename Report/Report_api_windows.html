@@ -1,5 +1,5 @@
 API tests.
-Fri Mar 24 21:27:17 2023
+Fri Mar 24 22:51:29 2023
 OS: windows
 
 <head>
@@ -89,7 +89,7 @@ OS: windows
     <td>test10_render_ogl_cube</td>
     <td style="text-align: center;">ok</td>
     <td style="text-align: center;">0</td>
-    <td style="text-align: center;">0 sec. </td>
+    <td style="text-align: center;">1 sec. </td>
     <td></td>
     <td></td>
   </tr>
@@ -201,7 +201,7 @@ OS: windows
     <td>test24_many_textures_big_data</td>
     <td style="text-align: center;">ok</td>
     <td style="text-align: center;">0</td>
-    <td style="text-align: center;">24 sec. </td>
+    <td style="text-align: center;">29 sec. </td>
     <td></td>
     <td></td>
   </tr>
@@ -209,7 +209,7 @@ OS: windows
     <td>test25_many_textures_big_data</td>
     <td style="text-align: center;">ok</td>
     <td style="text-align: center;">0</td>
-    <td style="text-align: center;">6 sec. </td>
+    <td style="text-align: center;">7 sec. </td>
     <td></td>
     <td></td>
   </tr>
@@ -225,7 +225,7 @@ OS: windows
     <td>test27_many_textures_big_data_from_mem</td>
     <td style="text-align: center;">ok</td>
     <td style="text-align: center;">0</td>
-    <td style="text-align: center;">52 sec. </td>
+    <td style="text-align: center;">64 sec. </td>
     <td></td>
     <td></td>
   </tr>
@@ -237,3 +237,577 @@ OS: windows
     <td></td>
     <td></td>
   </tr>
+  <tr>
+    <td>test29_many_textures_and_meshes</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">81 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test30_many_textures_and_meshes</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">81 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test31_procedural_texture_LDR</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.56</td>
+    <td style="text-align: center;">15 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test32_procedural_texture_HDR</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.21</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test33_update_from_file</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test34_delayed_textures_does_not_exists</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">2 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test35_cornell_with_light</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">2.44</td>
+    <td style="text-align: center;">26 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test36_update_from_memory</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.1</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test37_cornell_with_light_different_image_layers</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">2.89</td>
+    <td style="text-align: center;">31 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test38_save_mesh_and_delayed_load</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.05</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test39_mmlt_or_ibpt</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">1957.52</td>
+    <td style="text-align: center;">130 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test40_several_changes</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">12.89</td>
+    <td style="text-align: center;">52 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test41_load_library_basic</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.1</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test42_load_mesh_compressed</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">18.5</td>
+    <td style="text-align: center;">109 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test43_test_direct_light</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.82</td>
+    <td style="text-align: center;">9 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test44_four_lights_and_compressed_mesh</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.04</td>
+    <td style="text-align: center;">51 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test45_mesh_from_vsgf_opengl_bug_teapot</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test46_light_geom_rect</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test47_light_geom_disk</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test48_light_geom_sphere</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test49_light_geom_disk</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">5.43</td>
+    <td style="text-align: center;">30 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test50_open_library_several_times</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">5.43</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test55_clear_scene</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.39</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test56_mesh_change_open_existing</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">1033.2</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test57_single_instance</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">14.36</td>
+    <td style="text-align: center;">4 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test59_cornell_water_mlt</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test60_debug_print_and_cant_load_mesh</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">14.36</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test61_cornell_with_light_near_wall_and_glossy_wall</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">2.62</td>
+    <td style="text-align: center;">55 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test64_several_changes_light_area</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">44.23</td>
+    <td style="text-align: center;">39 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test65_several_changes_light_rect</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">7.12</td>
+    <td style="text-align: center;">76 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test66_fast_render_no_final_update</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">1 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test67_fast_empty_scene</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test68_scene_library_file_info</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test70_area_lights16</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">5.09</td>
+    <td style="text-align: center;">47 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test71_out_of_memory</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">5.09</td>
+    <td style="text-align: center;">7 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test74_frame_buffer_line</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.59</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test75_repeated_render</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">6.87</td>
+    <td style="text-align: center;">25 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test76_empty_mesh</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">10 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test77_save_gbuffer_layers</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">1e+06</td>
+    <td style="text-align: center;">3 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test78_material_remap_list1</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.05</td>
+    <td style="text-align: center;">13 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test79_material_remap_list2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">2.62</td>
+    <td style="text-align: center;">16 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test80_lt_rect_image</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">9.88</td>
+    <td style="text-align: center;">187 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test81_custom_attributes</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.13</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test82_proc_texture</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.01</td>
+    <td style="text-align: center;">26 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test83_proc_texture2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">2.9</td>
+    <td style="text-align: center;">17 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test84_proc_texture2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.46</td>
+    <td style="text-align: center;">25 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test85_proc_texture_ao</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.18</td>
+    <td style="text-align: center;">45 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test86_proc_texture_ao_dirt</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.32</td>
+    <td style="text-align: center;">45 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test87_proc_texture_reflect</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">6.52</td>
+    <td style="text-align: center;">18 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test88_proc_texture_convex_rust</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.3</td>
+    <td style="text-align: center;">43 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test89_proc_texture_dirty</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">7.46</td>
+    <td style="text-align: center;">18 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test90_proc_tex_normalmap</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">2.72</td>
+    <td style="text-align: center;">17 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test91_proc_tex_bump</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.02</td>
+    <td style="text-align: center;">31 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test92_proc_tex_bump2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.96</td>
+    <td style="text-align: center;">36 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test95_bump</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">16.08</td>
+    <td style="text-align: center;">82 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test96_hexaplanar</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">24.69</td>
+    <td style="text-align: center;">14 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test97_camera_from_matrices</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.74</td>
+    <td style="text-align: center;">7 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td style="text-align: center;">skipped</td>
+    <td style="text-align: center;">0</td>
+    <td style="text-align: center;">0 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test99_triplanar</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">588.27</td>
+    <td style="text-align: center;">19 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+</table>
+
+Tests complete.     
+All render time:    27 min. 59 sec.
+Failed tests:       4 of 99 tests.
+Failed tests:       4 %

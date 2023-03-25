@@ -1,0 +1,389 @@
+Lights tests.
+Sat Mar 25 00:04:40 2023
+OS: windows
+
+<head>
+<link rel = "stylesheet" href = "reportStyle.css">
+</head>
+<table border="1">  <tr>
+    <th>TEST NAME</th>
+    <th>RESULT</th>
+    <th>MSE</th>
+    <th>RENDER TIME</th>
+    <th>LINK REF IMAGES</th>
+    <th>LINK RENDER IMAGES</th>
+  </tr>
+  <tr>
+    <td>test_200_spot</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">6.7</td>
+    <td style="text-align: center;">30 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_201_sphere</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">25.25</td>
+    <td style="text-align: center;">31 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_202_sky_color</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.89</td>
+    <td style="text-align: center;">19 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_203_sky_hdr</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.43</td>
+    <td style="text-align: center;">20 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_204_sky_hdr_rotate</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.89</td>
+    <td style="text-align: center;">39 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_205_sky_and_directional_sun</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.17</td>
+    <td style="text-align: center;">17 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_206_ies1</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.72</td>
+    <td style="text-align: center;">30 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_207_ies2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.65</td>
+    <td style="text-align: center;">30 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_208_ies3</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.49</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_209_skyportal</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">16.17</td>
+    <td style="text-align: center;">51 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_210_skyportal_hdr</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">2016.52</td>
+    <td style="text-align: center;">81 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test_211_sky_and_sun_perez</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">5.61</td>
+    <td style="text-align: center;">17 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_212_skyportal_sun</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">23.59</td>
+    <td style="text-align: center;">51 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_213_point_omni</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">12.07</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_214_sky_ldr</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.54</td>
+    <td style="text-align: center;">22 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_215_light_scale_intensity</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">15.55</td>
+    <td style="text-align: center;">11 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_216_ies4</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">5.39</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_217_cylinder</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.06</td>
+    <td style="text-align: center;">30 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_218_cylinder2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">11.51</td>
+    <td style="text-align: center;">27 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_219_cylinder_tex</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">7.77</td>
+    <td style="text-align: center;">27 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_220_cylinder_tex2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">10.98</td>
+    <td style="text-align: center;">27 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_221_cylinder_tex3</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">27.69</td>
+    <td style="text-align: center;">27 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_222_cylinder_with_end_face</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">18.38</td>
+    <td style="text-align: center;">27 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_223_rotated_area_light</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">15.87</td>
+    <td style="text-align: center;">50 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_224_rotated_area_light2</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">41.62</td>
+    <td style="text-align: center;">232 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test_225_point_spot_simple</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.53</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_226_area_spot_simple</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.5</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_227_point_spot_glossy_wall</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">13.86</td>
+    <td style="text-align: center;">41 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_228_point_ies_for_bpt</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">0.88</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_229_point_ies_for_bpt</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">2.4</td>
+    <td style="text-align: center;">28 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_230_area_ies_for_bpt</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">5.33</td>
+    <td style="text-align: center;">57 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_231_direct_soft_shadow</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">6.74</td>
+    <td style="text-align: center;">17 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_232_point_area_ies</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">16.22</td>
+    <td style="text-align: center;">55 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_233_light_group_point_area_ies</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">19.12</td>
+    <td style="text-align: center;">58 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_234_light_group_light_inst_cust_params</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">31.51</td>
+    <td style="text-align: center;">58 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_235_stadium</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">65.71</td>
+    <td style="text-align: center;">365 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_236_light_group_point_area_ies2</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">18.68</td>
+    <td style="text-align: center;">57 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_237_cubemap_ldr</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">1.19</td>
+    <td style="text-align: center;">55 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_238_mesh_light_one_triangle</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">16.64</td>
+    <td style="text-align: center;">29 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_239_mesh_light_two_triangle</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">3.96</td>
+    <td style="text-align: center;">28 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_240_mesh_light_torus</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">38.5</td>
+    <td style="text-align: center;">13 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_241_mesh_light_torus_texture_ldr</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">42.44</td>
+    <td style="text-align: center;">50 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test_242_mesh_light_torus_texture_hdr</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">256.12</td>
+    <td style="text-align: center;">49 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test_243_mesh_light_do_not_sample_me</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">21.94</td>
+    <td style="text-align: center;">51 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_244_do_not_sample_me</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">26.55</td>
+    <td style="text-align: center;">28 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_245_cylinder_tex_nearest</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">12.14</td>
+    <td style="text-align: center;">26 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+Tests complete.     
+All render time:    35 min. 34 sec.
+Failed tests:       4 of 46 tests.
+Failed tests:       8 %

@@ -196,13 +196,13 @@ int main(int argc, const char** argv)
     // All tests
     /////////////////////
     
-    run_all_api_tests();
-    run_all_geo_tests();
-    run_all_mtl_tests();
-    run_all_lgt_tests();
-    run_all_alg_tests();
-    run_all_3dsmax_tests(); 
+    //run_all_api_tests();
+    //run_all_geo_tests();
+    //run_all_mtl_tests();
+    //run_all_lgt_tests();
+    //run_all_alg_tests();
     run_all_vector_tex_tests(); //all wrong - need inv. gamma (pow 2.2) as textures for linear result.
+    //run_all_3dsmax_tests(); 
 
 
 

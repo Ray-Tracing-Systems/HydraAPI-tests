@@ -1,0 +1,93 @@
+Geo tests.
+Fri Mar 24 23:20:02 2023
+OS: windows
+
+<head>
+<link rel = "stylesheet" href = "reportStyle.css">
+</head>
+<table border="1">  <tr>
+    <th>TEST NAME</th>
+    <th>RESULT</th>
+    <th>MSE</th>
+    <th>RENDER TIME</th>
+    <th>LINK REF IMAGES</th>
+    <th>LINK RENDER IMAGES</th>
+  </tr>
+  <tr>
+    <td>test_001_mesh_from_memory</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.43</td>
+    <td style="text-align: center;">2 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_002_mesh_from_vsgf</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">4.86</td>
+    <td style="text-align: center;">2 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_003_compute_normals</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">8.54</td>
+    <td style="text-align: center;">3 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_004_dof</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">7.21</td>
+    <td style="text-align: center;">3 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_005_instancing</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">25.64</td>
+    <td style="text-align: center;">13 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_006_points_on_mesh</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">8.99</td>
+    <td style="text-align: center;">5 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_007_import_obj</td>
+    <td style="text-align: center;">ok</td>
+    <td style="text-align: center;">6.09</td>
+    <td style="text-align: center;">3 sec. </td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_008_import_obj_w_mtl</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">11904.4</td>
+    <td style="text-align: center;">2 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+  <tr>
+    <td>test_009_import_obj_fullscale</td>
+    <td style="text-align: center;">FAILED!</td>
+    <td style="text-align: center;">7671.6</td>
+    <td style="text-align: center;">2 sec. </td>
+    <td>link ref image.</td>
+    <td>link render image</td>
+  </tr>
+</table>
+
+Tests complete.     
+All render time:    0 min. 35 sec.
+Failed tests:       2 of 9 tests.
+Failed tests:       22 %
