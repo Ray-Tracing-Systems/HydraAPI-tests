@@ -125,49 +125,61 @@ namespace TEST_UTILS
   struct ResultTest
   {
   public:
-    int          m_renderTime  = 0.0F;
-    std::wstring m_nameTest    = L"dummy test";
-    std::wstring m_linkRefImg  = L"link ref image.";
-    std::wstring m_linkRendImg = L"link render image";
-
-    void SetMse(const float a_mse)
+    ResultTest(const std::wstring a_name, const bool a_res, const bool a_skip, const float a_mse,
+      const float a_rendTime, const std::wstring a_linkRefImg, const std::wstring a_linkRenderImg)
     {
-      m_mse = round(a_mse * 100.0F) * 0.01F;
-    }
+      m_nameTest      = a_name;
+      m_mse           = std::to_wstring(a_mse).substr(0, 4);
+      m_renderTime    = std::to_wstring(a_rendTime).substr(0, 4) + L" sec.";
+      m_linkRefImg  = L"-";
+      m_linkRendImg = L"-";
 
-    float GetMse() { return m_mse; }
-
-    void SetStrResult(const bool a_res, const bool a_skip)
-    {
       if (a_skip)
-      {
+      {        
         m_result      = L"skipped";
-        m_mse         = 0;
-        m_renderTime  = 0;
-        m_linkRefImg  = L"";
-        m_linkRendImg = L"";
+        m_resultHtml  = L"&#128465;"; // trash can
+        m_mse         = L"-";
+        m_renderTime  = L"-";
       }
-      else if (a_res == true)
+      else if (a_res  == true)
       {
         m_result      = L"ok";
-        m_linkRefImg  = L"";
-        m_linkRendImg = L"";
+        m_resultHtml  = L"&#10004;"; // check mark
       }
       else
-        m_result = L"FAILED!";
+      {
+        m_result      = L"FAILED";
+        m_resultHtml  = L"&#10060;"; // red cross
+        m_linkRefImg  = L"<img src = " + a_linkRefImg + L">";        
+        m_linkRendImg = L"<img src = " + a_linkRenderImg + L">";
+      }
     }
-
-    std::wstring GetStrResult() { return m_result; }
+      
+    std::wstring GetName()          { return m_nameTest; }
+    std::wstring GetMse()           { return m_mse; }
+    std::wstring GetStrResult()     { return m_result; }
+    std::wstring GetStrResultHtml() { return m_resultHtml; }
+    std::wstring GetRendTime()      { return m_renderTime; }
+    std::wstring GetLinkRef()       { return m_linkRefImg; }
+    std::wstring GetLinkRend()      { return m_linkRendImg; }
 
   private:
-    float        m_mse = 0.0F;
+    std::wstring m_nameTest = L"dummy test";
+    std::wstring m_mse;
     std::wstring m_result;
+    std::wstring m_resultHtml;
+    std::wstring m_renderTime;
+    std::wstring m_linkRefImg;
+    std::wstring m_linkRendImg;
   };
 
 
+  void CreateHtml(std::wofstream& a_fileOut);
+  void AddTextHtml(const std::wstring& a_text, std::wofstream& a_fileOut, const int a_size);
   void CreateHtmlHeaderTable(const std::vector<std::wstring>& a_header, std::wofstream& a_fileOut);
   void AddRowHtmlTable(ResultTest a_data, std::wofstream& a_fileOut);
   void CloseHtmlTable(std::wofstream& a_fileOut);
+  void CloseHtml(std::wofstream& a_fileOut);
 }
 
 using DrawFuncType = void (*)();

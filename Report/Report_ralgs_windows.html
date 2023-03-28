@@ -1,11 +1,12 @@
-Render algorithm tests.
-Sat Mar 25 00:40:45 2023
-OS: windows
-
-<head>
+<!DOCTYPE html>
+<html><head>
 <link rel = "stylesheet" href = "reportStyle.css">
 </head>
-<table border="1">  <tr>
+
+<h3>Render algorithm tests.   Tue Mar 28 23:51:45 2023
+   OS: windows</h3>
+<table>
+  <tr>
     <th>TEST NAME</th>
     <th>RESULT</th>
     <th>MSE</th>
@@ -15,55 +16,56 @@ OS: windows
   </tr>
   <tr>
     <td>test_401_ibpt_and_glossy_glass</td>
-    <td style="text-align: center;">ok</td>
-    <td style="text-align: center;">24.16</td>
-    <td style="text-align: center;">247 sec. </td>
-    <td></td>
-    <td></td>
+    <td>&#10004;</td>
+    <td>24.2</td>
+    <td>248. sec.</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr>
     <td>test_402_ibpt_and_glossy_double_glass</td>
-    <td style="text-align: center;">ok</td>
-    <td style="text-align: center;">33.14</td>
-    <td style="text-align: center;">266 sec. </td>
-    <td></td>
-    <td></td>
+    <td>&#10004;</td>
+    <td>34.0</td>
+    <td>267. sec.</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr>
     <td>test_403_light_inside_double_glass</td>
-    <td style="text-align: center;">ok</td>
-    <td style="text-align: center;">72.75</td>
-    <td style="text-align: center;">264 sec. </td>
-    <td></td>
-    <td></td>
+    <td>&#10004;</td>
+    <td>72.3</td>
+    <td>262. sec.</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr>
     <td>test_404_cornell_glossy</td>
-    <td style="text-align: center;">FAILED!</td>
-    <td style="text-align: center;">73.13</td>
-    <td style="text-align: center;">291 sec. </td>
-    <td>link ref image.</td>
-    <td>link render image</td>
+    <td>&#10060;</td>
+    <td>73.3</td>
+    <td>295. sec.</td>
+    <td><img src = ../tests_images/test_404/w_ref.png></td>
+    <td><img src = ../tests_images/test_404/z_out.png></td>
   </tr>
   <tr>
     <td>test_405_cornell_with_mirror</td>
-    <td style="text-align: center;">ok</td>
-    <td style="text-align: center;">25.21</td>
-    <td style="text-align: center;">321 sec. </td>
-    <td></td>
-    <td></td>
+    <td>&#10004;</td>
+    <td>25.1</td>
+    <td>322. sec.</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr>
     <td>test_406_env_glass_ball_caustic</td>
-    <td style="text-align: center;">ok</td>
-    <td style="text-align: center;">9.96</td>
-    <td style="text-align: center;">57 sec. </td>
-    <td></td>
-    <td></td>
+    <td>&#10004;</td>
+    <td>9.88</td>
+    <td>58.1 sec.</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
 </table>
-
+<h3>
 Tests complete.     
-All render time:    24 min. 6 sec.
+All render time:    24 min. 12 sec.
 Failed tests:       1 of 6 tests.
-Failed tests:       16 %
+Failed tests:       16 %</h3>
+</html>

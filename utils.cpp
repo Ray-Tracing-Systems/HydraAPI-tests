@@ -916,42 +916,60 @@ namespace TEST_UTILS
     return sky;
   }
 
-  void CreateHtmlHeaderTable(const std::vector<std::wstring>& a_header, std::wofstream& a_fileOut)
+  void CreateHtml(std::wofstream& a_fileOut)
   {
+    a_fileOut << "<!DOCTYPE html>\n";
+    a_fileOut << "<html>";
+
     a_fileOut << "<head>\n";
     a_fileOut << "<link rel = \"stylesheet\" href = \"reportStyle.css\">\n";
-    a_fileOut << "</head>\n";
+    a_fileOut << "</head>\n\n";
+  }
 
-    a_fileOut << "<table border=\"1\">";// \" id=\"cssTable\">\n";
-    
+
+  void AddTextHtml(const std::wstring& a_text, std::wofstream& a_fileOut, const int a_size)
+  {
+    a_fileOut << L"<h" << std::to_wstring(a_size) << L">" << a_text << L"</h" << std::to_wstring(a_size) << L">" << std::endl;
+  }
+
+
+  void CreateHtmlHeaderTable(const std::vector<std::wstring>& a_header, std::wofstream& a_fileOut)
+  {
+    a_fileOut << "<table>\n";    
     a_fileOut << "  <tr>\n";
 
     for (auto head : a_header) 
       a_fileOut << "    <th>" << head.c_str() << "</th>\n";
 
-    a_fileOut << "  </tr>\n";
-    a_fileOut.flush();
+    a_fileOut << "  </tr>" << std::endl;     
   }
+
+
 
   void AddRowHtmlTable(ResultTest a_data, std::wofstream& a_fileOut)
   {
     a_fileOut << "  <tr>\n";
-
-    a_fileOut << "    <td>" << a_data.m_nameTest      << "</td>\n";    
-    a_fileOut << "    <td style=\"text-align: center;\">" << a_data.GetStrResult()  << "</td>\n";
-    a_fileOut << "    <td style=\"text-align: center;\">" << a_data.GetMse()        << "</td>\n";
-    a_fileOut << "    <td style=\"text-align: center;\">" << a_data.m_renderTime    << " sec. </td>\n";
-    a_fileOut << "    <td>" << a_data.m_linkRefImg    << "</td>\n";
-    a_fileOut << "    <td>" << a_data.m_linkRendImg   << "</td>\n";
-
-    a_fileOut << "  </tr>\n";
-    a_fileOut.flush();
+    a_fileOut << "    <td>" << a_data.GetName()          << "</td>\n";    
+    a_fileOut << "    <td>" << a_data.GetStrResultHtml() << "</td>\n";
+    a_fileOut << "    <td>" << a_data.GetMse()           << "</td>\n";
+    a_fileOut << "    <td>" << a_data.GetRendTime()      << "</td>\n";
+    a_fileOut << "    <td>" << a_data.GetLinkRef()       << "</td>\n";
+    a_fileOut << "    <td>" << a_data.GetLinkRend()      << "</td>\n";
+    a_fileOut << "  </tr>"  << std::endl;     
   }
 
 
   void CloseHtmlTable(std::wofstream& a_fileOut)
   {
-    a_fileOut << "</table>\n";
+    a_fileOut << "</table>" << std::endl;    
+  }
+
+
+  void CloseHtml(std::wofstream& a_fileOut)
+  {
+    a_fileOut << "</html>";
+    a_fileOut.flush();
+    a_fileOut.close();
   }
 
 

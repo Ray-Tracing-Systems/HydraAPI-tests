@@ -1626,14 +1626,14 @@ void PrintResultSingleTest(ResultTest a_data)
   std::wostringstream outBuff;
 
   if (g_testWasIgnored)  
-    outBuff << std::setw(60)   << std::left << a_data.m_nameTest << a_data.GetStrResult();
+    outBuff << std::setw(60)   << std::left << a_data.GetName() << a_data.GetStrResult();
   else
   {    
-    outBuff << std::setw(60)   << std::left << a_data.m_nameTest;
+    outBuff << std::setw(60)   << std::left << a_data.GetName();
     outBuff << std::setw(15)   << std::left << a_data.GetStrResult();
     outBuff << "mse = ";
     outBuff << std::setw(15)   << std::left << std::setprecision(2) << a_data.GetMse();
-    outBuff << "Render time: " << a_data.m_renderTime << " sec.";
+    outBuff << "Render time: " << a_data.GetRendTime();
   }
     
   std::wcout << outBuff.str() << std::endl << std::endl;  
@@ -1674,20 +1674,19 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
   auto currData      = time::to_time_t(now);
   int totalRenderSec = 0;
 
-  std::wstring file  = L"report/" + a_fileName + L"_" + os + L".html";
+  std::wstring file  = L"Report/" + a_fileName + L"_" + os + L".html";
   std::wofstream fileOut(file);
 
   std::wostringstream outBuffConsole;
-  outBuffConsole << a_nameGroupTests << std::endl;  
-  outBuffConsole << std::ctime(&currData);
-  outBuffConsole << L"OS: " << os << std::endl;
-
-  std::wcout << outBuffConsole.str() << std::endl;
-  fileOut    << outBuffConsole.str() << std::endl;
+  outBuffConsole << a_nameGroupTests << "   " << std::ctime(&currData) << L"   OS: " << os;
 
   std::vector<std::wstring> headings = { 
     L"TEST NAME", L"RESULT", L"MSE", L"RENDER TIME", L"LINK REF IMAGES", L"LINK RENDER IMAGES" };
 
+  std::wcout << outBuffConsole.str() << std::endl;  
+
+  CreateHtml(fileOut);
+  AddTextHtml(outBuffConsole.str(), fileOut, 3);
   CreateHtmlHeaderTable(headings, fileOut);
 
   for (int i = a_startTestsId; i < a_tests.size(); ++i)
@@ -1702,12 +1701,13 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
     const timeFloat rendTime = end - start;
     totalRenderSec          += rendTime.count();
 
-    ResultTest resTest;
-    resTest.m_nameTest   = a_tests[i].name;
-    resTest.SetMse(g_MSEOutput);
-    resTest.m_renderTime = rendTime.count();
-    resTest.SetStrResult(res, g_testWasIgnored);
-        
+    std::wstring cutName                 = a_tests[i].name.substr(0, 8);
+    std::filesystem::path saveRefFile    = L"../tests_images/" + cutName + L"/w_ref.png";
+    std::filesystem::path saveRenderFile = L"../tests_images/" + cutName + L"/z_out.png";
+
+    ResultTest resTest(a_tests[i].name, res, g_testWasIgnored, g_MSEOutput, rendTime.count(),
+      saveRefFile.wstring(), saveRenderFile.wstring());
+    
     PrintResultSingleTest(resTest);
     AddRowHtmlTable(resTest, fileOut);
   }
@@ -1726,9 +1726,9 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
   outBuff2 << std::setw(20) << std::left << L"Failed tests: "    << (int)(failedTests * 100.0F / max(a_tests.size(), 1)) << L" %";
 
   std::wcout << outBuff2.str() << std::endl;
-  fileOut    << outBuff2.str() << std::endl;
-  
-  fileOut.close();
+    
+  AddTextHtml(outBuff2.str(), fileOut, 3);
+  CloseHtml(fileOut);
 }
 
 
@@ -2144,7 +2144,7 @@ void run_all_3dsmax_tests(int a_start)
                [](const std::wstring& f) { return (f.size() >= 15 && f.find(L"3dsMaxTests") != std::wstring::npos && f.find(L".max") == std::wstring::npos && iswdigit(f[12 + 0]) && iswdigit(f[12 + 1]) && iswdigit(f[12 + 2])); });
     
   
-  std::ofstream fout("Report_3dsmax.txt");
+  std::ofstream fout("Report/Report_3dsmax.txt");
 
   std::ostringstream outBuff;
   auto now      = std::chrono::system_clock::now();
@@ -2164,11 +2164,13 @@ void run_all_3dsmax_tests(int a_start)
     const auto end   = std::chrono::system_clock::now();    
     std::chrono::duration<float> rendTime = end - start;
     
-    ResultTest resTest;
-    resTest.m_nameTest   = filesFiltered[i];
-    resTest.SetMse(g_MSEOutput);
-    resTest.m_renderTime = rendTime.count();
-    resTest.SetStrResult(res, g_testWasIgnored);
+
+    std::filesystem::path saveRefFile    = L"../3dsMaxTests/Reference/" + filesFiltered[i] + L".png";
+    std::filesystem::path saveRenderFile = L"../3dsMaxTests/rendered/" + filesFiltered[i] + L".png";
+
+    ResultTest resTest(filesFiltered[i], res, g_testWasIgnored, g_MSEOutput, rendTime.count(),
+      saveRefFile.wstring(), saveRenderFile.wstring());
+
 
     PrintResultSingleTest(resTest);
   }
