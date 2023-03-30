@@ -11,14 +11,22 @@
 namespace EXTENSIONS_TESTS
 {
   namespace hlm = LiteMath;
+  using namespace TEST_UTILS;
 
 
   // basic MSDF 
-  bool test_ext_vtex_1()
+  bool test_500_ext_vtex()
   {
-    hrErrorCallerPlace(L"test_ext_vtex_1");
+    std::wstring nameTest                = L"test_500";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_1", HR_WRITE_DISCARD);
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
+
+    ////////////////////
+    // Materials
+    ////////////////////
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -109,33 +117,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); 
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
     
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -152,34 +142,28 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_1/z_out.png");
-
-    return check_images("test_ext_vtex_1", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
-  // texture matrix
-  bool test_ext_vtex_2()
-  {
-    hrErrorCallerPlace(L"test_ext_vtex_2");
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_2", HR_WRITE_DISCARD);
+  // texture matrix
+  bool test_501_ext_vtex()
+  {
+    std::wstring nameTest                = L"test_501";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -270,33 +254,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+ 
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -313,34 +279,28 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_2/z_out.png");
-
-    return check_images("test_ext_vtex_2", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
-  // draw outlines
-  bool test_ext_vtex_3()
-  {
-    hrErrorCallerPlace(L"test_ext_vtex_3");
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_3", HR_WRITE_DISCARD);
+  // draw outlines
+  bool test_502_ext_vtex()
+  {
+    std::wstring nameTest                = L"test_502";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -431,33 +391,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -474,34 +416,28 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_3/z_out.png");
-
-    return check_images("test_ext_vtex_3", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
-  // combine
-  bool test_ext_vtex_4()
-  {
-    hrErrorCallerPlace(L"test_ext_vtex_4");
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_4", HR_WRITE_DISCARD);
+  // combine
+  bool test_503_ext_vtex()
+  {
+    std::wstring nameTest                = L"test_503";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -594,33 +530,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -637,34 +555,28 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_4/z_out.png");
-
-    return check_images("test_ext_vtex_4", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
-  // rasterize
-  bool test_ext_vtex_5()
-  {
-    hrErrorCallerPlace(L"test_ext_vtex_5");
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_5", HR_WRITE_DISCARD);
+  // rasterize
+  bool test_504_ext_vtex()
+  {
+    std::wstring nameTest                = L"test_504";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -752,33 +664,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -795,34 +689,28 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_5/z_out.png");
-
-    return check_images("test_ext_vtex_5", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
-  // overlapping shapes
-  bool test_ext_vtex_6()
-  {
-    hrErrorCallerPlace(L"test_ext_vtex_6");
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_6", HR_WRITE_DISCARD);
+  // overlapping shapes
+  bool test_505_ext_vtex()
+  {
+    std::wstring nameTest                = L"test_505";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -914,33 +802,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -957,33 +827,27 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_6/z_out.png");
-
-    return check_images("test_ext_vtex_6", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
-  bool test_ext_vtex_7()
-  {
-    hrErrorCallerPlace(L"test_ext_vtex_7");
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_7", HR_WRITE_DISCARD);
+  bool test_506_ext_vtex()
+  {
+    std::wstring nameTest                = L"test_506";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -1099,33 +963,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -1142,33 +988,27 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_7/z_out.png");
-
-    return check_images("test_ext_vtex_7", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
-  bool test_ext_vtex_8()
-  {
-    hrErrorCallerPlace(L"test_ext_vtex_8");
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_8", HR_WRITE_DISCARD);
+  bool test_507_ext_vtex()
+  {
+    std::wstring nameTest                = L"test_507";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -1302,33 +1142,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"4";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"256";
-      node.append_child(L"maxRaysPerPixel").text() = L"256";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -1345,34 +1167,27 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_ext_vtex_8/z_out.png");
-
-    return check_images("test_ext_vtex_8", 1, 10);
+    return check_images(ws2s(nameTest).c_str());
   }
 
   // "test" for playing with configs
-  bool test_ext_vtex_example()
+  bool test_508_ext_vtex()
   {
-    hrErrorCallerPlace(L"test_ext_vtex_example");
+    std::wstring nameTest                = L"test_508";
+    std::filesystem::path libraryPath    = L"tests_ext/"    + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
-    hrSceneLibraryOpen(L"tests_ext/test_ext_vtex_example", HR_WRITE_DISCARD);
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
 
     SimpleMesh plane = CreatePlane(4.0f);
 
@@ -1464,33 +1279,15 @@ namespace EXTENSIONS_TESTS
     hrCameraClose(camRef);
 
 
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text() = L"1024";
-      node.append_child(L"height").text() = L"1024";
-
-      node.append_child(L"method_primary").text() = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text() = L"pathtracing";
-      node.append_child(L"method_caustic").text() = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text() = L"2";
-      node.append_child(L"diff_trace_depth").text() = L"2";
-      node.append_child(L"pt_error").text() = L"2.0";
-      node.append_child(L"minRaysPerPixel").text() = L"32";
-      node.append_child(L"maxRaysPerPixel").text() = L"64";
-    }
-    hrRenderClose(renderRef);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1024, 1024, 128, 128);
 
 
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
+
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
     {
 
@@ -1507,28 +1304,15 @@ namespace EXTENSIONS_TESTS
 
     hrFlush(scnRef, renderRef, camRef);
 
-    while (true)
-    {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
 
-      HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+    RenderProgress(renderRef);
 
-      if (info.haveUpdateFB)
-      {
-        auto pres = std::cout.precision(2);
-        std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
-        std::cout.precision(pres);
-      }
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-      if (info.finalUpdate)
-        break;
-    }
-
-    std::filesystem::path outImgPath {L"tests_images/test_ext_vtex_example/z_out.png"};
-    std::filesystem::create_directories(outImgPath.stem());
-
-    hrRenderSaveFrameBufferLDR(renderRef, outImgPath.wstring().c_str());
-
-    return true;
+    return check_images(ws2s(nameTest).c_str());
   }
 }

@@ -841,7 +841,7 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
 
 bool ALGR_TESTS::test_404_cornell_glossy()                   
 {
-  hrErrorCallerPlace(L"test404");                            
+  hrErrorCallerPlace(L"test_404");                            
   if(!hrSceneLibraryOpen(L"tests_algorithm/test_404", HR_OPEN_EXISTING))
     return false;
 
@@ -876,7 +876,7 @@ bool ALGR_TESTS::test_404_cornell_glossy()
 
 bool ALGR_TESTS::test_405_cornell_with_mirror()
 {
-  hrErrorCallerPlace(L"test405");                            
+  hrErrorCallerPlace(L"test_405");                            
   if(!hrSceneLibraryOpen(L"tests_algorithm/test_405", HR_OPEN_EXISTING))
     return false;
 
@@ -911,7 +911,7 @@ bool ALGR_TESTS::test_405_cornell_with_mirror()
 
 bool ALGR_TESTS::test_406_env_glass_ball_caustic()
 {
-  hrErrorCallerPlace(L"test406");                            
+  hrErrorCallerPlace(L"test_406");                            
   if(!hrSceneLibraryOpen(L"tests_algorithm/test_406", HR_OPEN_EXISTING))
     return false;
 

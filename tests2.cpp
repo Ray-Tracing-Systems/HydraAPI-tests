@@ -38,15 +38,19 @@ static int         g_width  = 1024;
 static int         g_height = 768;
 
 using namespace TEST_UTILS;
-extern float g_MSEOutput;
+extern std::vector<float> g_MSEOutput;
+extern std::vector<bool> g_resultTest;
 
 
 bool check_images(const char* a_path, const int a_numImages, const float a_mse)
 {
   std::cout << std::endl;
 
-  g_MSEOutput = 0.0f;
-  bool result = true;
+  g_MSEOutput.clear();
+  g_resultTest.clear();
+
+  bool overallResult = true;
+
   for (int i = 0; i < a_numImages; i++)
   {
     std::string path1 = std::string("tests_images/") + std::string(a_path) + "/z_out";
@@ -79,23 +83,29 @@ bool check_images(const char* a_path, const int a_numImages, const float a_mse)
 
     if (w1 != w2 || h1 != h2 || !loaded1 || !loaded2)
     {
-      g_MSEOutput = 1000000.0f;
+      g_MSEOutput.push_back(10000);
       return false;
     }
 
     const float mseVal = HydraRender::MSE_RGB_LDR(image1, image2);
-    g_MSEOutput        = fmax(g_MSEOutput, mseVal);    
     std::cout << path1.c_str() << " MSE: " << mseVal << std::endl;
-    result = result && (mseVal <= a_mse);
+
+    g_MSEOutput.push_back(mseVal);
+
+    const bool currRes = (mseVal <= a_mse);
+    g_resultTest.push_back(currRes);
+    overallResult      = overallResult && currRes;
   }
-  return result;
+  return overallResult;
 }
 
 
 bool check_images_HDR(const char* a_path, const int a_numImages, const float a_mse)
 {
-  g_MSEOutput = 0.0f;
-  bool result = true;
+  g_MSEOutput.clear();
+
+  bool overallResult = true;
+
   for (int i = 0; i < a_numImages; i++)
   {
     std::string path1 = std::string("tests_images/") + std::string(a_path) + "/z_out";
@@ -128,27 +138,31 @@ bool check_images_HDR(const char* a_path, const int a_numImages, const float a_m
 
     if (w1 != w2 || h1 != h2 || chan1 != chan2 || !loaded1 || !loaded2)
     {
-      g_MSEOutput = std::numeric_limits<float>::infinity();
+      g_MSEOutput.push_back(10000);
       return false;
     }
 
     const float mseVal = HydraRender::MSE_HDR(image1, image2, chan1);
-    g_MSEOutput = fmax(g_MSEOutput, mseVal);
-    result = result && (mseVal <= a_mse);
-    int a = 2;
+    std::cout << path1.c_str() << " MSE: " << mseVal << std::endl;
+
+    g_MSEOutput.push_back(mseVal);
+
+    const bool currRes = (mseVal <= a_mse);
+    g_resultTest.push_back(currRes);
+    overallResult = overallResult && currRes;
   }
 
-  return result;
+  return overallResult;
 }
 
 ///////////////////////////////////////////////////////////
 
 
-bool test10_render_ogl_cube()
+bool test_010_render_ogl_cube()
 {
   initGLIfNeeded(1024, 768);
 
-  hrErrorCallerPlace(L"test10_render_ogl_cube");
+  hrErrorCallerPlace(L"test_010_render_ogl_cube");
 
   HRCameraRef    camRef;
   HRMeshRef      cubeRef;
@@ -266,7 +280,7 @@ bool test10_render_ogl_cube()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_10", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_010", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -369,13 +383,13 @@ bool test10_render_ogl_cube()
 
   hrFlush(scnRef, settingsRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_10/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_010/z_out.png");
 
-  return check_images("test_10");
+  return check_images("test_010");
 }
 
 
-bool test11_render_ogl_some_figures()
+bool test_011_render_ogl_some_figures()
 {
   initGLIfNeeded(1024,768);
 
@@ -390,7 +404,7 @@ bool test11_render_ogl_some_figures()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_11", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_011", HR_WRITE_DISCARD);
 
   // geometry
   //
@@ -544,14 +558,14 @@ bool test11_render_ogl_some_figures()
 
   hrFlush(scnRef, settingsRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_11/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_011/z_out.png");
 
-  return check_images("test_11");
+  return check_images("test_011");
 }
 
 
 
-bool test12_render_ogl_100_random_figures()
+bool test_012_render_ogl_100_random_figures()
 {
   initGLIfNeeded();
 
@@ -565,7 +579,7 @@ bool test12_render_ogl_100_random_figures()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_12", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_012", HR_WRITE_DISCARD);
 
   // geometry
   //
@@ -730,9 +744,9 @@ bool test12_render_ogl_100_random_figures()
 
   hrFlush(scnRef, settingsRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_12/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_012/z_out.png");
 
-  return check_images("test_12");
+  return check_images("test_012");
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -740,7 +754,7 @@ bool test12_render_ogl_100_random_figures()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool test13_render_ogl_some_figures_diff_mats_prom_ptr()
+bool test_013_render_ogl_some_figures_diff_mats_prom_ptr()
 {
   initGLIfNeeded(1024,768);
 
@@ -755,7 +769,7 @@ bool test13_render_ogl_some_figures_diff_mats_prom_ptr()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_13", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_013", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -992,9 +1006,9 @@ bool test13_render_ogl_some_figures_diff_mats_prom_ptr()
 
   hrFlush(scnRef, settingsRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_13/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_013/z_out.png");
 
-  return check_images("test_13");
+  return check_images("test_013");
 }
 
 bool g_test14ErrorIsOk = false;
@@ -1007,17 +1021,17 @@ void ErrorCallBack2(const wchar_t* message, const wchar_t* callerPlace, HR_SEVER
   auto foundPos2 = tmp.find(L"[5, 3");
   auto foundPos3 = tmp.find(L"[3, 5");
 
-  g_test14ErrorIsOk = (foundPos != std::wstring::npos && (foundPos2 != std::wstring::npos || foundPos3 != std::wstring::npos) && std::wstring(callerPlace) == L"test_14");
+  g_test14ErrorIsOk = (foundPos != std::wstring::npos && (foundPos2 != std::wstring::npos || foundPos3 != std::wstring::npos) && std::wstring(callerPlace) == L"test_014");
 }
 
 
-bool test14_bad_material_indices()
+bool test_014_bad_material_indices()
 {
   initGLIfNeeded();
 
   g_test14ErrorIsOk = false;
 
-  hrErrorCallerPlace(L"test_14");
+  hrErrorCallerPlace(L"test_014");
   hrInfoCallback(ErrorCallBack2);
 
   HRCameraRef    camRef;
@@ -1028,7 +1042,7 @@ bool test14_bad_material_indices()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_14", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_014", HR_WRITE_DISCARD);
 
   // geometry
   //
@@ -1188,7 +1202,7 @@ bool test14_bad_material_indices()
 }
 
 
-bool test15_main_scene_and_mat_editor()
+bool test_015_main_scene_and_mat_editor()
 {
   initGLIfNeeded(1024,768);
 
@@ -1200,7 +1214,7 @@ bool test15_main_scene_and_mat_editor()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_15", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_015", HR_WRITE_DISCARD);
 
   SimpleMesh cube   = CreateCube(0.65f);
   SimpleMesh plane  = CreatePlane(10.0f);
@@ -1612,12 +1626,12 @@ bool test15_main_scene_and_mat_editor()
     for (int x = 0; x < 256; x++)
       frameBufferData[(768 - y - 1 - 512) * 1024 + x] = frameBufferDataMat[(256 - y - 1) * 256 + x];
 
-  HydraRender::SaveImageToFile(std::string("tests_images/test_15/z_out.png"), 1024, 768, (unsigned int*)&frameBufferData[0]);
+  HydraRender::SaveImageToFile(std::string("tests_images/test_015/z_out.png"), 1024, 768, (unsigned int*)&frameBufferData[0]);
 
-  bool noDups1 = check_all_duplicates(L"tests/test_15/statex_00002.xml");
-  bool noDups2 = check_all_duplicates(L"tests/test_15/statex_00003.xml");
-  bool noDups3 = check_all_duplicates(L"tests/test_15/statex_00004.xml");
+  bool noDups1 = check_all_duplicates(L"tests/test_015/statex_00002.xml");
+  bool noDups2 = check_all_duplicates(L"tests/test_015/statex_00003.xml");
+  bool noDups3 = check_all_duplicates(L"tests/test_015/statex_00004.xml");
 
-  return check_images("test_15") && noDups1 && noDups2 && noDups3;
+  return check_images("test_015") && noDups1 && noDups2 && noDups3;
 }
 

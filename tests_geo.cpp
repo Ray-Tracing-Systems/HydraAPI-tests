@@ -35,9 +35,9 @@ namespace GEO_TESTS
 {  
   static const int TEST_IMG_SIZE = 512;
   
-  bool test_001_mesh_from_memory()
+  bool test_301_mesh_from_memory()
   {
-    std::wstring nameTest                = L"test_001";
+    std::wstring nameTest                = L"test_301";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -145,9 +145,9 @@ namespace GEO_TESTS
   
 
 
-  bool test_002_mesh_from_vsgf()
+  bool test_302_mesh_from_vsgf()
   {
-    std::wstring nameTest                = L"test_002";
+    std::wstring nameTest                = L"test_302";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -222,9 +222,9 @@ namespace GEO_TESTS
   
 
 
-  bool test_003_compute_normals()
+  bool test_303_compute_normals()
   {
-    std::wstring nameTest                = L"test_003";
+    std::wstring nameTest                = L"test_303";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -307,9 +307,9 @@ namespace GEO_TESTS
   }
   
 
-  bool test_004_dof()
+  bool test_304_dof()
   {
-    std::wstring nameTest                = L"test_004";
+    std::wstring nameTest                = L"test_304";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -447,9 +447,9 @@ namespace GEO_TESTS
   }
   
 
-  bool test_005_instancing()
+  bool test_305_instancing()
   {
-    std::wstring nameTest                = L"test_005";
+    std::wstring nameTest                = L"test_305";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -681,9 +681,9 @@ namespace GEO_TESTS
   }
   
 
-  bool test_006_points_on_mesh()
+  bool test_306_points_on_mesh()
   {
-    std::wstring nameTest                = L"test_006";
+    std::wstring nameTest                = L"test_306";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -818,9 +818,9 @@ namespace GEO_TESTS
   }
 
   
-  bool test_007_import_obj()
+  bool test_307_import_obj()
   {
-    std::wstring nameTest                = L"test_007";
+    std::wstring nameTest                = L"test_307";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -914,9 +914,9 @@ namespace GEO_TESTS
   }
   
 
-  bool test_008_import_obj_w_mtl()
+  bool test_308_import_obj_w_mtl()
   {
-    std::wstring nameTest                = L"test_008";
+    std::wstring nameTest                = L"test_308";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 
@@ -1010,9 +1010,9 @@ namespace GEO_TESTS
   }
   
 
-  bool test_009_import_obj_fullscale()
+  bool test_309_import_obj_fullscale()
   {
-    std::wstring nameTest                = L"test_009";
+    std::wstring nameTest                = L"test_309";
     std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
     std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
 

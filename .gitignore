@@ -33,16 +33,18 @@
 
 #Folders
 .vs/
-x64/
 .vscode/
-cmake-build-*/
-build_generated/
-data/textures_gen/
+x64/
 3dsMaxTests/rendered/
+build_generated/
+cmake-build-*/
+data/textures_gen/
+!Reports/
 tests/
 tests_algorithm/
 tests_ext/
 tests_f/
+
 
 #--------------- dont delete, load from disk ------------------------------------------
 
@@ -60,6 +62,6 @@ tests_f/
 #--------------------------------------------------------------------------------------
 
 #Files
-z_out*.*
+tests_images/*/z_out*.*
 tests_images/test_macbeth/*
 !tests_images/test_macbeth*/w_ref*.*

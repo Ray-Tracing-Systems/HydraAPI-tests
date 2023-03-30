@@ -17,11 +17,11 @@ namespace SPECTRAL_TESTS
 {
   namespace hlm = LiteMath;
 
-  bool test_cornell_RGB()
+  bool test_600_cornell_RGB()
   {
-    hrErrorCallerPlace(L"test_cornell_RGB");
+    hrErrorCallerPlace(L"test_600_cornell_RGB");
 
-    hrSceneLibraryOpen(L"tests/test_cornell_RGB", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_600_cornell_RGB", HR_WRITE_DISCARD);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Materials
@@ -231,17 +231,17 @@ namespace SPECTRAL_TESTS
         break;
     }
 
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_cornell_RGB/z_out.png");
-    hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_cornell_RGB/z_out.exr");
+    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_600_cornell_RGB/z_out.png");
+    hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_600_cornell_RGB/z_out.exr");
 
-    return check_images("test_cornell_RGB", 1, 25);
+    return check_images("test_600_cornell_RGB", 1, 25);
   }
 
-  bool test_cornell_spectral_2()
+  bool test_601_cornell_spectral_2()
   {
-    hrErrorCallerPlace(L"test_cornell_spectral_2");
+    hrErrorCallerPlace(L"test_601_cornell_spectral_2");
 
-    hrSceneLibraryOpen(L"tests/test_cornell_spectral_2", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_601_cornell_spectral_2", HR_WRITE_DISCARD);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Materials
@@ -423,7 +423,7 @@ namespace SPECTRAL_TESTS
 
       std::wstringstream imgName;
       imgName << wavelengths[i] << "nm";
-      std::wstring basePath = L"tests_images/test_cornell_spectral_2/";
+      std::wstring basePath = L"tests_images/test_601_cornell_spectral_2/";
       const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
 
@@ -432,24 +432,24 @@ namespace SPECTRAL_TESTS
       savedImages.push_back(hdrName);
     }
 
-    std::filesystem::path rgbPath {"tests_images/test_cornell_spectral_2/z_out.exr"};
+    std::filesystem::path rgbPath {"tests_images/test_601_cornell_spectral_2/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
-    std::filesystem::path avgPath {"tests_images/test_cornell_spectral_2/averageSpectrum.exr"};
+    std::filesystem::path avgPath {"tests_images/test_601_cornell_spectral_2/averageSpectrum.exr"};
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
 
-    std::filesystem::path avgPath2 {"tests_images/test_cornell_spectral_2/averageSpectrumV2.exr"};
+    std::filesystem::path avgPath2 {"tests_images/test_601_cornell_spectral_2/averageSpectrumV2.exr"};
     hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
 
-    std::filesystem::path yPath {"tests_images/test_cornell_spectral_2/Y.exr"};
+    std::filesystem::path yPath {"tests_images/test_601_cornell_spectral_2/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images_HDR("test_cornell_spectral_2", 1, 25);
+    return check_images_HDR("test_601_cornell_spectral_2", 1, 25);
   }
 
-  bool test_macbeth()
+  bool test_602_macbeth()
   {
-    std::wstring nameTest                = L"test_macbeth";
+    std::wstring nameTest                = L"test_602_macbeth";
     std::filesystem::path libraryPath    = L"tests/"        + nameTest;
     std::filesystem::path saveRenderPath = L"tests_images/" + nameTest;
     
@@ -623,11 +623,11 @@ namespace SPECTRAL_TESTS
   }
 
 
-  bool test_texture_1()
+  bool test_603_texture_1()
   {
-    hrErrorCallerPlace(L"test_texture_1");
+    hrErrorCallerPlace(L"test_603_texture_1");
 
-    hrSceneLibraryOpen(L"tests/test_texture_1", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_603_texture_1", HR_WRITE_DISCARD);
 
     constexpr int TOTAL_WAVELENGTHS = 31;
     std::vector<float> wavelengths(TOTAL_WAVELENGTHS);
@@ -751,7 +751,7 @@ namespace SPECTRAL_TESTS
 
       std::wstringstream imgName;
       imgName << wavelengths[i] << "nm";
-      const std::wstring outBasePath = L"tests_images/test_texture_1/";
+      const std::wstring outBasePath = L"tests_images/test_603_texture_1/";
       const std::wstring ldrName = outBasePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = outBasePath + imgName.str() + std::wstring(L".exr");
 
@@ -760,26 +760,26 @@ namespace SPECTRAL_TESTS
       savedImages.push_back(hdrName);
     }
 
-    std::filesystem::path rgbPath {"tests_images/test_texture_1/z_out.exr"};
+    std::filesystem::path rgbPath {"tests_images/test_603_texture_1/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
-    std::filesystem::path avgPath {"tests_images/test_texture_1/averageSpectrum.exr"};
+    std::filesystem::path avgPath {"tests_images/test_603_texture_1/averageSpectrum.exr"};
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
 
-    std::filesystem::path avgPath2 {"tests_images/test_texture_1/averageSpectrumV2.exr"};
+    std::filesystem::path avgPath2 {"tests_images/test_603_texture_1/averageSpectrumV2.exr"};
     hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
 
-    std::filesystem::path yPath {"tests_images/test_texture_1/Y.exr"};
+    std::filesystem::path yPath {"tests_images/test_603_texture_1/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images_HDR("test_texture_1", 1, 25);
+    return check_images_HDR("test_603_texture_1", 1, 25);
   }
 
-  bool test_tile()
+  bool test_604_tile()
   {
-    hrErrorCallerPlace(L"test_tile");
+    hrErrorCallerPlace(L"test_604_tile");
 
-    hrSceneLibraryOpen(L"tests/test_tile", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_604_tile", HR_WRITE_DISCARD);
 
     std::vector<float> wavelengths;
     for(int w = 400; w <= 700; w += 10)
@@ -889,7 +889,7 @@ namespace SPECTRAL_TESTS
 
       std::wstringstream imgName;
       imgName << wavelengths[i] << "nm";
-      const std::wstring outBasePath = L"tests_images/test_tile/";
+      const std::wstring outBasePath = L"tests_images/test_604_tile/";
       const std::wstring ldrName = outBasePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = outBasePath + imgName.str() + std::wstring(L".exr");
 
@@ -898,26 +898,26 @@ namespace SPECTRAL_TESTS
       savedImages.push_back(hdrName);
     }
 
-    std::filesystem::path rgbPath {"tests_images/test_tile/z_out.exr"};
+    std::filesystem::path rgbPath {"tests_images/test_604_tile/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
-    std::filesystem::path avgPath {"tests_images/test_tile/averageSpectrum.exr"};
+    std::filesystem::path avgPath {"tests_images/test_604_tile/averageSpectrum.exr"};
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
 
-    std::filesystem::path avgPath2 {"tests_images/test_tile/averageSpectrumV2.exr"};
+    std::filesystem::path avgPath2 {"tests_images/test_604_tile/averageSpectrumV2.exr"};
     hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
 
-    std::filesystem::path yPath {"tests_images/test_tile/Y.exr"};
+    std::filesystem::path yPath {"tests_images/test_604_tile/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images_HDR("test_tile", 1, 25);
+    return check_images_HDR("test_604_tile", 1, 25);
   }
 
-  bool test_macbeth_2() // render 3 wavelengths at a time
+  bool test_605_macbeth_2() // render 3 wavelengths at a time
   {
-    hrErrorCallerPlace(L"test_macbeth_2");
+    hrErrorCallerPlace(L"test_605_macbeth_2");
 
-    hrSceneLibraryOpen(L"tests/test_macbeth_2", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_605_macbeth_2", HR_WRITE_DISCARD);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Materials
@@ -1150,7 +1150,7 @@ namespace SPECTRAL_TESTS
       }
 
 
-      std::wstring basePath = L"tests_images/test_macbeth_2/";
+      std::wstring basePath = L"tests_images/test_605_macbeth_2/";
       const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
 
@@ -1160,26 +1160,26 @@ namespace SPECTRAL_TESTS
 
     }
 
-    std::filesystem::path rgbPath {"tests_images/test_macbeth_2/z_out.exr"};
+    std::filesystem::path rgbPath {"tests_images/test_605_macbeth_2/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
-    std::filesystem::path avgPath {"tests_images/test_macbeth_2/averageSpectrum.exr"};
+    std::filesystem::path avgPath {"tests_images/test_605_macbeth_2/averageSpectrum.exr"};
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
 
-    std::filesystem::path avgPath2 {"tests_images/test_macbeth_2/averageSpectrumV2.exr"};
+    std::filesystem::path avgPath2 {"tests_images/test_605_macbeth_2/averageSpectrumV2.exr"};
     hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
 
-    std::filesystem::path yPath {"tests_images/test_macbeth_2/Y.exr"};
+    std::filesystem::path yPath {"tests_images/test_605_macbeth_2/Y.exr"};
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
 
-    return check_images_HDR("test_macbeth_2", 1, 25);
+    return check_images_HDR("test_605_macbeth_2", 1, 25);
   }
 
-  bool test_macbeth_3() // use hydra api shared framebuffer
+  bool test_606_macbeth_3() // use hydra api shared framebuffer
   {
-    hrErrorCallerPlace(L"test_macbeth_3");
+    hrErrorCallerPlace(L"test_606_macbeth_3");
 
-    hrSceneLibraryOpen(L"tests/test_macbeth_3", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_606_macbeth_3", HR_WRITE_DISCARD);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Materials
@@ -1430,18 +1430,18 @@ namespace SPECTRAL_TESTS
       topState++;
     }
 
-    std::wstring basePath = L"tests_images/test_macbeth_3/";
+    std::wstring basePath = L"tests_images/test_606_macbeth_3/";
     const std::wstring hdrName = basePath + std::wstring(L"z_out.exr");
     hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
 
-    return check_images_HDR("test_macbeth_3", 1, 25);
+    return check_images_HDR("test_606_macbeth_3", 1, 25);
   }
 
-  bool generate_nerf_data()
+  bool test_607_generate_nerf_data()
   {
-    hrErrorCallerPlace(L"generate_nerf_data");
+    hrErrorCallerPlace(L"test_607_generate_nerf_data");
 
-    hrSceneLibraryOpen(L"tests/generate_nerf_data", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_607_generate_nerf_data", HR_WRITE_DISCARD);
 
     HRMeshRef teapotRef = hrMeshCreateFromFileDL(L"data/meshes/bunny_origin.obj");
 
@@ -1590,7 +1590,7 @@ namespace SPECTRAL_TESTS
     std::vector<float4x4> viewMatrices;
     viewMatrices.reserve(n_points * n_points);
 
-    std::ofstream matrixFile("tests_images/generate_nerf_data/matrices.txt");
+    std::ofstream matrixFile("tests_images/test_607_generate_nerf_data/matrices.txt");
     float3 up_init = float3(0, 1, 0);
     float3 eye_init = float3(0, 0, 3);
 
@@ -1699,12 +1699,12 @@ namespace SPECTRAL_TESTS
       }
 
       std::wstringstream ws;
-      ws << std::fixed << L"tests_images/generate_nerf_data/" << std::setfill(L'0') << std::setw(4) << idx << L"_rgb.png";
+      ws << std::fixed << L"tests_images/test_607_generate_nerf_data/" << std::setfill(L'0') << std::setw(4) << idx << L"_rgb.png";
 
       hrRenderSaveFrameBufferLDR(renderRef, ws.str().c_str());
 
       std::wstringstream ws2;
-      ws2 << std::fixed << L"tests_images/generate_nerf_data/" << std::setfill(L'0') << std::setw(4) << idx << L"_alpha.png";
+      ws2 << std::fixed << L"tests_images/test_607_generate_nerf_data/" << std::setfill(L'0') << std::setw(4) << idx << L"_alpha.png";
 
       idx++;
 
@@ -1715,11 +1715,11 @@ namespace SPECTRAL_TESTS
   }
 
 
-  bool test_virtual_room()
+  bool test_608_virtual_room()
   {
-    hrErrorCallerPlace(L"test_virtual_room");
+    hrErrorCallerPlace(L"test_608_virtual_room");
 
-    hrSceneLibraryOpen(L"tests/test_virtual_room", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_608_virtual_room", HR_WRITE_DISCARD);
 
 
     // GEO
@@ -2103,7 +2103,7 @@ namespace SPECTRAL_TESTS
 
       std::wstringstream imgName;
       imgName << std::setfill(L'0') << std::setw(4) << idx * ANGLE_STEP;
-      std::wstring basePath = L"tests_images/test_virtual_room/";
+      std::wstring basePath = L"tests_images/test_608_virtual_room/";
       const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
 
@@ -2113,15 +2113,15 @@ namespace SPECTRAL_TESTS
       idx++;
     }
 
-    return check_images_HDR("test_virtual_room", 1, 25);
+    return check_images_HDR("test_608_virtual_room", 1, 25);
   }
 
 
-  bool test_object_spectral()
+  bool test_609_object_spectral()
   {
-    hrErrorCallerPlace(L"test_object_spectral");
+    hrErrorCallerPlace(L"test_609_object_spectral");
 
-    hrSceneLibraryOpen(L"tests/test_object_spectral", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_609_object_spectral", HR_WRITE_DISCARD);
 
     std::wstring OBJECT_PATH(L"mesh.obj");
     float BASE_INTENSITY = 800.0f;
@@ -2346,7 +2346,7 @@ namespace SPECTRAL_TESTS
 
       std::wstringstream imgName;
       imgName << wavelengths[i] << "nm";
-      std::wstring basePath = L"tests_images/test_object_spectral/";
+      std::wstring basePath = L"tests_images/test_609_object_spectral/";
       const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
       const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
 
@@ -2355,26 +2355,26 @@ namespace SPECTRAL_TESTS
       savedImages.push_back(hdrName);
     }
 
-    std::filesystem::path rgbPath{ "tests_images/test_object_spectral/z_out.exr" };
+    std::filesystem::path rgbPath{ "tests_images/test_609_object_spectral/z_out.exr" };
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths, true);
 
-    std::filesystem::path avgPath{ "tests_images/test_object_spectral/averageSpectrum.exr" };
+    std::filesystem::path avgPath{ "tests_images/test_609_object_spectral/averageSpectrum.exr" };
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
 
-    std::filesystem::path avgPath2{ "tests_images/test_object_spectral/averageSpectrumV2.exr" };
+    std::filesystem::path avgPath2{ "tests_images/test_609_object_spectral/averageSpectrumV2.exr" };
     hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
 
-    std::filesystem::path yPath{ "tests_images/test_object_spectral/Y.exr" };
+    std::filesystem::path yPath{ "tests_images/test_609_object_spectral/Y.exr" };
     hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths, true);
 
-    std::filesystem::path multiPath{ "tests_images/test_object_spectral/multiLayer.exr" };
+    std::filesystem::path multiPath{ "tests_images/test_609_object_spectral/multiLayer.exr" };
     hr_spectral::SpectralImagesToMultilayerEXR(multiPath, savedImages, wavelengths);
 
-    return check_images_HDR("test_object_spectral", 1, 25);
+    return check_images_HDR("test_609_object_spectral", 1, 25);
   }
 
 
-  bool test_object_spectral_manyviews()
+  bool test_610_object_spectral_manyviews()
   {
     hrErrorCallerPlace(L"object_spectral_manyviews");
 
@@ -2640,11 +2640,11 @@ namespace SPECTRAL_TESTS
   }
 
 
-  void combine_images()
+  void test_611_combine_images()
   {
-    hrErrorCallerPlace(L"combine_images");
+    hrErrorCallerPlace(L"test_611_combine_images");
 
-    hrSceneLibraryOpen(L"tests/combine_images", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_611_combine_images", HR_WRITE_DISCARD);
 
     constexpr int TOTAL_WAVELENGTHS = 7;
     std::vector<float> wavelengths = { 460, 480, 520, 550, 580, 610, 640 };

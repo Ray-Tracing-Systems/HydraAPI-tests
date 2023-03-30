@@ -40,11 +40,11 @@ using HydraRender::SaveImageToFile;
 extern GLFWwindow* g_window;
 
 
-bool test35_cornell_with_light()
+bool test_035_cornell_with_light()
 {
-  hrErrorCallerPlace(L"test_35");
+  hrErrorCallerPlace(L"test_035");
 
-  hrSceneLibraryOpen(L"tests/test_35", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_035", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -445,9 +445,9 @@ bool test35_cornell_with_light()
     if (info.finalUpdate)
       break;
   }
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_35/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_035/z_out.png");
 
-  return check_images("test_35");
+  return check_images("test_035");
 }
 
 static inline int RealColorToUint32(const float real_color[4])
@@ -465,17 +465,17 @@ static inline int RealColorToUint32(const float real_color[4])
   return red | (green << 8) | (blue << 16) | (alpha << 24);
 }
 
-bool test37_cornell_with_light_different_image_layers()
+bool test_037_cornell_with_light_different_image_layers()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_37");
+  hrErrorCallerPlace(L"test_037");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_37", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_037", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -873,7 +873,7 @@ bool test37_cornell_with_light_different_image_layers()
 
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_37/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_037/z_out.png");
 
   std::vector<int32_t> normalsImageLDR(1024 * 768);
   std::vector<int32_t> txColorImageLDR(1024 * 768);
@@ -953,16 +953,16 @@ bool test37_cornell_with_light_different_image_layers()
 
   }
 
-  SaveImageToFile(std::string("tests_images/test_37/z_out2.png"), 1024, 768, (unsigned int*)&normalsImageLDR[0]);
-  SaveImageToFile(std::string("tests_images/test_37/z_out3.png"), 1024, 768, (unsigned int*)&txColorImageLDR[0]);
-  SaveImageToFile(std::string("tests_images/test_37/z_out4.png"), 1024, 768, (unsigned int*)&depthImageLDR[0]);
+  SaveImageToFile(std::string("tests_images/test_037/z_out2.png"), 1024, 768, (unsigned int*)&normalsImageLDR[0]);
+  SaveImageToFile(std::string("tests_images/test_037/z_out3.png"), 1024, 768, (unsigned int*)&txColorImageLDR[0]);
+  SaveImageToFile(std::string("tests_images/test_037/z_out4.png"), 1024, 768, (unsigned int*)&depthImageLDR[0]);
 
-  SaveImageToFile(std::string("tests_images/test_37/z_out5.png"), 1024, 768, (unsigned int*)&mindicesImageLDR[0]);
-  SaveImageToFile(std::string("tests_images/test_37/z_out6.png"), 1024, 768, (unsigned int*)&instIndicesImageLDR[0]);
-  SaveImageToFile(std::string("tests_images/test_37/z_out7.png"), 1024, 768, (unsigned int*)&objIndicesImageLDR[0]);
-  SaveImageToFile(std::string("tests_images/test_37/z_out8.png"), 1024, 768, (unsigned int*)&shadowImageLDR[0]);
+  SaveImageToFile(std::string("tests_images/test_037/z_out5.png"), 1024, 768, (unsigned int*)&mindicesImageLDR[0]);
+  SaveImageToFile(std::string("tests_images/test_037/z_out6.png"), 1024, 768, (unsigned int*)&instIndicesImageLDR[0]);
+  SaveImageToFile(std::string("tests_images/test_037/z_out7.png"), 1024, 768, (unsigned int*)&objIndicesImageLDR[0]);
+  SaveImageToFile(std::string("tests_images/test_037/z_out8.png"), 1024, 768, (unsigned int*)&shadowImageLDR[0]);
 
-  return check_images("test_37", 8);
+  return check_images("test_037", 8);
 }
 
 
@@ -970,13 +970,13 @@ bool test38_test_for_mlt()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_38");
+  hrErrorCallerPlace(L"test_038");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_38", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_038", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(1.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -1384,23 +1384,23 @@ bool test38_test_for_mlt()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_38/z_out.png");
-  hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_38/z_out.hdr");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_038/z_out.png");
+  hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_038/z_out.hdr");
 
-  return check_images("test_38", 1, 25.0f);
+  return check_images("test_038", 1, 25.0f);
 }
 
 #include "Timer.h"
 
-bool test39_mmlt_or_ibpt()
+bool test_039_mmlt_or_ibpt()
 {
-  hrErrorCallerPlace(L"test_39");
+  hrErrorCallerPlace(L"test_039");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_39", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_039", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -1777,12 +1777,12 @@ bool test39_mmlt_or_ibpt()
   }
   
   auto oldPrecision = std::cout.precision(3);
-  std::cout << "[test_39], rendering time = " << timer.getElapsed() << "s " << std::endl;
+  std::cout << "[test_039], rendering time = " << timer.getElapsed() << "s " << std::endl;
   std::cout.precision(oldPrecision);
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_39/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_039/z_out.png");
 
-  return check_images("test_39", 1, 40.0f);
+  return check_images("test_039", 1, 40.0f);
 }
 
 void test_device_list()
@@ -1803,17 +1803,17 @@ void test_device_list()
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
 }
 
-bool test40_several_changes()
+bool test_040_several_changes()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_40");
+  hrErrorCallerPlace(L"test_040");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_40", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_040", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -2177,8 +2177,8 @@ bool test40_several_changes()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_40/z_out.png");
-  hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_40/z_out.exr");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_040/z_out.png");
+  hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_040/z_out.exr");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2213,7 +2213,7 @@ bool test40_several_changes()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_40/z_out2.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_040/z_out2.png");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2312,7 +2312,7 @@ bool test40_several_changes()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_40/z_out3.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_040/z_out3.png");
 
-  return check_images("test_40", 3, 20.0f);
+  return check_images("test_040", 3, 20.0f);
 }

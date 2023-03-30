@@ -37,9 +37,9 @@ using namespace TEST_UTILS;
 extern GLFWwindow* g_window;
 
 
-bool test62_bad_textures()
+bool test_062_bad_textures()
 {
-  hrErrorCallerPlace(L"test62");
+  hrErrorCallerPlace(L"test_062");
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -49,7 +49,7 @@ bool test62_bad_textures()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_62", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_062", HR_WRITE_DISCARD);
 
   // geometry
   //
@@ -210,12 +210,12 @@ bool test62_bad_textures()
 
   hrFlush(scnRef, settingsRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_62/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_062/z_out.png");
 
-  return check_images("test_62");
+  return check_images("test_062");
 }
 
-static bool check_test_64(const std::wstring a_fileName1, const std::wstring a_fileName2)
+static bool check_test_064(const std::wstring a_fileName1, const std::wstring a_fileName2)
 {
   pugi::xml_document doc, doc2;
   doc.load_file(a_fileName1.c_str());
@@ -233,15 +233,15 @@ static bool check_test_64(const std::wstring a_fileName1, const std::wstring a_f
   return (id1 == id2);
 }
 
-bool test64_several_changes_light_area()
+bool test_064_several_changes_light_area()
 {
-  hrErrorCallerPlace(L"test_64");
+  hrErrorCallerPlace(L"test_064");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_64", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_064", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -431,7 +431,7 @@ bool test64_several_changes_light_area()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_64/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_064/z_out.png");
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,27 +471,27 @@ bool test64_several_changes_light_area()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_64/z_out2.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_064/z_out2.png");
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  const bool testImages = check_images("test_64", 2, 60.0f);
-  const bool testXml1   = check_test_64(L"tests/test_64/statex_00001.xml", L"tests/test_64/statex_00002.xml");
+  const bool testImages = check_images("test_064", 2, 60.0f);
+  const bool testXml1   = check_test_064(L"tests/test_064/statex_00001.xml", L"tests/test_064/statex_00002.xml");
 
   return testImages && testXml1;
 }
 
-bool test65_several_changes_light_rect()
+bool test_065_several_changes_light_rect()
 {
-  hrErrorCallerPlace(L"test_65");
+  hrErrorCallerPlace(L"test_065");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_65", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_065", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -841,7 +841,7 @@ bool test65_several_changes_light_rect()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_65/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_065/z_out.png");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -896,7 +896,7 @@ bool test65_several_changes_light_rect()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_65/z_out2.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_065/z_out2.png");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -997,16 +997,16 @@ bool test65_several_changes_light_rect()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_65/z_out3.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_065/z_out3.png");
 
-  return check_images("test_65", 3, 20.0f);
+  return check_images("test_065", 3, 20.0f);
 }
 
 
-bool test66_fast_render_no_final_update()
+bool test_066_fast_render_no_final_update()
 {
-  hrErrorCallerPlace(L"test_66");
-  hrSceneLibraryOpen(L"tests/test_66", HR_WRITE_DISCARD);
+  hrErrorCallerPlace(L"test_066");
+  hrSceneLibraryOpen(L"tests/test_066", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -1202,16 +1202,16 @@ bool test66_fast_render_no_final_update()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_66/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_066/z_out.png");
 
-  return check_images("test_66", 1, 20.0f);
+  return check_images("test_066", 1, 20.0f);
 }
 
-bool test67_fast_empty_scene()
+bool test_067_fast_empty_scene()
 {
-  hrErrorCallerPlace(L"test_67");
+  hrErrorCallerPlace(L"test_067");
 
-  hrSceneLibraryOpen(L"tests/test_67", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_067", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -1409,16 +1409,16 @@ bool test67_fast_empty_scene()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_67/z_out.png");
-  return check_images("test_67");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_067/z_out.png");
+  return check_images("test_067");
 }
 
 using LiteMath::float4x4;
 using LiteMath::float3;
 
-bool test97_camera_from_matrices()
+bool test_097_camera_from_matrices()
 {
-  hrErrorCallerPlace(L"test_97");
+  hrErrorCallerPlace(L"test_097");
 
   HRSceneInstRef scnRef;
 
@@ -1426,7 +1426,7 @@ bool test97_camera_from_matrices()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_97", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_097", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -1740,7 +1740,7 @@ bool test97_camera_from_matrices()
 
   hrFlush(scnRef, renderOgl, camRef);
 
-  hrRenderSaveFrameBufferLDR(renderOgl, L"tests_images/test_97/z_out.png"); 
+  hrRenderSaveFrameBufferLDR(renderOgl, L"tests_images/test_097/z_out.png"); 
 
   hrFlush(scnRef, renderRealistic, camRef);
 
@@ -1761,14 +1761,14 @@ bool test97_camera_from_matrices()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRealistic, L"tests_images/test_97/z_out2.png");
+  hrRenderSaveFrameBufferLDR(renderRealistic, L"tests_images/test_097/z_out2.png");
 
-  return check_images("test_97", 2);
+  return check_images("test_097", 2);
 }
 
 
 
-bool test68_scene_library_file_info()
+bool test_068_scene_library_file_info()
 {
   wchar_t message[256];
 
@@ -1777,7 +1777,7 @@ bool test68_scene_library_file_info()
   if (!(loadInfo1.exists && loadInfo1.valid && loadInfo1.empty))
     return false;
 
-  auto loadInfo2 = hrSceneLibraryExists(L"tests/test_35", message);
+  auto loadInfo2 = hrSceneLibraryExists(L"tests/test_035", message);
 
   if (!loadInfo2.isOk())
     return false;
@@ -1791,15 +1791,15 @@ bool test68_scene_library_file_info()
 }
 
 
-bool test70_area_lights16()
+bool test_070_area_lights16()
 {
-  hrErrorCallerPlace(L"test_70");
+  hrErrorCallerPlace(L"test_070");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_70", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_070", HR_WRITE_DISCARD);
 
   SimpleMesh cube = CreateCube(0.75f);
   SimpleMesh plane = CreatePlane(10.0f);
@@ -2177,17 +2177,17 @@ bool test70_area_lights16()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_70/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_070/z_out.png");
 
-  return check_images("test_70", 1, 25.0f);
+  return check_images("test_070", 1, 25.0f);
 }
 
 
 
-bool test71_out_of_memory()
+bool test_071_out_of_memory()
 {
-  hrErrorCallerPlace(L"test71_out_of_memory");
-  hrSceneLibraryOpen(L"tests/test_71", HR_WRITE_DISCARD);
+  hrErrorCallerPlace(L"test_071_out_of_memory");
+  hrSceneLibraryOpen(L"tests/test_071", HR_WRITE_DISCARD);
 
   constexpr int64_t VIRTUAL_BUFFER_SIZE = int64_t(2048)*int64_t(1024 * 1024);
   const size_t numBytes = VIRTUAL_BUFFER_SIZE;
@@ -2239,9 +2239,9 @@ bool test71_out_of_memory()
   return (bigTex.id == -1);
 }
 
-bool test72_load_library_single_teapot_with_opacity()
+bool test_072_load_library_single_teapot_with_opacity()
 {
-  hrSceneLibraryOpen(L"tests/test_72", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_072", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -2281,15 +2281,15 @@ bool test72_load_library_single_teapot_with_opacity()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_72/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_072/z_out.png");
 
-  return check_images("test_72", 1, 35.0f);
+  return check_images("test_072", 1, 35.0f);
 }
 
 
-bool test73_big_resolution()
+bool test_073_big_resolution()
 {
-  hrErrorCallerPlace(L"test_73");
+  hrErrorCallerPlace(L"test_073");
 
   int width          = 16384;
   int height         = 16384;
@@ -2299,7 +2299,7 @@ bool test73_big_resolution()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_73", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_073", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -2669,21 +2669,21 @@ bool test73_big_resolution()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_73/z_out.png");
-  hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_73/z_out.hdr");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_073/z_out.png");
+  hrRenderSaveFrameBufferHDR(renderRef, L"tests_images/test_073/z_out.hdr");
 
-  return check_images("test_73", 1, 20.0f);
+  return check_images("test_073", 1, 20.0f);
 }
 
-bool test74_frame_buffer_line()
+bool test_074_frame_buffer_line()
 {
-  hrErrorCallerPlace(L"test_74");
+  hrErrorCallerPlace(L"test_074");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_74", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_074", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -3070,21 +3070,21 @@ bool test74_frame_buffer_line()
       break;
   }
 
-  HydraRender::SaveImageToFile(L"tests_images/test_74/z_out.png", 1024, 768, (const unsigned*)&image[0]);
-  HydraRender::SaveImageToFile(L"tests_images/test_74/z_out2.png", hdrImage);                             // it save to ldr image !!!
+  HydraRender::SaveImageToFile(L"tests_images/test_074/z_out.png", 1024, 768, (const unsigned*)&image[0]);
+  HydraRender::SaveImageToFile(L"tests_images/test_074/z_out2.png", hdrImage);                             // it save to ldr image !!!
 
-  return check_images("test_74", 2, 20.0f); 
+  return check_images("test_074", 2, 20.0f); 
 }
 
-bool test75_repeated_render()
+bool test_075_repeated_render()
 {
-  hrErrorCallerPlace(L"test_75");
+  hrErrorCallerPlace(L"test_075");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_75", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_075", HR_WRITE_DISCARD);
 
   SimpleMesh cube = CreateCube(0.75f);
   SimpleMesh plane = CreatePlane(10.0f);
@@ -3468,7 +3468,7 @@ bool test75_repeated_render()
       break;
   }
 
-  HydraRender::SaveImageToFile(L"tests_images/test_75/z_out.png", hdrImage_1);
+  HydraRender::SaveImageToFile(L"tests_images/test_075/z_out.png", hdrImage_1);
 
   constexpr uint32_t WIDTH_2  = 512;
   constexpr uint32_t HEIGHT_2 = 512;
@@ -3514,19 +3514,19 @@ bool test75_repeated_render()
       break;
   }
 
-  HydraRender::SaveImageToFile(L"tests_images/test_75/z_out2.png", hdrImage_2);                             // it save to ldr image !!!
+  HydraRender::SaveImageToFile(L"tests_images/test_075/z_out2.png", hdrImage_2);                             // it save to ldr image !!!
 
-  return check_images("test_75", 2, 20.0f); // #TODO: add check for HDR image
+  return check_images("test_075", 2, 20.0f); // #TODO: add check for HDR image
 }
 
 const int TEST_IMG_SIZE = 512;
 
-bool test76_empty_mesh()
+bool test_076_empty_mesh()
 {
-  hrErrorCallerPlace(L"test_76");
+  hrErrorCallerPlace(L"test_076");
 
 
-  hrSceneLibraryOpen(L"tests/test_76", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_076", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -3727,20 +3727,20 @@ bool test76_empty_mesh()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_76/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_076/z_out.png");
 
-  return check_images("test_76");
+  return check_images("test_076");
 }
 
-bool test77_save_gbuffer_layers()
+bool test_077_save_gbuffer_layers()
 {
-  hrErrorCallerPlace(L"test_77");
+  hrErrorCallerPlace(L"test_077");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_77", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_077", HR_WRITE_DISCARD);
 
   SimpleMesh cube = CreateCube(0.75f);
   SimpleMesh plane = CreatePlane(10.0f);
@@ -4106,14 +4106,14 @@ bool test77_save_gbuffer_layers()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_77/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_077/z_out.png");
 
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out2.png", L"depth");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out3.png", L"normals");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out4.png", L"texcoord");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out5.png", L"diffcolor");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out6.png", L"alpha");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out7.png", L"shadow");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out2.png", L"depth");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out3.png", L"normals");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out4.png", L"texcoord");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out5.png", L"diffcolor");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out6.png", L"alpha");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out7.png", L"shadow");
 
 
   const unsigned int palette[20] = { 0xffff0000, 0xff00ff00, 0xff0000ff, 0xff0082c8,
@@ -4122,19 +4122,19 @@ bool test77_save_gbuffer_layers()
                                      0xffaa6e28, 0xfffffac8, 0xff800000, 0xffaaffc3,
                                      0xff808000, 0xffffd8b1, 0xff000080, 0xff808080 };
 
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out8.png", L"matid",  (const int32_t*)palette, 20);
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out9.png", L"objid",  (const int32_t*)palette, 20);
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out10.png", L"instid", (const int32_t*)palette, 20);
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out8.png", L"matid",  (const int32_t*)palette, 20);
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out9.png", L"objid",  (const int32_t*)palette, 20);
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out10.png", L"instid", (const int32_t*)palette, 20);
 
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out11.png", L"coverage");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_77/z_out12.png", L"catcher");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out11.png", L"coverage");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_077/z_out12.png", L"catcher");
 
-  return check_images("test_77", 12, 25.0f);
+  return check_images("test_077", 12, 25.0f);
 }
 
-bool test78_material_remap_list1()
+bool test_078_material_remap_list1()
 {
-  hrErrorCallerPlace(L"test_78");
+  hrErrorCallerPlace(L"test_078");
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -4144,7 +4144,7 @@ bool test78_material_remap_list1()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_78", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_078", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -4471,7 +4471,7 @@ bool test78_material_remap_list1()
     }
   }
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_78/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_078/z_out.png");
 
   // mat0 : texture1.bmp
   // mat1 : chess_red.bmp
@@ -4522,15 +4522,15 @@ bool test78_material_remap_list1()
     }
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_78/z_out2.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_078/z_out2.png");
 
-  return check_images("test_78", 2, 25.0f);
+  return check_images("test_078", 2, 25.0f);
 }
 
 
-bool test79_material_remap_list2()
+bool test_079_material_remap_list2()
 {
-  hrErrorCallerPlace(L"test_79");
+  hrErrorCallerPlace(L"test_079");
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -4540,7 +4540,7 @@ bool test79_material_remap_list2()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_79", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_079", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -4938,7 +4938,7 @@ bool test79_material_remap_list2()
     }
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_79/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_079/z_out.png");
 
   // mat0 : texture1.bmp
   // mat1 : chess_red.bmp
@@ -5072,20 +5072,20 @@ bool test79_material_remap_list2()
     }
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_79/z_out2.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_079/z_out2.png");
 
-  return check_images("test_79", 2, 25.0f);
+  return check_images("test_079", 2, 25.0f);
 }
 
-bool test80_lt_rect_image()
+bool test_080_lt_rect_image()
 {
-  hrErrorCallerPlace(L"test_39");
+  hrErrorCallerPlace(L"test_039");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_39", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_039", HR_WRITE_DISCARD);
 
   SimpleMesh cube = CreateCube(0.75f);
   SimpleMesh plane = CreatePlane(10.0f);
@@ -5451,7 +5451,7 @@ bool test80_lt_rect_image()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_80/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_080/z_out.png");
 
-  return check_images("test_80", 1, 50.0f);
+  return check_images("test_080", 1, 50.0f);
 }

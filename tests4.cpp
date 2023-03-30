@@ -40,7 +40,7 @@
 using namespace TEST_UTILS;
 
 
-bool test23_texture_from_memory()
+bool test_023_texture_from_memory()
 {
   initGLIfNeeded(1024, 768);
  
@@ -54,7 +54,7 @@ bool test23_texture_from_memory()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_23", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_023", HR_WRITE_DISCARD);
 
   // geometry
   //
@@ -74,7 +74,7 @@ bool test23_texture_from_memory()
   HRTextureNodeRef testTex2 = hrTexture2DCreateFromMemory(128, 128, 4, &imageData1[0]);
   HRTextureNodeRef testTex3 = hrTexture2DCreateFromMemory(300, 300, 4, &imageData2[0]);
 
-  //CreateStripedImageFile("tests_images/test_23/TexFromMemory.png", colors, 4, 128, 128);
+  //CreateStripedImageFile("tests_images/test_023/TexFromMemory.png", colors, 4, 128, 128);
 
   HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
   HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat2");
@@ -216,18 +216,18 @@ bool test23_texture_from_memory()
 
   hrFlush(scnRef, settingsRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_23/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_023/z_out.png");
 
-  return check_images("test_23");
+  return check_images("test_023");
 }
 
 
-bool test24_many_textures_big_data()
+bool test_024_many_textures_big_data()
 {
   CreateTestBigTexturesFilesIfNeeded();
 
   
-  hrSceneLibraryOpen(L"tests/test_24", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_024", HR_WRITE_DISCARD);
   
   const int NMats = 20;
 
@@ -421,18 +421,18 @@ bool test24_many_textures_big_data()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_24/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_024/z_out.png");
 
-  return check_images("test_24");
+  return check_images("test_024");
 }
 
 
-bool test25_many_textures_big_data()
+bool test_025_many_textures_big_data()
 {
   CreateTestBigTexturesFilesIfNeeded();
 
   
-  hrSceneLibraryOpen(L"tests/test_25", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_025", HR_WRITE_DISCARD);
 
   const int NMats = 10;
 
@@ -608,18 +608,18 @@ bool test25_many_textures_big_data()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_25/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_025/z_out.png");
 
-  return check_images("test_25");
+  return check_images("test_025");
 }
 
 
-bool test26_many_textures_big_data()
+bool test_026_many_textures_big_data()
 {
   CreateTestBigTexturesFilesIfNeeded();
 
   
-  hrSceneLibraryOpen(L"tests/test_26", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_026", HR_WRITE_DISCARD);
 
   const int NMats = 10;
 
@@ -795,16 +795,16 @@ bool test26_many_textures_big_data()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_26/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_026/z_out.png");
 
-  return check_images("test_26");
+  return check_images("test_026");
 }
 
 
-bool test27_many_textures_big_data_from_mem()
+bool test_027_many_textures_big_data_from_mem()
 {
   
-  hrSceneLibraryOpen(L"tests/test_27", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_027", HR_WRITE_DISCARD);
 
   const int NMats = 20;
 
@@ -984,16 +984,16 @@ bool test27_many_textures_big_data_from_mem()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_27/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_027/z_out.png");
 
-  return check_images("test_27");
+  return check_images("test_027");
 }
 
 
-bool test29_many_textures_and_meshes()
+bool test_029_many_textures_and_meshes()
 {
   
-  hrSceneLibraryOpen(L"tests/test_29", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_029", HR_WRITE_DISCARD);
 
   const int NMats = 100;
 
@@ -1167,16 +1167,16 @@ bool test29_many_textures_and_meshes()
 
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_29/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_029/z_out.png");
 
-  return check_images("test_29");
+  return check_images("test_029");
 }
 
 
-bool test30_many_textures_and_meshes()
+bool test_030_many_textures_and_meshes()
 {
   
-  hrSceneLibraryOpen(L"tests/test_30", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_030", HR_WRITE_DISCARD);
 
   const int NMats = 100;
 
@@ -1348,19 +1348,19 @@ bool test30_many_textures_and_meshes()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_30/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_030/z_out.png");
 
-  return check_images("test_30");
+  return check_images("test_030");
 }
 
 
-bool test34_delayed_textures_does_not_exists()
+bool test_034_delayed_textures_does_not_exists()
 {
   initGLIfNeeded(1024,768);
   
   CreateTestBigTexturesFilesIfNeeded();
   
-  hrSceneLibraryOpen(L"tests/test_34", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_034", HR_WRITE_DISCARD);
 
   const int NMats = 10;
 
@@ -1539,7 +1539,7 @@ bool test34_delayed_textures_does_not_exists()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_34/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_034/z_out.png");
 
-  return check_images("test_34");
+  return check_images("test_034");
 }

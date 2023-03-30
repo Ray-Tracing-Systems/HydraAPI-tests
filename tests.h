@@ -18,9 +18,13 @@ using namespace LiteMath;
 #include "mesh_utils.h"
 #include "simplerandom.h"
 
-void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level);
+///////////////////////////////////////////////////////////////////////////////////
+
+#define IRRADIANCE_TO_RADIANCE (3.14159265358979323846f)
 
 using pugi::xml_node;
+
+void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level);
 
 inline xml_node force_child(xml_node a_parent, const wchar_t* a_name) ///< helper function
 {
@@ -38,7 +42,23 @@ void initGLIfNeeded(int a_width = 512, int a_height = 512, const char* a_name = 
 
 namespace TEST_UTILS
 {
-  bool FileExists(const char* a_fileName);
+  struct SystemInfo
+  {
+    SystemInfo(const std::wstring& a_operationSystem, const std::wstring& a_videocard);      
+
+    void SetOperSys  (const std::wstring& a_operationSystem);
+    void SetVideocard(const std::wstring& a_videocard);
+
+    std::wstring GetFolderNameFromInfo();
+    std::wstring GetOsName();
+    std::wstring GetVideocardName();
+
+  private:
+    std::wstring m_operationSystem;
+    std::wstring m_videocard;
+  }; 
+
+  inline bool FileExists(const char* a_fileName);
 
   //images and textures
   void show_me_texture_ldr(const std::string& a_inFleName, const std::string& a_outFleName);
@@ -122,57 +142,35 @@ namespace TEST_UTILS
   void RenderProgress(HRRenderRef& a_renderRef);
 
   //Generate Report
+
   struct ResultTest
   {
   public:
-    ResultTest(const std::wstring a_name, const bool a_res, const bool a_skip, const float a_mse,
-      const float a_rendTime, const std::wstring a_linkRefImg, const std::wstring a_linkRenderImg)
-    {
-      m_nameTest      = a_name;
-      m_mse           = std::to_wstring(a_mse).substr(0, 4);
-      m_renderTime    = std::to_wstring(a_rendTime).substr(0, 4) + L" sec.";
-      m_linkRefImg  = L"-";
-      m_linkRendImg = L"-";
-
-      if (a_skip)
-      {        
-        m_result      = L"skipped";
-        m_resultHtml  = L"&#128465;"; // trash can
-        m_mse         = L"-";
-        m_renderTime  = L"-";
-      }
-      else if (a_res  == true)
-      {
-        m_result      = L"ok";
-        m_resultHtml  = L"&#10004;"; // check mark
-      }
-      else
-      {
-        m_result      = L"FAILED";
-        m_resultHtml  = L"&#10060;"; // red cross
-        m_linkRefImg  = L"<img src = " + a_linkRefImg + L">";        
-        m_linkRendImg = L"<img src = " + a_linkRenderImg + L">";
-      }
-    }
+    ResultTest(const std::wstring a_name, const std::vector<bool> a_res, const bool a_skip, const std::vector<float> a_mse,
+      const float a_rendTime, const std::vector<std::wstring>& a_linkRefImg,
+      const std::vector<std::wstring>& a_linkRenderImg);
       
     std::wstring GetName()          { return m_nameTest; }
     std::wstring GetMse()           { return m_mse; }
+    std::wstring GetMseHtml()       { return m_mseHtml; }
     std::wstring GetStrResult()     { return m_result; }
     std::wstring GetStrResultHtml() { return m_resultHtml; }
     std::wstring GetRendTime()      { return m_renderTime; }
-    std::wstring GetLinkRef()       { return m_linkRefImg; }
-    std::wstring GetLinkRend()      { return m_linkRendImg; }
+    std::wstring GetLinkRef()       { return m_linkRefImgs; }
+    std::wstring GetLinkRend()      { return m_linkRendImgs; }
 
   private:
-    std::wstring m_nameTest = L"dummy test";
-    std::wstring m_mse;
-    std::wstring m_result;
-    std::wstring m_resultHtml;
-    std::wstring m_renderTime;
-    std::wstring m_linkRefImg;
-    std::wstring m_linkRendImg;
+    std::wstring m_nameTest     = L"dummy test";
+    std::wstring m_mse          = L"";
+    std::wstring m_mseHtml      = L"";
+    std::wstring m_result       = L"";
+    std::wstring m_resultHtml   = L"";
+    std::wstring m_renderTime   = L"";
+    std::wstring m_linkRefImgs  = L"";
+    std::wstring m_linkRendImgs = L"";
   };
 
+  void SetReportFolder(const std::wstring& a_folder);
 
   void CreateHtml(std::wofstream& a_fileOut);
   void AddTextHtml(const std::wstring& a_text, std::wofstream& a_fileOut, const int a_size);
@@ -194,121 +192,120 @@ void test_device_list();
 bool check_all_duplicates(const std::wstring& a_fileName);
 bool check_all_attrib_duplicates(const std::wstring& a_fileName);
 
-bool test01_materials_add();
-bool test02_materials_changes_open_mode();
-bool test03_lights_add();
-bool test04_lights_add_change();
-bool test05_instances_write_discard();
-bool test06_instances_open_existent();
-bool test07_camera_add();
-bool test08_camera_add_change();
-bool test09_render_ogl();
+bool test_001_materials_add();
+bool test_002_materials_changes_open_mode();
+bool test_003_lights_add();
+bool test_004_lights_add_change();
+bool test_005_instances_write_discard();
+bool test_006_instances_open_existent();
+bool test_007_camera_add();
+bool test_008_camera_add_change();
+bool test_009_render_ogl();
 
-bool test10_render_ogl_cube();
-bool test11_render_ogl_some_figures();
-bool test12_render_ogl_100_random_figures();
-bool test13_render_ogl_some_figures_diff_mats_prom_ptr();
-bool test14_bad_material_indices();
+bool test_010_render_ogl_cube();
+bool test_011_render_ogl_some_figures();
+bool test_012_render_ogl_100_random_figures();
+bool test_013_render_ogl_some_figures_diff_mats_prom_ptr();
+bool test_014_bad_material_indices();
 
-bool test15_main_scene_and_mat_editor();
-bool test16_texture_add_change();
-bool test17_falloff();
-bool test18_camera_move();
+bool test_015_main_scene_and_mat_editor();
+bool test_016_texture_add_change();
+bool test_017_falloff();
+bool test_018_camera_move();
 
-bool test19_material_change();
-bool test20_mesh_change();
-bool test21_add_same_textures_from_file();
-bool test22_can_not_load_texture();
-bool test23_texture_from_memory();
-bool test24_many_textures_big_data();
-bool test25_many_textures_big_data();
-bool test26_many_textures_big_data();
-bool test27_many_textures_big_data_from_mem();
-bool test28_compute_normals();
-bool test29_many_textures_and_meshes();
-bool test30_many_textures_and_meshes();
-bool test31_procedural_texture_LDR();
-bool test32_procedural_texture_HDR();
-bool test33_update_from_file();
-bool test34_delayed_textures_does_not_exists();
-bool test35_cornell_with_light();
-bool test36_update_from_memory();
-bool test37_cornell_with_light_different_image_layers();
+bool test_019_material_change();
+bool test_020_mesh_change();
+bool test_021_add_same_textures_from_file();
+bool test_022_can_not_load_texture();
+bool test_023_texture_from_memory();
+bool test_024_many_textures_big_data();
+bool test_025_many_textures_big_data();
+bool test_026_many_textures_big_data();
+bool test_027_many_textures_big_data_from_mem();
+bool test_028_compute_normals();
+bool test_029_many_textures_and_meshes();
+bool test_030_many_textures_and_meshes();
+bool test_031_procedural_texture_LDR();
+bool test_032_procedural_texture_HDR();
+bool test_033_update_from_file();
+bool test_034_delayed_textures_does_not_exists();
+bool test_035_cornell_with_light();
+bool test_036_update_from_memory();
+bool test_037_cornell_with_light_different_image_layers();
 
-bool test38_save_mesh_and_delayed_load();
-bool test38_2_obj_delayed_load();
-bool test39_mmlt_or_ibpt();
-bool test40_several_changes();
+bool test_038_save_mesh_and_delayed_load();
+bool test_039_mmlt_or_ibpt();
+bool test_040_several_changes();
 
-bool test41_load_library_basic();
-bool test42_load_mesh_compressed();
+bool test_041_load_library_basic();
+bool test_042_load_mesh_compressed();
 
-bool test43_test_direct_light();
-bool test44_four_lights_and_compressed_mesh();
-bool test45_mesh_from_vsgf_opengl_bug_teapot();
+bool test_043_test_direct_light();
+bool test_044_four_lights_and_compressed_mesh();
+bool test_045_mesh_from_vsgf_opengl_bug_teapot();
 
-bool test46_light_geom_rect();
-bool test47_light_geom_disk();
-bool test48_light_geom_sphere();
-bool test49_light_geom_disk();
-bool test50_open_library_several_times();
-bool test51_instance_many_trees_and_opacity();
-bool test52_instance_perf_test();
-bool test53_crysponza_perf();
-bool test54_portalsroom_perf();
-bool test55_clear_scene();
-bool test56_mesh_change_open_existing();
-bool test57_single_instance();
-bool test58_crysponza_and_opacity1_perf();
-bool test59_cornell_water_mlt();
-bool test60_debug_print_and_cant_load_mesh();
-bool test61_cornell_with_light_near_wall_and_glossy_wall();
+bool test_046_light_geom_rect();
+bool test_047_light_geom_disk();
+bool test_048_light_geom_sphere();
+bool test_049_light_geom_disk();
+bool test_050_open_library_several_times();
+bool test_051_instance_many_trees_and_opacity();
+bool test_052_instance_perf_test();
+bool test_053_crysponza_perf();
+bool test_054_portalsroom_perf();
+bool test_055_clear_scene();
+bool test_056_mesh_change_open_existing();
+bool test_057_single_instance();
+bool test_058_crysponza_and_opacity1_perf();
+bool test_059_cornell_water_mlt();
+bool test_060_debug_print_and_cant_load_mesh();
+bool test_061_cornell_with_light_near_wall_and_glossy_wall();
 
-//bool test62_bad_textures();
-bool test63_cornell_with_caustic_from_torus();
-bool test64_several_changes_light_area();
-bool test65_several_changes_light_rect();
+//bool test_062_bad_textures();
+bool test_063_cornell_with_caustic_from_torus();
+bool test_064_several_changes_light_area();
+bool test_065_several_changes_light_rect();
 
-bool test66_fast_render_no_final_update();
-bool test67_fast_empty_scene();
-bool test68_scene_library_file_info();
-//   test69 empty
-bool test70_area_lights16();
-bool test71_out_of_memory();
-bool test72_load_library_single_teapot_with_opacity(); // not used, to change it for something useful
-bool test73_big_resolution();                          // not used in automatic mode due to large image size
-bool test74_frame_buffer_line();
-bool test75_repeated_render();
-bool test76_empty_mesh();
-bool test77_save_gbuffer_layers();
-bool test78_material_remap_list1();
-bool test79_material_remap_list2();
-bool test80_lt_rect_image();
-bool test81_custom_attributes();
+bool test_066_fast_render_no_final_update();
+bool test_067_fast_empty_scene();
+bool test_068_scene_library_file_info();
+bool test_069_obj_delayed_load();
+bool test_070_area_lights16();
+bool test_071_out_of_memory();
+bool test_072_load_library_single_teapot_with_opacity(); // not used, to change it for something useful
+bool test_073_big_resolution();                          // not used in automatic mode due to large image size
+bool test_074_frame_buffer_line();
+bool test_075_repeated_render();
+bool test_076_empty_mesh();
+bool test_077_save_gbuffer_layers();
+bool test_078_material_remap_list1();
+bool test_079_material_remap_list2();
+bool test_080_lt_rect_image();
+bool test_081_custom_attributes();
 
-bool test82_proc_texture();
-bool test83_proc_texture2();
-bool test84_proc_texture2();
-bool test85_proc_texture_ao();
-bool test86_proc_texture_ao_dirt();
-bool test87_proc_texture_reflect();
-bool test88_proc_texture_convex_rust();
-bool test89_proc_texture_dirty();
+bool test_082_proc_texture();
+bool test_083_proc_texture2();
+bool test_084_proc_texture2();
+bool test_085_proc_texture_ao();
+bool test_086_proc_texture_ao_dirt();
+bool test_087_proc_texture_reflect();
+bool test_088_proc_texture_convex_rust();
+bool test_089_proc_texture_dirty();
 
-bool test90_proc_tex_normalmap();
-bool test91_proc_tex_bump();
-bool test92_proc_tex_bump2();
+bool test_090_proc_tex_normalmap();
+bool test_091_proc_tex_bump();
+bool test_092_proc_tex_bump2();
 
-bool test93_proc_tex_recursive();
+bool test_093_proc_tex_recursive();
 
-bool test93_check_xml_fail_materials();   // not used in automatic mode
-bool test94_check_xml_fail_camera();      // not used in automatic mode
+bool test_093_check_xml_fail_materials();   // not used in automatic mode
+bool test_094_check_xml_fail_camera();      // not used in automatic mode
 
-bool test95_bump();
-bool test96_hexaplanar();
-bool test97_camera_from_matrices();
-bool test98_motion_blur();                // not implemented
-bool test99_triplanar();
+bool test_095_bump();
+bool test_096_hexaplanar();
+bool test_097_camera_from_matrices();
+bool test_098_motion_blur();                // not implemented
+bool test_099_triplanar();
 
 bool test_motion_blur();
 bool test_mono_framebuff();
@@ -317,16 +314,16 @@ bool test100_dummy_hydra_exec();          // not used
 
 namespace GEO_TESTS
 {
-  bool test_001_mesh_from_memory();
-  bool test_002_mesh_from_vsgf();
-  bool test_003_compute_normals(); // bug - normals computation
-  bool test_004_dof();
-  bool test_005_instancing();
-  bool test_006_points_on_mesh();
+  bool test_301_mesh_from_memory();
+  bool test_302_mesh_from_vsgf();
+  bool test_303_compute_normals(); // bug - normals computation
+  bool test_304_dof();
+  bool test_305_instancing();
+  bool test_306_points_on_mesh();
   
-  bool test_007_import_obj();
-  bool test_008_import_obj_w_mtl();
-  bool test_009_import_obj_fullscale();
+  bool test_307_import_obj();
+  bool test_308_import_obj_w_mtl();
+  bool test_309_import_obj_fullscale();
 }
 
 namespace MTL_TESTS
@@ -495,66 +492,66 @@ namespace ALGR_TESTS
 
 namespace EXTENSIONS_TESTS
 {
-  bool test_ext_vtex_1(); // msdf basic
-  bool test_ext_vtex_2(); // texture matrix
-  bool test_ext_vtex_3(); // outlines
-  bool test_ext_vtex_4(); // combine
-  bool test_ext_vtex_5(); // rasterize
-  bool test_ext_vtex_6(); // overlapping shapes
-  bool test_ext_vtex_7(); // blend
-  bool test_ext_vtex_8(); // blend 2
-  bool test_ext_vtex_example(); // for trying out different configs
+  bool test_500_ext_vtex(); // msdf basic
+  bool test_501_ext_vtex(); // texture matrix
+  bool test_502_ext_vtex(); // outlines
+  bool test_503_ext_vtex(); // combine
+  bool test_504_ext_vtex(); // rasterize
+  bool test_505_ext_vtex(); // overlapping shapes
+  bool test_506_ext_vtex(); // blend
+  bool test_507_ext_vtex(); // blend 2
+  bool test_508_ext_vtex(); // for trying out different configs
 }
 
 namespace SPECTRAL_TESTS
 {
-  bool test_cornell_RGB();
-  bool test_cornell_spectral_2();
-  bool test_macbeth();
-  bool test_texture_1();
-  bool test_tile();
-  bool test_macbeth_2(); // render 3 wavelengths at a time;
-  bool test_macbeth_3(); // use hydra api shared image to accumulate average spectrum
-  bool generate_nerf_data();
-  bool test_virtual_room();
-  bool test_object_spectral();
-  bool test_object_spectral_manyviews();
-  void combine_images();
+  bool test_600_cornell_RGB();
+  bool test_601_cornell_spectral_2();
+  bool test_602_macbeth();
+  bool test_603_texture_1();
+  bool test_604_tile();
+  bool test_605_macbeth_2(); // render 3 wavelengths at a time;
+  bool test_606_macbeth_3(); // use hydra api shared image to accumulate average spectrum
+  bool test_607_generate_nerf_data();
+  bool test_608_virtual_room();
+  bool test_609_object_spectral();
+  bool test_610_object_spectral_manyviews();
+  void test_611_combine_images();
 }
 
 void run_all_vector_tex_tests();
 
 //These tests need some scene library to exist in their respective folders
-bool test1000_loadlibrary_and_edit();
-bool test1001_loadlibrary_and_add_textures();
-bool test1002_get_material_by_name_and_edit();
-bool test1003_get_light_by_name_and_edit();
-bool test1004_get_camera_by_name_and_edit();
-bool test1005_transform_all_instances();
-bool test1006_transform_all_instances_origin();
+bool test_700_loadlibrary_and_edit();
+bool test_701_loadlibrary_and_add_textures();
+bool test_702_get_material_by_name_and_edit();
+bool test_703_get_light_by_name_and_edit();
+bool test_704_get_camera_by_name_and_edit();
+bool test_705_transform_all_instances();
+bool test_706_transform_all_instances_origin();
 
 
-bool test1007_merge_library();      // run MTL_TESTS::test_131_blend_simple() first
-bool test1008_merge_one_texture();  // run MTL_TESTS::test_131_blend_simple() first
-bool test1009_merge_one_material(); // run MTL_TESTS::test_131_blend_simple() first
-bool test1010_merge_one_mesh();     // run GEO_TESTS::test_005_instancing() and GEO_TESTS::test_002_mesh_from_vsgf() first
-bool test1011_merge_scene();        // run MTL_TESTS::test_131_blend_simple() first
-bool test1012_merge_one_light();    // run LGHT_TESTS::test_221_cylinder_tex3();
+bool test_707_merge_library();      // run MTL_TESTS::test_131_blend_simple() first
+bool test_708_merge_one_texture();  // run MTL_TESTS::test_131_blend_simple() first
+bool test_709_merge_one_material(); // run MTL_TESTS::test_131_blend_simple() first
+bool test_710_merge_one_mesh();     // run GEO_TESTS::test_305_instancing() and GEO_TESTS::test_302_mesh_from_vsgf() first
+bool test_711_merge_scene();        // run MTL_TESTS::test_131_blend_simple() first
+bool test_712_merge_one_light();    // run LGHT_TESTS::test_221_cylinder_tex3();
 
 
-bool test1013_commit_without_render(); //needs scene library with at least 1 light and 2 materials
-bool test1014_print_matlib_map();
+bool test_713_commit_without_render(); //needs scene library with at least 1 light and 2 materials
+bool test_714_print_matlib_map();
 
-bool test1015_merge_scene_with_remaps();
-bool test1016_merge_scene_remap_override();
-bool test1017_merge_scene_scene_id_mask();
+bool test_715_merge_scene_with_remaps();
+bool test_716_merge_scene_remap_override();
+bool test_717_merge_scene_scene_id_mask();
 
-bool test_x1_displace_car_by_noise();
-bool test_x2_car_displacement_triplanar();
-bool test_x3_car_fresnel_ice();
-bool test_x4_car_triplanar(const int i);
+bool test_718_displace_car_by_noise();
+bool test_719_car_displacement_triplanar();
+bool test_719_car_fresnel_ice();
+bool test_720_car_triplanar(const int i);
 
-bool test_depth_mesh();
+bool test_721_depth_mesh();
 
 void run_all_api_tests(const int startTestId = 0);
 void run_all_geo_tests();
@@ -571,6 +568,5 @@ void run_all_microfacet_torrance_sparrow();
 void run_all_3dsmax_tests(int a_start = 0);
 bool run_single_3dsmax_test(const std::wstring& a_path);
 
-#define IRRADIANCE_TO_RADIANCE (3.14159265358979323846f)
 
 #endif

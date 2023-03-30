@@ -38,7 +38,7 @@ using namespace TEST_UTILS;
 extern GLFWwindow* g_window;
 
 
-bool test31_procedural_texture_LDR()
+bool test_031_procedural_texture_LDR()
 {
 	hrErrorCallerPlace(L"test31");
 
@@ -49,7 +49,7 @@ bool test31_procedural_texture_LDR()
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	hrSceneLibraryOpen(L"tests/test_31", HR_WRITE_DISCARD);
+	hrSceneLibraryOpen(L"tests/test_031", HR_WRITE_DISCARD);
 
 	// geometry
 	//
@@ -71,7 +71,7 @@ bool test31_procedural_texture_LDR()
 	HRTextureNodeRef testTex3 = hrTexture2DCreateBakedLDR(&procTexCheckerLDR, (void *) (&rep3), 0, 32, 32);
 	HRTextureNodeRef testTex4 = hrTexture2DCreateBakedLDR(&procTexCheckerLDR, (void *) (&rep4), 0, 16, 16);
 
-	//CreateStripedImageFile("tests_images/test_23/TexFromMemory.png", colors, 4, 128, 128);
+	//CreateStripedImageFile("tests_images/test_023/TexFromMemory.png", colors, 4, 128, 128);
 
 	HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat");
 	HRMaterialRef mat2 = hrMaterialCreate(L"mysimplemat2");
@@ -275,12 +275,12 @@ bool test31_procedural_texture_LDR()
       break;
   }
 	
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_31/z_out.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_031/z_out.png");
 
-	return check_images("test_31");
+	return check_images("test_031");
 }
 
-bool test32_procedural_texture_HDR()
+bool test_032_procedural_texture_HDR()
 {
 	
 
@@ -293,7 +293,7 @@ bool test32_procedural_texture_HDR()
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	hrSceneLibraryOpen(L"tests/test_32", HR_WRITE_DISCARD);
+	hrSceneLibraryOpen(L"tests/test_032", HR_WRITE_DISCARD);
 
 	// geometry
 	//
@@ -315,7 +315,7 @@ bool test32_procedural_texture_HDR()
 	HRTextureNodeRef testTex3 = hrTexture2DCreateBakedHDR(&procTexCheckerHDR, (void *) (&rep3), 0, 32, 32);
 	HRTextureNodeRef testTex4 = hrTexture2DCreateBakedHDR(&procTexCheckerHDR, (void *) (&rep4), 0, 16, 16);
 
-	//CreateStripedImageFile("tests_images/test_23/TexFromMemory.png", colors, 4, 128, 128);
+	//CreateStripedImageFile("tests_images/test_023/TexFromMemory.png", colors, 4, 128, 128);
 
 	HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat");
 	HRMaterialRef mat2 = hrMaterialCreate(L"mysimplemat2");
@@ -525,16 +525,16 @@ bool test32_procedural_texture_HDR()
       break;
   }
 	
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_32/z_out.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_032/z_out.png");
 
-	return check_images("test_32");
+	return check_images("test_032");
 }
 
-bool test33_update_from_file()
+bool test_033_update_from_file()
 {
   initGLIfNeeded(1024,768);
 
-	hrErrorCallerPlace(L"test_33");
+	hrErrorCallerPlace(L"test_033");
 
 	HRCameraRef    camRef;
 	HRSceneInstRef scnRef;
@@ -547,7 +547,7 @@ bool test33_update_from_file()
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	hrSceneLibraryOpen(L"tests/test_33", HR_WRITE_DISCARD);
+	hrSceneLibraryOpen(L"tests/test_033", HR_WRITE_DISCARD);
 
 	// geometry
 	//
@@ -699,7 +699,7 @@ bool test33_update_from_file()
 	hrSceneClose(scnRef);
 
 	hrFlush(scnRef, settingsRef);
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_33/z_out.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_033/z_out.png");
 
 
 	HRTextureNodeRef new_testTex2 = hrTexture2DUpdateFromFile(testTex2, L"data/textures/chess_red.bmp");
@@ -715,7 +715,7 @@ bool test33_update_from_file()
 	hrMaterialClose(mat0);
 
 	hrFlush(scnRef, settingsRef);
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_33/z_out2.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_033/z_out2.png");
 	
 	id_ok1 = (new_testTex2.id == testTex2.id);
 	// frame 3
@@ -734,32 +734,32 @@ bool test33_update_from_file()
 	hrMaterialClose(mat1);
 
 	hrFlush(scnRef, settingsRef);
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_33/z_out3.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_033/z_out3.png");
 
 	id_ok2 = (new_testTex2.id == testTex2.id);
 
 	hrInfoCallback(InfoCallBack);
 
-  bool noDups1 = check_all_duplicates(L"tests/test_33/statex_00002.xml");
-  bool noDups2 = check_all_duplicates(L"tests/test_33/statex_00003.xml");
+  bool noDups1 = check_all_duplicates(L"tests/test_033/statex_00002.xml");
+  bool noDups2 = check_all_duplicates(L"tests/test_033/statex_00003.xml");
 
-	return check_images("test_33") && id_ok1 && id_ok2 && noDups1 && noDups2;
+	return check_images("test_033") && id_ok1 && id_ok2 && noDups1 && noDups2;
 }
 
 
 bool ckeck36_test()
 {
-  bool noDups1 = check_all_duplicates(L"tests/test_36/statex_00002.xml");
-  bool noDups2 = check_all_duplicates(L"tests/test_36/statex_00003.xml");
+  bool noDups1 = check_all_duplicates(L"tests/test_036/statex_00002.xml");
+  bool noDups2 = check_all_duplicates(L"tests/test_036/statex_00003.xml");
   
   return noDups1 && noDups2;
 }
 
-bool test36_update_from_memory()
+bool test_036_update_from_memory()
 {
   initGLIfNeeded(512,512);
   
-  hrErrorCallerPlace(L"test_36");
+  hrErrorCallerPlace(L"test_036");
 
 	HRCameraRef    camRef;
 	HRSceneInstRef scnRef;
@@ -769,7 +769,7 @@ bool test36_update_from_memory()
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	hrSceneLibraryOpen(L"tests/test_36", HR_WRITE_DISCARD);
+	hrSceneLibraryOpen(L"tests/test_036", HR_WRITE_DISCARD);
 
 	// geometry
 	//
@@ -908,7 +908,7 @@ bool test36_update_from_memory()
 	hrSceneClose(scnRef);
 
 	hrFlush(scnRef, settingsRef);
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_36/z_out.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_036/z_out.png");
 
 
 	HRTextureNodeRef new_testTex2 = hrTexture2DUpdateFromMemory(testTex2, 300, 300, 4, &imageData2[0]);
@@ -925,7 +925,7 @@ bool test36_update_from_memory()
 	hrMaterialClose(mat0);
 
 	hrFlush(scnRef, settingsRef);
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_36/z_out2.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_036/z_out2.png");
 
 	bool id_ok1 = (new_testTex2.id == testTex2.id);
 	// frame 3
@@ -945,11 +945,11 @@ bool test36_update_from_memory()
 	hrMaterialClose(mat1);
 
 	hrFlush(scnRef, settingsRef);
-	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_36/z_out3.png");
+	hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_036/z_out3.png");
 
 	bool id_ok2 = (new_testTex3.id == testTex3.id);
   
   hrInfoCallback(InfoCallBack);
 
-	return check_images("test_36", 3) && id_ok1 && id_ok2 && ckeck36_test();
+	return check_images("test_036", 3) && id_ok1 && id_ok2 && ckeck36_test();
 }

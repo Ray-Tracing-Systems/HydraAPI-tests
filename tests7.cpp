@@ -39,12 +39,12 @@ extern GLFWwindow* g_window;
 namespace hlm = LiteMath;
 
 
-bool test41_load_library_basic()
+bool test_041_load_library_basic()
 {
   initGLIfNeeded(1024, 768);
-  hrErrorCallerPlace(L"test41");
+  hrErrorCallerPlace(L"test_041");
 
-  hrSceneLibraryOpen(L"tests/test_41", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_041", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -56,21 +56,21 @@ bool test41_load_library_basic()
 
   hrCommit(scnRef, renderRef);
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_41/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_041/z_out.png");
 
-  return check_images("test_41");
+  return check_images("test_041");
 }
 
 
-bool test42_load_mesh_compressed()
+bool test_042_load_mesh_compressed()
 {
-  hrErrorCallerPlace(L"test_42");
+  hrErrorCallerPlace(L"test_042");
   
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  hrSceneLibraryOpen(L"tests/test_42", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_042", HR_WRITE_DISCARD);
   
   SimpleMesh sphere   = CreateSphere(2.0f, 128);
   SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
@@ -318,15 +318,15 @@ bool test42_load_mesh_compressed()
       break;
   }
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_42/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_042/z_out.png");
   
-  return check_images("test_42", 1, 30);
+  return check_images("test_042", 1, 30);
 }
 
 
-bool test43_test_direct_light()
+bool test_043_test_direct_light()
 {
-  hrErrorCallerPlace(L"test43");
+  hrErrorCallerPlace(L"test_043");
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -335,7 +335,7 @@ bool test43_test_direct_light()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_43", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_043", HR_WRITE_DISCARD);
 
   // geometry
   //
@@ -589,21 +589,21 @@ bool test43_test_direct_light()
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_43/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_043/z_out.png");
 
-  return check_images("test_43");
+  return check_images("test_043");
 }
 
 
-bool test44_four_lights_and_compressed_mesh()
+bool test_044_four_lights_and_compressed_mesh()
 {
-  hrErrorCallerPlace(L"test_44");
+  hrErrorCallerPlace(L"test_044");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_44", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_044", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -1017,23 +1017,23 @@ bool test44_four_lights_and_compressed_mesh()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_44/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_044/z_out.png");
 
-  return check_images("test_44", 1, 25.0f);
+  return check_images("test_044", 1, 25.0f);
 }
 
 
-bool test45_mesh_from_vsgf_opengl_bug_teapot()
+bool test_045_mesh_from_vsgf_opengl_bug_teapot()
 {
   initGLIfNeeded(1024,768);
   
-  hrErrorCallerPlace(L"test_45");
+  hrErrorCallerPlace(L"test_045");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_45", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_045", HR_WRITE_DISCARD);
 
   SimpleMesh cube = CreateCube(0.75f);
   SimpleMesh plane = CreatePlane(10.0f);
@@ -1372,22 +1372,22 @@ bool test45_mesh_from_vsgf_opengl_bug_teapot()
 
   hrFlush(scnRef, renderRef);
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_45/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_045/z_out.png");
 
-  return check_images("test_45");
+  return check_images("test_045");
 }
 
-bool test46_light_geom_rect()
+bool test_046_light_geom_rect()
 {
   initGLIfNeeded(1024,768);
   
-  hrErrorCallerPlace(L"test_46");
+  hrErrorCallerPlace(L"test_046");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_46", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_046", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -1776,22 +1776,22 @@ bool test46_light_geom_rect()
   //     break;
   // }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_46/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_046/z_out.png");
 
-  return check_images("test_46");
+  return check_images("test_046");
 }
 
-bool test47_light_geom_disk()
+bool test_047_light_geom_disk()
 {
   initGLIfNeeded(1024,768);
   
-  hrErrorCallerPlace(L"test_47");
+  hrErrorCallerPlace(L"test_047");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_47", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_047", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -2190,23 +2190,23 @@ bool test47_light_geom_disk()
   //     break;
   // }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_47/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_047/z_out.png");
 
-  return check_images("test_47");
+  return check_images("test_047");
 }
 
 
-bool test48_light_geom_sphere()
+bool test_048_light_geom_sphere()
 {
   initGLIfNeeded(1024,768);
   
-  hrErrorCallerPlace(L"test_48");
+  hrErrorCallerPlace(L"test_048");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_48", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_048", HR_WRITE_DISCARD);
 
   SimpleMesh cube     = CreateCube(0.75f);
   SimpleMesh plane    = CreatePlane(10.0f);
@@ -2559,22 +2559,22 @@ bool test48_light_geom_sphere()
 
   hrFlush(scnRef, renderRef);
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_48/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_048/z_out.png");
 
-  return check_images("test_48");
+  return check_images("test_048");
 }
 
 
 
-bool test49_light_geom_disk()
+bool test_049_light_geom_disk()
 {
-  hrErrorCallerPlace(L"test_49");
+  hrErrorCallerPlace(L"test_049");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_49", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_049", HR_WRITE_DISCARD);
 
   SimpleMesh cube = CreateCube(0.75f);
   SimpleMesh plane = CreatePlane(10.0f);
@@ -2957,17 +2957,17 @@ bool test49_light_geom_disk()
       break;
   }
 
-	hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_49/z_out.png");
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_49/z_out.bmp");
-	//hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_49/z_out.jpg");
+	hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_049/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_049/z_out.bmp");
+	//hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_049/z_out.jpg");
 
-  return check_images("test_49", 1, 25.0f);
+  return check_images("test_049", 1, 25.0f);
 }
 
-void run_test_50()
+void run_test_050()
 {
 	//hrInit(L"OLOLO");
-	hrSceneLibraryOpen(L"tests/test_50", HR_WRITE_DISCARD);
+	hrSceneLibraryOpen(L"tests/test_050", HR_WRITE_DISCARD);
 
 	// material definition
 	//
@@ -3048,12 +3048,12 @@ bool check_lib_tag_number_in_xml(const wchar_t* a_fileName)
 }
 
 
-bool test50_open_library_several_times()
+bool test_050_open_library_several_times()
 {
 	for (int i = 0; i < 3; i++)
-		run_test_50();
+		run_test_050();
 	
-  return check_lib_tag_number_in_xml(L"tests/test_50/statex_00002.xml");
+  return check_lib_tag_number_in_xml(L"tests/test_050/statex_00002.xml");
 }
 
 

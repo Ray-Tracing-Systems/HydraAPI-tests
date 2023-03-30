@@ -34,11 +34,11 @@
 
 using namespace TEST_UTILS;
 
-bool test18_camera_move()
+bool test_018_camera_move()
 {
   initGLIfNeeded(1024,768);
 
-  hrErrorCallerPlace(L"test_18");
+  hrErrorCallerPlace(L"test_018");
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -48,7 +48,7 @@ bool test18_camera_move()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_18", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_018", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -289,7 +289,7 @@ bool test18_camera_move()
 
   hrFlush(scnRef, settingsRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_18/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_018/z_out.png");
 
   // move camera
   //
@@ -302,7 +302,7 @@ bool test18_camera_move()
 
   hrFlush(scnRef, settingsRef, camRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_18/z_out2.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_018/z_out2.png");
 
 
   // move camera
@@ -316,7 +316,7 @@ bool test18_camera_move()
 
   hrFlush(scnRef, settingsRef, camRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_18/z_out3.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_018/z_out3.png");
 
   // move camera
   //
@@ -330,17 +330,17 @@ bool test18_camera_move()
 
   hrFlush(scnRef, settingsRef, camRef);
 
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_18/z_out4.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_018/z_out4.png");
 
-  return check_images("test_18", 4);
+  return check_images("test_018", 4);
 }
 
 
-bool test19_material_change()
+bool test_019_material_change()
 {
   initGLIfNeeded(1024,768);
 
-  hrErrorCallerPlace(L"test_19");
+  hrErrorCallerPlace(L"test_019");
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -350,7 +350,7 @@ bool test19_material_change()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_19", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_019", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -588,7 +588,7 @@ bool test19_material_change()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_19/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_019/z_out.png");
 
   // frame 2
   //
@@ -600,7 +600,7 @@ bool test19_material_change()
   hrMaterialClose(mat0);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_19/z_out2.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_019/z_out2.png");
 
   // frame 3
   //
@@ -621,20 +621,20 @@ bool test19_material_change()
   hrMaterialClose(mat1);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_19/z_out3.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_019/z_out3.png");
 
-  bool noDups1 = check_all_duplicates(L"tests/test_19/statex_00002.xml");
-  bool noDups2 = check_all_duplicates(L"tests/test_19/statex_00003.xml");
+  bool noDups1 = check_all_duplicates(L"tests/test_019/statex_00002.xml");
+  bool noDups2 = check_all_duplicates(L"tests/test_019/statex_00003.xml");
 
-  return check_images("test_19", 3) && noDups1 && noDups2;
+  return check_images("test_019", 3) && noDups1 && noDups2;
 }
 
 
-bool test20_mesh_change()
+bool test_020_mesh_change()
 {
   initGLIfNeeded(1024, 768);
 
-  hrErrorCallerPlace(L"test_20");
+  hrErrorCallerPlace(L"test_020");
 
   HRCameraRef    camRef;
   HRSceneInstRef scnRef;
@@ -644,7 +644,7 @@ bool test20_mesh_change()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_20", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_020", HR_WRITE_DISCARD);
 
   // material and textures
   //
@@ -884,7 +884,7 @@ bool test20_mesh_change()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_20/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_020/z_out.png");
 
   hrMeshOpen(cubeRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
   {
@@ -899,7 +899,7 @@ bool test20_mesh_change()
   hrMeshClose(cubeRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_20/z_out2.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_020/z_out2.png");
 
   hrMeshOpen(sphereRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
   {
@@ -913,19 +913,19 @@ bool test20_mesh_change()
   hrMeshClose(sphereRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_20/z_out3.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_020/z_out3.png");
 
-  bool noDups1 = check_all_duplicates(L"tests/test_20/statex_00002.xml");
-  bool noDups2 = check_all_duplicates(L"tests/test_20/statex_00003.xml");
+  bool noDups1 = check_all_duplicates(L"tests/test_020/statex_00002.xml");
+  bool noDups2 = check_all_duplicates(L"tests/test_020/statex_00003.xml");
 
-  return check_images("test_20", 3) && noDups1 && noDups2;
+  return check_images("test_020", 3) && noDups1 && noDups2;
 }
 
 
-bool test21_add_same_textures_from_file()
+bool test_021_add_same_textures_from_file()
 {
-  hrErrorCallerPlace(L"test_21");
-  hrSceneLibraryOpen(L"tests/test_21", HR_WRITE_DISCARD);
+  hrErrorCallerPlace(L"test_021");
+  hrSceneLibraryOpen(L"tests/test_021", HR_WRITE_DISCARD);
 
   HRTextureNodeRef testTex1 = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
   HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_red.bmp");
@@ -957,13 +957,13 @@ void ErrorCallBack3(const wchar_t* message, const wchar_t* callerPlace, HR_SEVER
   }
 }
 
-bool test22_can_not_load_texture()
+bool test_022_can_not_load_texture()
 {
   initGLIfNeeded(1024, 768);
   
   g_test22ErrorIsOk = false;
 
-  hrErrorCallerPlace(L"test_22");
+  hrErrorCallerPlace(L"test_022");
   hrInfoCallback(ErrorCallBack3);
 
   HRCameraRef    camRef;
@@ -974,7 +974,7 @@ bool test22_can_not_load_texture()
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_22", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_022", HR_WRITE_DISCARD);
 
   // geometry
   //
@@ -1127,18 +1127,18 @@ bool test22_can_not_load_texture()
   hrSceneClose(scnRef);
 
   hrFlush(scnRef, settingsRef);
-  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_22/z_out.png");
+  hrRenderSaveFrameBufferLDR(settingsRef, L"tests_images/test_022/z_out.png");
 
   hrInfoCallback(InfoCallBack);
 
-  return check_images("test_22") && (testTex2.id == 0) && g_test22ErrorIsOk;
+  return check_images("test_022") && (testTex2.id == 0) && g_test22ErrorIsOk;
 }
 
 
-bool test28_compute_normals()
+bool test_028_compute_normals()
 {
-	hrErrorCallerPlace(L"test_28");
-	hrSceneLibraryOpen(L"tests/test_28", HR_WRITE_DISCARD);
+	hrErrorCallerPlace(L"test_028");
+	hrSceneLibraryOpen(L"tests/test_028", HR_WRITE_DISCARD);
 
 	// geometry
 	//

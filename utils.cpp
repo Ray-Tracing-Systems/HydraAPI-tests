@@ -15,10 +15,22 @@
 
 #pragma warning(disable:4838)
 using HDRImage4f = HydraRender::HDRImage4f;
+std::vector<bool> g_resultTest;
 
 
 namespace TEST_UTILS
-{  
+{   
+  SystemInfo::SystemInfo(const std::wstring& a_operationSystem, const std::wstring& a_videocard) :
+    m_operationSystem(a_operationSystem),
+    m_videocard(a_videocard) {}
+
+  void SystemInfo::SetOperSys(const std::wstring& a_operationSystem) { m_operationSystem = a_operationSystem; }
+  void SystemInfo::SetVideocard(const std::wstring& a_videocard) { m_videocard = a_videocard; }
+  std::wstring SystemInfo::GetFolderNameFromInfo() { return m_operationSystem + L"_" + m_videocard; }
+  std::wstring SystemInfo::GetOsName() { return m_operationSystem; }
+  std::wstring SystemInfo::GetVideocardName() { return m_videocard; }
+
+
   void show_me_texture_ldr(const std::string& a_inFleName, const std::string& a_outFleName)
   {
     int32_t wh[2];
@@ -916,11 +928,59 @@ namespace TEST_UTILS
     return sky;
   }
 
+
+  ResultTest::ResultTest(const std::wstring a_name, const std::vector<bool> a_res, const bool a_skip, const std::vector<float> a_mse,
+    const float a_rendTime, const std::vector<std::wstring>& a_linkRefImg, const std::vector<std::wstring>& a_linkRenderImg)
+  {
+    m_nameTest = a_name;
+
+    if (a_skip)
+    {
+      m_result       = L"skipped";
+      m_resultHtml   = L"&#128465;"; // trash can
+      m_mse          = L"-";
+      m_mseHtml      = L"-";
+      m_renderTime   = L"-";
+      m_linkRefImgs  = L"-";
+      m_linkRendImgs = L"-";
+    }
+    else
+    {
+      m_renderTime = std::to_wstring(a_rendTime).substr(0, 4) + L" sec.";
+
+      for (int i = 0; i < a_res.size(); ++i)
+      {
+        std::wstring mse = L"-";
+
+        if (a_mse.size() == a_res.size())        
+          mse = std::to_wstring(a_mse[i]).substr(0, 4);
+        
+        m_mse     += (mse + L", ");
+        m_mseHtml += (mse + L"<br>");
+
+        if (a_res[i] == true)
+        {                
+          m_result       += L"ok, ";
+          m_resultHtml   += L"&#10004;<br>"; // check mark
+        }
+        else
+        {
+          m_result       += L"FAILED, ";
+          m_resultHtml   += L"&#10060;<br>"; // red cross            
+          m_linkRefImgs  += L"<img src = " + a_linkRefImg[i]    + L">\n";
+          m_linkRendImgs += L"<img src = " + a_linkRenderImg[i] + L">\n";
+        }
+      }
+    }
+  }
+
+
+
+
   void CreateHtml(std::wofstream& a_fileOut)
   {
     a_fileOut << "<!DOCTYPE html>\n";
-    a_fileOut << "<html>";
-
+    a_fileOut << "<html>\n";
     a_fileOut << "<head>\n";
     a_fileOut << "<link rel = \"stylesheet\" href = \"reportStyle.css\">\n";
     a_fileOut << "</head>\n\n";
@@ -951,7 +1011,7 @@ namespace TEST_UTILS
     a_fileOut << "  <tr>\n";
     a_fileOut << "    <td>" << a_data.GetName()          << "</td>\n";    
     a_fileOut << "    <td>" << a_data.GetStrResultHtml() << "</td>\n";
-    a_fileOut << "    <td>" << a_data.GetMse()           << "</td>\n";
+    a_fileOut << "    <td>" << a_data.GetMseHtml()       << "</td>\n";
     a_fileOut << "    <td>" << a_data.GetRendTime()      << "</td>\n";
     a_fileOut << "    <td>" << a_data.GetLinkRef()       << "</td>\n";
     a_fileOut << "    <td>" << a_data.GetLinkRend()      << "</td>\n";

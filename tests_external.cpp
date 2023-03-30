@@ -48,13 +48,13 @@ using LiteMath::float3;
 using LiteMath::float4;
 
 
-bool test_x1_displace_car_by_noise()
+bool test_718_displace_car_by_noise()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_x1");
+  hrErrorCallerPlace(L"test_718");
 
-  hrSceneLibraryOpen(L"tests/test_x1", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_718", HR_WRITE_DISCARD);
 
  /* auto matShd = hrMaterialCreate(L"shadow");
 
@@ -264,19 +264,19 @@ bool test_x1_displace_car_by_noise()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_x1/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_718/z_out.png");
 
-  return check_images("test_x1", 1, 30);
+  return check_images("test_718", 1, 30);
 }
 
 
-bool test_x2_car_displacement_triplanar()
+bool test_719_car_displacement_triplanar()
 {
     initGLIfNeeded();
 
-    hrErrorCallerPlace(L"test_x2");
+    hrErrorCallerPlace(L"test_719");
 
-    hrSceneLibraryOpen(L"tests/test_x2", HR_WRITE_DISCARD);
+    hrSceneLibraryOpen(L"tests/test_719", HR_WRITE_DISCARD);
 
     HRTextureNodeRef texX = hrTexture2DCreateFromFile(L"data/textures/blur_pattern.bmp");
     HRTextureNodeRef texY  = hrTexture2DCreateFromFile(L"data/textures/MapleLeaf.TGA");
@@ -489,18 +489,18 @@ bool test_x2_car_displacement_triplanar()
             break;
     }
 
-    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_x2/z_out.png");
+    hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_719/z_out.png");
 
-    return check_images("test_x2", 1, 30);
+    return check_images("test_719", 1, 30);
 }
 
-bool test_x3_car_fresnel_ice()
+bool test_719_car_fresnel_ice()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_x3");
+  hrErrorCallerPlace(L"test_719");
 
-  hrSceneLibraryOpen(L"tests/test_x3", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_719", HR_WRITE_DISCARD);
 
   HRTextureNodeRef texBump = hrTexture2DCreateFromFile(L"data/textures/noise.png");
   HRMaterialRef mat_diff = hrMaterialCreate(L"bump_diffuse_mat");
@@ -828,19 +828,19 @@ bool test_x3_car_fresnel_ice()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_x3/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_719/z_out.png");
 
-  return check_images("test_x3", 1, 30);
+  return check_images("test_719", 1, 30);
 }
 
 
-bool test_x4_car_triplanar(const int i)
+bool test_720_car_triplanar(const int i)
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_x4");
+  hrErrorCallerPlace(L"test_720");
 
-  hrSceneLibraryOpen(L"tests/test_x4", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_720", HR_WRITE_DISCARD);
 
   HRTextureNodeRef texX = hrTexture2DCreateFromFile(L"d:/Works/Samsung/01_CarsRoadsSigns/Textures/Cars/BodySpecial_triplanar/Taxi_side_v1.png"); // side
   HRTextureNodeRef texX2 = hrTexture2DCreateFromFile(L"d:/Works/Samsung/01_CarsRoadsSigns/Textures/Cars/BodySpecial_triplanar/Taxi_side_v1.png"); // side
@@ -1119,20 +1119,20 @@ bool test_x4_car_triplanar(const int i)
       break;
   }
   std::wstringstream outImgNum;
-  outImgNum << "tests_images/test_x4/Taxi" << i << "_" << strCamView.c_str() << ".png";
-  hrRenderSaveFrameBufferLDR(renderRef, outImgNum.str().c_str());// L"tests_images/test_x4/z_out.png");
+  outImgNum << "tests_images/test_720/Taxi" << i << "_" << strCamView.c_str() << ".png";
+  hrRenderSaveFrameBufferLDR(renderRef, outImgNum.str().c_str());// L"tests_images/test_720/z_out.png");
 
-  return check_images("test_x4", 1, 30);
+  return check_images("test_720", 1, 30);
 }
 
 
-bool test_depth_mesh()
+bool test_721_depth_mesh()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_depth_mesh");
+  hrErrorCallerPlace(L"test_721_depth_mesh");
 
-  hrSceneLibraryOpen(L"tests_f/test_depth_mesh", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests_f/test_721_depth_mesh", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -1363,9 +1363,9 @@ bool test_depth_mesh()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_depth_mesh/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_721_depth_mesh/z_out.png");
 
-  return check_images("test_depth_mesh", 1, 50);
+  return check_images("test_721_depth_mesh", 1, 50);
 }
 
 bool test_precomp_depth_mesh()

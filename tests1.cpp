@@ -18,8 +18,11 @@
 #include "../hydra_api/HR_HDRImageTool.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
+
 using namespace TEST_UTILS;
 
+SystemInfo g_systemInfo = { L"unknownOs", L"unknownVideocard" };
+extern std::vector<bool> g_resultTest;
 
 bool check_dups(pugi::xml_node a_lib) // check that each object with some id have only one xml node.
 {
@@ -117,7 +120,7 @@ bool check_test_01(const std::wstring a_fileName)
 }
 
 
-bool test01_materials_add()
+bool test_001_materials_add()
 {
   hrSceneLibraryOpen(L"tests/test_01", HR_WRITE_DISCARD);
 
@@ -187,7 +190,7 @@ bool check_test_02(const std::wstring a_fileName)
 }
 
 
-bool test02_materials_changes_open_mode()
+bool test_002_materials_changes_open_mode()
 {
   hrSceneLibraryOpen(L"tests/test_02", HR_WRITE_DISCARD);
 
@@ -272,7 +275,7 @@ bool check_test_03()
 }
 
 
-bool test03_lights_add()
+bool test_003_lights_add()
 {
   hrSceneLibraryOpen(L"tests/test_03", HR_WRITE_DISCARD);
 
@@ -351,7 +354,7 @@ bool check_test_04_changes()
 }
 
 
-bool test04_lights_add_change()
+bool test_004_lights_add_change()
 {
   hrSceneLibraryOpen(L"tests/test_04", HR_WRITE_DISCARD);
 
@@ -413,7 +416,7 @@ bool test04_lights_add_change()
 
 ////////////////////////////////////////////////
 
-bool check_05_06_mesh_cube(const wchar_t* a_path) // L"tests/test_64/statex_00003.xml"
+bool check_05_06_mesh_cube(const wchar_t* a_path) // L"tests/test_064/statex_00003.xml"
 {
   pugi::xml_document doc;
   doc.load_file(a_path);
@@ -509,7 +512,7 @@ bool check_test_05_changes1()
 }
 
 
-bool test05_instances_write_discard()
+bool test_005_instances_write_discard()
 {
   hrSceneLibraryOpen(L"tests/test_05", HR_WRITE_DISCARD);
 
@@ -720,7 +723,7 @@ bool check_test_06()
 }
 
 
-bool test06_instances_open_existent()
+bool test_006_instances_open_existent()
 {
   hrSceneLibraryOpen(L"tests/test_06", HR_WRITE_DISCARD);
 
@@ -915,7 +918,7 @@ bool check_test_07(const wchar_t* a_path)
 }
 
 
-bool test07_camera_add()
+bool test_007_camera_add()
 {
   hrSceneLibraryOpen(L"tests/test_07", HR_WRITE_DISCARD);
 
@@ -993,7 +996,7 @@ bool check_test_08_2(const wchar_t* a_fileName)
 }
 
 
-bool test08_camera_add_change()
+bool test_008_camera_add_change()
 {
   hrSceneLibraryOpen(L"tests/test_08", HR_WRITE_DISCARD);
 
@@ -1095,7 +1098,7 @@ bool check_test_09()
 }
 
 
-bool test09_render_ogl()
+bool test_009_render_ogl()
 {
   hrSceneLibraryOpen(L"tests/test_09", HR_WRITE_DISCARD);
 
@@ -1187,10 +1190,10 @@ bool test09_render_ogl()
 }
 
 
-bool check_test_16()
+bool check_test_016()
 {
 	pugi::xml_document doc;
-	doc.load_file(L"tests/test_16/statex_00002.xml");
+	doc.load_file(L"tests/test_016/statex_00002.xml");
 
 	pugi::xml_node libMat = doc.child(L"materials_lib");
 	pugi::xml_node libTex1 = doc.child(L"textures_lib");
@@ -1209,7 +1212,7 @@ bool check_test_16()
 	bool tex2_state_name_ok = std::wstring(ts2.attribute(L"name").value()) == L"data/textures/163.jpg";
 	
 	pugi::xml_document doc2;
-	doc2.load_file(L"tests/test_16/change_00001.xml");
+	doc2.load_file(L"tests/test_016/change_00001.xml");
 
 	pugi::xml_node libTex2 = doc2.child(L"textures_lib");
 
@@ -1223,9 +1226,9 @@ bool check_test_16()
 }
 
 
-bool test16_texture_add_change()
+bool test_016_texture_add_change()
 {
-	hrSceneLibraryOpen(L"tests/test_16", HR_WRITE_DISCARD);
+	hrSceneLibraryOpen(L"tests/test_016", HR_WRITE_DISCARD);
 	
 	HRMaterialRef mat = hrMaterialCreate(L"MyTestMaterial_1");   
 	HRMaterialRef mat2 = hrMaterialCreate(L"MyTestMaterial_2"); 
@@ -1304,17 +1307,17 @@ bool test16_texture_add_change()
 
 	hrFlush();
 
-  bool noDups1 = check_all_duplicates(L"tests/test_16/statex_00001.xml");
-  bool noDups2 = check_all_duplicates(L"tests/test_16/statex_00002.xml");
+  bool noDups1 = check_all_duplicates(L"tests/test_016/statex_00001.xml");
+  bool noDups2 = check_all_duplicates(L"tests/test_016/statex_00002.xml");
 
-	return check_test_16() && noDups1 && noDups2;
+	return check_test_016() && noDups1 && noDups2;
 }
 
 
-bool check_test_17()
+bool check_test_017()
 {
 	pugi::xml_document doc;
-	doc.load_file(L"tests/test_17/change_00000.xml");
+	doc.load_file(L"tests/test_017/change_00000.xml");
 
 	pugi::xml_node libTex = doc.child(L"textures_lib");
 
@@ -1329,7 +1332,7 @@ bool check_test_17()
 
 
 	pugi::xml_document doc2;
-	doc.load_file(L"tests/test_17/change_00001.xml");
+	doc.load_file(L"tests/test_017/change_00001.xml");
 
 	pugi::xml_node libTex2 = doc.child(L"textures_lib");
 
@@ -1347,9 +1350,9 @@ bool check_test_17()
 }
 
 
-bool test17_falloff()
+bool test_017_falloff()
 {
-	hrSceneLibraryOpen(L"tests/test_17", HR_WRITE_DISCARD);
+	hrSceneLibraryOpen(L"tests/test_017", HR_WRITE_DISCARD);
 
 
 	HRMaterialRef mat = hrMaterialCreate(L"MyTestMaterial_1");
@@ -1411,7 +1414,7 @@ bool test17_falloff()
 
 	hrFlush();
 
-	return check_test_17();
+	return check_test_017();
 }
 
 
@@ -1610,7 +1613,7 @@ void test03_open_scene()
 }
 
 
-float g_MSEOutput = 0.0f;
+std::vector<float> g_MSEOutput;
 bool g_testWasIgnored = false;
 
 bool dummy_test() 
@@ -1619,7 +1622,7 @@ bool dummy_test()
   return false; 
 }
 
-void PrintResultSingleTest(ResultTest a_data)
+void PrintConsoleResultSingleTest(ResultTest a_data)
 {
   std::wcout << L"                                      \r";
 
@@ -1631,7 +1634,7 @@ void PrintResultSingleTest(ResultTest a_data)
   {    
     outBuff << std::setw(60)   << std::left << a_data.GetName();
     outBuff << std::setw(15)   << std::left << a_data.GetStrResult();
-    outBuff << "mse = ";
+    outBuff << "mse: ";
     outBuff << std::setw(15)   << std::left << std::setprecision(2) << a_data.GetMse();
     outBuff << "Render time: " << a_data.GetRendTime();
   }
@@ -1654,17 +1657,31 @@ struct TestFunc
 };
 
 
+std::vector<std::wstring> GetFiles(std::filesystem::path a_dir, std::wstring a_cutName)
+{
+  std::vector<std::wstring> files;
+
+  if (!std::filesystem::is_directory(a_dir))
+    return files;
+
+  for (const auto& p : std::filesystem::directory_iterator(a_dir))
+  {
+    std::wstring cutName = (p.path().stem().stem().wstring()).substr(0, 5); // z_ref
+
+    if (cutName == a_cutName)
+    {
+      files.push_back(p.path().wstring());
+    }
+  }
+
+  return files;
+}
+
+
 void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a_tests, 
   std::wstring a_nameGroupTests, const std::wstring a_fileName)
 {  
   using namespace TEST_UTILS;
-
-  std::wstring os;
-#ifdef WIN32
-  os = L"windows";
-#else
-  os = L"linux";
-#endif 
 
   using time      = std::chrono::system_clock;
   using timeFloat = std::chrono::duration<float>;
@@ -1673,12 +1690,17 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
   auto now           = time::now();
   auto currData      = time::to_time_t(now);
   int totalRenderSec = 0;
+  
+  std::wstring currSubFolderName          = g_systemInfo.GetFolderNameFromInfo();
+  std::filesystem::path currSubFolderPath = L"Reports/" + currSubFolderName;
+  std::filesystem::create_directory(currSubFolderPath.wstring());
 
-  std::wstring file  = L"Report/" + a_fileName + L"_" + os + L".html";
-  std::wofstream fileOut(file);
+  std::filesystem::path reportFile        = currSubFolderPath / (a_fileName + L".html");
+  std::wofstream fileOut(reportFile.wstring());
 
   std::wostringstream outBuffConsole;
-  outBuffConsole << a_nameGroupTests << "   " << std::ctime(&currData) << L"   OS: " << os;
+  outBuffConsole << a_nameGroupTests << "   " << std::ctime(&currData) 
+    << L"   OS: " << g_systemInfo.GetOsName() << L" Videocard: " << g_systemInfo.GetVideocardName();
 
   std::vector<std::wstring> headings = { 
     L"TEST NAME", L"RESULT", L"MSE", L"RENDER TIME", L"LINK REF IMAGES", L"LINK RENDER IMAGES" };
@@ -1691,24 +1713,50 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
 
   for (int i = a_startTestsId; i < a_tests.size(); ++i)
   {       
-    const auto start         = time::now();
-    const bool res           = a_tests[i].func(); // Render test   
-    const auto end           = time::now();
+    g_resultTest.clear();
+    g_MSEOutput.clear();
 
-    if (!g_testWasIgnored && res == false)
-      failedTests++;
-    
-    const timeFloat rendTime = end - start;
-    totalRenderSec          += rendTime.count();
+    const auto start                     = time::now();
+    const bool overallResult             = a_tests[i].func(); // Render test   
+    const auto end                       = time::now();
+            
+    const timeFloat rendTime             = end - start;
+    totalRenderSec                      += rendTime.count();
 
     std::wstring cutName                 = a_tests[i].name.substr(0, 8);
-    std::filesystem::path saveRefFile    = L"../tests_images/" + cutName + L"/w_ref.png";
-    std::filesystem::path saveRenderFile = L"../tests_images/" + cutName + L"/z_out.png";
 
-    ResultTest resTest(a_tests[i].name, res, g_testWasIgnored, g_MSEOutput, rendTime.count(),
-      saveRefFile.wstring(), saveRenderFile.wstring());
+    std::filesystem::path refDir         = L"../../tests_images/" + cutName;
+    std::filesystem::path absoluteRefDir = std::filesystem::absolute(L"tests_images/" + cutName);
+    std::filesystem::path saveRefFile    = refDir / L"/w_ref.png";
+    std::filesystem::path saveRenderFile = refDir / L"/z_out.png";
     
-    PrintResultSingleTest(resTest);
+    std::filesystem::path reportImgsPath = currSubFolderPath / L"Images" / cutName;
+    std::filesystem::path absReportImagesPath = std::filesystem::absolute(reportImgsPath);
+   
+    if (!g_testWasIgnored && overallResult == false)
+    {
+      failedTests++;
+      std::filesystem::create_directory(reportImgsPath);
+      std::filesystem::copy(absoluteRefDir, absReportImagesPath,
+        std::filesystem::copy_options::overwrite_existing);
+    }
+    else
+    {
+      std::filesystem::remove_all(absReportImagesPath);
+    }
+
+    std::vector<std::wstring> refFiles  = GetFiles(absReportImagesPath, L"w_ref");
+    std::vector<std::wstring> rendFiles = GetFiles(absReportImagesPath, L"z_out");
+
+    if (g_resultTest.empty()) 
+      g_resultTest.push_back(overallResult);
+
+
+    ResultTest resTest(a_tests[i].name, g_resultTest, g_testWasIgnored, g_MSEOutput, rendTime.count(),
+      refFiles, rendFiles);
+    
+    
+    PrintConsoleResultSingleTest(resTest);
     AddRowHtmlTable(resTest, fileOut);
   }
       
@@ -1736,105 +1784,105 @@ void run_all_api_tests(const int startTestId)
 {
   std::vector<TestFunc> tests = 
   {
-    { &test01_materials_add                               ,L"test01_materials_add" },
-    { &test02_materials_changes_open_mode                 ,L"test02_materials_changes_open_mode" },
-    { &test03_lights_add                                  ,L"test03_lights_add" },
-    { &test04_lights_add_change                           ,L"test04_lights_add_change" },
-    { &test05_instances_write_discard                     ,L"test05_instances_write_discard" },
-    { &test06_instances_open_existent                     ,L"test06_instances_open_existent" },
-    { &test07_camera_add                                  ,L"test07_camera_add" },
-    { &test08_camera_add_change                           ,L"test08_camera_add_change" },
-    { &test09_render_ogl                                  ,L"test09_render_ogl" },
-    { &test10_render_ogl_cube                             ,L"test10_render_ogl_cube" },
-    { &test11_render_ogl_some_figures                     ,L"test11_render_ogl_some_figures" },
-    { &test12_render_ogl_100_random_figures               ,L"test12_render_ogl_100_random_figures" },
-    { &test13_render_ogl_some_figures_diff_mats_prom_ptr  ,L"test13_render_ogl_some_figures_diff_mats_prom_ptr" },
-    { &test14_bad_material_indices                        ,L"test14_bad_material_indices" },
-    { &test15_main_scene_and_mat_editor                   ,L"test15_main_scene_and_mat_editor" },
-    { &test16_texture_add_change                          ,L"test16_texture_add_change" },
-    { &test17_falloff                                     ,L"test17_falloff" },
-    { &test18_camera_move                                 ,L"test18_camera_move" },
-    { &test19_material_change                             ,L"test19_material_change" },
-    { &test20_mesh_change                                 ,L"test20_mesh_change" },
-    { &test21_add_same_textures_from_file                 ,L"test21_add_same_textures_from_file" },
-    { &test22_can_not_load_texture                        ,L"test22_can_not_load_texture" },
-    { &test23_texture_from_memory                         ,L"test23_texture_from_memory" },
-    { &test24_many_textures_big_data                      ,L"test24_many_textures_big_data" },
-    { &test25_many_textures_big_data                      ,L"test25_many_textures_big_data" },
-    { &test26_many_textures_big_data                      ,L"test26_many_textures_big_data" },
-    { &test27_many_textures_big_data_from_mem             ,L"test27_many_textures_big_data_from_mem" },
-    { &test28_compute_normals                             ,L"test28_compute_normals" },
-    { &test29_many_textures_and_meshes                    ,L"test29_many_textures_and_meshes" },
-    { &test30_many_textures_and_meshes                    ,L"test30_many_textures_and_meshes" },
-    { &test31_procedural_texture_LDR                      ,L"test31_procedural_texture_LDR" },
-    { &test32_procedural_texture_HDR                      ,L"test32_procedural_texture_HDR" },
-    { &test33_update_from_file                            ,L"test33_update_from_file" },
-    { &test34_delayed_textures_does_not_exists            ,L"test34_delayed_textures_does_not_exists" },
-    { &test35_cornell_with_light                          ,L"test35_cornell_with_light" },
-    { &test36_update_from_memory                          ,L"test36_update_from_memory" },
-    { &test37_cornell_with_light_different_image_layers   ,L"test37_cornell_with_light_different_image_layers" },
-    { &test38_save_mesh_and_delayed_load                  ,L"test38_save_mesh_and_delayed_load" },
-    { &test39_mmlt_or_ibpt                                ,L"test39_mmlt_or_ibpt" },
-    { &test40_several_changes                             ,L"test40_several_changes" },
-    { &test41_load_library_basic                          ,L"test41_load_library_basic" },
-    { &test42_load_mesh_compressed                        ,L"test42_load_mesh_compressed" },
-    { &test43_test_direct_light                           ,L"test43_test_direct_light" },
-    { &test44_four_lights_and_compressed_mesh             ,L"test44_four_lights_and_compressed_mesh" },
-    { &test45_mesh_from_vsgf_opengl_bug_teapot            ,L"test45_mesh_from_vsgf_opengl_bug_teapot" },
-    { &test46_light_geom_rect                             ,L"test46_light_geom_rect" },
-    { &test47_light_geom_disk                             ,L"test47_light_geom_disk" },
-    { &test48_light_geom_sphere                           ,L"test48_light_geom_sphere" },
-    { &test49_light_geom_disk                             ,L"test49_light_geom_disk" },
-    { &test50_open_library_several_times                  ,L"test50_open_library_several_times" },
-    { &dummy_test                                         ,L"dummy_test" },                                          // 51
-    { &dummy_test                                         ,L"dummy_test" },                                          // 52
-    { &dummy_test                                         ,L"dummy_test" },                                          // 53
-    { &dummy_test                                         ,L"dummy_test" },                                          // 54
-    { &test55_clear_scene                                 ,L"test55_clear_scene" },
-    { &test56_mesh_change_open_existing                   ,L"test56_mesh_change_open_existing" },
-    { &test57_single_instance                             ,L"test57_single_instance" },
-    { &dummy_test                                         ,L"dummy_test" },                                          // 58
-    { &test59_cornell_water_mlt                           ,L"test59_cornell_water_mlt" },
-    { &test60_debug_print_and_cant_load_mesh              ,L"test60_debug_print_and_cant_load_mesh" },               // 60
-    { &test61_cornell_with_light_near_wall_and_glossy_wall,L"test61_cornell_with_light_near_wall_and_glossy_wall" },
-    { &dummy_test                                         ,L"dummy_test" },                                          // 62
-    { &dummy_test                                         ,L"dummy_test" },                                          // 63
-    { &test64_several_changes_light_area                  ,L"test64_several_changes_light_area" },
-    { &test65_several_changes_light_rect                  ,L"test65_several_changes_light_rect" },
-    { &test66_fast_render_no_final_update                 ,L"test66_fast_render_no_final_update" },
-    { &test67_fast_empty_scene                            ,L"test67_fast_empty_scene" },
-    { &test68_scene_library_file_info                     ,L"test68_scene_library_file_info" },
-    { &dummy_test                                         ,L"dummy_test" },                                          // 69
-    { &test70_area_lights16                               ,L"test70_area_lights16" },
-    { &test71_out_of_memory                               ,L"test71_out_of_memory" },
-    { &dummy_test                                         ,L"dummy_test" },                                          // 72
-    { &dummy_test                                         ,L"dummy_test" },                                          // 73 
-    { &test74_frame_buffer_line                           ,L"test74_frame_buffer_line" },
-    { &test75_repeated_render                             ,L"test75_repeated_render" },
-    { &test76_empty_mesh                                  ,L"test76_empty_mesh" },
-    { &test77_save_gbuffer_layers                         ,L"test77_save_gbuffer_layers" },
-    { &test78_material_remap_list1                        ,L"test78_material_remap_list1" },
-    { &test79_material_remap_list2                        ,L"test79_material_remap_list2" },
-    { &test80_lt_rect_image                               ,L"test80_lt_rect_image" },
-    { &test81_custom_attributes                           ,L"test81_custom_attributes" },
-    { &test82_proc_texture                                ,L"test82_proc_texture" },
-    { &test83_proc_texture2                               ,L"test83_proc_texture2" },
-    { &test84_proc_texture2                               ,L"test84_proc_texture2" },
-    { &test85_proc_texture_ao                             ,L"test85_proc_texture_ao" },
-    { &test86_proc_texture_ao_dirt                        ,L"test86_proc_texture_ao_dirt" },
-    { &test87_proc_texture_reflect                        ,L"test87_proc_texture_reflect" },
-    { &test88_proc_texture_convex_rust                    ,L"test88_proc_texture_convex_rust" },
-    { &test89_proc_texture_dirty                          ,L"test89_proc_texture_dirty" },
-    { &test90_proc_tex_normalmap                          ,L"test90_proc_tex_normalmap" },
-    { &test91_proc_tex_bump                               ,L"test91_proc_tex_bump" },
-    { &test92_proc_tex_bump2                              ,L"test92_proc_tex_bump2" },
+    { &test_001_materials_add                               ,L"test_001_materials_add" },
+    { &test_002_materials_changes_open_mode                 ,L"test_002_materials_changes_open_mode" },
+    { &test_003_lights_add                                  ,L"test_003_lights_add" },
+    { &test_004_lights_add_change                           ,L"test_004_lights_add_change" },
+    { &test_005_instances_write_discard                     ,L"test_005_instances_write_discard" },
+    { &test_006_instances_open_existent                     ,L"test_006_instances_open_existent" },
+    { &test_007_camera_add                                  ,L"test_007_camera_add" },
+    { &test_008_camera_add_change                           ,L"test_008_camera_add_change" },
+    { &test_009_render_ogl                                  ,L"test_009_render_ogl" },
+    { &test_010_render_ogl_cube                             ,L"test_010_render_ogl_cube" },
+    { &test_011_render_ogl_some_figures                     ,L"test_011_render_ogl_some_figures" },
+    { &test_012_render_ogl_100_random_figures               ,L"test_012_render_ogl_100_random_figures" },
+    { &test_013_render_ogl_some_figures_diff_mats_prom_ptr  ,L"test_013_render_ogl_some_figures_diff_mats_prom_ptr" },
+    { &test_014_bad_material_indices                        ,L"test_014_bad_material_indices" },
+    { &test_015_main_scene_and_mat_editor                   ,L"test_015_main_scene_and_mat_editor" },
+    { &test_016_texture_add_change                          ,L"test_016_texture_add_change" },
+    { &test_017_falloff                                     ,L"test_017_falloff" },
+    { &test_018_camera_move                                 ,L"test_018_camera_move" },
+    { &test_019_material_change                             ,L"test_019_material_change" },
+    { &test_020_mesh_change                                 ,L"test_020_mesh_change" },
+    { &test_021_add_same_textures_from_file                 ,L"test_021_add_same_textures_from_file" },
+    { &test_022_can_not_load_texture                        ,L"test_022_can_not_load_texture" },
+    { &test_023_texture_from_memory                         ,L"test_023_texture_from_memory" },
+    { &test_024_many_textures_big_data                      ,L"test_024_many_textures_big_data" },
+    { &test_025_many_textures_big_data                      ,L"test_025_many_textures_big_data" },
+    { &test_026_many_textures_big_data                      ,L"test_026_many_textures_big_data" },
+    { &test_027_many_textures_big_data_from_mem             ,L"test_027_many_textures_big_data_from_mem" },
+    { &test_028_compute_normals                             ,L"test_028_compute_normals" },
+    { &test_029_many_textures_and_meshes                    ,L"test_029_many_textures_and_meshes" },
+    { &test_030_many_textures_and_meshes                    ,L"test_030_many_textures_and_meshes" },
+    { &test_031_procedural_texture_LDR                      ,L"test_031_procedural_texture_LDR" },
+    { &test_032_procedural_texture_HDR                      ,L"test_032_procedural_texture_HDR" },
+    { &test_033_update_from_file                            ,L"test_033_update_from_file" },
+    { &test_034_delayed_textures_does_not_exists            ,L"test_034_delayed_textures_does_not_exists" },
+    { &test_035_cornell_with_light                          ,L"test_035_cornell_with_light" },
+    { &test_036_update_from_memory                          ,L"test_036_update_from_memory" },
+    { &test_037_cornell_with_light_different_image_layers   ,L"test_037_cornell_with_light_different_image_layers" },
+    { &test_038_save_mesh_and_delayed_load                  ,L"test_038_save_mesh_and_delayed_load" },
+    { &test_039_mmlt_or_ibpt                                ,L"test_039_mmlt_or_ibpt" },
+    { &test_040_several_changes                             ,L"test_040_several_changes" },
+    { &test_041_load_library_basic                          ,L"test_041_load_library_basic" },
+    { &test_042_load_mesh_compressed                        ,L"test_042_load_mesh_compressed" },
+    { &test_043_test_direct_light                           ,L"test_043_test_direct_light" },
+    { &test_044_four_lights_and_compressed_mesh             ,L"test_044_four_lights_and_compressed_mesh" },
+    { &test_045_mesh_from_vsgf_opengl_bug_teapot            ,L"test_045_mesh_from_vsgf_opengl_bug_teapot" },
+    { &test_046_light_geom_rect                             ,L"test_046_light_geom_rect" },
+    { &test_047_light_geom_disk                             ,L"test_047_light_geom_disk" },
+    { &test_048_light_geom_sphere                           ,L"test_048_light_geom_sphere" },
+    { &test_049_light_geom_disk                             ,L"test_049_light_geom_disk" },
+    { &test_050_open_library_several_times                  ,L"test_050_open_library_several_times" },
+    { &dummy_test                                           ,L"dummy_test" },                                          // 51
+    { &dummy_test                                           ,L"dummy_test" },                                          // 52
+    { &dummy_test                                           ,L"dummy_test" },                                          // 53
+    { &dummy_test                                           ,L"dummy_test" },                                          // 54
+    { &test_055_clear_scene                                 ,L"test_055_clear_scene" },
+    { &test_056_mesh_change_open_existing                   ,L"test_056_mesh_change_open_existing" },
+    { &test_057_single_instance                             ,L"test_057_single_instance" },
+    { &dummy_test                                           ,L"dummy_test" },                                          // 58
+    { &test_059_cornell_water_mlt                           ,L"test_059_cornell_water_mlt" },
+    { &test_060_debug_print_and_cant_load_mesh              ,L"test_060_debug_print_and_cant_load_mesh" },               // 60
+    { &test_061_cornell_with_light_near_wall_and_glossy_wall,L"test_061_cornell_with_light_near_wall_and_glossy_wall" },
+    { &dummy_test                                           ,L"dummy_test" },                                          // 62
+    { &dummy_test                                           ,L"dummy_test" },                                          // 63
+    { &test_064_several_changes_light_area                  ,L"test_064_several_changes_light_area" },
+    { &test_065_several_changes_light_rect                  ,L"test_065_several_changes_light_rect" },
+    { &test_066_fast_render_no_final_update                 ,L"test_066_fast_render_no_final_update" },
+    { &test_067_fast_empty_scene                            ,L"test_067_fast_empty_scene" },
+    { &test_068_scene_library_file_info                     ,L"test_068_scene_library_file_info" },
+    { &test_069_obj_delayed_load                            ,L"test_069_obj_delayed_load" },                                          // 69
+    { &test_070_area_lights16                               ,L"test_070_area_lights16" },
+    { &test_071_out_of_memory                               ,L"test_071_out_of_memory" },
+    { &dummy_test                                           ,L"dummy_test" },                                          // 72
+    { &dummy_test                                           ,L"dummy_test" },                                          // 73 
+    { &test_074_frame_buffer_line                           ,L"test_074_frame_buffer_line" },
+    { &test_075_repeated_render                             ,L"test_075_repeated_render" },
+    { &test_076_empty_mesh                                  ,L"test_076_empty_mesh" },
+    { &test_077_save_gbuffer_layers                         ,L"test_077_save_gbuffer_layers" },
+    { &test_078_material_remap_list1                        ,L"test_078_material_remap_list1" },
+    { &test_079_material_remap_list2                        ,L"test_079_material_remap_list2" },
+    { &test_080_lt_rect_image                               ,L"test_080_lt_rect_image" },
+    { &test_081_custom_attributes                           ,L"test_081_custom_attributes" },
+    { &test_082_proc_texture                                ,L"test_082_proc_texture" },
+    { &test_083_proc_texture2                               ,L"test_083_proc_texture2" },
+    { &test_084_proc_texture2                               ,L"test_084_proc_texture2" },
+    { &test_085_proc_texture_ao                             ,L"test_085_proc_texture_ao" },
+    { &test_086_proc_texture_ao_dirt                        ,L"test_086_proc_texture_ao_dirt" },
+    { &test_087_proc_texture_reflect                        ,L"test_087_proc_texture_reflect" },
+    { &test_088_proc_texture_convex_rust                    ,L"test_088_proc_texture_convex_rust" },
+    { &test_089_proc_texture_dirty                          ,L"test_089_proc_texture_dirty" },
+    { &test_090_proc_tex_normalmap                          ,L"test_090_proc_tex_normalmap" },
+    { &test_091_proc_tex_bump                               ,L"test_091_proc_tex_bump" },
+    { &test_092_proc_tex_bump2                              ,L"test_092_proc_tex_bump2" },
     { &dummy_test                                         ,L"dummy_test" },
     { &dummy_test                                         ,L"dummy_test" },
-    { &test95_bump                                        ,L"test95_bump" },
-    { &test96_hexaplanar                                  ,L"test96_hexaplanar" },
-    { &test97_camera_from_matrices                        ,L"test97_camera_from_matrices" },
+    { &test_095_bump                                        ,L"test_095_bump" },
+    { &test_096_hexaplanar                                  ,L"test_096_hexaplanar" },
+    { &test_097_camera_from_matrices                        ,L"test_097_camera_from_matrices" },
     { &dummy_test                                         ,L"dummy_test" },  // correct implementation of motion blur is not yet finished
-    { &test99_triplanar                                   ,L"test99_triplanar" }
+    { &test_099_triplanar                                   ,L"test_099_triplanar" }
   };
 
   int startTestId2 = startTestId - 1;
@@ -1852,15 +1900,15 @@ void run_all_geo_tests()
 	using namespace GEO_TESTS;
   std::vector<TestFunc> tests =
   {
-    { &test_001_mesh_from_memory,     L"test_001_mesh_from_memory" },
-    { &test_002_mesh_from_vsgf,       L"test_002_mesh_from_vsgf" },
-    { &test_003_compute_normals,      L"test_003_compute_normals" },
-    { &test_004_dof,                  L"test_004_dof" },
-    { &test_005_instancing,           L"test_005_instancing" },
-    { &test_006_points_on_mesh,       L"test_006_points_on_mesh" },
-    { &test_007_import_obj,           L"test_007_import_obj" },
-    { &test_008_import_obj_w_mtl,     L"test_008_import_obj_w_mtl" },
-    { &test_009_import_obj_fullscale, L"test_009_import_obj_fullscale" }
+    { &test_301_mesh_from_memory,     L"test_301_mesh_from_memory" },
+    { &test_302_mesh_from_vsgf,       L"test_302_mesh_from_vsgf" },
+    { &test_303_compute_normals,      L"test_303_compute_normals" },
+    { &test_304_dof,                  L"test_304_dof" },
+    { &test_305_instancing,           L"test_305_instancing" },
+    { &test_306_points_on_mesh,       L"test_306_points_on_mesh" },
+    { &test_307_import_obj,           L"test_307_import_obj" },
+    { &test_308_import_obj_w_mtl,     L"test_308_import_obj_w_mtl" },
+    { &test_309_import_obj_fullscale, L"test_309_import_obj_fullscale" }
   };
 
   RenderTestAndPrintResult(0, tests, L"Geo tests.", L"Report_geometry");
@@ -2064,14 +2112,14 @@ void run_all_vector_tex_tests()
   using namespace EXTENSIONS_TESTS;
   std::vector<TestFunc> tests =
   {
-    { &test_ext_vtex_1, L"test_ext_vtex_1" },
-    { &test_ext_vtex_2, L"test_ext_vtex_2" },
-    { &test_ext_vtex_3, L"test_ext_vtex_3" },
-    { &test_ext_vtex_4, L"test_ext_vtex_4" },
-    { &test_ext_vtex_5, L"test_ext_vtex_5" },
-    { &test_ext_vtex_6, L"test_ext_vtex_6" },
-    { &test_ext_vtex_7, L"test_ext_vtex_7" },
-    { &test_ext_vtex_8, L"test_ext_vtex_8" }
+    { &test_500_ext_vtex, L"test_500_ext_vtex" },
+    { &test_501_ext_vtex, L"test_501_ext_vtex" },
+    { &test_502_ext_vtex, L"test_502_ext_vtex" },
+    { &test_503_ext_vtex, L"test_503_ext_vtex" },
+    { &test_504_ext_vtex, L"test_504_ext_vtex" },
+    { &test_505_ext_vtex, L"test_505_ext_vtex" },
+    { &test_506_ext_vtex, L"test_506_ext_vtex" },
+    { &test_507_ext_vtex, L"test_507_ext_vtex" }
   };
 
   RenderTestAndPrintResult(0, tests, L"Vector textures tests.", L"Report_vector_textures");
@@ -2110,15 +2158,17 @@ bool run_single_3dsmax_test(const std::wstring& a_path)
 
   bool loaded1 = HydraRender::LoadLDRImageFromFile(outPathS.c_str(), &w1, &h1, image1);
   bool loaded2 = HydraRender::LoadLDRImageFromFile(refPathS.c_str(), &w2, &h2, image2);
+  
+  g_MSEOutput.clear();
 
   if (w1 != w2 || h1 != h2 || !loaded1 || !loaded2)
   {
-    g_MSEOutput = 1000000.0f;
+    g_MSEOutput.push_back(10000);
     return false;
   }
-
+  
   const float mseVal = HydraRender::MSE_RGB_LDR(image1, image2);
-  g_MSEOutput        = mseVal;
+  g_MSEOutput.push_back(mseVal);
 
   //#TODO: clean generated state files !!!
   
@@ -2165,14 +2215,26 @@ void run_all_3dsmax_tests(int a_start)
     std::chrono::duration<float> rendTime = end - start;
     
 
-    std::filesystem::path saveRefFile    = L"../3dsMaxTests/Reference/" + filesFiltered[i] + L".png";
-    std::filesystem::path saveRenderFile = L"../3dsMaxTests/rendered/" + filesFiltered[i] + L".png";
+    std::filesystem::path refDir            = L"../3dsMaxTests/Reference/";
 
-    ResultTest resTest(filesFiltered[i], res, g_testWasIgnored, g_MSEOutput, rendTime.count(),
-      saveRefFile.wstring(), saveRenderFile.wstring());
+    std::filesystem::path saveRefFile       = refDir / (filesFiltered[i] + L".png");
+    std::filesystem::path saveRenderFile    = L"../3dsMaxTests/rendered/" + filesFiltered[i] + L".png";
+        
+    std::wstring currSubFolderName          = g_systemInfo.GetFolderNameFromInfo();
+    std::filesystem::path currSubFolderPath = L"Reports/" + currSubFolderName;
+    std::filesystem::path reportImagesPath  = currSubFolderPath / L"Images" / L"3dsMax";
+    std::filesystem::path reportRenderPath  = reportImagesPath / (filesFiltered[i] + L".png");
+    std::filesystem::create_directory(reportImagesPath.wstring());
+    std::filesystem::copy_file(saveRenderFile, reportRenderPath);
+        
+    std::vector<std::wstring> refFiles      = { saveRefFile };
+    std::vector<std::wstring> rendFiles     = { reportRenderPath };
+
+    ResultTest resTest(filesFiltered[i], g_resultTest, g_testWasIgnored, g_MSEOutput, rendTime.count(),
+      refFiles, rendFiles);
 
 
-    PrintResultSingleTest(resTest);
+    PrintConsoleResultSingleTest(resTest);
   }
 
   fout.close();

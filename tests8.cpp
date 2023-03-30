@@ -42,11 +42,11 @@ extern GLFWwindow* g_window;
 namespace hlm = LiteMath;
 
 
-bool test90_proc_tex_normalmap()
+bool test_090_proc_tex_normalmap()
 {
   //initGLIfNeeded(512, 512);
 
-  std::wstring nameTest                 = L"test_90";
+  std::wstring nameTest                 = L"test_090";
   std::filesystem::path libraryPath     = L"tests_f/"      + nameTest;
   std::filesystem::path saveRenderFile  = L"tests_images/" + nameTest + L"/z_out.png";
   std::filesystem::path saveRenderFile2 = L"tests_images/" + nameTest + L"/z_out2.png";
@@ -406,11 +406,11 @@ bool test90_proc_tex_normalmap()
 }
 
 
-bool test91_proc_tex_bump()
+bool test_091_proc_tex_bump()
 {
-  hrErrorCallerPlace(L"test_91");
+  hrErrorCallerPlace(L"test_091");
   
-  hrSceneLibraryOpen(L"tests/test_91", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_091", HR_WRITE_DISCARD);
   
   SimpleMesh sphere   = CreateSphere(2.0f, 128);
   SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
@@ -749,18 +749,18 @@ bool test91_proc_tex_bump()
       break;
   }
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_91/z_out.png");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_91/z_out2.png", L"diffcolor");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_091/z_out.png");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_091/z_out2.png", L"diffcolor");
   
-  return check_images("test_91", 2, 20);
+  return check_images("test_091", 2, 20);
 }
 
-bool test92_proc_tex_bump2()
+bool test_092_proc_tex_bump2()
 {
   initGLIfNeeded();
-  hrErrorCallerPlace(L"test_92");
+  hrErrorCallerPlace(L"test_092");
   
-  hrSceneLibraryOpen(L"tests/test_92", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_092", HR_WRITE_DISCARD);
   
   SimpleMesh sphere   = CreateSphere(2.0f, 128);
   SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
@@ -1099,24 +1099,24 @@ bool test92_proc_tex_bump2()
       break;
   }
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_92/z_out.png");
-  //hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_92/z_out2.png", L"diffcolor");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_092/z_out.png");
+  //hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_092/z_out2.png", L"diffcolor");
   
-  return check_images("test_92", 1, 20);
+  return check_images("test_092", 1, 20);
 }
 
 
-bool test93_proc_tex_recursive()
+bool test_093_proc_tex_recursive()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_93");
+  hrErrorCallerPlace(L"test_093");
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  hrSceneLibraryOpen(L"tests/test_93", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_093", HR_WRITE_DISCARD);
 
   SimpleMesh sphere   = CreateSphere(2.0f, 128);
   SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
@@ -1439,16 +1439,16 @@ bool test93_proc_tex_recursive()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_93/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_093/z_out.png");
 
   return false;
 }
 
 
-bool test93_check_xml_fail_materials()
+bool test_093_check_xml_fail_materials()
 {
-	hrErrorCallerPlace(L"test_93");
-	hrSceneLibraryOpen(L"tests_f/test_93", HR_WRITE_DISCARD);
+	hrErrorCallerPlace(L"test_093");
+	hrSceneLibraryOpen(L"tests_f/test_093", HR_WRITE_DISCARD);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Materials
@@ -1514,7 +1514,7 @@ bool test93_check_xml_fail_materials()
 }
 
 
-bool test94_check_xml_fail_camera()
+bool test_094_check_xml_fail_camera()
 {
 	HRCameraRef camRef = hrCameraCreate(L"my camera");
 
@@ -1857,13 +1857,13 @@ bool test_126_debug_bump()
 }
 
 
-bool test51_instance_many_trees_and_opacity()
+bool test_051_instance_many_trees_and_opacity()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_51");
+  hrErrorCallerPlace(L"test_051");
 
-  hrSceneLibraryOpen(L"tests/test_51", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_051", HR_WRITE_DISCARD);
 
   HRTextureNodeRef texPattern = hrTexture2DCreateFromFile(L"data/textures/bigleaf3.tga");
   HRTextureNodeRef texture1   = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
@@ -2219,19 +2219,19 @@ bool test51_instance_many_trees_and_opacity()
       break;
   }
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_51/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_051/z_out.png");
   
-  return check_images("test_51", 1, 30);
+  return check_images("test_051", 1, 30);
 
 }
 
-bool test52_instance_perf_test()
+bool test_052_instance_perf_test()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_52");
+  hrErrorCallerPlace(L"test_052");
 
-  hrSceneLibraryOpen(L"tests/test_52", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_052", HR_WRITE_DISCARD);
 
   HRTextureNodeRef texPattern = hrTexture2DCreateFromFile(L"data/textures/bigleaf3.tga");
   HRTextureNodeRef texture1   = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
@@ -2558,20 +2558,20 @@ bool test52_instance_perf_test()
       break;
   }
   
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_52/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_052/z_out.png");
   
-  return check_images("test_52", 1, 30);
+  return check_images("test_052", 1, 30);
 
   return false;
 }
 
-bool test53_crysponza_perf()
+bool test_053_crysponza_perf()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_53");
+  hrErrorCallerPlace(L"test_053");
 
-  hrSceneLibraryOpen(L"tests/test_53", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_053", HR_WRITE_DISCARD);
 
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2736,18 +2736,18 @@ bool test53_crysponza_perf()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_53/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_053/z_out.png");
 
   return false;
 }
 
-bool test54_portalsroom_perf()
+bool test_054_portalsroom_perf()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_54");
+  hrErrorCallerPlace(L"test_054");
 
-  hrSceneLibraryOpen(L"tests/test_54", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_054", HR_WRITE_DISCARD);
 
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2912,7 +2912,7 @@ bool test54_portalsroom_perf()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_54/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_054/z_out.png");
 
   return false;
 }

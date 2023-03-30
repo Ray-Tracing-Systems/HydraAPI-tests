@@ -25,6 +25,9 @@ IHRRenderDriver* CreateDriverRTE(const wchar_t* a_cfg) { return nullptr; }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+extern TEST_UTILS::SystemInfo g_systemInfo;
+
+
 
 void InfoCallBack(const wchar_t* message, const wchar_t* callerPlace, HR_SEVERITY_LEVEL a_level)
 {
@@ -75,7 +78,7 @@ void sig_handler(int signo)
 #endif
 
 
-extern float g_MSEOutput;
+
 void init()
 {
   registerAllGL1Drivers();
@@ -136,19 +139,18 @@ int main(int argc, const char** argv)
     // API_TESTS
     /////////////////////
 
-    //test40_several_changes();
-    //test41_load_library_basic();
-    //test77_save_gbuffer_layers();
-    //test82_proc_texture(); // error
-    //test87_proc_texture_reflect();
-    //test90_proc_tex_normalmap();
+    //test_055_clear_scene();
+    //test_077_save_gbuffer_layers();
+    //test_082_proc_texture(); // error
+    //test_087_proc_texture_reflect();
+    //test_090_proc_tex_normalmap();
 
     /////////////////////    
     // GEO_TESTS
     /////////////////////
-
-    //GEO_TESTS::test_008_import_obj_w_mtl(); // The bike is black.
-    //GEO_TESTS::test_009_import_obj_fullscale(); // The bottle is black.
+    
+    //GEO_TESTS::test_308_import_obj_w_mtl(); // The bike is black.
+    //GEO_TESTS::test_309_import_obj_fullscale(); // The bottle is black.
 
     /////////////////////    
     // MTL_TESTS
@@ -178,31 +180,38 @@ int main(int argc, const char** argv)
     // EXTENSIONS_TESTS
     /////////////////////
 
-    //EXTENSIONS_TESTS::test_ext_vtex_1();
-    //EXTENSIONS_TESTS::test_ext_vtex_3();
-    //EXTENSIONS_TESTS::test_ext_vtex_7();
+    //EXTENSIONS_TESTS::test_500_ext_vtex();
+    //EXTENSIONS_TESTS::test_502_ext_vtex();
+    //EXTENSIONS_TESTS::test_506_ext_vtex();
 
     /////////////////////    
     // SPECTRAL_TESTS
     /////////////////////
 
-    //SPECTRAL_TESTS::test_cornell_spectral_2();
-    //SPECTRAL_TESTS::test_macbeth();
-    //SPECTRAL_TESTS::test_macbeth_2();
-    //SPECTRAL_TESTS::test_macbeth_3();
-    //SPECTRAL_TESTS::test_texture_1();
+    //SPECTRAL_TESTS::test_601_cornell_spectral_2();
+    //SPECTRAL_TESTS::test_602_macbeth();
+    //SPECTRAL_TESTS::test_605_macbeth_2();
+    //SPECTRAL_TESTS::test_606_macbeth_3();
+    //SPECTRAL_TESTS::test_603_texture_1();
 
     /////////////////////
     // All tests
     /////////////////////
     
+    // Specify the name of your folder for the report, based on system information.
+#ifdef WIN32
+    g_systemInfo = { L"Windows", L"NVIDIA_RTX2070_SUPER" };
+#else
+    g_systemInfo = { L"Linux", L"NVIDIA_RTX2070_SUPER" };
+#endif 
+
     run_all_api_tests();
-    run_all_geo_tests();
     run_all_mtl_tests();
     run_all_lgt_tests();
+    run_all_geo_tests();
     run_all_alg_tests();
     run_all_vector_tex_tests(); //all wrong - need inv. gamma (pow 2.2) as textures for linear result.
-    run_all_3dsmax_tests(); 
+    //run_all_3dsmax_tests(); 
 
 
 

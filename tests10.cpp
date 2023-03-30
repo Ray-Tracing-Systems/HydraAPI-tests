@@ -36,9 +36,9 @@ using HydraRender::SaveImageToFile;
 extern GLFWwindow* g_window;
 
 
-bool test1000_loadlibrary_and_edit()
+bool test_700_loadlibrary_and_edit()
 {
-  hrSceneLibraryOpen(L"tests/test_1000", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_700", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -115,8 +115,8 @@ bool test1000_loadlibrary_and_edit()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1000/change_00001.xml");
-        std::remove("tests/test_1000/statex_00002.xml");
+        std::remove("tests/test_700/change_00001.xml");
+        std::remove("tests/test_700/statex_00002.xml");
         firstUpdate = false;
       }
 
@@ -129,16 +129,16 @@ bool test1000_loadlibrary_and_edit()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1000/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_700/z_out.png");
 
-  return check_images("test_1000", 1, 50.0f);
+  return check_images("test_700", 1, 50.0f);
 }
 
-bool test1001_loadlibrary_and_add_textures()
+bool test_701_loadlibrary_and_add_textures()
 {
   
 
-  hrSceneLibraryOpen(L"tests/test_1001", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_701", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -213,8 +213,8 @@ bool test1001_loadlibrary_and_add_textures()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1001/change_00001.xml");
-        std::remove("tests/test_1001/statex_00002.xml");
+        std::remove("tests/test_701/change_00001.xml");
+        std::remove("tests/test_701/statex_00002.xml");
         firstUpdate = false;
       }
 
@@ -227,16 +227,16 @@ bool test1001_loadlibrary_and_add_textures()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1001/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_701/z_out.png");
 
-  return check_images("test_1001", 1, 50.0f);
+  return check_images("test_701", 1, 50.0f);
 }
 
-bool test1002_get_material_by_name_and_edit()
+bool test_702_get_material_by_name_and_edit()
 {
   
 
-  hrSceneLibraryOpen(L"tests/test_1002", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_702", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -324,8 +324,8 @@ bool test1002_get_material_by_name_and_edit()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1002/change_00001.xml");
-        std::remove("tests/test_1002/statex_00002.xml");
+        std::remove("tests/test_702/change_00001.xml");
+        std::remove("tests/test_702/statex_00002.xml");
         firstUpdate = false;
       }
 
@@ -338,16 +338,16 @@ bool test1002_get_material_by_name_and_edit()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1002/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_702/z_out.png");
 
-  return check_images("test_1002", 1, 50.0f);
+  return check_images("test_702", 1, 50.0f);
 }
 
-bool test1003_get_light_by_name_and_edit()
+bool test_703_get_light_by_name_and_edit()
 {
   
 
-  hrSceneLibraryOpen(L"tests/test_1003", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_703", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -449,8 +449,8 @@ bool test1003_get_light_by_name_and_edit()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1003/change_00001.xml");
-        std::remove("tests/test_1003/statex_00002.xml");
+        std::remove("tests/test_703/change_00001.xml");
+        std::remove("tests/test_703/statex_00002.xml");
         firstUpdate = false;
       }
 
@@ -463,16 +463,16 @@ bool test1003_get_light_by_name_and_edit()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1003/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_703/z_out.png");
 
-  return check_images("test_1003", 1, 50.0f);
+  return check_images("test_703", 1, 50.0f);
 }
 
-bool test1004_get_camera_by_name_and_edit()
+bool test_704_get_camera_by_name_and_edit()
 {
   
 
-  hrSceneLibraryOpen(L"tests/test_1004", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_704", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -538,8 +538,8 @@ bool test1004_get_camera_by_name_and_edit()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1004/change_00001.xml");
-        std::remove("tests/test_1004/statex_00002.xml");
+        std::remove("tests/test_704/change_00001.xml");
+        std::remove("tests/test_704/statex_00002.xml");
         firstUpdate = false;
       }
 
@@ -552,14 +552,14 @@ bool test1004_get_camera_by_name_and_edit()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1004/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_704/z_out.png");
 
-  return check_images("test_1004", 1, 50.0f);
+  return check_images("test_704", 1, 50.0f);
 }
 
-bool test1005_transform_all_instances()
+bool test_705_transform_all_instances()
 {
-  hrSceneLibraryOpen(L"tests/test_1005", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_705", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -608,8 +608,8 @@ bool test1005_transform_all_instances()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1005/change_00001.xml");
-        std::remove("tests/test_1005/statex_00002.xml");
+        std::remove("tests/test_705/change_00001.xml");
+        std::remove("tests/test_705/statex_00002.xml");
         firstUpdate = false;
       }
       
@@ -622,16 +622,16 @@ bool test1005_transform_all_instances()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1005/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_705/z_out.png");
 
-  return check_images("test_1005", 1, 100.0f);
+  return check_images("test_705", 1, 100.0f);
 }
 
-bool test1006_transform_all_instances_origin()
+bool test_706_transform_all_instances_origin()
 {
   
 
-  hrSceneLibraryOpen(L"tests/test_1006", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_706", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
   HRRenderRef renderRef;
@@ -680,8 +680,8 @@ bool test1006_transform_all_instances_origin()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1006/change_00001.xml");
-        std::remove("tests/test_1006/statex_00002.xml");
+        std::remove("tests/test_706/change_00001.xml");
+        std::remove("tests/test_706/statex_00002.xml");
         firstUpdate = false;
       }
 
@@ -694,18 +694,18 @@ bool test1006_transform_all_instances_origin()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1006/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_706/z_out.png");
 
-  return check_images("test_1006", 1, 100.0f);
+  return check_images("test_706", 1, 100.0f);
 }
 
-bool test1007_merge_library()
+bool test_707_merge_library()
 {
   
 
-  hrErrorCallerPlace(L"test_1007");
+  hrErrorCallerPlace(L"test_707");
 
-  hrSceneLibraryOpen(L"tests/test_1007", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_707", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -932,16 +932,16 @@ bool test1007_merge_library()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1007/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_707/z_out.png");
 
-  return check_images("test_1007", 1, 60);
+  return check_images("test_707", 1, 60);
 }
 
-bool test1008_merge_one_texture()
+bool test_708_merge_one_texture()
 {
-  hrErrorCallerPlace(L"test_1008");
+  hrErrorCallerPlace(L"test_708");
 
-  hrSceneLibraryOpen(L"tests/test_1008", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_708", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -1170,17 +1170,17 @@ bool test1008_merge_one_texture()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1008/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_708/z_out.png");
 
-  return check_images("test_1008", 1, 60);
+  return check_images("test_708", 1, 60);
 }
 
 
-bool test1009_merge_one_material()
+bool test_709_merge_one_material()
 {
-  hrErrorCallerPlace(L"test_1009");
+  hrErrorCallerPlace(L"test_709");
 
-  hrSceneLibraryOpen(L"tests/test_1009", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_709", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -1411,16 +1411,16 @@ bool test1009_merge_one_material()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1009/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_709/z_out.png");
 
-  return check_images("test_1009", 1, 60);
+  return check_images("test_709", 1, 60);
 }
 
-bool test1010_merge_one_mesh()
+bool test_710_merge_one_mesh()
 {
-  hrErrorCallerPlace(L"test_1010");
+  hrErrorCallerPlace(L"test_710");
 
-  hrSceneLibraryOpen(L"tests/test_1010", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_710", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -1651,16 +1651,16 @@ bool test1010_merge_one_mesh()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1010/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_710/z_out.png");
 
-  return check_images("test_1010", 1, 60);
+  return check_images("test_710", 1, 60);
 }
 
-bool test1011_merge_scene()
+bool test_711_merge_scene()
 {
-  hrErrorCallerPlace(L"test_1011");
+  hrErrorCallerPlace(L"test_711");
 
-  hrSceneLibraryOpen(L"tests/test_1011", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_711", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -1862,7 +1862,7 @@ bool test1011_merge_scene()
   hrSceneClose(scnRef);
 
 
-  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"/home/vsan/repos/HydraAPI/main/tests/test_x1", true, true); //L"tests_f/test_131
+  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"/home/vsan/repos/HydraAPI/main/tests/test_718", true, true); //L"tests_f/test_131
 
   mTranslate = translate4x4(float3(0.0f, 5.0f, 0.0f));
 
@@ -1887,18 +1887,18 @@ bool test1011_merge_scene()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1011/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_711/z_out.png");
 
-  return check_images("test_1011", 1, 60);
+  return check_images("test_711", 1, 60);
 }
 
-bool test1012_merge_one_light()
+bool test_712_merge_one_light()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_1012");
+  hrErrorCallerPlace(L"test_712");
 
-  hrSceneLibraryOpen(L"tests/test_1012", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_712", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -2129,17 +2129,17 @@ bool test1012_merge_one_light()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1012/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_712/z_out.png");
 
-  return check_images("test_1012", 1, 60);
+  return check_images("test_712", 1, 60);
 }
 
 
-bool test1013_commit_without_render()
+bool test_713_commit_without_render()
 {
   initGLIfNeeded();
 
-  hrSceneLibraryOpen(L"tests/test_1013", HR_OPEN_EXISTING);
+  hrSceneLibraryOpen(L"tests/test_713", HR_OPEN_EXISTING);
 
   /////////////////////////////////////////////////////////
 
@@ -2229,8 +2229,8 @@ bool test1013_commit_without_render()
     {
       if(firstUpdate)
       {
-        std::remove("tests/test_1013/change_00001.xml");
-        std::remove("tests/test_1013/statex_00002.xml");
+        std::remove("tests/test_713/change_00001.xml");
+        std::remove("tests/test_713/statex_00002.xml");
         firstUpdate = false;
       }
 
@@ -2243,18 +2243,18 @@ bool test1013_commit_without_render()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1013/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_713/z_out.png");
 
-  return check_images("test_1013", 1, 50.0f);
+  return check_images("test_713", 1, 50.0f);
 }
 
-bool test1014_print_matlib_map()
+bool test_714_print_matlib_map()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_1014");
+  hrErrorCallerPlace(L"test_714");
 
-  hrSceneLibraryOpen(L"tests/test_1014", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_714", HR_WRITE_DISCARD);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Materials
@@ -2540,18 +2540,18 @@ bool test1014_print_matlib_map()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1014/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_714/z_out.png");
 
-  return check_images("test_1014", 1, 60) && (outStr == correctStr);
+  return check_images("test_714", 1, 60) && (outStr == correctStr);
 }
 
-bool test1015_merge_scene_with_remaps()
+bool test_715_merge_scene_with_remaps()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_1015");
+  hrErrorCallerPlace(L"test_715");
 
-  hrSceneLibraryOpen(L"tests/test_1015", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_715", HR_WRITE_DISCARD);
 
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2719,7 +2719,7 @@ bool test1015_merge_scene_with_remaps()
   hrSceneClose(scnRef);
 
 
-  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_1015_lib_to_merge", false, true);
+  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_715_lib_to_merge", false, true);
 
   mTranslate = scale4x4(float3(7.0f, 7.0f, 7.0f));
 
@@ -2744,19 +2744,19 @@ bool test1015_merge_scene_with_remaps()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1015/z_out.png");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_1015/z_scnid.png", L"scnid");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_715/z_out.png");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_715/z_scnid.png", L"scnid");
 
-  return check_images("test_1015", 1, 60);
+  return check_images("test_715", 1, 60);
 }
 
-bool test1016_merge_scene_remap_override()
+bool test_716_merge_scene_remap_override()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_1016");
+  hrErrorCallerPlace(L"test_716");
 
-  hrSceneLibraryOpen(L"tests/test_1016", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_716", HR_WRITE_DISCARD);
 
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2919,7 +2919,7 @@ bool test1016_merge_scene_remap_override()
   hrSceneClose(scnRef);
 
 
-  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_1015_lib_to_merge", false, true);
+  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_715_lib_to_merge", false, true);
 
   hrCommit(scnRef);
 
@@ -2963,18 +2963,18 @@ bool test1016_merge_scene_remap_override()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_1016/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_716/z_out.png");
 
-  return check_images("test_1016", 1, 60);
+  return check_images("test_716", 1, 60);
 }
 
-bool test1017_merge_scene_scene_id_mask()
+bool test_717_merge_scene_scene_id_mask()
 {
   initGLIfNeeded();
 
-  hrErrorCallerPlace(L"test_1017");
+  hrErrorCallerPlace(L"test_717");
 
-  hrSceneLibraryOpen(L"tests/test_1017", HR_WRITE_DISCARD);
+  hrSceneLibraryOpen(L"tests/test_717", HR_WRITE_DISCARD);
 
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3139,14 +3139,14 @@ bool test1017_merge_scene_scene_id_mask()
   hrSceneClose(scnRef);
 
 
-  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_1015_lib_to_merge", false, true);
+  HRSceneInstRef scnRef2 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_715_lib_to_merge", false, true);
   mTranslate = translate4x4(float3(-6.0f, -2.0f, 0.0f));
   mScale = scale4x4(float3(3.0f, 3.0f, 3.0f));
   mRes = mul(mTranslate, mScale);
   auto box = HRUtils::InstanceSceneIntoScene(scnRef2, scnRef, mRes.L(), false);
 
 
-  HRSceneInstRef scnRef3 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_1015_lib_to_merge", false, true);
+  HRSceneInstRef scnRef3 = HRUtils::MergeLibraryIntoLibrary(L"tests/test_715_lib_to_merge", false, true);
   mTranslate = translate4x4(float3(6.0f, -2.0f, 0.0f));
   mScale = scale4x4(float3(3.0f, 3.0f, 3.0f));
   mRes = mul(mTranslate, mScale);
@@ -3176,12 +3176,12 @@ bool test1017_merge_scene_scene_id_mask()
       break;
   }
 
-  hrRenderSaveFrameBufferLDR(renderRef,  L"tests_images/test_1017/z_out.png");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_1017/z_out2.png", L"scnid");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_1017/z_out3.png", L"scnsid");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_1017/z_out4.png", L"instid");
-  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_1017/z_out5.png", L"objid");
+  hrRenderSaveFrameBufferLDR(renderRef,  L"tests_images/test_717/z_out.png");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_717/z_out2.png", L"scnid");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_717/z_out3.png", L"scnsid");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_717/z_out4.png", L"instid");
+  hrRenderSaveGBufferLayerLDR(renderRef, L"tests_images/test_717/z_out5.png", L"objid");
 
 
-  return check_images("test_1017", 1, 60);
+  return check_images("test_717", 1, 60);
 }
