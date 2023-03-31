@@ -1246,9 +1246,10 @@ namespace LGHT_TESTS
     }
     hrMeshClose(torusRef);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+    ////////////////////
+    // Light
+    ////////////////////
+
     HRTextureNodeRef texForLight = hrTexture2DCreateFromFile(L"data/textures/chess_red_green_blue.bmp");
 
     HRLightRef meshLightRef = hrLightCreate(L"my_area_light");
@@ -1283,59 +1284,19 @@ namespace LGHT_TESTS
     }
     hrLightClose(meshLightRef);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////
+    // Camera
+    ////////////////////
 
-    // camera
-    //
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
+    CreateCamera(45, L"0 0 15", L"0 0 0");
 
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      xml_node camNode = hrCameraParamNode(camRef);
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
 
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 0 15");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
-    }
-    hrCameraClose(camRef);
 
-    // set up render settings
-    //
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1 
-
-    //hrRenderEnableDevice(renderRef, 0, true);
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text()  = 512;
-      node.append_child(L"height").text() = 512;
-
-      node.append_child(L"method_primary").text()   = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text()  = L"pathtracing";
-      node.append_child(L"method_caustic").text()   = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text()      = L"5";
-      node.append_child(L"diff_trace_depth").text() = L"3";
-
-      node.append_child(L"pt_error").text() = L"2";
-      node.append_child(L"minRaysPerPixel").text() = 256;
-      node.append_child(L"maxRaysPerPixel").text() = 4096;
-
-      node.append_child(L"draw_tiles").text() = L"0";
-    }
-    hrRenderClose(renderRef);
 
     // create scene
     //
@@ -1417,7 +1378,7 @@ namespace LGHT_TESTS
     std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 1, 40);
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
   }
 
 

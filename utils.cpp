@@ -930,7 +930,7 @@ namespace TEST_UTILS
 
 
   ResultTest::ResultTest(const std::wstring a_name, const std::vector<bool> a_res, const bool a_skip, const std::vector<float> a_mse,
-    const float a_rendTime, const std::vector<std::wstring>& a_linkRefImg, const std::vector<std::wstring>& a_linkRenderImg)
+    const float a_rendTime, const std::vector<std::wstring>& a_linkRefImgs, const std::vector<std::wstring>& a_linkRenderImgs)
   {
     m_nameTest = a_name;
 
@@ -941,12 +941,12 @@ namespace TEST_UTILS
       m_mse          = L"-";
       m_mseHtml      = L"-";
       m_renderTime   = L"-";
-      m_linkRefImgs  = L"-";
-      m_linkRendImgs = L"-";
     }
     else
     {
       m_renderTime = std::to_wstring(a_rendTime).substr(0, 4) + L" sec.";
+
+      bool createTable = false;
 
       for (int i = 0; i < a_res.size(); ++i)
       {
@@ -965,11 +965,38 @@ namespace TEST_UTILS
         }
         else
         {
+
           m_result       += L"FAILED, ";
-          m_resultHtml   += L"&#10060;<br>"; // red cross            
-          m_linkRefImgs  += L"<img src = " + a_linkRefImg[i]    + L">\n";
-          m_linkRendImgs += L"<img src = " + a_linkRenderImg[i] + L">\n";
+          m_resultHtml   += L"&#10060;<br>"; // red cross 
+
+          if (!createTable)
+          {
+            m_linkRefImgs += L"\n";
+            m_linkRefImgs += L"    <table>\n";
+          }
+
+          m_linkRefImgs  += L"    <td class=\"td-vert\">\n";
+          m_linkRefImgs  += L"        <img src = " + a_linkRefImgs[i] + L">\n";
+          m_linkRefImgs  += L"     </td>\n";
+
+          if (!createTable)
+          {
+            m_linkRendImgs += L"\n";
+            m_linkRendImgs += L"    <table>\n";
+            createTable     = true;
+          }
+
+          m_linkRendImgs += L"    <td class=\"td-vert\">\n";
+          m_linkRendImgs += L"        <img class=\"imageTop\" src = " + a_linkRenderImgs[i] + L">\n";
+          m_linkRendImgs += L"        <img src = " + a_linkRefImgs[i] + L">\n";
+          m_linkRendImgs += L"    </td>\n";
         }
+      }
+
+      if (createTable)
+      {
+        m_linkRefImgs  += L"    </table>\n";
+        m_linkRendImgs += L"    </table>\n";
       }
     }
   }

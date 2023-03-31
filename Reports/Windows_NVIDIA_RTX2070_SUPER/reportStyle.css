@@ -5,13 +5,13 @@ body {
   font-size: 1em;
 }
 
-table {  
+table {    
   table-layout: auto;
   width: 100%;
   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif; 
   font-size: 1em;
   border-collapse: collapse;
-  text-align: center;
+  text-align: center;      
 }
 
 th, td:first-child {
@@ -20,15 +20,16 @@ th, td:first-child {
   padding: 10px 20px;
 }
 
-th, td {  
+th, td {    
   border-style: solid;
   border-width: 1px;
-  border-color: rgb(100, 100, 100);
+  border-color: rgb(100, 100, 100);  
 }
 
 td {  
   background: rgb(80, 80, 80);
-  color: white;
+  color: white;  
+  position: relative;
 }
 
 th:first-child, td:first-child {
@@ -36,10 +37,38 @@ th:first-child, td:first-child {
 }
 
 img {
-  display:block; 
+  display:block;   
 	width:100%;  
-	height:auto;
+	height:auto;   
+  padding: 0px;    
 }
+
+.td-vert {
+  display:block;
+  padding: 0px;  
+}
+
+.td-vert:first-child  {
+  padding: 0px;    
+}
+
+.imageTop {  
+  justify-content: center;
+  align-items: center;
+  z-index: 1;  
+  position: absolute;
+  top: 0;
+  left: 0; 
+  padding: 0px;  
+}
+
+.imageTop:hover{  
+  opacity: 0.0;
+  /* mix-blend-mode: difference;     */
+}
+
+
+ /* Menu */
 
 .vertical-menu {  
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;

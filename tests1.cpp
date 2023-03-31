@@ -1657,7 +1657,7 @@ struct TestFunc
 };
 
 
-std::vector<std::wstring> GetFiles(std::filesystem::path a_dir, std::wstring a_cutName)
+std::vector<std::wstring> GetFileNames(std::filesystem::path a_dir, std::wstring a_cutName)
 {
   std::vector<std::wstring> files;
 
@@ -1666,14 +1666,25 @@ std::vector<std::wstring> GetFiles(std::filesystem::path a_dir, std::wstring a_c
 
   for (const auto& p : std::filesystem::directory_iterator(a_dir))
   {
-    std::wstring cutName = (p.path().stem().stem().wstring()).substr(0, 5); // z_ref
+    std::wstring cutName = (p.path().stem().wstring()).substr(0, 5); // z_ref
 
     if (cutName == a_cutName)
     {
-      files.push_back(p.path().wstring());
+      files.push_back(p.path().filename().wstring());
     }
   }
 
+  return files;
+}
+
+
+std::vector<std::wstring> JoinPaths(std::filesystem::path a_path, std::vector<std::wstring> a_filename)
+{
+  std::vector<std::wstring> files;
+
+  for (auto& i : a_filename)
+    files.push_back((a_path / i).wstring());
+  
   return files;
 }
 
@@ -1724,36 +1735,33 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
     totalRenderSec                      += rendTime.count();
 
     std::wstring cutName                 = a_tests[i].name.substr(0, 8);
-
-    std::filesystem::path refDir         = L"../../tests_images/" + cutName;
-    std::filesystem::path absoluteRefDir = std::filesystem::absolute(L"tests_images/" + cutName);
-    std::filesystem::path saveRefFile    = refDir / L"/w_ref.png";
-    std::filesystem::path saveRenderFile = refDir / L"/z_out.png";
     
-    std::filesystem::path reportImgsPath = currSubFolderPath / L"Images" / cutName;
-    std::filesystem::path absReportImagesPath = std::filesystem::absolute(reportImgsPath);
+    std::filesystem::path absoluteRefDir    = std::filesystem::absolute(L"tests_images/" + cutName);
+    std::filesystem::path reportImgsPath    = currSubFolderPath / L"Images" / cutName;
+    std::filesystem::path absReportImgsPath = std::filesystem::absolute(reportImgsPath);
    
     if (!g_testWasIgnored && overallResult == false)
     {
       failedTests++;
       std::filesystem::create_directory(reportImgsPath);
-      std::filesystem::copy(absoluteRefDir, absReportImagesPath,
+      std::filesystem::copy(absoluteRefDir, absReportImgsPath,
         std::filesystem::copy_options::overwrite_existing);
     }
     else
     {
-      std::filesystem::remove_all(absReportImagesPath);
+      std::filesystem::remove_all(absReportImgsPath);
     }
 
-    std::vector<std::wstring> refFiles  = GetFiles(absReportImagesPath, L"w_ref");
-    std::vector<std::wstring> rendFiles = GetFiles(absReportImagesPath, L"z_out");
+    std::vector<std::wstring> refFileNames  = GetFileNames(absReportImgsPath, L"w_ref");
+    std::vector<std::wstring> rendFileNames = GetFileNames(absReportImgsPath, L"z_out");
+    std::vector<std::wstring> linkRefImgs   = JoinPaths(L"Images/" + cutName, refFileNames);
+    std::vector<std::wstring> linkRendImgs  = JoinPaths(L"Images/" + cutName, rendFileNames);
 
     if (g_resultTest.empty()) 
       g_resultTest.push_back(overallResult);
 
-
     ResultTest resTest(a_tests[i].name, g_resultTest, g_testWasIgnored, g_MSEOutput, rendTime.count(),
-      refFiles, rendFiles);
+      linkRefImgs, linkRendImgs);
     
     
     PrintConsoleResultSingleTest(resTest);
@@ -1780,10 +1788,11 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
 }
 
 
-void run_all_api_tests(const int startTestId)
+void run_all_api_tests(const int a_startTestId)
 {
   std::vector<TestFunc> tests = 
   {
+    { &dummy_test                                           ,L"dummy_test" },
     { &test_001_materials_add                               ,L"test_001_materials_add" },
     { &test_002_materials_changes_open_mode                 ,L"test_002_materials_changes_open_mode" },
     { &test_003_lights_add                                  ,L"test_003_lights_add" },
@@ -1885,37 +1894,35 @@ void run_all_api_tests(const int startTestId)
     { &test_099_triplanar                                   ,L"test_099_triplanar" }
   };
 
-  int startTestId2 = startTestId - 1;
-  if (startTestId2 < 0) 
-    startTestId2 = 0;
 
-  RenderTestAndPrintResult(startTestId2, tests, L"API tests.", L"Report_api");
+  RenderTestAndPrintResult(a_startTestId, tests, L"API tests.", L"Report_api");
 
   glfwTerminate();
 }
 
 
-void run_all_geo_tests()
+void run_all_geo_tests(const int a_startTestId)
 {
 	using namespace GEO_TESTS;
   std::vector<TestFunc> tests =
   {
-    { &test_301_mesh_from_memory,     L"test_301_mesh_from_memory" },
-    { &test_302_mesh_from_vsgf,       L"test_302_mesh_from_vsgf" },
-    { &test_303_compute_normals,      L"test_303_compute_normals" },
-    { &test_304_dof,                  L"test_304_dof" },
-    { &test_305_instancing,           L"test_305_instancing" },
-    { &test_306_points_on_mesh,       L"test_306_points_on_mesh" },
-    { &test_307_import_obj,           L"test_307_import_obj" },
-    { &test_308_import_obj_w_mtl,     L"test_308_import_obj_w_mtl" },
+    { &dummy_test                   , L"dummy_test" },
+    { &test_301_mesh_from_memory    , L"test_301_mesh_from_memory" },
+    { &test_302_mesh_from_vsgf      , L"test_302_mesh_from_vsgf" },
+    { &test_303_compute_normals     , L"test_303_compute_normals" },
+    { &test_304_dof                 , L"test_304_dof" },
+    { &test_305_instancing          , L"test_305_instancing" },
+    { &test_306_points_on_mesh      , L"test_306_points_on_mesh" },
+    { &test_307_import_obj          , L"test_307_import_obj" },
+    { &test_308_import_obj_w_mtl    , L"test_308_import_obj_w_mtl" },
     { &test_309_import_obj_fullscale, L"test_309_import_obj_fullscale" }
   };
 
-  RenderTestAndPrintResult(0, tests, L"Geo tests.", L"Report_geometry");
+  RenderTestAndPrintResult(a_startTestId, tests, L"Geo tests.", L"Report_geometry");
 }
 
 
-void run_all_mtl_tests(int a_start)
+void run_all_mtl_tests(const int a_startTestId)
 {
 	using namespace MTL_TESTS;
   std::vector<TestFunc> tests =
@@ -2003,11 +2010,11 @@ void run_all_mtl_tests(int a_start)
     { &test_180_trggx_aniso_rot                 , L"test_180_trggx_aniso_rot" },
   };
 
-  RenderTestAndPrintResult(a_start, tests, L"Materials tests.", L"Report_materials");
+  RenderTestAndPrintResult(a_startTestId, tests, L"Materials tests.", L"Report_materials");
 }
 
 
-void run_all_lgt_tests(int a_start)
+void run_all_lgt_tests(const int a_startTestId)
 {
   using namespace LGHT_TESTS;
   std::vector<TestFunc> tests =
@@ -2060,15 +2067,16 @@ void run_all_lgt_tests(int a_start)
     { &test_245_cylinder_tex_nearest              , L"test_245_cylinder_tex_nearest" },
   };
     
-  RenderTestAndPrintResult(a_start, tests, L"Lights tests.", L"Report_lights");  
+  RenderTestAndPrintResult(a_startTestId, tests, L"Lights tests.", L"Report_lights");  
 }
 
 
-void run_all_alg_tests(int a_start)
+void run_all_alg_tests(const int a_startTestId)
 {
   using namespace ALGR_TESTS;
   std::vector<TestFunc> tests =
   {
+    { &dummy_test                           , L"dummy_test" },
     { &test_401_ibpt_and_glossy_glass       , L"test_401_ibpt_and_glossy_glass" },
     { &test_402_ibpt_and_glossy_double_glass, L"test_402_ibpt_and_glossy_double_glass" },
     { &test_403_light_inside_double_glass   , L"test_403_light_inside_double_glass" },
@@ -2077,7 +2085,7 @@ void run_all_alg_tests(int a_start)
     { &test_406_env_glass_ball_caustic      , L"test_406_env_glass_ball_caustic" }
   };
   
-  RenderTestAndPrintResult(a_start, tests, L"Render algorithm tests.", L"Report_ralgs");  
+  RenderTestAndPrintResult(a_startTestId, tests, L"Render algorithm tests.", L"Report_ralgs");  
 }
 
 
@@ -2088,6 +2096,8 @@ void run_all_microfacet_torrance_sparrow()
   
   std::vector<TestFunc> tests =
   {
+    { &dummy_test                         , L"dummy_test" },
+    { &dummy_test                         , L"dummy_test" },
     { &test_202_sky_color                 , L"test_202_sky_color" },
     { &test_203_sky_hdr                   , L"test_203_sky_hdr" },
     { &test_204_sky_hdr_rotate            , L"test_204_sky_hdr_rotate" },
@@ -2107,7 +2117,7 @@ void run_all_microfacet_torrance_sparrow()
 }
 
 
-void run_all_vector_tex_tests()
+void run_all_vector_tex_tests(const int a_startTestId)
 {
   using namespace EXTENSIONS_TESTS;
   std::vector<TestFunc> tests =
@@ -2122,7 +2132,7 @@ void run_all_vector_tex_tests()
     { &test_507_ext_vtex, L"test_507_ext_vtex" }
   };
 
-  RenderTestAndPrintResult(0, tests, L"Vector textures tests.", L"Report_vector_textures");
+  RenderTestAndPrintResult(a_startTestId, tests, L"Vector textures tests.", L"Report_vector_textures");
 }
 
 

@@ -163,7 +163,7 @@ int main(int argc, const char** argv)
     /////////////////////
 
     //LGHT_TESTS::test_203_sky_hdr();
-
+    
     /////////////////////    
     // ALGR_TESTS
     /////////////////////

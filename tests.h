@@ -147,8 +147,7 @@ namespace TEST_UTILS
   {
   public:
     ResultTest(const std::wstring a_name, const std::vector<bool> a_res, const bool a_skip, const std::vector<float> a_mse,
-      const float a_rendTime, const std::vector<std::wstring>& a_linkRefImg,
-      const std::vector<std::wstring>& a_linkRenderImg);
+      const float a_rendTime, const std::vector<std::wstring>& a_linkRefImgs, const std::vector<std::wstring>& a_linkRenderImgs);
       
     std::wstring GetName()          { return m_nameTest; }
     std::wstring GetMse()           { return m_mse; }
@@ -519,7 +518,6 @@ namespace SPECTRAL_TESTS
   void test_611_combine_images();
 }
 
-void run_all_vector_tex_tests();
 
 //These tests need some scene library to exist in their respective folders
 bool test_700_loadlibrary_and_edit();
@@ -553,11 +551,12 @@ bool test_720_car_triplanar(const int i);
 
 bool test_721_depth_mesh();
 
-void run_all_api_tests(const int startTestId = 0);
-void run_all_geo_tests();
-void run_all_mtl_tests(int a_start = 0);
-void run_all_lgt_tests(int a_start = 0);
-void run_all_alg_tests(int a_start = 0);
+void run_all_api_tests(const int a_startTestId = 0);
+void run_all_geo_tests(const int a_startTestId = 0);
+void run_all_mtl_tests(const int a_startTestId = 0);
+void run_all_lgt_tests(const int a_startTestId = 0);
+void run_all_alg_tests(const int a_startTestId = 0);
+void run_all_vector_tex_tests(const int a_startTestId = 0);
 void terminate_opengl();
 
 static const int CURR_RENDER_DEVICE = 0;
@@ -565,7 +564,7 @@ static const int CURR_RENDER_DEVICE = 0;
 //void image_p_sandbox();
 
 void run_all_microfacet_torrance_sparrow();
-void run_all_3dsmax_tests(int a_start = 0);
+void run_all_3dsmax_tests(const int a_startTestId = 0);
 bool run_single_3dsmax_test(const std::wstring& a_path);
 
 
