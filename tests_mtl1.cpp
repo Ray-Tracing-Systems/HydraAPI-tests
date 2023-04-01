@@ -416,11 +416,11 @@ namespace MTL_TESTS
 
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
 
-    AddMeshToScene(scnRef, planeRef, float3(0.0f, -1.0f, 0.0f));
-    AddMeshToScene(scnRef, cubeR, float3(-4.0f, 1.0f, 4.0f), float3(0.0f, 60.0f, 0.0f));
-    AddMeshToScene(scnRef, torusB, float3(4.0f, 1.0f, 4.5f), float3(80.0f, -60.0f, 0.0f)); 
-    AddMeshToScene(scnRef, sphereG, float3(0.0f, 2.0f, -1.0f));
-    AddLightToScene(scnRef, rectLight, float3(0.0f, 12.0f, 0.0f));
+    AddMeshToScene(scnRef, planeRef, float3(0, -1, 0));
+    AddMeshToScene(scnRef, cubeR, float3(-4, 1, 4), float3(0, 60, 0));
+    AddMeshToScene(scnRef, torusB, float3(4, 1, 4.5f), float3(90, 10, 0)); 
+    AddMeshToScene(scnRef, sphereG, float3(0, 2, -1));
+    AddLightToScene(scnRef, rectLight, float3(0, 12, 0));
 
     hrSceneClose(scnRef);
 

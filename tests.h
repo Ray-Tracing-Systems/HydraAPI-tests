@@ -98,11 +98,19 @@ namespace TEST_UTILS
     const wchar_t* a_brdfType = L"lambert", const float a_roughness = 0,
     HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"wrap",
     const wchar_t* a_addressingModeV = L"wrap", const float tileU = 1, const float tileV = 1,
-    const float a_inputGamma = 2.2f, const wchar_t* a_inputAlpha = L"rgb");
+    const float a_inputGamma = 2.2F, const wchar_t* a_inputAlpha = L"rgb",
+    const wchar_t* a_texApplyMode = L"multiply");
 
   void AddReflectionNode(HAPI pugi::xml_node& matNode, const wchar_t* a_brdfType, const wchar_t* a_color,
-    const float a_glossiness, const bool a_fresnel, const float a_ior = 1.5f, 
+    const float a_glossiness, const bool a_fresnel = true, const float a_ior = 1.5F, 
     const wchar_t* a_extrusion = L"maxcolor", const bool a_energyFix = false);
+
+  void AddOpacityNode(HAPI pugi::xml_node& matNode, HRTextureNodeRef a_texture = HRTextureNodeRef(),
+    const bool a_skipShadow = false, const wchar_t* a_addressingModeU = L"wrap", 
+    const wchar_t* a_addressingModeV = L"wrap", const float tileU = 1, const float tileV = 1, 
+    const float a_inputGamma = 2.2F, const wchar_t* a_inputAlpha = L"rgb");
+
+  void AddTranslucencyNode(HAPI pugi::xml_node& matNode, const wchar_t* a_color);
 
   void AddReliefNode(HAPI pugi::xml_node& matNode, const wchar_t* a_type, const float a_amount,
     HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"wrap",
@@ -116,7 +124,11 @@ namespace TEST_UTILS
     const float a_innerRadius = 40, const float a_outerRadius = 60, const float a_shadowSoft = 0);
 
   HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier,
-    const wchar_t* a_distribution = L"uniform", const int sun_id = 0, const float a_turbidity = 2.0F);
+    const wchar_t* a_distribution = L"uniform", const int sun_id = 0, const float a_turbidity = 2.0F,
+    HRTextureNodeRef a_texture = HRTextureNodeRef(), const wchar_t* a_addressingModeU = L"wrap",
+    const wchar_t* a_addressingModeV = L"wrap", const float tileU = 1, const float tileV = 1,
+    const float a_inputGamma = 2.2F, const wchar_t* a_inputAlpha = L"rgb",
+    const wchar_t* a_texApplyMode = L"multiply");
     
 
   //camera
@@ -134,7 +146,7 @@ namespace TEST_UTILS
   //render
   HRRenderRef CreateBasicTestRenderPT(int a_deviceId, int a_w, int a_h, int a_minRays, int a_maxRays, 
     int a_rayBounce = 6, int a_diffBounce = 4, const wchar_t* a_drvName = L"HydraModern");
-  HRRenderRef CreateBasicTestRenderPTNoCaust(int deviceId, int w, int h, int minRays, int maxRays);
+  HRRenderRef CreateBasicTestRenderPTNoCaust(int deviceId, int w, int h, int minRays, int maxRays, const float a_clamp = 1000000);
   HRRenderRef CreateBasicTestRenderPTFastBackground(int deviceId, int w, int h, int minRays, int maxRays, const wchar_t* a_drvName = L"HydraModern");
   HRRenderRef CreateBasicGLRender(int w, int h);
   HRMeshRef CreateTriStrip(int rows, int cols, float size);

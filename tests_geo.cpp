@@ -662,7 +662,7 @@ namespace GEO_TESTS
     mRes  = mul(mRot2, mRot);
     mRes  = mul(mTranslate, mRes);
     hrLightInstance(scnRef, sun, mRes.L());    
-    //AddLightToScene(scnRef, sun, float3(200.0f, 200.0f, -100.0f), float3(10, 0, 30)); // small offset, why?!
+    //AddLightToScene(scnRef, sun, float3(200, 200, -100), float3(10, 0, 30)); // small offset, why?!
         
     ///////////
     hrSceneClose(scnRef);        

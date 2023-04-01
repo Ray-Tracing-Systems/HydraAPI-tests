@@ -146,24 +146,24 @@ int main(int argc, const char** argv)
     //test_090_proc_tex_normalmap();
 
     /////////////////////    
-    // GEO_TESTS
-    /////////////////////
-    
-    //GEO_TESTS::test_308_import_obj_w_mtl(); // The bike is black.
-    //GEO_TESTS::test_309_import_obj_fullscale(); // The bottle is black.
-
-    /////////////////////    
     // MTL_TESTS
     /////////////////////
-        
-    //MTL_TESTS::test_126_bump_amount();    
+    
+    //MTL_TESTS::test_103_diffuse_texture();
     
     /////////////////////    
     // LGHT_TESTS
     /////////////////////
 
     //LGHT_TESTS::test_203_sky_hdr();
-    
+
+    /////////////////////    
+    // GEO_TESTS
+    /////////////////////
+
+    //GEO_TESTS::test_308_import_obj_w_mtl(); // The bike is black.
+    //GEO_TESTS::test_309_import_obj_fullscale(); // The bottle is black.
+
     /////////////////////    
     // ALGR_TESTS
     /////////////////////

@@ -768,7 +768,7 @@ namespace LGHT_TESTS
 
     AddMeshToScene(scnRef, planeRef);
     AddMeshToScene(scnRef, cubeR, float3(-4.75f, 2.0f, 5.0f), float3(0, 60, 0));
-    AddMeshToScene(scnRef, torusB, float3(4.0f, 2.0f, 5.5f), float3(90, -60, 0));
+    AddMeshToScene(scnRef, torusB, float3(4.0f, 2.0f, 5.5f), float3(90, 10, 0));
     AddMeshToScene(scnRef, sphereG, float3(0.0f, 4.0f, -1.0f));
     AddLightToScene(scnRef, sky);
 

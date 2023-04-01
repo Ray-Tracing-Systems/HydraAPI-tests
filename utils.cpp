@@ -543,24 +543,25 @@ namespace TEST_UTILS
 
   void AddDiffuseNode(HAPI pugi::xml_node& matNode, const wchar_t* a_diffuseColor,
     const wchar_t* a_brdfType, const float a_roughness, HRTextureNodeRef a_texture, 
-    const wchar_t* a_addressingModeU, const wchar_t* a_addressingModeV,
-    const float a_tileU, const float a_tileV, const float a_inputGamma, const wchar_t* a_inputAlpha)
+    const wchar_t* a_addressingModeU, const wchar_t* a_addressingModeV, const float a_tileU, 
+    const float a_tileV, const float a_inputGamma, const wchar_t* a_inputAlpha, 
+    const wchar_t* a_texApplyMode)
   {
     auto diff  = matNode.append_child(L"diffuse");
-    diff.append_attribute(L"brdf_type").set_value(a_brdfType);
+    diff.append_attribute(L"brdf_type") = a_brdfType;
 
     auto color = diff.append_child(L"color");
-    color.append_attribute(L"val").set_value(a_diffuseColor);
+    color.append_attribute(L"val") = a_diffuseColor;
 
     if (std::wstring(a_brdfType) == L"orennayar")
     {
       auto rough = diff.append_child(L"roughness");
-      rough.append_attribute(L"val").set_value(a_roughness);
+      rough.append_attribute(L"val") = a_roughness;
     }
 
     if (a_texture.id != -1)
     {
-      color.append_attribute(L"tex_apply_mode").set_value(L"multiply");
+      color.append_attribute(L"tex_apply_mode") = a_texApplyMode;
       hrTextureBind(a_texture, color);
 
       auto texNode = color.child(L"texture");
@@ -570,10 +571,10 @@ namespace TEST_UTILS
                                   0,       0,       1,       0,
                                   0,       0,       0,       1 };
 
-      texNode.append_attribute(L"addressing_mode_u").set_value(a_addressingModeU);
-      texNode.append_attribute(L"addressing_mode_v").set_value(a_addressingModeV);
-      texNode.append_attribute(L"input_gamma").set_value(a_inputGamma);
-      texNode.append_attribute(L"input_alpha").set_value(a_inputAlpha);
+      texNode.append_attribute(L"addressing_mode_u") = a_addressingModeU;
+      texNode.append_attribute(L"addressing_mode_v") = a_addressingModeV;
+      texNode.append_attribute(L"input_gamma")       = a_inputGamma;
+      texNode.append_attribute(L"input_alpha")       = a_inputAlpha;
 
       HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
     }
@@ -586,13 +587,47 @@ namespace TEST_UTILS
   {
     auto refl = matNode.append_child(L"reflectivity");
 
-    refl.append_attribute(L"brdf_type").set_value(a_brdfType);
-    refl.append_child(L"color").append_attribute(L"val").set_value(a_color);
-    refl.append_child(L"glossiness").append_attribute(L"val").set_value(a_glossiness);
-    refl.append_child(L"extrusion").append_attribute(L"val").set_value(a_extrusion);
-    refl.append_child(L"fresnel").append_attribute(L"val").set_value((int)(a_fresnel));
-    refl.append_child(L"fresnel_ior").append_attribute(L"val").set_value(a_ior);
-    refl.append_child(L"energy_fix").append_attribute(L"val").set_value((int)(a_energyFix));
+    refl.append_attribute(L"brdf_type")                        = a_brdfType;
+    refl.append_child(L"color").append_attribute(L"val")       = a_color;
+    refl.append_child(L"glossiness").append_attribute(L"val")  = a_glossiness;
+    refl.append_child(L"extrusion").append_attribute(L"val")   = a_extrusion;
+    refl.append_child(L"fresnel").append_attribute(L"val")     = (int)(a_fresnel);
+    refl.append_child(L"fresnel_ior").append_attribute(L"val") = a_ior;
+    refl.append_child(L"energy_fix").append_attribute(L"val")  = (int)(a_energyFix);
+    VERIFY_XML(matNode);
+  }
+
+
+  void AddOpacityNode(HAPI pugi::xml_node& matNode, HRTextureNodeRef a_texture, const bool a_skipShadow,
+    const wchar_t* a_addressingModeU, const wchar_t* a_addressingModeV,
+    const float a_tileU, const float a_tileV, const float a_inputGamma, const wchar_t* a_inputAlpha)
+  {
+    auto opacity = matNode.append_child(L"opacity");
+    opacity.append_child(L"skip_shadow").append_attribute(L"val") = (int)(a_skipShadow);
+
+    auto texNode = hrTextureBind(a_texture, opacity);
+
+    texNode.append_attribute(L"matrix");
+    float samplerMatrix[16] = { a_tileU, 0,       0,       0,
+                                0,       a_tileV, 0,       0,
+                                0,       0,       1,       0,
+                                0,       0,       0,       1 };
+
+    texNode.append_attribute(L"addressing_mode_u") = a_addressingModeU;
+    texNode.append_attribute(L"addressing_mode_v") = a_addressingModeV;
+    texNode.append_attribute(L"input_gamma")       = a_inputGamma;
+    texNode.append_attribute(L"input_alpha")       = a_inputAlpha;
+
+    HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+
+    VERIFY_XML(matNode);
+  }
+
+
+  void AddTranslucencyNode(HAPI pugi::xml_node& matNode, const wchar_t* a_color)
+  {
+    auto transl = matNode.append_child(L"translucency");
+    transl.append_child(L"color").append_attribute(L"val") = a_color;
     VERIFY_XML(matNode);
   }
 
@@ -672,16 +707,16 @@ namespace TEST_UTILS
     mTranslate.identity();
     mRes.identity();
 
-    mRotX      = rotate4x4X(rot.x * DEG_TO_RAD);
-    mRotY      = rotate4x4Y(-rot.y * DEG_TO_RAD);
-    mRotZ      = rotate4x4Z(rot.z * DEG_TO_RAD);
     mScale     = scale4x4(scale);
+    mRotZ      = rotate4x4Z(rot.z * DEG_TO_RAD);
+    mRotY      = rotate4x4Y(rot.y * DEG_TO_RAD);
+    mRotX      = rotate4x4X(rot.x * DEG_TO_RAD);
     mTranslate = translate4x4(pos);
 
-    mRes       = mul(mRotZ, mRes);
-    mRes       = mul(mRotX, mRes);
-    mRes       = mul(mRotY, mRes);
     mRes       = mul(mScale, mRes);    
+    mRes       = mul(mRotZ, mRes);
+    mRes       = mul(mRotY, mRes);
+    mRes       = mul(mRotX, mRes);
     mRes       = mul(mTranslate, mRes);
 
     if (a_mmListSize > 0)
@@ -730,16 +765,16 @@ namespace TEST_UTILS
     mTranslate.identity();
     mRes.identity();
 
-    mRotX      = rotate4x4X(a_rot.x * DEG_TO_RAD);
-    mRotY      = rotate4x4Y(-a_rot.y * DEG_TO_RAD);
-    mRotZ      = rotate4x4Z(a_rot.z * DEG_TO_RAD);
     mScale     = scale4x4(a_scale);
+    mRotZ      = rotate4x4Z(a_rot.z * DEG_TO_RAD);
+    mRotY      = rotate4x4Y(a_rot.y * DEG_TO_RAD);
+    mRotX      = rotate4x4X(a_rot.x * DEG_TO_RAD);
     mTranslate = translate4x4(a_pos);
 
-    mRes       = mul(mRotZ, mRes);
-    mRes       = mul(mRotX, mRes);
-    mRes       = mul(mRotY, mRes);
     mRes       = mul(mScale, mRes);
+    mRes       = mul(mRotZ, mRes);
+    mRes       = mul(mRotY, mRes);
+    mRes       = mul(mRotX, mRes);
     mRes       = mul(mTranslate, mRes);
 
     hrLightInstance(scnRef, a_lightRef, mRes.L());
@@ -795,7 +830,8 @@ namespace TEST_UTILS
     return renderRef;
   }
 
-  HRRenderRef CreateBasicTestRenderPTNoCaust(int deviceId, int w, int h, int minRays, int maxRays)
+  HRRenderRef CreateBasicTestRenderPTNoCaust(int deviceId, int w, int h, int minRays, int maxRays,
+    const float a_clamp)
   {
     auto renderRef = hrRenderCreate(L"HydraModern");
     hrRenderEnableDevice(renderRef, deviceId, true);
@@ -818,6 +854,7 @@ namespace TEST_UTILS
 
       node.append_child(L"minRaysPerPixel").text() = minRays;
       node.append_child(L"maxRaysPerPixel").text() = maxRays;
+      node.append_child(L"clamping").text()        = a_clamp;
     }
     hrRenderClose(renderRef);
 
@@ -900,7 +937,10 @@ namespace TEST_UTILS
   }
 
   HRLightRef CreateSky(const wchar_t* a_name, const wchar_t* a_color, const float a_multiplier, 
-    const wchar_t* a_distribution, const int a_sunId, const float a_turbidity)
+    const wchar_t* a_distribution, const int a_sunId, const float a_turbidity, HRTextureNodeRef a_texture,
+    const wchar_t* a_addressingModeU, const wchar_t* a_addressingModeV, const float a_tileU,
+    const float a_tileV, const float a_inputGamma, const wchar_t* a_inputAlpha,
+    const wchar_t* a_texApplyMode)
   {
     HRLightRef sky = hrLightCreate(a_name);
 
@@ -920,7 +960,23 @@ namespace TEST_UTILS
         sunModel.append_attribute(L"sun_id")    = a_sunId;
         sunModel.append_attribute(L"turbidity") = a_turbidity;
       }
+      else if (std::wstring(a_distribution) == L"map")
+      {
+        auto texNode = hrTextureBind(a_texture, intensityNode.child(L"color"));
 
+        texNode.append_attribute(L"matrix");
+        float samplerMatrix[16] = { a_tileU, 0,       0,       0,
+                                    0,       a_tileV, 0,       0,
+                                    0,       0,       1,       0,
+                                    0,       0,       0,       1 };
+
+        texNode.append_attribute(L"addressing_mode_u") = a_addressingModeU;
+        texNode.append_attribute(L"addressing_mode_v") = a_addressingModeV;
+        texNode.append_attribute(L"input_gamma")       = a_inputGamma;
+        texNode.append_attribute(L"input_alpha")       = a_inputAlpha;
+
+        HydraXMLHelpers::WriteMatrix4x4(texNode, L"matrix", samplerMatrix);
+      }
       VERIFY_XML(lightNode);
     }
     hrLightClose(sky);
