@@ -210,10 +210,10 @@ The modelView matrix should be calculated from (position,lookAt,upVector) accord
 
 At this specification level, the whole scene is defined as set of instances of meshes. Each mesh instance has its own transform 4x4 matrix. Matrices can contain rotation, translation, scaling (both linear and non-linear). If the mesh was not instanced at all, it should not be drawn.
 
-\boldblue{Test:} test\_005\_instancing.
+\boldblue{Test:} test\_305\_instancing.
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\linewidth]{../../tests_images/test_005/w_ref.png}           
+	\includegraphics[width=0.4\linewidth]{../../tests_images/test_305/w_ref.png}           
 	\caption{\label{fig:test_005_image}
 		Example of instancing.  }   
 \end{figure}
@@ -248,10 +248,10 @@ So, each instance can assign an existing remap list. If this happends, for this 
 
 \begin{figure}[h]\label{fig:remaplist}
 	\begin{minipage}[h]{0.45\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_79/w_ref.png} \\ Original material mapping}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_079/w_ref.png} \\ Original material mapping}
 	\end{minipage}
 	\begin{minipage}[h]{0.45\linewidth}
-		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_79/w_ref2.png} \\ Appliyng remap list}
+		\center{\includegraphics[width=1.0\linewidth]{../../tests_images/test_079/w_ref2.png} \\ Appliyng remap list}
 	\end{minipage}
 	\caption{Remap list example.}
 \end{figure}
@@ -354,10 +354,10 @@ BRDF_{mirror} = \frac{1}{cos(\theta_{out})}
 BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 10^{-6})}
 \end{equation}
 
-\boldblue{Test:} test\_174\_mirror\_orbspec\_mat03. 
+\boldblue{Test:} test\_102\_mirror\_orbspec\_mat03. 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.25\linewidth]{../../tests_images/test_174/w_ref.png}           
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_102/w_ref.png}           
 	\caption{\label{fig:test_174_image}
 		Example of mirror material with color equal to (0.75, 0.75, 0.75).  }   
 \end{figure}
