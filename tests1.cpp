@@ -1704,10 +1704,10 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
   
   std::wstring currSubFolderName          = g_systemInfo.GetFolderNameFromInfo();
   std::filesystem::path currSubFolderPath = L"Reports/" + currSubFolderName;
-  std::filesystem::create_directory(currSubFolderPath.wstring());
+  std::filesystem::create_directory(currSubFolderPath);
 
   std::filesystem::path reportFile        = currSubFolderPath / (a_fileName + L".html");
-  std::wofstream fileOut(reportFile.wstring());
+  std::wofstream fileOut(reportFile);
 
   std::wostringstream outBuffConsole;
   outBuffConsole << a_nameGroupTests << "   " << std::ctime(&currData) 
@@ -2237,8 +2237,8 @@ void run_all_3dsmax_tests(int a_start)
     std::filesystem::create_directory(reportImagesPath.wstring());
     std::filesystem::copy_file(saveRenderFile, reportRenderPath);
         
-    std::vector<std::wstring> refFiles      = { saveRefFile };
-    std::vector<std::wstring> rendFiles     = { reportRenderPath };
+    std::vector<std::wstring> refFiles      = { saveRefFile.wstring() };
+    std::vector<std::wstring> rendFiles     = { reportRenderPath.wstring() };
 
     ResultTest resTest(filesFiltered[i], g_resultTest, g_testWasIgnored, g_MSEOutput, rendTime.count(),
       refFiles, rendFiles);
