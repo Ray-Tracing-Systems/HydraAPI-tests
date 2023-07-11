@@ -71,7 +71,7 @@
 	%\addcontentsline{def2}{figure}{#1} % Adds the question to the list of questions
 	\addcontentsline{def2}{figure}
 	{\protect\numberline{\thesection.\thereq}#1}\par
-	\todo[inline, color=green!25]{\textbf{mat\_\thesection.\thereq:} \textbf{#1} \hyperref[ruleslist]{(core)}} % Uses the todonotes package to create a fancy box to put the question
+	\todo[inline, color=green!25]{\textbf{REQ\_M\thereq:} \textbf{#1} \hyperref[ruleslist]{(core)}} % Uses the todonotes package to create a fancy box to put the question
 	\vspace{1em} % White space after the question before the start of the answer
 }
 
@@ -83,7 +83,7 @@
 	%\addcontentsline{def2}{figure}{#1} % Adds the question to the list of questions
 	\addcontentsline{def2}{figure}
 	{\protect\numberline{\thesection.\thereq}#1}\par
-	\todo[inline, color=green!25]{\textbf{geo\_tri\_\thesection.\thereq:} \textbf{#1} \hyperref[ruleslist]{(core)}} % Uses the todonotes package to create a fancy box to put the question
+	\todo[inline, color=green!25]{\textbf{G\thereq:} \textbf{#1} \hyperref[ruleslist]{(core)}} % Uses the todonotes package to create a fancy box to put the question
 	\vspace{1em} % White space after the question before the start of the answer
 }
 
@@ -165,8 +165,8 @@ The geometry should be represented as triangulated indexed meshes. Indices must 
 \begin{itemize}
 	\item positions in 3d space;
 	\item normals;
-	\item tangents;
-	\item texture coordinates (can be set to zeroes if are not available).
+	\item tangents (can be set to zero if not available);
+	\item texture coordinates (can be set to zero if not available).
 \end{itemize}
 
 For each triangle of this mesh some material is assigned --- that is, per triangle material is specified.
@@ -256,11 +256,11 @@ So, each instance can assign an existing remap list. If this happends, for this 
 	\caption{Remap list example.}
 \end{figure}
 
-\boldblue{(!)Note: } For efficiency reasons renderers may restrict remap list size (MaxMaterials == 4). This is essential, for example for objects with opacity (leafes, grass and e.t.c). If remapped material has opacity property, during ray-triangle intersection we have to look up in the opacity texture. However, material id remapping in general case is implemented via binary search which is too expensive if performed for each triangle. In this way renderer may restrict remap list size to 4 or 8 elements (and thus 2 or 4 materials, for example) to be sure that remapping will be cheap enough. Please note that default maximum material amount in remap list is equal to 4 and thus \underline{exporter must split} single mesh to several meshes for all instances that have greater than 4 materials in their remap list.      
+\boldblue{(!)Note: } For efficiency reasons renderers may restrict remap list size (MaxMaterials == 4) in several specific cases. This is essential to objects with opacity maps (leaves, grass and e.t.c). If remapped material has opacity property, during ray-triangle intersection we have to look up in the opacity texture. However, material id remapping in general case is implemented via binary search which is too expensive if performed for each triangle. In this way renderer may restrict remap list size to 4 or 8 elements (and thus 2 or 4 materials, for example) to be sure that remapping will be cheap enough. Please note that default maximum material amount in remap list is equal to 4 and thus \underline{exporter must split} single mesh to several meshes for all instances that have greater than 4 materials in their remap list \underline{if original or remapped material has opacity}.      
 
 \FloatBarrier
 
-\section{Materials v1.0.}\label{materialgeneral}
+\section{Materials}\label{materialgeneral}
 
 Image \ref{fig:brdf} and equation \ref{eq:integral} show lighting integral and related angles. These notation will be used further in the document. They assume reverse (i.e. Path Tracing) direction of light by default: 
 
@@ -270,6 +270,7 @@ Image \ref{fig:brdf} and equation \ref{eq:integral} show lighting integral and r
 	\caption{\label{fig:brdf}
 		BRDF and angles.}   
 \end{figure}
+
 
 \begin{eqnarray}\label{eq:integral}
 I(\phi_{in}, \theta_{in}) = \int\limits_{\phi_{out}}\int\limits_{\theta_{out}}  L(\phi_{out},\theta_{out})BRDF(\phi_{out},\theta_{out},\phi_{in},\theta_{in})cos(\theta_{out}) \mathrm{d}\phi_{out}  \mathrm{d}\theta_{out}
@@ -296,26 +297,34 @@ It should be noted that the adopted agreement of the backward propagation of lig
 \setcounter{section}{1}
 \setcounter{req}{-1}
 
-\reqirenment{lambert}
+\reqirenment{mat\_lambert}
 
-Basic support for Lambertian reflections. The BRDF function \textbf{must} be implemented according to equation \ref{brdf_lambert}. See fig \ref{fig:test_101_image}. % and listing \ref{lambertxml} for image and XML example respectively.
+Basic support for Lambertian reflections. The BRDF function \textbf{must} be implemented according to equation \ref{brdf_lambert}. See fig \ref{fig:mat_lambert}. % and listing \ref{lambertxml} for image and XML example respectively.
 
 \boldblue{Implementation:}
 \begin{equation}\label{brdf_lambert}
 BRDF_{lambert} = \frac{1}{\pi}
 \end{equation}
 
-\boldblue{Test:} 101\_diffuse\_lambert. MSE should be less than 5.0 for 512x512 LDR image.
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.25\linewidth]{../../tests_images/test_101/w_ref.png}           
-	\caption{\label{fig:test_101_image}
-     Example of lambertian material. The grey ball have color equal to (0.5, 0.5, 0.5).  }   
-\end{figure}
+\boldblue{REQ:} PSNR should be greater or equal 35 for 512x512 LDR image.
+
+	\begin{table}[htbp]
+		\centering
+		\begin{tabular}{cc}
+			\hline
+			\includegraphics[width=0.4\textwidth]{../../tests_images/test_101/w_ref.png} & 
+			\includegraphics[width=0.4\textwidth]{../../../comparisonrender/Report/Images/Lambert/Lambert_cornell_mitsuba.png} \\
+			\hline
+			\boldblue{TestHy:} 101\_diffuse\_lambert & \boldblue{TestMi:} Lambert \\
+			\hline
+		\end{tabular}
+		\caption{Example of lambertian material. The grey ball on left image have color equal to (0.5, 0.5, 0.5). The yeallow rabbit on the right image have color equal to (0.5, 0.5, 0.1). }
+		\label{fig:mat_lambert}
+	\end{table}
 
 \FloatBarrier
 
-\reqirenment{emission}
+\reqirenment{mat\_emission}
 
 Basic support for emissive material. On this level of specification emissive materials don't combined with others. Renderer may suppose mutually exclusive: (emissive or 'some other'). Please note that emissive materials have not be considered as lights (i.e. they don't have to be sampled with any explicit sampling strategy, however, of cource, they could), but they must cast GI.
 

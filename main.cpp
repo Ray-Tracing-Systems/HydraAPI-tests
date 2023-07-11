@@ -205,15 +205,17 @@ int main(int argc, const char** argv)
     g_systemInfo = { L"Linux", L"NVIDIA_RTX2070_SUPER" };
 #endif 
 
-    run_all_api_tests();
-    run_all_mtl_tests();
-    run_all_lgt_tests();
-    run_all_geo_tests();
-    run_all_alg_tests();
-    run_all_vector_tex_tests(); //all wrong - need inv. gamma (pow 2.2) as textures for linear result.
+    //run_all_api_tests();
+    //run_all_mtl_tests();
+    //run_all_lgt_tests();
+    //run_all_geo_tests();
+    //run_all_alg_tests();
+    //run_all_vector_tex_tests(); //all wrong - need inv. gamma (pow 2.2) as textures for linear result.
     //run_all_3dsmax_tests(); 
-
-
+    
+    test_078_material_remap_list1();
+    test_079_material_remap_list2();
+    //MTL_TESTS::test_123_emission();
 
     //run_all_microfacet_torrance_sparrow();
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
