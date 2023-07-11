@@ -2205,7 +2205,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 1024, 768, 256, 2048);
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
 
     ////////////////////
     // Create scene
