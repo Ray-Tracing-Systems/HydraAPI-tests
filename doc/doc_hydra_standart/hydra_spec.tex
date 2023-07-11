@@ -246,7 +246,7 @@ The remap list with id <<0>> will replace material 0 to 5 and material 3 to 1. T
 
 So, each instance can assign an existing remap list. If this happends, for this instance on the displayed model the replacements specified in remap list should be applied (fig. \ref{fig:remaplist}).
 
-\boldblue{Test:} test78\_material\_remap\_list1. PSNR should be greater than 35 for 512x512 LDR image.
+\boldblue{Test:} test78\_material\_remap\_list1.
 
 \begin{figure}[h]\label{fig:remaplist}
 	\begin{minipage}[h]{0.45\linewidth}
@@ -318,8 +318,6 @@ Basic support for Lambertian reflections. The BRDF function \textbf{must} be imp
 BRDF_{lambert} = \frac{1}{\pi}
 \end{equation}
 
-\boldblue{REQ:} PSNR should be greater or equal 35 for 512x512 LDR image.
-
 	\begin{table}[htbp]
 		\centering
 		\begin{tabular}{cc}
@@ -340,7 +338,7 @@ BRDF_{lambert} = \frac{1}{\pi}
 
 Basic support for emissive material. On this level of specification emissive materials don't combined with others. Renderer may suppose mutually exclusive: (emissive or 'some other'). Please note that emissive materials have not be considered as lights (i.e. they don't have to be sampled with any explicit sampling strategy, however, of cource, they could), but they must cast GI.
 
-\boldblue{Test:} 123\_emission. PSNR should be greater than 35 for 512x512 LDR image. 
+\boldblue{Test:} 123\_emission.
 
 \begin{figure}[h]
 	\begin{minipage}[h]{0.26\linewidth}
@@ -389,7 +387,7 @@ BRDF_{mirror} = \frac{1}{\max(cos(\theta_{out}), 10^{-6})}
 
 Adding LDR textures for Lambertian materials. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
 
-\boldblue{Test:} test\_103\_diffuse\_texture. PSNR should be greater than 35 for 512x512 LDR image.
+\boldblue{Test:} test\_103\_diffuse\_texture.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.25\linewidth]{../../tests_images/test_103/w_ref.png}           
@@ -417,7 +415,7 @@ The sampler object must support the storage and use of texture matrices. Texture
 
 Adding LDR textures to emission color. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
 
-\boldblue{Test:} test\_124\_emission\_texture. PSNR should be greater than 35 for 512x512 LDR image.
+\boldblue{Test:} test\_124\_emission\_texture.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.25\linewidth]{../../tests_images/test_124/w_ref.png}           
@@ -460,7 +458,7 @@ GGX sampling can be efficiently implemented according to the Eric Heitz paper \c
 
 Adding LDR textures for reflection color for both ggx and mirrors. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
 
-\boldblue{Test:} test\_108\_reflect\_texture. MSE should be less than 5.0 for 512x512 LDR image. 
+\boldblue{Test:} test\_108\_reflect\_texture.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.25\linewidth]{../../tests_images/test_108/w_ref.png}           
