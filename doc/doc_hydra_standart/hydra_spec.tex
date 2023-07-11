@@ -399,6 +399,20 @@ Adding LDR textures for Lambertian materials. When reading from LDR texture, gam
 
 \FloatBarrier
 
+\reqirenment{texture\_matrices}
+
+The sampler object must support the storage and use of texture matrices. Texture matrices are aplied to texture coordinates before actual texture fetch is performed. Initially, the matrices should be 4x4, but since in most cases the texture coordinates are two-dimensional, at this level of the specification, the render can save only the first 2 rows of the matrix.
+
+\boldblue{Test:} 110\_texture\_sampler
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_110/w_ref.png}           
+	\caption{\label{fig:test_10_image} Test for texture matrices. }   
+\end{figure}
+
+\FloatBarrier
+
 \reqirenment{emission\_texture\_ldr}
 
 Adding LDR textures to emission color. When reading from LDR texture, gamma transform \textbf{should} be applied. The resulting color must be the product of texture color and material color. Texture matrices support is not needed on this level of specification.
@@ -412,10 +426,6 @@ Adding LDR textures to emission color. When reading from LDR texture, gamma tran
 \end{figure}
 
 \FloatBarrier
-
-\reqirenment{texture\_matrices}
-
-The sampler object must support the storage and use of texture matrices. Texture matrices are aplied to texture coordinates before actual texture fetch is performed. Initially, the matrices should be 4x4, but since in most cases the texture coordinates are two-dimensional, at this level of the specification, the render can save only the first 2 rows of the matrix.
 
 \begin{comment}
 
