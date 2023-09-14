@@ -213,11 +213,14 @@ int main(int argc, const char** argv)
     //run_all_vector_tex_tests(); //all wrong - need inv. gamma (pow 2.2) as textures for linear result.
     //run_all_3dsmax_tests(); 
     
-    //test_078_material_remap_list1();
-    //test_079_material_remap_list2();
-    //MTL_TESTS::test_110_texture_sampler();
-    //MTL_TESTS::test_123_emission();
+    test_078_material_remap_list1();
+    test_079_material_remap_list2();
+    MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+    MTL_TESTS::test_102_mirror_orbspec_mat02();
+    MTL_TESTS::test_110_texture_sampler();
+    MTL_TESTS::test_123_emission();
     MTL_TESTS::test_124_emission_texture();
+    LGHT_TESTS::test_215_light_scale_intensity();
 
     //run_all_microfacet_torrance_sparrow();
     //window_main_free_look(L"/home/frol/PROG/clsp/database/statex_00001.xml", L"opengl1");
