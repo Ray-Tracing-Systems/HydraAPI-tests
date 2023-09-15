@@ -1811,7 +1811,7 @@ bool test_070_area_lights16()
     plane.vTexCoord[i] *= 2.0f;
 
 
-  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFileDL(L"data/textures/chess_red.bmp");
+  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_red.bmp");
 
   HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
   HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat2");
@@ -1879,7 +1879,7 @@ bool test_070_area_lights16()
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
     diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/163.jpg");
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/163.jpg");
     hrTextureBind(testTex, diff);
   }
   hrMaterialClose(mat3);
@@ -1904,7 +1904,7 @@ bool test_070_area_lights16()
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
     diff.append_child(L"color").text().set(L"0.75 0.75 0.25");
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/texture1.bmp");
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
     hrTextureBind(testTex, diff);
   }
   hrMaterialClose(mat5);
@@ -1961,7 +1961,7 @@ bool test_070_area_lights16()
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  HRMeshRef teapotRef = hrMeshCreateFromFileDL(L"data/meshes/teapot.vsgf"); // chunk_00009.vsgf // teapot.vsgf // chunk_00591.vsgf
+  HRMeshRef teapotRef = hrMeshCreateFromFile(L"data/meshes/teapot.vsgf"); // chunk_00009.vsgf // teapot.vsgf // chunk_00591.vsgf
 
   HRMeshRef cubeOpenRef = hrMeshCreate(L"my_box");
   HRMeshRef planeRef = hrMeshCreate(L"my_plane");

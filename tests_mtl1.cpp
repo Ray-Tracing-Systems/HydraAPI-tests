@@ -197,7 +197,7 @@ namespace MTL_TESTS
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 2048, 7, 7);
         
     ////////////////////
     // Create scene
