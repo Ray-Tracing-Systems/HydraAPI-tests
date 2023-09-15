@@ -3745,8 +3745,10 @@ namespace LGHT_TESTS
 		for (size_t i = 0; i < plane.vTexCoord.size(); i++)
 			plane.vTexCoord[i] *= 2.0f;
 
-
-		HRTextureNodeRef testTex2 = hrTexture2DCreateFromFileDL(L"data/textures/chess_red.bmp");
+    HRTextureNodeRef testTex1 = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp"); // hrTexture2DCreateFromFileDL
+		HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_red.bmp");
+    HRTextureNodeRef testTex3 = hrTexture2DCreateFromFile(L"data/textures/relief_wood.jpg");
+    HRTextureNodeRef testTex4 = hrTexture2DCreateFromFile(L"data/textures/163.jpg");
 
 		HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
 		HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat2");
@@ -3762,111 +3764,63 @@ namespace LGHT_TESTS
 		hrMaterialOpen(mat0, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat0);
-
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.5 0.75 0.5");
-
-			HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp"); // hrTexture2DCreateFromFileDL
-			hrTextureBind(testTex, diff);
+      AddDiffuseNode(matNode, L"0.5 0.75 0.5", L"lambert", 0, testTex1);
 		}
 		hrMaterialClose(mat0);
 
 		hrMaterialOpen(mat1, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat1);
-
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"1 1 1");
-
-			hrTextureBind(testTex2, diff);
+      AddDiffuseNode(matNode, L"1 1 1", L"lambert", 0, testTex2);
 		}
 		hrMaterialClose(mat1);
 
 		hrMaterialOpen(mat2, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat2);
-
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
-
-			HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/relief_wood.jpg");
-			hrTextureBind(testTex, diff);
+      AddDiffuseNode(matNode, L"0.75 0.75 0.75", L"lambert", 0, testTex3);
 		}
 		hrMaterialClose(mat2);
 
 		hrMaterialOpen(mat3, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat3);
-
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
-
-			HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/163.jpg");
-			hrTextureBind(testTex, diff);
+      AddDiffuseNode(matNode, L"0.75 0.75 0.75", L"lambert", 0, testTex4);
 		}
 		hrMaterialClose(mat3);
 
 		hrMaterialOpen(mat4, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat4);
-
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.1 0.1 0.75");
+      AddDiffuseNode(matNode, L"0.1 0.1 0.75", L"lambert");
 		}
 		hrMaterialClose(mat4);
 
 		hrMaterialOpen(mat5, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat5);
-
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.75 0.75 0.25");
-
-			HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/texture1.bmp");
-			hrTextureBind(testTex, diff);
+      AddDiffuseNode(matNode, L"0.75 0.75 0.25", L"lambert", 0, testTex1);
 		}
 		hrMaterialClose(mat5);
-
 
 		hrMaterialOpen(mat6, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat6);
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.5 0.0 0.0");
+      AddDiffuseNode(matNode, L"0.5 0.0 0.0", L"lambert");
 		}
 		hrMaterialClose(mat6);
 
 		hrMaterialOpen(mat7, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat7);
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.0 0.5 0.0");
+      AddDiffuseNode(matNode, L"0.0 0.5 0.0", L"lambert");
 		}
 		hrMaterialClose(mat7);
 
 		hrMaterialOpen(mat8, HR_WRITE_DISCARD);
 		{
 			xml_node matNode = hrMaterialParamNode(mat8);
-			xml_node diff = matNode.append_child(L"diffuse");
-
-			diff.append_attribute(L"brdf_type").set_value(L"lambert");
-			diff.append_child(L"color").text().set(L"0.5 0.5 0.5");
+      AddDiffuseNode(matNode, L"0.5 0.5 0.5", L"lambert");
 		}
 		hrMaterialClose(mat8);
 
@@ -3875,11 +3829,11 @@ namespace LGHT_TESTS
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		HRMeshRef cubeRef = hrMeshCreate(L"my_cube");
+		HRMeshRef cubeRef     = hrMeshCreate(L"my_cube");
 		HRMeshRef cubeOpenRef = hrMeshCreate(L"my_box");
-		HRMeshRef planeRef = hrMeshCreate(L"my_plane");
-		HRMeshRef sphereRef = hrMeshCreate(L"my_sphere");
-		HRMeshRef torusRef = hrMeshCreate(L"my_torus");
+		HRMeshRef planeRef    = hrMeshCreate(L"my_plane");
+		HRMeshRef sphereRef   = hrMeshCreate(L"my_sphere");
+		HRMeshRef torusRef    = hrMeshCreate(L"my_torus");
 
 		hrMeshOpen(cubeRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
 		{

@@ -216,15 +216,17 @@ int main(int argc, const char** argv)
     // new test list for hydra3
     if(true)
     {
-      test_078_material_remap_list1();
-      test_079_material_remap_list2();
-      MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
-      MTL_TESTS::test_102_mirror_orbspec_mat02();
-      MTL_TESTS::test_103_diffuse_texture();
-      MTL_TESTS::test_110_texture_sampler();
-      MTL_TESTS::test_123_emission();
-      MTL_TESTS::test_124_emission_texture();
+      //test_078_material_remap_list1();
+      //test_079_material_remap_list2();
+      //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+      //MTL_TESTS::test_102_mirror_orbspec_mat02();
+      //MTL_TESTS::test_103_diffuse_texture();
+      //MTL_TESTS::test_110_texture_sampler();
+      //MTL_TESTS::test_123_emission();
+      //MTL_TESTS::test_124_emission_texture();
       LGHT_TESTS::test_215_light_scale_intensity();
+      //LGHT_TESTS::test_223_rotated_area_light();
+      //LGHT_TESTS::test_224_rotated_area_light2();
     }
 
     //run_all_microfacet_torrance_sparrow();
