@@ -1555,14 +1555,13 @@ namespace LGHT_TESTS
       xml_node diff = matNode.append_child(L"diffuse");
 
       diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.207843 0.188235 0");
+      diff.append_child(L"color").append_attribute(L"val").set_value(L"0 0 0");
 
       xml_node refl = matNode.append_child(L"reflectivity");
 
-      refl.append_attribute(L"brdf_type").set_value(L"phong");
+      refl.append_attribute(L"brdf_type").set_value(L"ggx");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.367059 0.345882 0");
-      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.5");
-      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
+      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.85");
     }
     hrMaterialClose(mat1);
 
@@ -1660,10 +1659,9 @@ namespace LGHT_TESTS
 
       xml_node refl = matNode.append_child(L"reflectivity");
 
-      refl.append_attribute(L"brdf_type").set_value(L"phong");
+      refl.append_attribute(L"brdf_type").set_value(L"ggx");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.4 0.4 0.4");
       refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.85");
-      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
     }
     hrMaterialClose(mat9);
 
