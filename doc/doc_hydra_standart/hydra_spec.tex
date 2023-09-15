@@ -109,7 +109,7 @@
 	%\addcontentsline{def2}{figure}{#1} % Adds the question to the list of questions
 	\addcontentsline{def2}{figure}
 	{\protect\numberline{\thesection.\thereq}#1}\par
-	\todo[inline, color=green!25]{\textbf{alg\_\thesection.\thereq:} \textbf{#1} \hyperref[ruleslist]{(core)}} % Uses the todonotes package to create a fancy box to put the question
+	\todo[inline, color=green!25]{\textbf{REQ\_A.\thereq:} \textbf{#1} \hyperref[ruleslist]{(core)}} % Uses the todonotes package to create a fancy box to put the question
 	\vspace{1em} % White space after the question before the start of the answer
 }
 
@@ -323,7 +323,7 @@ BRDF_{lambert} = \frac{1}{\pi}
 		\begin{tabular}{cc}
 			\hline
 			\includegraphics[width=0.4\textwidth]{../../tests_images/test_101/w_ref.png} & 
-			\includegraphics[width=0.4\textwidth]{../../../comparisonrender/Report/Images/Lambert/Lambert_cornell_mitsuba.png} \\
+			\includegraphics[width=0.4\textwidth]{../../../comparisonrender/Tests/Lambert/0001/Images/Lambert_cornell_mitsuba.png} \\
 			\hline
 			\boldblue{TestHy:} 101\_diffuse\_lambert & \boldblue{TestMi:} Lambert \\
 			\hline
@@ -522,6 +522,11 @@ Note that all mixtures could be (and in general recommended to be) implemented v
 \newpage
 
 \section{Integrators}\label{algfeatures}
+
+\setcounter{req}{0}
+\reqirenmentalg{trace\_depth}
+
+A tracing depth equal to 1 corresponds to the direct illumination.
 
 \reqirenmentalg{paths\_basic}
 
