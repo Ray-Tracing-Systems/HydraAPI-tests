@@ -1170,10 +1170,10 @@ namespace LGHT_TESTS
 
       xml_node refl = matNode.append_child(L"reflectivity");
 
-      refl.append_attribute(L"brdf_type").set_value(L"phong");
+      refl.append_attribute(L"brdf_type").set_value(L"ggx");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.367059 0.345882 0");
       refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.5");
-      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 0;
     }
     hrMaterialClose(mat1);
 
@@ -1271,10 +1271,10 @@ namespace LGHT_TESTS
 
       xml_node refl = matNode.append_child(L"reflectivity");
 
-      refl.append_attribute(L"brdf_type").set_value(L"phong");
+      refl.append_attribute(L"brdf_type").set_value(L"ggx");
       refl.append_child(L"color").append_attribute(L"val").set_value(L"0.4 0.4 0.4");
       refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.75");
-      refl.append_child(L"energy_fix").append_attribute(L"val") = 1;
+      refl.append_child(L"energy_fix").append_attribute(L"val") = 0;
     }
     hrMaterialClose(mat9);
 
@@ -1500,8 +1500,9 @@ namespace LGHT_TESTS
   {
     std::wstring nameTest                 = L"test_224";
     std::filesystem::path libraryPath     = L"tests_f/"      + nameTest;
-    std::filesystem::path saveRenderFile  = L"tests_images/" + nameTest + L"/z_out.png";
-    std::filesystem::path saveRenderFile2 = L"tests_images/" + nameTest + L"/z_out2.png";
+    std::filesystem::path saveRenderFile0 = L"tests_images/" + nameTest + L"/z_out.png";
+    std::filesystem::path saveRenderFile  = L"tests_images/" + nameTest + L"/z_out2.png";
+    std::filesystem::path saveRenderFile2 = L"tests_images/" + nameTest + L"/z_out3.png";
 
     hrErrorCallerPlace(nameTest.c_str());
     hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
@@ -1797,25 +1798,6 @@ namespace LGHT_TESTS
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text()  = TEST_SCREEN_SIZE;
-      node.append_child(L"height").text() = TEST_SCREEN_SIZE;
-
-      node.append_child(L"method_primary").text()   = L"IBPT";
-      node.append_child(L"method_secondary").text() = L"IBPT";
-      node.append_child(L"method_tertiary").text()  = L"IBPT";
-      node.append_child(L"method_caustic").text()   = L"IBPT";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text()      = L"6";
-      node.append_child(L"diff_trace_depth").text() = L"3";
-      node.append_child(L"maxRaysPerPixel").text()  = 2048;
-    }
-    hrRenderClose(renderRef);
-
     // create scene
     //
     HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
@@ -1873,15 +1855,57 @@ namespace LGHT_TESTS
 
     hrSceneClose(scnRef);
 
+    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
+    {
+      pugi::xml_node node = hrRenderParamNode(renderRef);
+
+      node.append_child(L"width").text()  = TEST_SCREEN_SIZE;
+      node.append_child(L"height").text() = TEST_SCREEN_SIZE;
+
+      node.append_child(L"method_primary").text()   = L"pathtracing";
+      node.append_child(L"method_secondary").text() = L"pathtracing";
+      node.append_child(L"method_tertiary").text()  = L"pathtracing";
+      node.append_child(L"method_caustic").text()   = L"pathtracing";
+      node.append_child(L"shadows").text() = L"1";
+
+      node.append_child(L"trace_depth").text()      = L"6";
+      node.append_child(L"diff_trace_depth").text() = L"6";
+      node.append_child(L"maxRaysPerPixel").text()  = 2048;
+    }
+    hrRenderClose(renderRef);
+
     hrFlush(scnRef, renderRef);
 
-    ////////////////////
-    // Rendering and save
-    ////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
     RenderProgress(renderRef);
 
     std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile0.wstring().c_str());
+
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      pugi::xml_node node = hrRenderParamNode(renderRef);
+
+      node.child(L"width").text()  = TEST_SCREEN_SIZE;
+      node.child(L"height").text() = TEST_SCREEN_SIZE;
+
+      node.child(L"method_primary").text()   = L"IBPT";
+      node.child(L"method_secondary").text() = L"IBPT";
+      node.child(L"method_tertiary").text()  = L"IBPT";
+      node.child(L"method_caustic").text()   = L"IBPT";
+      node.child(L"shadows").text() = L"1";
+
+      node.child(L"trace_depth").text()      = L"6";
+      node.child(L"diff_trace_depth").text() = L"6";
+      node.child(L"maxRaysPerPixel").text()  = 2048;
+    }
+    hrRenderClose(renderRef);
+
+    hrFlush(scnRef, renderRef);
+
+    RenderProgress(renderRef);
+
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
   
@@ -1908,7 +1932,6 @@ namespace LGHT_TESTS
 
     RenderProgress(renderRef);
 
-    std::filesystem::create_directories(saveRenderFile.parent_path());
     hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile2.wstring().c_str());
 
     return check_images(ws2s(nameTest).c_str(), 2, 40);
