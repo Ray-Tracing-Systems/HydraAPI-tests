@@ -175,6 +175,7 @@ int main(int argc, const char** argv)
     /////////////////////
         
     //run_single_3dsmax_test(L"3dsMaxTests/327_Anisotropy_and_AreaLight_2") - crash?
+    //run_single_3dsmax_test(L"3dsMaxTests/335_Furnance_reflect_GGX");
     
     /////////////////////    
     // EXTENSIONS_TESTS
@@ -216,17 +217,19 @@ int main(int argc, const char** argv)
     // new test list for hydra3
     if(true)
     {
-      test_078_material_remap_list1();
-      test_079_material_remap_list2();
-      MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
-      MTL_TESTS::test_102_mirror_orbspec_mat02();
-      MTL_TESTS::test_103_diffuse_texture();
-      MTL_TESTS::test_110_texture_sampler();
-      MTL_TESTS::test_123_emission();
-      MTL_TESTS::test_124_emission_texture();
-      LGHT_TESTS::test_215_light_scale_intensity();
-      LGHT_TESTS::test_223_rotated_area_light();
-      LGHT_TESTS::test_224_rotated_area_light2();
+      //test_078_material_remap_list1();
+      //test_079_material_remap_list2();
+      //MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
+      //MTL_TESTS::test_102_mirror_orbspec_mat02();
+      //MTL_TESTS::test_103_diffuse_texture();
+      //MTL_TESTS::test_110_texture_sampler();
+      //MTL_TESTS::test_123_emission();
+      //MTL_TESTS::test_124_emission_texture();
+      //LGHT_TESTS::test_201_sphere();
+      //LGHT_TESTS::test_215_light_scale_intensity();
+      //LGHT_TESTS::test_223_rotated_area_light();
+      //LGHT_TESTS::test_224_rotated_area_light2();
+      LGHT_TESTS::test_246_disk();
     }
 
     //run_all_microfacet_torrance_sparrow();

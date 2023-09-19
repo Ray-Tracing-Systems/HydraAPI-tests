@@ -1727,6 +1727,157 @@ namespace LGHT_TESTS
     return check_images(ws2s(nameTest).c_str(), 1, 40);
   }
 
+  bool test_246_disk()
+  {
+    std::wstring nameTest                = L"test_246";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
+    
+    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    hrMaterialOpen(matGray, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matGray);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+      color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+    }
+    hrMaterialClose(matGray);
+
+    HRMeshRef sph1 = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64), matGray.id);
+    HRMeshRef sph2 = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64), matGray.id);
+    HRMeshRef cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f), matGray.id);
+    HRLightRef light1 = hrLightCreate(L"light1");
+
+    hrLightOpen(light1, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(light1);
+
+      lightNode.attribute(L"type").set_value(L"area");
+      lightNode.attribute(L"shape").set_value(L"disk");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      auto sizeNode      = lightNode.append_child(L"size").append_attribute(L"radius").set_value(L"0.75");
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.5 1.0 0.5");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(50.0f);
+
+			VERIFY_XML(lightNode);
+    }
+    hrLightClose(light1);
+
+    HRLightRef light2 = hrLightCreate(L"light2");
+
+    hrLightOpen(light2, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(light2);
+
+      lightNode.attribute(L"type").set_value(L"area");
+      lightNode.attribute(L"shape").set_value(L"disk");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      auto sizeNode = lightNode.append_child(L"size");
+      sizeNode.append_attribute(L"radius").set_value(L"0.75");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 0.5 1.0");
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(5.0f);
+
+			VERIFY_XML(lightNode);
+    }
+    hrLightClose(light2);
+
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(L"45");
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"100.0");
+
+      camNode.append_child(L"up").text().set(L"0 1 0");
+      camNode.append_child(L"position").text().set(L"0 3 18");
+      camNode.append_child(L"look_at").text().set(L"0 3 0");
+    }
+    hrCameraClose(camRef);
+
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
+    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
+
+    using namespace LiteMath;
+
+    float4x4 mRot;
+    float4x4 mTranslate;
+    float4x4 mScale;
+    float4x4 mRes;
+
+    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+
+    hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+    mTranslate.identity();
+    mRes.identity();
+    mRot.identity();
+
+    mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
+    mRes = mul(mTranslate, mRot);
+
+    hrMeshInstance(scnRef, cubeOpen, mRes.L());
+
+    mTranslate.identity();
+    mRes.identity();
+
+    mTranslate = translate4x4(float3(-3.0f, 1.25f, 0.0f));
+    mRes = mul(mTranslate, mRes);
+
+    hrMeshInstance(scnRef, sph1, mRes.L());
+
+    mTranslate.identity();
+    mRes.identity();
+
+    mTranslate = translate4x4(float3(3.0f, 1.25f, 0.0f));
+    mRes = mul(mTranslate, mRes);
+
+    hrMeshInstance(scnRef, sph2, mRes.L());
+
+    mTranslate.identity();
+    mRes.identity();
+
+    mTranslate = translate4x4(float3(5.0f, 8.5f, 0.0f));
+    mRes = mul(mTranslate, mRes);
+
+    hrLightInstance(scnRef, light1, mRes.L());
+
+    mTranslate.identity();
+    mRes.identity();
+
+    mTranslate = translate4x4(float3(-3.0f, -2.5f, 0.0f));
+    mRot = rotate4x4Z(180.0f*DEG_TO_RAD);
+    mRes = mul(mTranslate, mRot);
+
+    hrLightInstance(scnRef, light2, mRes.L());
+
+    hrSceneClose(scnRef);
+    hrFlush(scnRef, renderRef);
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 40);
+  }
+
 
   bool test_208_ies3()
   {

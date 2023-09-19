@@ -488,6 +488,8 @@ namespace LGHT_TESTS
   bool test_243_mesh_light_do_not_sample_me();
   bool test_244_do_not_sample_me();
   bool test_245_cylinder_tex_nearest();
+
+  bool test_246_disk();
 }
 
 

@@ -19,6 +19,7 @@
     <reflectivity brdf_type="ggx">
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
+      <energy_fix val="0"/>
       <glossiness val="1">
         <texture id="1" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </glossiness>
@@ -37,6 +38,7 @@
     <reflectivity brdf_type="ggx">
       <extrusion val="maxcolor" />
       <color val="1 1 1" />
+      <energy_fix val="0"/>
       <glossiness val="1">
         <texture id="2" type="texref" matrix="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1" addressing_mode_u="wrap" addressing_mode_v="wrap" input_gamma="1" input_alpha="rgb" />
       </glossiness>
