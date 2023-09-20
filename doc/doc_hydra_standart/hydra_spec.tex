@@ -144,15 +144,35 @@
 \maketitle
 
 \begin{abstract}
-The standard feature number definition consists of 3 parts. They are material, lights and geometry. Thus to determine a finite set of features renderer support you have to specify 3 numbers in subsequent order. For example: <<G0.1/M0.3/L0.4>> means <<0.1>> version for geometry, <<0.3>> version for materials and <<0.4>> for lights. Each number in specification definition means all <<core>> requirenments with less number are fulfilled. For example, materials ver 2.2 means 0.* and 1.* requirenemnts, 2.1 and 2.2 are implemented/fulfilled but 2.3 may be not implemented/fulfilled.
+The standard feature number definition consists of 3 parts. They are material, lights and geometry. 
 
 \end{abstract}
 
-\section{List of requirenments}\label{ruleslist}
+\section{How to read and use spec}\label{ruleslist}
+
+The specification consists of a list of requirements (see below) which is separated on several groups: (G for geometry, M for materials, L for lights and A for algorithms).
+
+The core requirements assumed to be implemented/fulfilled by renderer developer in order for each group. Thus to determine a finite set of features renderer support you have to specify 3 numbers in subsequent order. For example: <<G1/M3/L4>> means <<1>> version for geometry, <<3>> version for materials and <<4>> for lights. If such requirement can't be fulfilled, developer may include or exclude specific requirements as i further examples: <<G1/M3/L7-(2,3)>> which means req. 1,4,5,6,7 are fulfilled and 2,3 are not fulfilled for lights; <<G1/M3/L7+(11-13, 15-18)>> which means 1-7,11,12,13,15,16,17,18 are fulfilled for lights.
+
+The specification levels are applied either to renderer and scene files. Therefore please read further note.
+
+\boldblue{(!)Note:} Requirements are written for render, but they should be applied to 3D content exporter/converter in a kind of an opposite bidirectional way:
+
+\begin{enumerate}
+
+\item If rendered \textbf{should/must} support some feature, exporter may assume that renderer properly implement this feature and thus may use it during export. 
+
+\item If rendered \textbf{may assume} some constraint (for example, only uniform scale for instances of spherical lights), exporter \textbf{should/must} be sure that such constraint is fulfilled in scene or report error. 
+
+\item If rendered \textbf{should/must} support some feature only on some concrete level of specification (for example triangle meshes ``G2''), exporter must \textbf{prepare data} for this level of specification in the way which is described by this specification level and report error if this is not possible. For example, if scene made with instances, which is not supported by level ``G2'', exporter must duplicate all instanced geometry and merge it to single mesh. 
+
+\end{enumerate}
+
+Therefore, complex data processing like format loading/conversation, normal and tangent space calculation, explicit making meshes from analytical shapes and e.t.c ... usually is not the renderer's responsibility. The exporter must do dirty job in the case if render can't support some feature directly but if it can nevertheless be transformed to supported set of features.
 
 \listofreq
 
-\section{Geometry v1.0}\label{geomfeatures}
+\section{Geometry}\label{geomfeatures}
 
 \setcounter{section}{1}
 \setcounter{req}{0}
