@@ -282,7 +282,7 @@ It should be noted that the adopted agreement of the backward propagation of lig
 
 \boldblue{(!) Implementation REQ. :} All BRDF and BTDF should be implemented without $cos(\theta_{out})$ term. For mirrors cosine shouldn't be applied, thus you should pre-divide $cos(\theta_{out})$ instead (so that the cosines cancel each other). Also note that we do not include color in BRDF/BTDF equations. The color should be multiplied with the BRDF value.
 
-\boldblue{(!) Implementation REQ. :} Note that final color of the image should be first clamped and then transformed from HDR to LDR space with gamma correction according to \cite{srgb}.
+\boldblue{(!) Implementation REQ. :} Note that final color of the image should be first \textbf{clamped} (i.e. (2,1.5,1) is clamped to (1,1,1) which in fact leads to color loss) and then transformed from HDR to LDR space with gamma correction according to \cite{srgb}. \label{clampreq}
 
 \[C_{LDR} = \begin{cases} 12.92 \cdot C_{HDR}, & \text{if } C_{HDR} \leq 0.0031308 \\ 1.055 \cdot {C_{HDR}}^{1/2.4} - 0.055, & \text{if } C_{HDR} > 0.0031308 \end{cases}\]
 
@@ -338,7 +338,7 @@ BRDF_{lambert} = \frac{1}{\pi}
 
 Basic support for emissive material. On this level of specification emissive materials don't combined with others. Renderer may suppose mutually exclusive: (emissive or 'some other'). Please note that emissive materials have not be considered as lights (i.e. they don't have to be sampled with any explicit sampling strategy, however, of cource, they could), but they must cast GI.
 
-\boldblue{Test:} 123\_emission.
+\boldblue{Test:} 123\_emission \label{test123}
 
 \begin{figure}[h]
 	\begin{minipage}[h]{0.26\linewidth}
@@ -517,7 +517,63 @@ Note that all mixtures could be (and in general recommended to be) implemented v
 
 \reqirenmentlight{area\_light}
 
+This level introduce basic support for area lights;
 
+\begin{enumerate}
+	\item Area light should support two geometric form -- ``rect'' (rectangle) and ``disk''. 
+\begin{enumerate}
+	\item If rectangular form is set, separate \textbf{half-width} (half size along 'X') axis and \textbf{half-length} (half size along 'Z') should be supported. \textbf{half-width} corresponds to the radius of disk inscribed in a square (when \textbf{half-width} is equal to \textbf{half-length}).
+	\item If rectangular form is set, disk \textbf{radius} should be set
+\end{enumerate}
+\item The default light distribution is Lambert;
+\item By default the light source is located at (0,0,0) and shine with direction (0,-1,0).
+\item Renderer may support only translation for light instance matrix when light is instanced. 
+\item The intensity/brightness is a screen brightness (same implementation requirement as in \ref{test123}). 
+\end{enumerate}
+
+\boldblue{TestHy:} 101\_diffuse\_lambert
+
+\reqirenmentlight{sphere\_light}
+
+This level introduce basic support for spherical lights. 
+
+\begin{enumerate}
+\item Renderer should support explicit change of light radius.
+\item Renderer may support only translation for light instance matrix when light is instanced.
+
+\item The intensity/brightness is a screen brightness (same implementation requirement as in \ref{test123}).  
+\end{enumerate}
+
+\boldblue{Test:} test\_201\_sphere.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.25\linewidth]{../../tests_images/test_201/w_ref.png}           
+	\caption{\label{fig:test_201_image}
+		Spherical light source. Please note that bright areas (lights surface itself for example is clamped when transformed to LDR color space according to \ref{clampreq}. )  }   
+\end{figure}
+
+\reqirenmentlight{light\_instance\_matrices}
+
+This level of spec add support for arbitrary matrices applied to lights. By default the light source is located at (0,0,0) and shine with direction (0,-1,0). Transform matrix may rotate, scale and translate light source. However, some assumptions can be made by renderer.
+
+\begin{enumerate}
+\item Renderer may assume that only uniform scale is applied to spherical lights.
+\item When scale is applied to light source, its size, area and total flux changes (i.e. the whole scene becomes brighter or darker); Screen brightness does not changes.
+\end{enumerate}
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{cc}
+		\hline
+		\includegraphics[width=0.4\textwidth]{../../tests_images/test_215/w_ref.png} & 
+		\includegraphics[width=0.4\textwidth]{../../tests_images/test_224/w_ref.png} \\
+		\hline
+		\boldblue{TestHy:} test\_215 (4 inst. of light) & \boldblue{TestHy:} test\_224 (2 inst. of light) \\
+		\hline
+	\end{tabular}
+	\caption{Example of different matrices applied to lights. }
+	\label{fig:lgt_matrices}
+\end{table}
 
 \newpage
 

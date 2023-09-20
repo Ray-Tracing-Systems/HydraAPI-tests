@@ -490,6 +490,7 @@ namespace LGHT_TESTS
   bool test_245_cylinder_tex_nearest();
 
   bool test_246_disk();
+  bool test_247_light_scale_intensity();
 }
 
 
