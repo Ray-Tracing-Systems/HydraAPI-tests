@@ -445,6 +445,82 @@ Adding LDR textures to emission color. When reading from LDR texture, gamma tran
 
 \FloatBarrier
 
+\reqirenment{mat\_diffuse\_Oren-Nayar}
+
+Basic support for Oren-Nayar reflections. The BRDF function \textbf{must} be implemented according to equation \ref{brdf_orennayar}. See fig \ref{fig:test_100_image}. % and listing \ref{lambertxml} for image and XML example respectively.
+
+\boldblue{Implementation:}
+\begin{equation}\label{brdf_orennayar} BRDF_{oren-nayar} = \frac{\rho}{\pi} (A + B max(0,cos(\theta_i - \theta_r))sin(\alpha)tan(\beta)) \end{equation}
+
+where $\rho$ is the Lambert diffusion of the surface, $A = 1 - 0.5\frac{\sigma^2}{\sigma^2 +0.33}$, $B = 0.45\frac{\sigma^2}{\sigma^2+0.09}$, $\alpha=max(\theta_i, \theta_r)$, $\beta = min(\theta_i, \theta_r)$, $\theta_i$ and $\theta_r$ are the angles between the normal and the directions to the light source and camera, respectively, and $\sigma$ is the surface roughness parameter.
+
+
+\boldblue{Test:} test\_100\_diffuse\_orennayar.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.75\linewidth]{../../tests_images/test_100/w_ref.png}           
+	\caption{\label{fig:test_100_image}
+		Diffuse Oren-Nayar BRDF.  }   
+\end{figure}
+
+\FloatBarrier
+
+\reqirenment{mat\_smooth\_glass}
+
+Basic support for smooth glass. See fig \ref{fig:test_113_image}. % and listing \ref{lambertxml} for image and XML example respectively.
+
+\boldblue{Implementation:}
+The ray is stochastically selected based on the Fresnel formula, determining the direction in reflection or refraction (eq. \ref{dielectric}).
+
+\begin{equation}\label{dielectric}
+	\text{dielectric} = \begin{cases}
+		reflect, & \text{if } x\in[0,1] < fresnel \\
+		refract, & \text{otherwise}
+		
+	\end{cases}
+\end{equation}
+
+where $x$ is the random number.
+ 
+The Fresnel function calculates the light reflection coefficient in the direction of the incoming ray, the normal to the surface and the refractive index (eq. \ref{fresnel}).
+
+\begin{equation}\label{fresnel}
+\text{fresnel}(\vec{v}, \vec{n}, \text{ior}) = \begin{cases}
+	1, & \text{if } \sin_t > 1 \\
+	\frac{1}{2}\left(\left(\frac{\text{ior}\cos_i - \cos_t}{\text{ior}\cos_i + \cos_t}\right)^2 + \left(\frac{\cos_i - \text{ior}\cos_t}{\cos_i + \text{ior}\cos_t}\right)^2\right), & \text{otherwise}
+\end{cases}
+\end{equation}
+	
+where $\vec{v}$ is the vector from the light source, $\vec{n}$ is the normal to the surface, $ior$ is the absolute refractive index, $\cos_i$ is the dot product of vectors $\vec{v}$ and the $\vec{n}$, $\sin_t=\frac{\sqrt{1-\cos_i^2}}{\text{ior}}$ and $\cos_t=\sqrt{1-\sin_t^2}$.
+
+The reflect function calculates the direction of the reflected ray in the direction of the incoming ray and the normal to the surface (eq. \ref{reflect}).
+
+\begin{equation}\label{reflect}
+	\text{reflect}(\vec{dir}, \vec{n}) = \vec{dir} - 2 (\vec{dir}\cdot\vec{n})\vec{n}
+\end{equation}
+
+where $\vec{dir}$ is the vector from the light source, $\vec{n}$ is the normal to the surface. 
+
+The refraction function calculates the direction of the refracted ray in the direction of the incoming ray, the normal to the surface and the relative index of refraction  (eq. \ref{refract}).
+
+\begin{equation}\label{refract}
+	\text{refract}(\vec{dir}, \vec{n}, {\eta}) = \begin{cases}
+		\text{reflect}(\vec{dir}, \vec{n}), & \text{if } k < 0 \\
+		{\eta'}\vec{dir} - ({\eta'}\cos(\theta_i) + \sqrt{k})\vec{n}, & \text{otherwise}
+	\end{cases}
+\end{equation}
+
+where $\vec{dir}$ is the vector from the light source, $\vec{n}$ is the normal, $\eta$ is the relative refractive index, $\eta'$ is the inverted $\eta$, since the incoming vector and the normal are directed in the same direction. $\theta_i$ is the angle between the vector $\vec{dir}$ and the normal $\vec{n}$, and $k = 1 - {\eta'^2}(1 - \cos^2(\theta_i))$.
+
+\boldblue{Test:} test\_113\_transparency\_ior.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\linewidth]{../../tests_images/test_113/w_ref.png}           
+	\caption{\label{fig:test_113_image}Smooth glass with different IOR.}   
+\end{figure}
+
+\FloatBarrier
+
 \begin{comment}
 
 \reqirenment{ggx}
