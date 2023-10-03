@@ -512,6 +512,8 @@ The refraction function calculates the direction of the refracted ray in the dir
 
 where $\vec{dir}$ is the vector from the light source, $\vec{n}$ is the normal, $\eta$ is the relative refractive index, $\eta'$ is the inverted $\eta$, since the incoming vector and the normal are directed in the same direction. $\theta_i$ is the angle between the vector $\vec{dir}$ and the normal $\vec{n}$, and $k = 1 - {\eta'^2}(1 - \cos^2(\theta_i))$.
 
+\boldblue{(!) Implementation Note:} In this implementation, in all formulas, the normal looks at the incoming ray. 
+
 \boldblue{Test:} test\_113\_transparency\_ior.
 \begin{figure}[htb]
 	\centering
