@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel = "stylesheet" href = "reportStyle.css">
+</head>
+
+<h3>API tests.   Wed Oct  4 14:00:28 2023
+   OS: Windows Videocard: NVIDIA_RTX3060Ti</h3>
+<table>
+  <tr>
+    <th>TEST NAME</th>
+    <th>RESULT</th>
+    <th>MSE</th>
+    <th>RENDER TIME</th>
+    <th>REFERENCE</th>
+    <th>RENDER</th>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_001_materials_add</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.36 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_002_materials_changes_open_mode</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.27 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_003_lights_add</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.09 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_004_lights_add_change</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.67 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_005_instances_write_discard</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.17 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_006_instances_open_existent</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.24 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_007_camera_add</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.09 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_008_camera_add_change</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.12 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_009_render_ogl</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.16 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_010_render_ogl_cube</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>1.25 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_011_render_ogl_some_figures</td>
+    <td>&#10004;<br></td>
+    <td>0.19<br></td>
+    <td>0.73 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_012_render_ogl_100_random_figures</td>
+    <td>&#10004;<br></td>
+    <td>2.08<br></td>
+    <td>0.26 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_013_render_ogl_some_figures_diff_mats_prom_ptr</td>
+    <td>&#10004;<br></td>
+    <td>0.43<br></td>
+    <td>0.36 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_014_bad_material_indices</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.10 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_015_main_scene_and_mat_editor</td>
+    <td>&#10004;<br></td>
+    <td>0.46<br></td>
+    <td>0.77 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_016_texture_add_change</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.03 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_017_falloff</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.02 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_018_camera_move</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>0.43<br>0.07<br>0.09<br>0.05<br></td>
+    <td>0.79 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_019_material_change</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>0.43<br>0.43<br>0.42<br></td>
+    <td>0.82 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_020_mesh_change</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>0.43<br>0.28<br>0.82<br></td>
+    <td>0.81 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_021_add_same_textures_from_file</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.00 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_022_can_not_load_texture</td>
+    <td>&#10004;<br></td>
+    <td>0.19<br></td>
+    <td>0.36 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_023_texture_from_memory</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>0.30 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_024_many_textures_big_data</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>42.6 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_025_many_textures_big_data</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>14.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_026_many_textures_big_data</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>14.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_027_many_textures_big_data_from_mem</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>15.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_028_compute_normals</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.19 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_029_many_textures_and_meshes</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>124. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_030_many_textures_and_meshes</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>62.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_031_procedural_texture_LDR</td>
+    <td>&#10004;<br></td>
+    <td>1.59<br></td>
+    <td>25.0 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_032_procedural_texture_HDR</td>
+    <td>&#10004;<br></td>
+    <td>1.20<br></td>
+    <td>0.74 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_033_update_from_file</td>
+    <td>&#10004;<br></td>
+    <td>0.65<br></td>
+    <td>0.93 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_034_delayed_textures_does_not_exists</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>6.37 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_035_cornell_with_light</td>
+    <td>&#10004;<br></td>
+    <td>2.65<br></td>
+    <td>31.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_036_update_from_memory</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>0.00<br>0.00<br>0.10<br></td>
+    <td>0.26 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_037_cornell_with_light_different_image_layers</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br>&#10004;<br>&#10004;<br>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>3.05<br>0.00<br>0.00<br>0.00<br>0.00<br>0.00<br>0.00<br>2.90<br></td>
+    <td>37.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_038_save_mesh_and_delayed_load</td>
+    <td>&#10004;<br></td>
+    <td>0.20<br></td>
+    <td>0.20 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_039_mmlt_or_ibpt</td>
+    <td>&#10004;<br></td>
+    <td>0.97<br></td>
+    <td>137. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_040_several_changes</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>7.19<br>7.20<br>13.2<br></td>
+    <td>56.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_041_load_library_basic</td>
+    <td>&#10004;<br></td>
+    <td>0.09<br></td>
+    <td>0.36 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_042_load_mesh_compressed</td>
+    <td>&#10004;<br></td>
+    <td>18.7<br></td>
+    <td>114. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_043_test_direct_light</td>
+    <td>&#10004;<br></td>
+    <td>3.76<br></td>
+    <td>9.33 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_044_four_lights_and_compressed_mesh</td>
+    <td>&#10004;<br></td>
+    <td>4.35<br></td>
+    <td>52.7 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_045_mesh_from_vsgf_opengl_bug_teapot</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>0.32 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_046_light_geom_rect</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>0.32 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_047_light_geom_disk</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>0.31 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_048_light_geom_sphere</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>0.34 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_049_light_geom_disk</td>
+    <td>&#10004;<br></td>
+    <td>5.69<br></td>
+    <td>31.3 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_050_open_library_several_times</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.09 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_055_clear_scene</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>2.40<br>2.41<br></td>
+    <td>0.39 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_056_mesh_change_open_existing</td>
+    <td>&#10004;<br>&#10004;<br>&#10060;<br></td>
+    <td>0.51<br>4.47<br>1033<br></td>
+    <td>0.35 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_056\w_ref3.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_056\z_out3.png>
+        <img src = Images/test_056\w_ref3.png>
+    </td>
+    </table>
+</td>
+  </tr>
+  <tr>
+    <td>test_057_single_instance</td>
+    <td>&#10004;<br></td>
+    <td>14.3<br></td>
+    <td>5.63 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_059_cornell_water_mlt</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_060_debug_print_and_cant_load_mesh</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.22 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_061_cornell_with_light_near_wall_and_glossy_wall</td>
+    <td>&#10004;<br></td>
+    <td>2.69<br></td>
+    <td>58.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_064_several_changes_light_area</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>43.9<br>43.9<br></td>
+    <td>38.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_065_several_changes_light_rect</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>7.23<br>7.30<br>6.60<br></td>
+    <td>83.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_066_fast_render_no_final_update</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>1.68 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_067_fast_empty_scene</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>0.61 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_068_scene_library_file_info</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>0.00 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_069_obj_delayed_load</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>4.63 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_070_area_lights16</td>
+    <td>&#10004;<br></td>
+    <td>5.08<br></td>
+    <td>46.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_071_out_of_memory</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>11.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_074_frame_buffer_line</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>0.63<br>0.63<br></td>
+    <td>31.0 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_075_repeated_render</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>7.22<br>7.20<br></td>
+    <td>26.3 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_076_empty_mesh</td>
+    <td>&#10004;<br></td>
+    <td>0.00<br></td>
+    <td>10.6 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_077_save_gbuffer_layers</td>
+    <td>&#10004;<br></td>
+    <td>-<br></td>
+    <td>4.81 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_078_material_remap_list1</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>1.27<br>1.15<br></td>
+    <td>14.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_079_material_remap_list2</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>2.69<br>2.87<br></td>
+    <td>17.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_080_lt_rect_image</td>
+    <td>&#10004;<br></td>
+    <td>10.3<br></td>
+    <td>261. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_081_custom_attributes</td>
+    <td>&#10004;<br></td>
+    <td>0.30<br></td>
+    <td>0.34 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_082_proc_texture</td>
+    <td>&#10004;<br></td>
+    <td>4.21<br></td>
+    <td>51.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_083_proc_texture2</td>
+    <td>&#10004;<br></td>
+    <td>3.19<br></td>
+    <td>42.0 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_084_proc_texture2</td>
+    <td>&#10004;<br></td>
+    <td>1.51<br></td>
+    <td>47.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_085_proc_texture_ao</td>
+    <td>&#10004;<br></td>
+    <td>3.23<br></td>
+    <td>66.7 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_086_proc_texture_ao_dirt</td>
+    <td>&#10004;<br></td>
+    <td>3.40<br></td>
+    <td>66.6 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_087_proc_texture_reflect</td>
+    <td>&#10060;<br></td>
+    <td>10.3<br></td>
+    <td>43.1 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_087\w_ref.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_087\z_out.png>
+        <img src = Images/test_087\w_ref.png>
+    </td>
+    </table>
+</td>
+  </tr>
+  <tr>
+    <td>test_088_proc_texture_convex_rust</td>
+    <td>&#10004;<br></td>
+    <td>1.31<br></td>
+    <td>65.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_089_proc_texture_dirty</td>
+    <td>&#10004;<br></td>
+    <td>7.60<br></td>
+    <td>42.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_090_proc_tex_normalmap</td>
+    <td>&#10004;<br></td>
+    <td>4.31<br></td>
+    <td>43.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_091_proc_tex_bump</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>4.27<br>0.00<br></td>
+    <td>55.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_092_proc_tex_bump2</td>
+    <td>&#10004;<br></td>
+    <td>4.17<br></td>
+    <td>60.7 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_095_bump</td>
+    <td>&#10004;<br></td>
+    <td>19.1<br></td>
+    <td>94.8 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_096_hexaplanar</td>
+    <td>&#10004;<br></td>
+    <td>25.4<br></td>
+    <td>39.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_097_camera_from_matrices</td>
+    <td>&#10004;<br>&#10004;<br></td>
+    <td>0.08<br>1.78<br></td>
+    <td>7.32 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_099_triplanar</td>
+    <td>&#10060;<br></td>
+    <td>587.<br></td>
+    <td>44.0 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_099\w_ref.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_099\z_out.png>
+        <img src = Images/test_099\w_ref.png>
+    </td>
+    </table>
+</td>
+  </tr>
+</table>
+<h3>
+Tests complete.     
+All render time:    35 min. 43 sec.
+Failed tests:       4 of 100 tests.
+Failed tests:       4 %</h3>
+</html>

@@ -1705,6 +1705,7 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
   std::wstring currSubFolderName          = g_systemInfo.GetFolderNameFromInfo();
   std::filesystem::path currSubFolderPath = L"Reports/" + currSubFolderName;
   std::filesystem::create_directory(currSubFolderPath);
+  std::filesystem::create_directory(currSubFolderPath / L"Images");
 
   std::filesystem::path reportFile        = currSubFolderPath / (a_fileName + L".html");
   std::wofstream fileOut(reportFile);
@@ -1714,7 +1715,7 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
     << L"   OS: " << g_systemInfo.GetOsName() << L" Videocard: " << g_systemInfo.GetVideocardName();
 
   std::vector<std::wstring> headings = { 
-    L"TEST NAME", L"RESULT", L"MSE", L"RENDER TIME", L"LINK REF IMAGES", L"LINK RENDER IMAGES" };
+    L"TEST NAME", L"RESULT", L"MSE", L"RENDER TIME", L"REFERENCE", L"RENDER" };
 
   std::wcout << outBuffConsole.str() << std::endl;  
 
@@ -1728,7 +1729,8 @@ void RenderTestAndPrintResult(const int a_startTestsId, std::vector<TestFunc>& a
     g_MSEOutput.clear();
 
     const auto start                     = time::now();
-    const bool overallResult             = a_tests[i].func(); // Render test   
+    std::wcout << L"Render test " << a_tests[i].name << std::endl;
+    const bool overallResult             = a_tests[i].func(); // Render test 
     const auto end                       = time::now();
             
     const timeFloat rendTime             = end - start;

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel = "stylesheet" href = "reportStyle.css">
+</head>
+
+<h3>Geo tests.   Wed Oct  4 15:57:48 2023
+   OS: Windows Videocard: NVIDIA_RTX3060Ti</h3>
+<table>
+  <tr>
+    <th>TEST NAME</th>
+    <th>RESULT</th>
+    <th>MSE</th>
+    <th>RENDER TIME</th>
+    <th>REFERENCE</th>
+    <th>RENDER</th>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_301_mesh_from_memory</td>
+    <td>&#10004;<br></td>
+    <td>4.49<br></td>
+    <td>1.65 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_302_mesh_from_vsgf</td>
+    <td>&#10004;<br></td>
+    <td>4.90<br></td>
+    <td>3.68 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_303_compute_normals</td>
+    <td>&#10004;<br></td>
+    <td>8.89<br></td>
+    <td>3.92 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_304_dof</td>
+    <td>&#10004;<br></td>
+    <td>10.9<br></td>
+    <td>4.82 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_305_instancing</td>
+    <td>&#10004;<br></td>
+    <td>25.4<br></td>
+    <td>15.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_306_points_on_mesh</td>
+    <td>&#10004;<br></td>
+    <td>9.14<br></td>
+    <td>6.89 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_307_import_obj</td>
+    <td>&#10004;<br></td>
+    <td>8.36<br></td>
+    <td>3.96 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_308_import_obj_w_mtl</td>
+    <td>&#10060;<br></td>
+    <td>1176<br></td>
+    <td>3.10 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_308\w_ref.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_308\z_out.png>
+        <img src = Images/test_308\w_ref.png>
+    </td>
+    </table>
+</td>
+  </tr>
+  <tr>
+    <td>test_309_import_obj_fullscale</td>
+    <td>&#10060;<br></td>
+    <td>7528<br></td>
+    <td>3.04 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_309\w_ref.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_309\z_out.png>
+        <img src = Images/test_309\w_ref.png>
+    </td>
+    </table>
+</td>
+  </tr>
+</table>
+<h3>
+Tests complete.     
+All render time:    0 min. 41 sec.
+Failed tests:       2 of 10 tests.
+Failed tests:       20 %</h3>
+</html>

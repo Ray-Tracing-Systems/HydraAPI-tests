@@ -1500,9 +1500,7 @@ namespace LGHT_TESTS
   {
     std::wstring nameTest                 = L"test_224";
     std::filesystem::path libraryPath     = L"tests_f/"      + nameTest;
-    std::filesystem::path saveRenderFile0 = L"tests_images/" + nameTest + L"/z_out.png";
-    std::filesystem::path saveRenderFile  = L"tests_images/" + nameTest + L"/z_out2.png";
-    std::filesystem::path saveRenderFile2 = L"tests_images/" + nameTest + L"/z_out3.png";
+    std::filesystem::path saveRenderFile  = L"tests_images/" + nameTest + L"/z_out.png";
 
     hrErrorCallerPlace(nameTest.c_str());
     hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
@@ -1511,172 +1509,46 @@ namespace LGHT_TESTS
     // Materials
     ////////////////////
 
-    SimpleMesh cube = CreateCube(0.75f);
-    SimpleMesh plane = CreatePlane(10.0f);
-    SimpleMesh sphere = CreateSphere(1.0f, 32);
-    SimpleMesh torus = CreateTorus(0.25f, 0.6f, 32, 32);
-    SimpleMesh cubeOpen = CreateCubeOpen(4.0f);
+    auto mat_red    = hrMaterialCreate(L"red");
+    auto mat_green  = hrMaterialCreate(L"green");
+    auto mat_white  = hrMaterialCreate(L"white");    
+    auto mat_glossy = hrMaterialCreate(L"glossy_wall_mat");
 
-    for (size_t i = 0; i < plane.vTexCoord.size(); i++)
-      plane.vTexCoord[i] *= 2.0f;
-
-
-    HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_red.bmp");
-
-    HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
-    HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat2");
-    HRMaterialRef mat2 = hrMaterialCreate(L"mysimplemat3");
-    HRMaterialRef mat3 = hrMaterialCreate(L"mysimplemat4");
-    HRMaterialRef mat4 = hrMaterialCreate(L"myblue");
-    HRMaterialRef mat5 = hrMaterialCreate(L"mymatplane");
-
-    HRMaterialRef mat6 = hrMaterialCreate(L"red");
-    HRMaterialRef mat7 = hrMaterialCreate(L"green");
-    HRMaterialRef mat8 = hrMaterialCreate(L"white");
-
-    HRMaterialRef mat9 = hrMaterialCreate(L"glossy_wall_mat");
-
-    hrMaterialOpen(mat0, HR_WRITE_DISCARD);
+    hrMaterialOpen(mat_red, HR_WRITE_DISCARD);
     {
-      xml_node matNode = hrMaterialParamNode(mat0);
-
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.5 0.75 0.5");
-
-      HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp"); // hrTexture2DCreateFromFileDL
-      hrTextureBind(testTex, diff);
+      auto matNode = hrMaterialParamNode(mat_red);
+      AddDiffuseNode(matNode, L"0.5 0 0");
     }
-    hrMaterialClose(mat0);
+    hrMaterialClose(mat_red);
 
-    hrMaterialOpen(mat1, HR_WRITE_DISCARD);
+    hrMaterialOpen(mat_green, HR_WRITE_DISCARD);
     {
-      xml_node matNode = hrMaterialParamNode(mat1);
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0 0 0");
-
-      xml_node refl = matNode.append_child(L"reflectivity");
-
-      refl.append_attribute(L"brdf_type").set_value(L"ggx");
-      refl.append_child(L"color").append_attribute(L"val").set_value(L"0.367059 0.345882 0");
-      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.85");
+      auto matNode = hrMaterialParamNode(mat_green);
+      AddDiffuseNode(matNode, L"0 0.5 0");
     }
-    hrMaterialClose(mat1);
+    hrMaterialClose(mat_green);
 
-    hrMaterialOpen(mat2, HR_WRITE_DISCARD);
+    hrMaterialOpen(mat_white, HR_WRITE_DISCARD);
     {
-      xml_node matNode = hrMaterialParamNode(mat2);
-
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
-
-      HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/relief_wood.jpg");
-      hrTextureBind(testTex, diff);
+      auto matNode = hrMaterialParamNode(mat_white);
+      AddDiffuseNode(matNode, L"0.7 0.7 0.7");
     }
-    hrMaterialClose(mat2);
+    hrMaterialClose(mat_white);
 
-    hrMaterialOpen(mat3, HR_WRITE_DISCARD);
+    hrMaterialOpen(mat_glossy, HR_WRITE_DISCARD);
     {
-      xml_node matNode = hrMaterialParamNode(mat3);
-
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
-
-      HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/163.jpg");
-      hrTextureBind(testTex, diff);
+      xml_node matNode = hrMaterialParamNode(mat_glossy);
+      AddReflectionNode(matNode, L"ggx", L"0.4 0.4 0.4", 0.85, false);
     }
-    hrMaterialClose(mat3);
+    hrMaterialClose(mat_glossy);
 
-    hrMaterialOpen(mat4, HR_WRITE_DISCARD);
-    {
-      xml_node matNode = hrMaterialParamNode(mat4);
-
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").text().set(L"0.1 0.1 0.75");
-    }
-    hrMaterialClose(mat4);
-
-    hrMaterialOpen(mat5, HR_WRITE_DISCARD);
-    {
-      xml_node matNode = hrMaterialParamNode(mat5);
-
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").text().set(L"0.75 0.75 0.25");
-
-      HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
-      hrTextureBind(testTex, diff);
-    }
-    hrMaterialClose(mat5);
-
-
-    hrMaterialOpen(mat6, HR_WRITE_DISCARD);
-    {
-      xml_node matNode = hrMaterialParamNode(mat6);
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").text().set(L"0.5 0.0 0.0");
-    }
-    hrMaterialClose(mat6);
-
-    hrMaterialOpen(mat7, HR_WRITE_DISCARD);
-    {
-      xml_node matNode = hrMaterialParamNode(mat7);
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").text().set(L"0.0 0.5 0.0");
-    }
-    hrMaterialClose(mat7);
-
-    hrMaterialOpen(mat8, HR_WRITE_DISCARD);
-    {
-      xml_node matNode = hrMaterialParamNode(mat8);
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").text().set(L"0.5 0.5 0.5");
-    }
-    hrMaterialClose(mat8);
-
-    hrMaterialOpen(mat9, HR_WRITE_DISCARD);
-    {
-      xml_node matNode = hrMaterialParamNode(mat9);
-      xml_node diff = matNode.append_child(L"diffuse");
-
-      diff.append_attribute(L"brdf_type").set_value(L"lambert");
-      diff.append_child(L"color").append_attribute(L"val").set_value(L"0.0 0.0 0");
-
-      xml_node refl = matNode.append_child(L"reflectivity");
-
-      refl.append_attribute(L"brdf_type").set_value(L"ggx");
-      refl.append_child(L"color").append_attribute(L"val").set_value(L"0.4 0.4 0.4");
-      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.85");
-    }
-    hrMaterialClose(mat9);
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    HRMeshRef teapotRef = hrMeshCreateFromFile(L"data/meshes/teapot.vsgf"); // chunk_00009.vsgf // teapot.vsgf // chunk_00591.vsgf
-
-    HRMeshRef cubeOpenRef = hrMeshCreate(L"my_box");
-    HRMeshRef planeRef = hrMeshCreate(L"my_plane");
-    HRMeshRef sphereRef = hrMeshCreate(L"my_sphere");
-    HRMeshRef torusRef = hrMeshCreate(L"my_torus");
+    ////////////////////
+    // Meshes
+    ////////////////////
+    
+    auto cubeOpen    = CreateCubeOpen(4.0f);
+    auto teapotRef   = hrMeshCreateFromFile(L"data/meshes/teapot.vsgf"); // chunk_00009.vsgf // teapot.vsgf // chunk_00591.vsgf
+    auto cubeOpenRef = hrMeshCreate(L"my_box");
 
     hrMeshOpen(cubeOpenRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
     {
@@ -1684,7 +1556,7 @@ namespace LGHT_TESTS
       hrMeshVertexAttribPointer4f(cubeOpenRef, L"norm", &cubeOpen.vNorm[0]);
       hrMeshVertexAttribPointer2f(cubeOpenRef, L"texcoord", &cubeOpen.vTexCoord[0]);
 
-      int cubeMatIndices[10] = { mat8.id, mat8.id, mat8.id, mat9.id, mat9.id, mat9.id, mat7.id, mat7.id, mat6.id, mat6.id };
+      int cubeMatIndices[10] = { mat_white.id, mat_white.id, mat_white.id, mat_glossy.id, mat_glossy.id, mat_glossy.id, mat_green.id, mat_green.id, mat_red.id, mat_red.id };
 
       //hrMeshMaterialId(cubeRef, 0);
       hrMeshPrimitiveAttribPointer1i(cubeOpenRef, L"mind", cubeMatIndices);
@@ -1692,238 +1564,40 @@ namespace LGHT_TESTS
     }
     hrMeshClose(cubeOpenRef);
 
+    ////////////////////
+    // Light
+    ////////////////////
 
-    hrMeshOpen(planeRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
-    {
-      hrMeshVertexAttribPointer4f(planeRef, L"pos", &plane.vPos[0]);
-      hrMeshVertexAttribPointer4f(planeRef, L"norm", &plane.vNorm[0]);
-      hrMeshVertexAttribPointer2f(planeRef, L"texcoord", &plane.vTexCoord[0]);
+    auto rectLight = CreateLight(L"my_area_light", L"area", L"rect", L"diffuse", 0.5f, 1, L"1 1 1", 10.0f * IRRADIANCE_TO_RADIANCE);
 
-      hrMeshMaterialId(planeRef, mat5.id);
-      hrMeshAppendTriangles3(planeRef, int32_t(plane.triIndices.size()), &plane.triIndices[0]);
-    }
-    hrMeshClose(planeRef);
+    ////////////////////
+    // Camera
+    ////////////////////
 
-    hrMeshOpen(sphereRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
-    {
-      hrMeshVertexAttribPointer4f(sphereRef, L"pos", &sphere.vPos[0]);
-      hrMeshVertexAttribPointer4f(sphereRef, L"norm", &sphere.vNorm[0]);
-      hrMeshVertexAttribPointer2f(sphereRef, L"texcoord", &sphere.vTexCoord[0]);
+    CreateCamera(45, L"0 0 14", L"0 0 0");
 
-      for (size_t i = 0; i < sphere.matIndices.size() / 2; i++)
-        sphere.matIndices[i] = mat0.id;
+    ////////////////////
+    // Render settings
+    ////////////////////
 
-      for (size_t i = sphere.matIndices.size() / 2; i < sphere.matIndices.size(); i++)
-        sphere.matIndices[i] = mat2.id;
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, TEST_SCREEN_SIZE, TEST_SCREEN_SIZE, 256, 1024);
 
-      hrMeshPrimitiveAttribPointer1i(sphereRef, L"mind", &sphere.matIndices[0]);
-      hrMeshAppendTriangles3(sphereRef, int32_t(sphere.triIndices.size()), &sphere.triIndices[0]);
-    }
-    hrMeshClose(sphereRef);
-
-    hrMeshOpen(torusRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
-    {
-      hrMeshVertexAttribPointer4f(torusRef, L"pos", &torus.vPos[0]);
-      hrMeshVertexAttribPointer4f(torusRef, L"norm", &torus.vNorm[0]);
-      hrMeshVertexAttribPointer2f(torusRef, L"texcoord", &torus.vTexCoord[0]);
-
-      for (size_t i = 0; i < torus.matIndices.size() / 3; i++)
-        torus.matIndices[i] = mat0.id;
-
-      for (size_t i = 1 * torus.matIndices.size() / 3; i < 2 * torus.matIndices.size() / 3; i++)
-        torus.matIndices[i] = mat3.id;
-
-      for (size_t i = 2 * torus.matIndices.size() / 3; i < torus.matIndices.size(); i++)
-        torus.matIndices[i] = mat2.id;
-
-      //hrMeshMaterialId(torusRef, mat0.id);
-      hrMeshPrimitiveAttribPointer1i(torusRef, L"mind", &torus.matIndices[0]);
-      hrMeshAppendTriangles3(torusRef, int32_t(torus.triIndices.size()), &torus.triIndices[0]);
-    }
-    hrMeshClose(torusRef);
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    HRLightRef rectLight = hrLightCreate(L"my_area_light");
-
-    hrLightOpen(rectLight, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node lightNode = hrLightParamNode(rectLight);
-
-      lightNode.attribute(L"type").set_value(L"area");
-      lightNode.attribute(L"shape").set_value(L"rect");
-      lightNode.attribute(L"distribution").set_value(L"diffuse");
-
-      pugi::xml_node sizeNode = lightNode.append_child(L"size");
-
-      sizeNode.append_attribute(L"half_length").set_value(L"0.25");
-      sizeNode.append_attribute(L"half_width").set_value(L"0.5");
-
-      pugi::xml_node intensityNode = lightNode.append_child(L"intensity");
-
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(50.0f*IRRADIANCE_TO_RADIANCE);
-    }
-    hrLightClose(rectLight);
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // camera
-    //
-    HRCameraRef camRef = hrCameraCreate(L"my camera");
-
-    hrCameraOpen(camRef, HR_WRITE_DISCARD);
-    {
-      xml_node camNode = hrCameraParamNode(camRef);
-
-      camNode.append_child(L"fov").text().set(L"45");
-      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-      camNode.append_child(L"farClipPlane").text().set(L"100.0");
-
-      camNode.append_child(L"up").text().set(L"0 1 0");
-      camNode.append_child(L"position").text().set(L"0 0 14");
-      camNode.append_child(L"look_at").text().set(L"0 0 0");
-    }
-    hrCameraClose(camRef);
-
-    // set up render settings
-    //
-    HRRenderRef renderRef = hrRenderCreate(L"HydraModern"); // opengl1
-
-    hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // create scene
-    //
-    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-
-    static GLfloat	rtri = 25.0f; // Angle For The Triangle ( NEW )
-    static GLfloat	rquad = 40.0f;
-    static float    g_FPS = 60.0f;
-    static int      frameCounter = 0;
-
-    const float DEG_TO_RAD = float(3.14159265358979323846f) / 180.0f;
-
-    float matrixT[4][4];
-    float mRot1[4][4], mRot2[4][4], mTranslate[4][4], mRes[4][4];
-    //float mTranslateDown[4][4];
+    ////////////////////
+    // Create scene
+    ////////////////////
+    
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
 
     hrSceneOpen(scnRef, HR_WRITE_DISCARD);
 
-    int mmIndex = 0;
-    mat4x4_identity(mRot1);
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRes);
-
-    mat4x4_translate(mTranslate, 0.0f, -0.70f*3.65f, 0.0f);
-    mat4x4_scale(mRot1, mRot1, 3.65f);
-    mat4x4_mul(mRes, mTranslate, mRot1);
-    mat4x4_transpose(matrixT, mRes); // this fucking math library swap rows and columns
-    matrixT[3][3] = 1.0f;
-    hrMeshInstance(scnRef, teapotRef, &matrixT[0][0]);
-
-    mat4x4_identity(mRot1);
-    mat4x4_rotate_Y(mRot1, mRot1, 180.0f*DEG_TO_RAD);
-    //mat4x4_rotate_Y(mRot1, mRot1, rquad*DEG_TO_RAD);
-    mat4x4_transpose(matrixT, mRot1);
-    hrMeshInstance(scnRef, cubeOpenRef, &matrixT[0][0]);
-
-    /////////////////////////////////////////////////////////////////////// instance light (!!!)
-
-    mat4x4_identity(mTranslate);
-    mat4x4_identity(mRot1);
-    mat4x4_identity(mRot2);
-
-    mat4x4_translate(mTranslate, -3.25f, 3.25f, -2.0);
-    mat4x4_rotate_Y(mRot1, mRot1, -20.0f*DEG_TO_RAD);
-    mat4x4_rotate_X(mRot2, mRot2, 30.0f*DEG_TO_RAD);
-    mat4x4_mul(mRot1, mRot2, mRot1);
-    mat4x4_mul(mRes, mTranslate, mRot1);
-    mat4x4_transpose(matrixT, mRes);
-    hrLightInstance(scnRef, rectLight, &matrixT[0][0]);
-
-
-    mat4x4_identity(mTranslate);
-    mat4x4_translate(mTranslate, 3.75f, 3.95f, -3.5f);
-    mat4x4_transpose(matrixT, mTranslate);
-    hrLightInstance(scnRef, rectLight, &matrixT[0][0]);
+    int32_t remapList[2] = { 1, mat_white.id };    
+    AddMeshToScene(scnRef, teapotRef, float3(0, -0.7f * 3.65f, 0), float3(), float3(3.65f, 3.65f, 3.65f), remapList, 2);
+    AddMeshToScene(scnRef, cubeOpenRef, float3(0, 0, 0), float3(0, 180, 0));
+    AddLightToScene(scnRef, rectLight, float3(-2.7f, 3, 0), float3(30, 20, 0));
+    AddLightToScene(scnRef, rectLight, float3(3, 3, 0));
 
     hrSceneClose(scnRef);
-
-    hrRenderOpen(renderRef, HR_WRITE_DISCARD);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.append_child(L"width").text()  = TEST_SCREEN_SIZE;
-      node.append_child(L"height").text() = TEST_SCREEN_SIZE;
-
-      node.append_child(L"method_primary").text()   = L"pathtracing";
-      node.append_child(L"method_secondary").text() = L"pathtracing";
-      node.append_child(L"method_tertiary").text()  = L"pathtracing";
-      node.append_child(L"method_caustic").text()   = L"pathtracing";
-      node.append_child(L"shadows").text() = L"1";
-
-      node.append_child(L"trace_depth").text()      = L"6";
-      node.append_child(L"diff_trace_depth").text() = L"6";
-      node.append_child(L"maxRaysPerPixel").text()  = 2048;
-    }
-    hrRenderClose(renderRef);
-
-    hrFlush(scnRef, renderRef);
-
-    ////////////////////////////////////////////////////////////////////////////////
-
-    RenderProgress(renderRef);
-
-    std::filesystem::create_directories(saveRenderFile.parent_path());
-    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile0.wstring().c_str());
-
-    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
-
-      node.child(L"width").text()  = TEST_SCREEN_SIZE;
-      node.child(L"height").text() = TEST_SCREEN_SIZE;
-
-      node.child(L"method_primary").text()   = L"IBPT";
-      node.child(L"method_secondary").text() = L"IBPT";
-      node.child(L"method_tertiary").text()  = L"IBPT";
-      node.child(L"method_caustic").text()   = L"IBPT";
-      node.child(L"shadows").text() = L"1";
-
-      node.child(L"trace_depth").text()      = L"6";
-      node.child(L"diff_trace_depth").text() = L"6";
-      node.child(L"maxRaysPerPixel").text()  = 2048;
-    }
-    hrRenderClose(renderRef);
-
-    hrFlush(scnRef, renderRef);
-
-    RenderProgress(renderRef);
-
-    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
-
-  
-    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
-    {
-      pugi::xml_node node = hrRenderParamNode(renderRef);
       
-      node.force_child(L"method_primary").text()   = L"pathtracing";
-      node.force_child(L"method_secondary").text() = L"mmlt";
-  
-      node.force_child(L"mmlt_burn_iters").text()     = 1024;   // [1024, 2048, 4096, 8192, 16384, 65536]
-      node.force_child(L"mmlt_sds_fixed_prob").text() = 0;      // [0, 0.25, 0.5, 0,75, 0 85, 0.9, 0.95 ]
-      node.force_child(L"mmlt_threads").text()        = 262144; // [524288, 262144, 131072(?), 65536, 16384]
-  
-      node.force_child(L"maxRaysPerPixel").text()     = 8192;
-    }
-    hrRenderClose(renderRef);
-  
     hrFlush(scnRef, renderRef);
   
     ////////////////////
@@ -1932,9 +1606,9 @@ namespace LGHT_TESTS
 
     RenderProgress(renderRef);
 
-    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile2.wstring().c_str());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
 
-    return check_images(ws2s(nameTest).c_str(), 2, 40);
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
 
 

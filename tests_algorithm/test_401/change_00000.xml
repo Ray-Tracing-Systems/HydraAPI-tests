@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<textures_lib>
+  <texture id="0" name="Map#0" loc="data/chunk_00000.image4ub" offset="8" bytesize="16" width="2" height="2" channels="4" dl="0" />
+</textures_lib>
+<materials_lib>
+  <material id="0" name="matGray" type="hydra_material">
+    <diffuse brdf_type="lambert">
+      <color val="0.5 0.5 0.5" />
+    </diffuse>
+  </material>
+  <material id="1" name="matGlass" type="hydra_material">
+    <reflectivity brdf_type="phong">
+      <color val="1 1 1" />
+      <fresnel val="1" />
+      <fresnel_ior val="1.5" />
+      <glossiness val="1" />
+    </reflectivity>
+    <transparency>
+      <color val="1 1 1" />
+      <fog_color val="1 1 1" />
+      <fog_multiplier val="0" />
+      <glossiness val="0.899999976" />
+      <ior val="1.5" />
+    </transparency>
+  </material>
+  <material id="2" name="sphere1_material" type="hydra_material" light_id="0" visible="1">
+    <emission>
+      <color val="628.319 314.159 628.319" />
+    </emission>
+  </material>
+  <material id="3" name="sphere1_material" type="hydra_material" light_id="1" visible="1">
+    <emission>
+      <color val="314.159 628.319 314.159" />
+    </emission>
+  </material>
+</materials_lib>
+<geometry_lib>
+  <mesh id="0" name="sph1" type="vsgf" bytesize="185680" loc="data/chunk_00001.vsgf" offset="0" vertNum="2145" triNum="4096" dl="0" path="" bbox="    -2 2 -2 2 -2 2">
+    <positions type="array4f" bytesize="34320" offset="24" apply="vertex" />
+    <normals type="array4f" bytesize="34320" offset="34344" apply="vertex" />
+    <tangents type="array4f" bytesize="34320" offset="68664" apply="vertex" />
+    <texcoords type="array2f" bytesize="17160" offset="102984" apply="vertex" />
+    <indices type="array1i" bytesize="49152" offset="120144" apply="tlist" />
+    <matindices type="array1i" bytesize="16384" offset="169296" apply="primitive" />
+  </mesh>
+  <mesh id="1" name="sph2" type="vsgf" bytesize="185680" loc="data/chunk_00002.vsgf" offset="0" vertNum="2145" triNum="4096" dl="0" path="" bbox="    -2 2 -2 2 -2 2">
+    <positions type="array4f" bytesize="34320" offset="24" apply="vertex" />
+    <normals type="array4f" bytesize="34320" offset="34344" apply="vertex" />
+    <tangents type="array4f" bytesize="34320" offset="68664" apply="vertex" />
+    <texcoords type="array2f" bytesize="17160" offset="102984" apply="vertex" />
+    <indices type="array1i" bytesize="49152" offset="120144" apply="tlist" />
+    <matindices type="array1i" bytesize="16384" offset="169296" apply="primitive" />
+  </mesh>
+  <mesh id="2" name="my_cube" type="vsgf" bytesize="1304" loc="data/chunk_00003.vsgf" offset="0" vertNum="20" triNum="10" dl="0" path="" bbox="    -6 6 -6 6 -6 6">
+    <positions type="array4f" bytesize="320" offset="24" apply="vertex" />
+    <normals type="array4f" bytesize="320" offset="344" apply="vertex" />
+    <tangents type="array4f" bytesize="320" offset="664" apply="vertex" />
+    <texcoords type="array2f" bytesize="160" offset="984" apply="vertex" />
+    <indices type="array1i" bytesize="120" offset="1144" apply="tlist" />
+    <matindices type="array1i" bytesize="40" offset="1264" apply="primitive" />
+  </mesh>
+  <mesh id="3" name="sphere1_lightmesh" type="vsgf" bytesize="114280" loc="data/chunk_00004.vsgf" offset="0" vertNum="1326" triNum="2500" dl="0" path="" light_id="0" bbox="-0.0996057 0.0996057 -0.1 0.1 -0.0998027 0.0998027">
+    <positions type="array4f" bytesize="21216" offset="24" apply="vertex" />
+    <normals type="array4f" bytesize="21216" offset="21240" apply="vertex" />
+    <tangents type="array4f" bytesize="21216" offset="42456" apply="vertex" />
+    <texcoords type="array2f" bytesize="10608" offset="63672" apply="vertex" />
+    <indices type="array1i" bytesize="30000" offset="74280" apply="tlist" />
+    <matindices type="array1i" bytesize="10000" offset="104280" apply="primitive" />
+  </mesh>
+  <mesh id="4" name="sphere1_lightmesh" type="vsgf" bytesize="114280" loc="data/chunk_00005.vsgf" offset="0" vertNum="1326" triNum="2500" dl="0" path="" light_id="1" bbox="-0.0996057 0.0996057 -0.1 0.1 -0.0998027 0.0998027">
+    <positions type="array4f" bytesize="21216" offset="24" apply="vertex" />
+    <normals type="array4f" bytesize="21216" offset="21240" apply="vertex" />
+    <tangents type="array4f" bytesize="21216" offset="42456" apply="vertex" />
+    <texcoords type="array2f" bytesize="10608" offset="63672" apply="vertex" />
+    <indices type="array1i" bytesize="30000" offset="74280" apply="tlist" />
+    <matindices type="array1i" bytesize="10000" offset="104280" apply="primitive" />
+  </mesh>
+</geometry_lib>
+<lights_lib>
+  <light id="0" name="sphere1" type="area" shape="sphere" distribution="uniform" visible="1" mat_id="2" mesh_id="3">
+    <shadow_softness val="0" />
+    <size radius="0.100000001" />
+    <intensity>
+      <color val="1 0.5 1" />
+      <multiplier val="628.318542" />
+    </intensity>
+  </light>
+  <light id="1" name="sphere1" type="area" shape="sphere" distribution="uniform" visible="1" mat_id="3" mesh_id="4">
+    <shadow_softness val="0" />
+    <size radius="0.100000001" />
+    <intensity>
+      <color val="0.5 1 0.5" />
+      <multiplier val="628.318542" />
+    </intensity>
+  </light>
+</lights_lib>
+<cam_lib>
+  <camera id="0" name="Camera01" type="uvn">
+    <fov>45</fov>
+    <nearClipPlane>0.00999999978</nearClipPlane>
+    <farClipPlane>100</farClipPlane>
+    <up>0 1 0</up>
+    <position>0 3 18</position>
+    <look_at>0 3 0</look_at>
+    <enable_dof>0</enable_dof>
+    <dof_lens_radius>0.100000001</dof_lens_radius>
+  </camera>
+</cam_lib>
+<render_lib />
+<scenes>
+  <scene id="0" name="scene_test_401" discard="1" bbox="    -6 6 -3 9 -6 6">
+    <instance id="0" mesh_id="2" rmap_id="-1" scn_id="0" scn_sid="0" matrix="-1 0 -8.74228e-08 0 0 1 0 3 8.74228e-08 0 -1 0 0 0 0 1 ">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance>
+    <instance id="1" mesh_id="0" rmap_id="-1" scn_id="0" scn_sid="0" matrix="1 0 0 -3 0 1 0 4.25 0 0 1 0 0 0 0 1 ">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance>
+    <instance id="2" mesh_id="1" rmap_id="-1" scn_id="0" scn_sid="0" matrix="1 0 0 3 0 1 0 4.25 0 0 1 0 0 0 0 1 ">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance>
+    <instance_light id="0" light_id="0" matrix="1 0 0 5 0 1 0 8 0 0 1 0 0 0 0 1 " lgroup_id="-1">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance_light>
+    <instance_light id="1" light_id="1" matrix="1 0 0 -5 0 1 0 8 0 0 1 0 0 0 0 1 " lgroup_id="-1">
+      <transform_sequence transformation="scale * rotation * position" rotation="Euler in dergees" />
+    </instance_light>
+    <instance id="3" mesh_id="3" rmap_id="-1" matrix="1 0 0 5 0 1 0 8 0 0 1 0 0 0 0 1 " light_id="0" linst_id="0" />
+    <instance id="4" mesh_id="4" rmap_id="-1" matrix="1 0 0 -5 0 1 0 8 0 0 1 0 0 0 0 1 " light_id="1" linst_id="1" />
+  </scene>
+</scenes>

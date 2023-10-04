@@ -1,0 +1,101 @@
+body {
+  background-color: rgb(50, 50, 50);
+	color: white;	
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;  
+  font-size: 1em;
+}
+
+table {    
+  table-layout: auto;
+  width: 100%;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif; 
+  font-size: 1em;
+  border-collapse: collapse;
+  text-align: center;      
+}
+
+th, td:first-child {
+  background: rgb(60, 60, 60);
+  color: white;
+  padding: 10px 20px;
+}
+
+th, td {    
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(100, 100, 100);  
+}
+
+td {  
+  background: rgb(80, 80, 80);
+  color: white;  
+  position: relative;
+}
+
+th:first-child, td:first-child {
+  text-align: left;
+}
+
+img {
+  display:block;   
+	width:100%;  
+	height:auto;   
+  padding: 0px;    
+}
+
+.td-vert {
+  display:block;
+  padding: 0px;  
+}
+
+.td-vert:first-child  {
+  padding: 0px;    
+}
+
+.imageTop {  
+  justify-content: center;
+  align-items: center;
+  z-index: 1;  
+  position: absolute;
+  top: 0;
+  left: 0; 
+  padding: 0px;  
+}
+
+.imageTop:hover{  
+  opacity: 0.0;
+  /* mix-blend-mode: difference;     */
+}
+
+
+ /* Menu */
+
+.vertical-menu {  
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 1.5em;  
+  width: 100%;
+	height: 100%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(70, 75, 80);
+}
+
+.vertical-menu a {
+  background-color: rgb(65, 70, 75);
+  color: white;
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.vertical-menu a:hover {
+  background-color: rgb(85, 90, 95);
+}
+
+.vertical-menu a.active {
+  background-color: rgb(45, 50, 55);
+  color: white;
+	text-align: center;
+}
+
+

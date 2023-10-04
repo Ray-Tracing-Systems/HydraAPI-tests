@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel = "stylesheet" href = "reportStyle.css">
+</head>
+
+<h3>Lights tests.   Wed Oct  4 15:20:51 2023
+   OS: Windows Videocard: NVIDIA_RTX3060Ti</h3>
+<table>
+  <tr>
+    <th>TEST NAME</th>
+    <th>RESULT</th>
+    <th>MSE</th>
+    <th>RENDER TIME</th>
+    <th>REFERENCE</th>
+    <th>RENDER</th>
+  </tr>
+  <tr>
+    <td>test_200_spot</td>
+    <td>&#10004;<br></td>
+    <td>7.00<br></td>
+    <td>28.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_201_sphere</td>
+    <td>&#10004;<br></td>
+    <td>26.3<br></td>
+    <td>29.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_202_sky_color</td>
+    <td>&#10004;<br></td>
+    <td>0.93<br></td>
+    <td>19.0 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_203_sky_hdr</td>
+    <td>&#10004;<br></td>
+    <td>4.46<br></td>
+    <td>28.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_204_sky_hdr_rotate</td>
+    <td>&#10004;<br></td>
+    <td>2.08<br></td>
+    <td>48.0 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_205_sky_and_directional_sun</td>
+    <td>&#10004;<br></td>
+    <td>2.89<br></td>
+    <td>16.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_206_ies1</td>
+    <td>&#10004;<br></td>
+    <td>4.43<br></td>
+    <td>27.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_207_ies2</td>
+    <td>&#10004;<br></td>
+    <td>4.69<br></td>
+    <td>28.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_208_ies3</td>
+    <td>&#10004;<br></td>
+    <td>4.80<br></td>
+    <td>28.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_209_skyportal</td>
+    <td>&#10004;<br></td>
+    <td>20.3<br></td>
+    <td>52.7 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_210_skyportal_hdr</td>
+    <td>&#10060;<br></td>
+    <td>2239<br></td>
+    <td>84.1 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_210\w_ref.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_210\z_out.png>
+        <img src = Images/test_210\w_ref.png>
+    </td>
+    </table>
+</td>
+  </tr>
+  <tr>
+    <td>test_211_sky_and_sun_perez</td>
+    <td>&#10004;<br></td>
+    <td>6.81<br></td>
+    <td>17.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_212_skyportal_sun</td>
+    <td>&#10004;<br></td>
+    <td>26.5<br></td>
+    <td>52.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_213_point_omni</td>
+    <td>&#10004;<br></td>
+    <td>12.9<br></td>
+    <td>27.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_214_sky_ldr</td>
+    <td>&#10004;<br></td>
+    <td>2.92<br></td>
+    <td>36.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_215_light_scale_intensity</td>
+    <td>&#10060;<br></td>
+    <td>381.<br></td>
+    <td>12.1 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_215\w_ref.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_215\z_out.png>
+        <img src = Images/test_215\w_ref.png>
+    </td>
+    </table>
+</td>
+  </tr>
+  <tr>
+    <td>test_216_ies4</td>
+    <td>&#10004;<br></td>
+    <td>5.73<br></td>
+    <td>28.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_217_cylinder</td>
+    <td>&#10004;<br></td>
+    <td>4.40<br></td>
+    <td>28.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_218_cylinder2</td>
+    <td>&#10004;<br></td>
+    <td>14.6<br></td>
+    <td>27.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_219_cylinder_tex</td>
+    <td>&#10004;<br></td>
+    <td>9.58<br></td>
+    <td>27.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_220_cylinder_tex2</td>
+    <td>&#10004;<br></td>
+    <td>12.8<br></td>
+    <td>28.3 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_221_cylinder_tex3</td>
+    <td>&#10004;<br></td>
+    <td>28.3<br></td>
+    <td>26.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_222_cylinder_with_end_face</td>
+    <td>&#10004;<br></td>
+    <td>22.5<br></td>
+    <td>26.3 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_223_rotated_area_light</td>
+    <td>&#10004;<br></td>
+    <td>13.6<br></td>
+    <td>48.7 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_224_rotated_area_light2</td>
+    <td>&#10004;<br></td>
+    <td>18.82<br></td>
+    <td>15 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_225_point_spot_simple</td>
+    <td>&#10004;<br></td>
+    <td>4.42<br></td>
+    <td>27.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_226_area_spot_simple</td>
+    <td>&#10004;<br></td>
+    <td>4.38<br></td>
+    <td>27.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_227_point_spot_glossy_wall</td>
+    <td>&#10004;<br></td>
+    <td>21.1<br></td>
+    <td>53.3 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_228_point_ies_for_bpt</td>
+    <td>&#10004;<br></td>
+    <td>1.09<br></td>
+    <td>28.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_229_point_ies_for_bpt</td>
+    <td>&#10004;<br></td>
+    <td>2.47<br></td>
+    <td>28.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_230_area_ies_for_bpt</td>
+    <td>&#10004;<br></td>
+    <td>5.40<br></td>
+    <td>54.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_231_direct_soft_shadow</td>
+    <td>&#10004;<br></td>
+    <td>6.21<br></td>
+    <td>16.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_232_point_area_ies</td>
+    <td>&#10004;<br></td>
+    <td>16.3<br></td>
+    <td>54.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_233_light_group_point_area_ies</td>
+    <td>&#10004;<br></td>
+    <td>19.7<br></td>
+    <td>55.6 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_234_light_group_light_inst_cust_params</td>
+    <td>&#10004;<br></td>
+    <td>32.0<br></td>
+    <td>55.5 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_235_stadium</td>
+    <td>&#10004;<br></td>
+    <td>67.4<br></td>
+    <td>377. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_236_light_group_point_area_ies2</td>
+    <td>&#10004;<br></td>
+    <td>19.6<br></td>
+    <td>54.6 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_237_cubemap_ldr</td>
+    <td>&#10004;<br></td>
+    <td>6.49<br></td>
+    <td>55.7 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_238_mesh_light_one_triangle</td>
+    <td>&#10004;<br></td>
+    <td>17.6<br></td>
+    <td>28.1 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_239_mesh_light_two_triangle</td>
+    <td>&#10004;<br></td>
+    <td>4.37<br></td>
+    <td>28.0 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_240_mesh_light_torus</td>
+    <td>&#10004;<br></td>
+    <td>39.3<br></td>
+    <td>14.9 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_241_mesh_light_torus_texture_ldr</td>
+    <td>&#10004;<br></td>
+    <td>25.4<br></td>
+    <td>57.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_242_mesh_light_torus_texture_hdr</td>
+    <td>&#10060;<br></td>
+    <td>247.<br></td>
+    <td>52.3 sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_242\w_ref.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_242\z_out.png>
+        <img src = Images/test_242\w_ref.png>
+    </td>
+    </table>
+</td>
+  </tr>
+  <tr>
+    <td>test_243_mesh_light_do_not_sample_me</td>
+    <td>&#10004;<br></td>
+    <td>23.1<br></td>
+    <td>51.4 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_244_do_not_sample_me</td>
+    <td>&#10004;<br></td>
+    <td>27.2<br></td>
+    <td>28.0 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_245_cylinder_tex_nearest</td>
+    <td>&#10004;<br></td>
+    <td>14.0<br></td>
+    <td>28.2 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+<h3>
+Tests complete.     
+All render time:    36 min. 36 sec.
+Failed tests:       4 of 46 tests.
+Failed tests:       8 %</h3>
+</html>

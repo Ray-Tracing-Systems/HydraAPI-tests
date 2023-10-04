@@ -102,7 +102,9 @@ int main(int argc, const char** argv)
   wchar_t NPath[512];
   GetCurrentDirectoryW(512, NPath);
 #ifdef NEED_DIR_CHANGE
-  SetCurrentDirectoryW(L"../../main");
+  //SetCurrentDirectoryW(L"../../main");
+  SetCurrentDirectoryW(L"../");
+  GetCurrentDirectoryW(512, NPath);
 #endif
   std::wcout << L"[main]: curr_dir = " << NPath << std::endl;
 #else
@@ -138,7 +140,6 @@ int main(int argc, const char** argv)
     /////////////////////    
     // API_TESTS
     /////////////////////
-
     //test_055_clear_scene();
     //test_077_save_gbuffer_layers();
     //test_082_proc_texture(); // error
@@ -150,7 +151,7 @@ int main(int argc, const char** argv)
     /////////////////////
     
     //MTL_TESTS::test_103_diffuse_texture();
-    
+        
     /////////////////////    
     // LGHT_TESTS
     /////////////////////
@@ -168,7 +169,7 @@ int main(int argc, const char** argv)
     // ALGR_TESTS
     /////////////////////
     
-    //ALGR_TESTS::test_404_cornell_glossy(); - IBPT and MMLT not equal with PT.
+    //ALGR_TESTS::test_404_cornell_glossy();    
    
     /////////////////////    
     // 3DSMAX_TESTS
@@ -201,7 +202,8 @@ int main(int argc, const char** argv)
     
     // Specify the name of your folder for the report, based on system information.
 #ifdef WIN32
-    g_systemInfo = { L"Windows", L"NVIDIA_RTX2070_SUPER" };
+    //g_systemInfo = { L"Windows", L"NVIDIA_RTX2070_SUPER" };
+    g_systemInfo = { L"Windows", L"NVIDIA_RTX3060Ti" };
 #else
     g_systemInfo = { L"Linux", L"NVIDIA_RTX2070_SUPER" };
 #endif 
@@ -214,8 +216,12 @@ int main(int argc, const char** argv)
     //run_all_vector_tex_tests(); //all wrong - need inv. gamma (pow 2.2) as textures for linear result.
     //run_all_3dsmax_tests(); 
     
-    // new test list for hydra3
-    if(true)
+
+    ////////////////////////
+    // Test list for hydra3
+    ////////////////////////
+         
+    if(false)
     {
       test_078_material_remap_list1();
       test_079_material_remap_list2();

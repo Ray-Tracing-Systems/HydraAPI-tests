@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel = "stylesheet" href = "reportStyle.css">
+</head>
+
+<h3>Render algorithm tests.   Wed Oct  4 19:30:58 2023
+   OS: Windows Videocard: NVIDIA_RTX3060Ti</h3>
+<table>
+  <tr>
+    <th>TEST NAME</th>
+    <th>RESULT</th>
+    <th>MSE</th>
+    <th>RENDER TIME</th>
+    <th>REFERENCE</th>
+    <th>RENDER</th>
+  </tr>
+  <tr>
+    <td>dummy_test</td>
+    <td>&#128465;</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_401_ibpt_and_glossy_glass</td>
+    <td>&#10004;<br></td>
+    <td>24.8<br></td>
+    <td>267. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_402_ibpt_and_glossy_double_glass</td>
+    <td>&#10004;<br></td>
+    <td>35.8<br></td>
+    <td>283. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_403_light_inside_double_glass</td>
+    <td>&#10004;<br></td>
+    <td>73.6<br></td>
+    <td>271. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_404_cornell_glossy</td>
+    <td>&#10060;<br>&#10060;<br>&#10060;<br></td>
+    <td>347.<br>306.<br>381.<br></td>
+    <td>290. sec.</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img src = Images/test_404\w_ref.png>
+     </td>
+    <td class="td-vert">
+        <img src = Images/test_404\w_ref2.png>
+     </td>
+    <td class="td-vert">
+        <img src = Images/test_404\w_ref3.png>
+     </td>
+    </table>
+</td>
+    <td>
+    <table>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_404\z_out.png>
+        <img src = Images/test_404\w_ref.png>
+    </td>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_404\z_out2.png>
+        <img src = Images/test_404\w_ref2.png>
+    </td>
+    <td class="td-vert">
+        <img class="imageTop" src = Images/test_404\z_out3.png>
+        <img src = Images/test_404\w_ref3.png>
+    </td>
+    </table>
+</td>
+  </tr>
+  <tr>
+    <td>test_405_cornell_with_mirror</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>20.0<br>25.3<br>19.9<br></td>
+    <td>326. sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>test_406_env_glass_ball_caustic</td>
+    <td>&#10004;<br>&#10004;<br>&#10004;<br></td>
+    <td>4.36<br>9.37<br>10.0<br></td>
+    <td>62.3 sec.</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+<h3>
+Tests complete.     
+All render time:    24 min. 59 sec.
+Failed tests:       1 of 7 tests.
+Failed tests:       14 %</h3>
+</html>

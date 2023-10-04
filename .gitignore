@@ -41,7 +41,7 @@ cmake-build-*/
 data/textures_gen/
 !Reports/
 tests/
-tests_algorithm/
+!tests_algorithm/
 tests_ext/
 tests_f/
 

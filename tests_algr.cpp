@@ -39,31 +39,27 @@ using namespace TEST_UTILS;
 
 bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
 { 
-  hrErrorCallerPlace(L"test_401");
+  std::wstring nameTest                = L"test_401";
+  std::filesystem::path libraryPath    = L"tests_algorithm/" + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
   
-  hrSceneLibraryOpen(L"tests_algorithm/test_401", HR_WRITE_DISCARD);
-  
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////  
   
-  
-  HRMaterialRef matGray  = hrMaterialCreate(L"matGray");
-  HRMaterialRef matGlass = hrMaterialCreate(L"matGlass");
-  
+  auto matGray  = hrMaterialCreate(L"matGray");
+  auto matGlass = hrMaterialCreate(L"matGlass");
   
   hrMaterialOpen(matGray, HR_WRITE_DISCARD);
   {
     auto matNode = hrMaterialParamNode(matGray);
-    
-    auto diff = matNode.append_child(L"diffuse");
-    diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    
-    auto color = diff.append_child(L"color");
-    color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+    AddDiffuseNode(matNode, L"0.5 0.5 0.5");
   }
   hrMaterialClose(matGray);
-  
+
   hrMaterialOpen(matGlass, HR_WRITE_DISCARD);
   {
     auto matNode = hrMaterialParamNode(matGlass);
@@ -91,81 +87,30 @@ bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
   }
   hrMaterialClose(matGlass);
   
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Meshes
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  HRMeshRef sph1     = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64),  matGlass.id);
-  HRMeshRef sph2     = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64),  matGlass.id);
-  HRMeshRef cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f), matGray.id);
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
+  
+  auto sph1     = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64),  matGlass.id);
+  auto sph2     = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64),  matGlass.id);
+  auto cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f), matGray.id);
+  
+  ////////////////////
   // Light
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  HRLightRef sphere1 = hrLightCreate(L"sphere1");
-  
-  hrLightOpen(sphere1, HR_WRITE_DISCARD);
-  {
-    auto lightNode = hrLightParamNode(sphere1);
+  ////////////////////
+
+  auto sphere1 = CreateLight(L"sphere1", L"area", L"sphere", L"uniform", 0.1f, 0.1f, L"1 0.5 1", 200.0f * IRRADIANCE_TO_RADIANCE);
+  auto sphere2 = CreateLight(L"sphere1", L"area", L"sphere", L"uniform", 0.1f, 0.1f, L"0.5 1 0.5", 200.0f * IRRADIANCE_TO_RADIANCE);
     
-    lightNode.attribute(L"type").set_value(L"area");
-    lightNode.attribute(L"shape").set_value(L"sphere");
-    lightNode.attribute(L"distribution").set_value(L"uniform");
-    
-    auto intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 0.5 1");
-    intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(200.0*IRRADIANCE_TO_RADIANCE);
-    
-    auto sizeNode = lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.1f);
-    VERIFY_XML(lightNode);
-  }
-  hrLightClose(sphere1);
-  
-  HRLightRef sphere2 = hrLightCreate(L"sphere2");
-  
-  hrLightOpen(sphere2, HR_WRITE_DISCARD);
-  {
-    auto lightNode = hrLightParamNode(sphere2);
-    
-    lightNode.attribute(L"type").set_value(L"area");
-    lightNode.attribute(L"shape").set_value(L"sphere");
-    lightNode.attribute(L"distribution").set_value(L"uniform");
-    
-    auto intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.5 1 0.5");
-    intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(200.0*IRRADIANCE_TO_RADIANCE);
-    
-    auto sizeNode = lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.1f);
-    VERIFY_XML(lightNode);
-  }
-  hrLightClose(sphere2);
-  
-  
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Camera
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
+
+  CreateCamera(45, L"0 3 18", L"0 3 0");
   
-  HRCameraRef camRef = hrCameraCreate(L"my camera");
-  
-  hrCameraOpen(camRef, HR_WRITE_DISCARD);
-  {
-    auto camNode = hrCameraParamNode(camRef);
-    
-    camNode.append_child(L"fov").text().set(L"45");
-    camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-    camNode.append_child(L"farClipPlane").text().set(L"100.0");
-    
-    camNode.append_child(L"up").text().set(L"0 1 0");
-    camNode.append_child(L"position").text().set(L"0 3 18");
-    camNode.append_child(L"look_at").text().set(L"0 3 0");
-  }
-  hrCameraClose(camRef);
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Render settings
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  //HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
+  ////////////////////
   
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
   hrRenderEnableDevice(renderRef, CURR_RENDER_DEVICE, true);
@@ -189,120 +134,61 @@ bool ALGR_TESTS::test_401_ibpt_and_glossy_glass()
     node.append_child(L"resources_path").text()   = L"..";
     node.append_child(L"offline_pt").text()       = 0;
   }
-  hrRenderClose(renderRef);
+  hrRenderClose(renderRef);  
   
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Create scene
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-  
-  using namespace LiteMath;
-  
-  float4x4 mRot;
-  float4x4 mTranslate;
-  float4x4 mScale;
-  float4x4 mRes;
-  
-  const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
-  
+  ////////////////////
+
+  auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
-  ///////////
   
-  mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-  mRot       = rotate4x4Y(180.0f*DEG_TO_RAD);
-  mRes       = mul(mTranslate, mRot);
-  
-  hrMeshInstance(scnRef, cubeOpen, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(-3.0f, 4.25f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrMeshInstance(scnRef, sph1, mRes.L());
-  
-  //mScale = scale4x4(float3(0.5f, 0.5f, 0.5f));
-  //mRes   = mul(mTranslate, mScale);
-  //hrMeshInstance(scnRef, sph1, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(3.0f, 4.25f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrMeshInstance(scnRef, sph2, mRes.L());
-  
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(5.0f, 8.0f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrLightInstance(scnRef, sphere1, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(-5.0f, 8.0f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrLightInstance(scnRef, sphere2, mRes.L());
-  
-  
-  ///////////
+  AddMeshToScene(scnRef, cubeOpen, float3(0, 3, 0), float3(0, 180, 0));
+  AddMeshToScene(scnRef, sph1, float3(-3, 4.25f, 0));
+  AddMeshToScene(scnRef, sph2, float3(3, 4.25f, 0));
+  AddLightToScene(scnRef, sphere1, float3(5, 8, 0));
+  AddLightToScene(scnRef, sphere2, float3(-5, 8, 0));
   
   hrSceneClose(scnRef);
   
   hrFlush(scnRef, renderRef);
   
+  ////////////////////
+  // Rendering, save and check image
+  ////////////////////
+
   RenderProgress(renderRef);
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_401/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
   
-  return check_images("test_401", 1, 27);  
+  return check_images(ws2s(nameTest).c_str(), 1, 27);
 }
 
 
 bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
 {  
-  hrErrorCallerPlace(L"test_402");
+  std::wstring nameTest                = L"test_402";
+  std::filesystem::path libraryPath    = L"tests_algorithm/" + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
   
-  hrSceneLibraryOpen(L"tests_algorithm/test_402", HR_WRITE_DISCARD);
-  
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////  
   
-  
-  HRMaterialRef matGray  = hrMaterialCreate(L"matGray");
-  HRMaterialRef matGlass = hrMaterialCreate(L"matGlass");
-  
+  auto matGray  = hrMaterialCreate(L"matGray");
+  auto matGlass = hrMaterialCreate(L"matGlass");  
   
   hrMaterialOpen(matGray, HR_WRITE_DISCARD);
   {
     auto matNode = hrMaterialParamNode(matGray);
-    
-    auto diff = matNode.append_child(L"diffuse");
-    diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    
-    auto color = diff.append_child(L"color");
-    color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+    AddDiffuseNode(matNode, L"0.5 0.5 0.5");
   }
   hrMaterialClose(matGray);
-  
+
   hrMaterialOpen(matGlass, HR_WRITE_DISCARD);
   {
     auto matNode = hrMaterialParamNode(matGlass);
@@ -330,79 +216,31 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
   }
   hrMaterialClose(matGlass);
   
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Meshes
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  HRMeshRef sph1     = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64),  matGlass.id);
-  HRMeshRef sph2     = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64),  matGlass.id);
-  HRMeshRef cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f), matGray.id);
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
+  
+  auto sph1     = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64),  matGlass.id);
+  auto sph2     = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64),  matGlass.id);
+  auto cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f), matGray.id);
+  
+  ////////////////////
   // Light
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  HRLightRef sphere1 = hrLightCreate(L"sphere1");
-  
-  hrLightOpen(sphere1, HR_WRITE_DISCARD);
-  {
-    auto lightNode = hrLightParamNode(sphere1);
+  ////////////////////
+
+  auto sphere1 = CreateLight(L"sphere1", L"area", L"sphere", L"uniform", 0.1f, 0.1f, L"1 0.5 1", 200.0f * IRRADIANCE_TO_RADIANCE);
+  auto sphere2 = CreateLight(L"sphere1", L"area", L"sphere", L"uniform", 0.1f, 0.1f, L"0.5 1 0.5", 200.0f * IRRADIANCE_TO_RADIANCE);
     
-    lightNode.attribute(L"type").set_value(L"area");
-    lightNode.attribute(L"shape").set_value(L"sphere");
-    lightNode.attribute(L"distribution").set_value(L"uniform");
-    
-    auto intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 0.5 1");
-    intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(200.0*IRRADIANCE_TO_RADIANCE);
-    
-    auto sizeNode = lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.1f);
-    VERIFY_XML(lightNode);
-  }
-  hrLightClose(sphere1);
-  
-  HRLightRef sphere2 = hrLightCreate(L"sphere2");
-  
-  hrLightOpen(sphere2, HR_WRITE_DISCARD);
-  {
-    auto lightNode = hrLightParamNode(sphere2);
-    
-    lightNode.attribute(L"type").set_value(L"area");
-    lightNode.attribute(L"shape").set_value(L"sphere");
-    lightNode.attribute(L"distribution").set_value(L"uniform");
-    
-    auto intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.5 1 0.5");
-    intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(200.0*IRRADIANCE_TO_RADIANCE);
-    
-    auto sizeNode = lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.1f);
-    VERIFY_XML(lightNode);
-  }
-  hrLightClose(sphere2);
-  
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Camera
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  HRCameraRef camRef = hrCameraCreate(L"my camera");
-  
-  hrCameraOpen(camRef, HR_WRITE_DISCARD);
-  {
-    auto camNode = hrCameraParamNode(camRef);
-    
-    camNode.append_child(L"fov").text().set(L"45");
-    camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-    camNode.append_child(L"farClipPlane").text().set(L"100.0");
-    
-    camNode.append_child(L"up").text().set(L"0 1 0");
-    camNode.append_child(L"position").text().set(L"0 3 18");
-    camNode.append_child(L"look_at").text().set(L"0 3 0");
-  }
-  hrCameraClose(camRef);
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
+
+  CreateCamera(45, L"0 3 18", L"0 3 0");
+
+  ////////////////////
   // Render settings
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+  ////////////////////
+
   //HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
   
   HRRenderRef renderRef = hrRenderCreate(L"HydraModern");
@@ -432,112 +270,57 @@ bool ALGR_TESTS::test_402_ibpt_and_glossy_double_glass()
   hrRenderClose(renderRef);
   
   
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Create scene
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-  
-  using namespace LiteMath;
-  
-  float4x4 mRot;
-  float4x4 mTranslate;
-  float4x4 mScale;
-  float4x4 mRes;
-  
-  const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
-  
+  ////////////////////
+
+  auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
-  ///////////
-  
-  mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-  mRot       = rotate4x4Y(180.0f*DEG_TO_RAD);
-  mRes       = mul(mTranslate, mRot);
-  
-  hrMeshInstance(scnRef, cubeOpen, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(-3.0f, 4.25f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrMeshInstance(scnRef, sph1, mRes.L());
-  
-  mScale = scale4x4(float3(0.65f, 0.65f, 0.65f));
-  mRes   = mul(mTranslate, mScale);
-  hrMeshInstance(scnRef, sph1, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(3.0f, 4.25f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrMeshInstance(scnRef, sph2, mRes.L());
-  
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(5.0f, 8.0f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrLightInstance(scnRef, sphere1, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(-5.0f, 8.0f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrLightInstance(scnRef, sphere2, mRes.L());
-  
-  
-  ///////////
+
+  AddMeshToScene(scnRef, cubeOpen, float3(0, 3, 0), float3(0, 180, 0));
+  AddMeshToScene(scnRef, sph1, float3(-3, 4.25f, 0));
+  AddMeshToScene(scnRef, sph1, float3(-3, 4.25f, 0), float3(), float3(0.65f, 0.65f, 0.65f));
+  AddMeshToScene(scnRef, sph2, float3(3, 4.25f, 0));
+  AddLightToScene(scnRef, sphere1, float3(5, 8, 0));
+  AddLightToScene(scnRef, sphere2, float3(-5, 8, 0));
   
   hrSceneClose(scnRef);
   
   hrFlush(scnRef, renderRef);
-  
+
+  ////////////////////
+  // Rendering, save and check image
+  ////////////////////
+
   RenderProgress(renderRef);
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_402/z_out.png");
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
   
-  return check_images("test_402", 1, 37);  
+  return check_images(ws2s(nameTest).c_str(), 1, 37);  
 }
 
 
 bool ALGR_TESTS::test_403_light_inside_double_glass()
 {
-  hrErrorCallerPlace(L"test_403");
+  std::wstring nameTest                = L"test_403";
+  std::filesystem::path libraryPath    = L"tests_algorithm/" + nameTest;
+  std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+  hrErrorCallerPlace(nameTest.c_str());
+  hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
   
-  hrSceneLibraryOpen(L"tests_algorithm/test_403", HR_WRITE_DISCARD);
-  
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Materials
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////  
   
-  HRMaterialRef matGray  = hrMaterialCreate(L"matGray");
-  HRMaterialRef matGlass = hrMaterialCreate(L"matGlass");
+  auto matGray  = hrMaterialCreate(L"matGray");
+  auto matGlass = hrMaterialCreate(L"matGlass");  
   
   hrMaterialOpen(matGray, HR_WRITE_DISCARD);
   {
     auto matNode = hrMaterialParamNode(matGray);
-    
-    auto diff = matNode.append_child(L"diffuse");
-    diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    
-    auto color = diff.append_child(L"color");
-    color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+    AddDiffuseNode(matNode, L"0.5 0.5 0.5");
   }
   hrMaterialClose(matGray);
   
@@ -568,80 +351,30 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
   }
   hrMaterialClose(matGlass);
   
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Meshes
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  HRMeshRef sph1     = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64),  matGlass.id);
-  HRMeshRef sph2     = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64),  matGlass.id);
-  HRMeshRef cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f), matGray.id);
+  ////////////////////
   
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  auto sph1     = HRMeshFromSimpleMesh(L"sph1", CreateSphere(2.0f, 64),  matGlass.id);
+  auto sph2     = HRMeshFromSimpleMesh(L"sph2", CreateSphere(2.0f, 64),  matGlass.id);
+  auto cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f), matGray.id);
+  
+  ////////////////////
   // Light
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
+
+  auto sphere1 = CreateLight(L"sphere1", L"area", L"sphere", L"uniform", 0.1f, 0.1f, L"1 0.5 1", 200.0f * IRRADIANCE_TO_RADIANCE);
+  auto sphere2 = CreateLight(L"sphere1", L"area", L"sphere", L"uniform", 0.1f, 0.1f, L"0.5 1 0.5", 200.0f * IRRADIANCE_TO_RADIANCE);
   
-  HRLightRef sphere1 = hrLightCreate(L"sphere1");
-  
-  hrLightOpen(sphere1, HR_WRITE_DISCARD);
-  {
-    auto lightNode = hrLightParamNode(sphere1);
-    
-    lightNode.attribute(L"type").set_value(L"area");
-    lightNode.attribute(L"shape").set_value(L"sphere");
-    lightNode.attribute(L"distribution").set_value(L"uniform");
-    
-    auto intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 0.5 1");
-    intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(200.0*IRRADIANCE_TO_RADIANCE);
-    
-    auto sizeNode = lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.1f);
-    VERIFY_XML(lightNode);
-  }
-  hrLightClose(sphere1);
-  
-  HRLightRef sphere2 = hrLightCreate(L"sphere2");
-  
-  hrLightOpen(sphere2, HR_WRITE_DISCARD);
-  {
-    auto lightNode = hrLightParamNode(sphere2);
-    
-    lightNode.attribute(L"type").set_value(L"area");
-    lightNode.attribute(L"shape").set_value(L"sphere");
-    lightNode.attribute(L"distribution").set_value(L"uniform");
-    
-    auto intensityNode = lightNode.append_child(L"intensity");
-    intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.5 1 0.5");
-    intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(200.0f*IRRADIANCE_TO_RADIANCE);
-    
-    lightNode.append_child(L"size").append_attribute(L"radius").set_value(0.1f);
-    VERIFY_XML(lightNode);
-  }
-  hrLightClose(sphere2);
-  
-  
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Camera
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
+
+  CreateCamera(45, L"0 3 18", L"0 3 0");
   
-  HRCameraRef camRef = hrCameraCreate(L"my camera");
-  
-  hrCameraOpen(camRef, HR_WRITE_DISCARD);
-  {
-    auto camNode = hrCameraParamNode(camRef);
-    
-    camNode.append_child(L"fov").text().set(L"45");
-    camNode.append_child(L"nearClipPlane").text().set(L"0.01");
-    camNode.append_child(L"farClipPlane").text().set(L"100.0");
-    
-    camNode.append_child(L"up").text().set(L"0 1 0");
-    camNode.append_child(L"position").text().set(L"0 3 18");
-    camNode.append_child(L"look_at").text().set(L"0 3 0");
-  }
-  hrCameraClose(camRef);
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Render settings
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   
   //HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
   
@@ -669,79 +402,22 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
     node.append_child(L"resources_path").text()   = L"..";
     node.append_child(L"offline_pt").text()       = 0;
   }
-  hrRenderClose(renderRef);
+  hrRenderClose(renderRef);  
   
-  
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////
   // Create scene
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
-  
-  using namespace LiteMath;
-  
-  float4x4 mRot;
-  float4x4 mTranslate;
-  float4x4 mScale;
-  float4x4 mRes;
-  
-  
+  ////////////////////
+
+  auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+
   hrSceneOpen(scnRef, HR_WRITE_DISCARD);
-  ///////////
-  
-  mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
-  mRot       = rotate4x4Y(180.0f*DEG_TO_RAD);
-  mRes       = mul(mTranslate, mRot);
-  
-  hrMeshInstance(scnRef, cubeOpen, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(-3.0f, 4.25f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrMeshInstance(scnRef, sph1, mRes.L());
-  
-  mScale = scale4x4(float3(0.65f, 0.65f, 0.65f));
-  mRes   = mul(mTranslate, mScale);
-  hrMeshInstance(scnRef, sph1, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(3.0f, 4.25f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrMeshInstance(scnRef, sph2, mRes.L());
-  
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(5.0f, 8.0f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrLightInstance(scnRef, sphere1, mRes.L());
-  
-  ///////////
-  
-  mTranslate.identity();
-  mRes.identity();
-  
-  mTranslate = translate4x4(float3(-3.0f, 4.25f, 0.0f));
-  mRes       = mul(mTranslate, mRes);
-  
-  hrLightInstance(scnRef, sphere2, mRes.L());
-  
-  
-  ///////////
+
+  AddMeshToScene(scnRef, cubeOpen, float3(0, 3, 0), float3(0, 180, 0));
+  AddMeshToScene(scnRef, sph1, float3(-3, 4.25f, 0));
+  AddMeshToScene(scnRef, sph1, float3(-3, 4.25f, 0), float3(), float3(0.65f, 0.65f, 0.65f));
+  AddMeshToScene(scnRef, sph2, float3(3, 4.25f, 0));
+  AddLightToScene(scnRef, sphere1, float3(5, 8, 0));
+  AddLightToScene(scnRef, sphere2, float3(-3, 4.25f, 0));
   
   hrSceneClose(scnRef);
   
@@ -753,10 +429,9 @@ bool ALGR_TESTS::test_403_light_inside_double_glass()
 
   RenderProgress(renderRef);
 
-  hrRenderSaveFrameBufferLDR(renderRef, L"tests_images/test_403/z_out.png");
-  
-  return check_images("test_403", 1, 75);
-  //return false;
+  hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
+
+  return check_images(ws2s(nameTest).c_str(), 1, 75);
 }
 
 
@@ -764,6 +439,8 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
 {
   for (int algId = 0; algId < 3; algId++)
   { 
+    std::cout << std::endl << "Algorithm " << algId + 1 << std::endl;
+
     switch (algId)
     {
       case 0 :
@@ -777,7 +454,7 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
           node.force_child(L"method_caustic").text()   = L"pathtracing";
           node.force_child(L"qmc_variant").text()      = QMC_ALL;
 
-          node.force_child(L"maxRaysPerPixel").text()  = 2048;
+          node.force_child(L"maxRaysPerPixel").text() = 2048;
         }
         hrRenderClose(renderRef);
       }
@@ -833,16 +510,18 @@ void test_three_algorithms(HRSceneInstRef scnRef, HRRenderRef renderRef, const s
 
     hrRenderSaveFrameBufferLDR(renderRef, a_outPath[algId].c_str());
 
-    std::cout << std::endl << "render time = " << timer.getElapsed() << " sec " << std::endl;
-    std::cout << std::endl << "<--- next algorithm --->" << std::endl;    
+    std::cout << std::endl << "render time = " << timer.getElapsed() << " sec " << std::endl;    
   }
 }
 
 
 bool ALGR_TESTS::test_404_cornell_glossy()                   
 {
-  hrErrorCallerPlace(L"test_404");                            
-  if(!hrSceneLibraryOpen(L"tests_algorithm/test_404", HR_OPEN_EXISTING))
+  std::wstring nameTest                = L"test_404";
+  std::filesystem::path libraryPath    = L"tests_algorithm/" + nameTest;
+
+  hrErrorCallerPlace(nameTest.c_str());
+  if(!hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_OPEN_EXISTING))
     return false;
 
   /////////////////////////////////////////////////////////
@@ -870,14 +549,17 @@ bool ALGR_TESTS::test_404_cornell_glossy()
   remove("tests_algorithm/test_404/change_00002.xml");
   remove("tests_algorithm/test_404/change_00003.xml");
 
-  return check_images("test_404", 3, 50);
+  return check_images(ws2s(nameTest).c_str(), 3, 50);
 }
 
 
 bool ALGR_TESTS::test_405_cornell_with_mirror()
 {
-  hrErrorCallerPlace(L"test_405");                            
-  if(!hrSceneLibraryOpen(L"tests_algorithm/test_405", HR_OPEN_EXISTING))
+  std::wstring nameTest                = L"test_405";
+  std::filesystem::path libraryPath    = L"tests_algorithm/" + nameTest;
+
+  hrErrorCallerPlace(nameTest.c_str());
+  if(!hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_OPEN_EXISTING))
     return false;
 
   /////////////////////////////////////////////////////////
@@ -905,14 +587,17 @@ bool ALGR_TESTS::test_405_cornell_with_mirror()
   remove("tests_algorithm/test_405/change_00002.xml");
   remove("tests_algorithm/test_405/change_00003.xml");
 
-  return check_images("test_405", 3, 30);
+  return check_images(ws2s(nameTest).c_str(), 3, 27);
 }
 
 
 bool ALGR_TESTS::test_406_env_glass_ball_caustic()
 {
-  hrErrorCallerPlace(L"test_406");                            
-  if(!hrSceneLibraryOpen(L"tests_algorithm/test_406", HR_OPEN_EXISTING))
+  std::wstring nameTest                = L"test_406";
+  std::filesystem::path libraryPath    = L"tests_algorithm/" + nameTest;
+
+  hrErrorCallerPlace(nameTest.c_str());
+  if(!hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_OPEN_EXISTING))
     return false;
 
   /////////////////////////////////////////////////////////
@@ -920,7 +605,7 @@ bool ALGR_TESTS::test_406_env_glass_ball_caustic()
   HRSceneInstRef scnRef;
   {
     renderRef.id = 0;  // get first render 
-    scnRef.id = 0;  // and first scene
+    scnRef.id    = 0;  // and first scene
   }
   /////////////////////////////////////////////////////////
 
@@ -940,5 +625,5 @@ bool ALGR_TESTS::test_406_env_glass_ball_caustic()
   remove("tests_algorithm/test_406/change_00002.xml");
   remove("tests_algorithm/test_406/change_00003.xml");
 
-  return check_images("test_406", 3, 20);
+  return check_images(ws2s(nameTest).c_str(), 3, 12);
 }
