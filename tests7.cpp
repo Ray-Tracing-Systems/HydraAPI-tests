@@ -1398,7 +1398,7 @@ bool test_046_light_geom_rect()
   for (size_t i = 0; i < plane.vTexCoord.size(); i++)
     plane.vTexCoord[i] *= 2.0f;
 
-  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFileDL(L"data/textures/chess_red.bmp");
+  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_red.bmp");
 
   HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
   HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat2");
@@ -1470,7 +1470,7 @@ bool test_046_light_geom_rect()
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
     diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/163.jpg");
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/163.jpg");
     hrTextureBind(testTex, diff);
   }
   hrMaterialClose(mat3);
@@ -1495,7 +1495,7 @@ bool test_046_light_geom_rect()
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
     diff.append_child(L"color").text().set(L"0.75 0.75 0.25");
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/texture1.bmp");
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
     hrTextureBind(testTex, diff);
   }
   hrMaterialClose(mat5);
@@ -1536,7 +1536,7 @@ bool test_046_light_geom_rect()
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  HRMeshRef teapotRef   = hrMeshCreateFromFileDL(L"data/meshes/teapot.vsgf", false);
+  HRMeshRef teapotRef   = hrMeshCreateFromFile(L"data/meshes/teapot.vsgf");
   //HRMeshRef teapotRef   = hrMeshCreateFromFileDL(L"/home/frol/temp/original.vsgf", false);
   //HRMeshRef teapotRef   = hrMeshCreateFromFileDL(L"/home/frol/temp/decompressed.vsgf", false);
 
@@ -1802,7 +1802,7 @@ bool test_047_light_geom_disk()
   for (size_t i = 0; i < plane.vTexCoord.size(); i++)
     plane.vTexCoord[i] *= 2.0f;
 
-  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFileDL(L"data/textures/chess_red.bmp");
+  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_red.bmp");
 
   HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
   HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat2");
@@ -1874,7 +1874,7 @@ bool test_047_light_geom_disk()
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
     diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/163.jpg");
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/163.jpg");
     hrTextureBind(testTex, diff);
   }
   hrMaterialClose(mat3);
@@ -1899,7 +1899,7 @@ bool test_047_light_geom_disk()
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
     diff.append_child(L"color").text().set(L"0.75 0.75 0.25");
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/texture1.bmp");
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
     hrTextureBind(testTex, diff);
   }
   hrMaterialClose(mat5);
@@ -1940,7 +1940,7 @@ bool test_047_light_geom_disk()
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  HRMeshRef teapotRef = hrMeshCreateFromFileDL(L"data/meshes/teapot.vsgf"); // chunk_00009.vsgf // teapot.vsgf // chunk_00591.vsgf
+  HRMeshRef teapotRef = hrMeshCreateFromFile(L"data/meshes/teapot.vsgf"); // chunk_00009.vsgf // teapot.vsgf // chunk_00591.vsgf
 
   HRMeshRef cubeOpenRef = hrMeshCreate(L"my_box");
   HRMeshRef planeRef = hrMeshCreate(L"my_plane");
@@ -2152,16 +2152,18 @@ bool test_047_light_geom_disk()
   mat4x4_identity(mTranslate);
   mat4x4_identity(mRot1);
   mat4x4_identity(mRot2);
-
+  
   mat4x4_translate(mTranslate, 1.0f, 3.5f, -1.0f);
   mat4x4_rotate_Y(mRot1, mRot1, -30.0f*DEG_TO_RAD);
   mat4x4_rotate_X(mRot2, mRot2, -30.0f*DEG_TO_RAD);
   mRot1[3][3] = 1.0f;
   mRot2[3][3] = 1.0f;
-
+  
   mat4x4_mul(mRot1, mRot1, mRot2);
   mat4x4_mul(mRes, mTranslate, mRot1);
   mRes[3][3] = 1.0f;
+
+  //mat4x4_translate(mRes, 1.0f, 3.5f, -1.0f);
   
   mat4x4_transpose(matrixT, mRes);
   hrLightInstance(scnRef, rectLight, &matrixT[0][0]);
