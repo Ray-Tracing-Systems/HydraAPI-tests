@@ -221,7 +221,7 @@ int main(int argc, const char** argv)
     // Test list for hydra3
     ////////////////////////
          
-    if(true)
+    if(true) // run tests to generate data for hydra3
     {
       test_046_light_geom_rect();
       test_047_light_geom_disk();
@@ -237,6 +237,7 @@ int main(int argc, const char** argv)
       MTL_TESTS::test_127_normal_map_height();
       
       LGHT_TESTS::test_201_sphere();
+      LGHT_TESTS::test_213_point_omni();
       LGHT_TESTS::test_215_light_scale_intensity();
       LGHT_TESTS::test_223_rotated_area_light();
       LGHT_TESTS::test_224_rotated_area_light2();
