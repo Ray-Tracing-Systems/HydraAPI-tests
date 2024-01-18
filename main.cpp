@@ -241,6 +241,7 @@ int main(int argc, const char** argv)
       LGHT_TESTS::test_215_light_scale_intensity();
       LGHT_TESTS::test_223_rotated_area_light();
       LGHT_TESTS::test_224_rotated_area_light2();
+      LGHT_TESTS::test_228_point_ies_for_bpt();
       LGHT_TESTS::test_246_disk();
       LGHT_TESTS::test_247_light_scale_intensity();
     }
