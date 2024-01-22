@@ -220,8 +220,13 @@ int main(int argc, const char** argv)
     ////////////////////////
     // Test list for hydra3
     ////////////////////////
+    //LGHT_TESTS::test_206_ies1();
+    //LGHT_TESTS::test_207_ies2();
+    //LGHT_TESTS::test_208_ies3();
+    //LGHT_TESTS::test_216_ies4(); 
+    LGHT_TESTS::test_232_point_area_ies();    
          
-    if(true) // run tests to generate data for hydra3
+    if(false) // run tests to generate data for hydra3
     {
       test_046_light_geom_rect();
       test_047_light_geom_disk();
@@ -237,6 +242,12 @@ int main(int argc, const char** argv)
       MTL_TESTS::test_127_normal_map_height();
       
       LGHT_TESTS::test_201_sphere();
+      LGHT_TESTS::test_206_ies1();
+      LGHT_TESTS::test_207_ies2();
+      LGHT_TESTS::test_208_ies3();
+      LGHT_TESTS::test_216_ies4();
+      LGHT_TESTS::test_232_point_area_ies();
+
       LGHT_TESTS::test_213_point_omni();
       LGHT_TESTS::test_215_light_scale_intensity();
       LGHT_TESTS::test_223_rotated_area_light();
