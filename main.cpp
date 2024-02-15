@@ -220,10 +220,9 @@ int main(int argc, const char** argv)
     ////////////////////////
     // Test list for hydra3
     ////////////////////////
-    //LGHT_TESTS::test_206_ies1();
-    //LGHT_TESTS::test_207_ies2();
-    //LGHT_TESTS::test_208_ies3();
-    //LGHT_TESTS::test_216_ies4(); 
+    
+    //LGHT_TESTS::test_203_sky_hdr();
+    //LGHT_TESTS::test_204_sky_hdr_rotate();  
     //LGHT_TESTS::test_214_sky_ldr();  
 
     if(true) // run tests to generate data for hydra3
