@@ -220,16 +220,13 @@ int main(int argc, const char** argv)
     ////////////////////////
     // Test list for hydra3
     ////////////////////////
-    //LGHT_TESTS::test_206_ies1();
-    //LGHT_TESTS::test_207_ies2();
-    //LGHT_TESTS::test_208_ies3();
-    //LGHT_TESTS::test_216_ies4(); 
-    //LGHT_TESTS::test_248_rotated_area_mis_specular();    
-         
-    if(false) // run tests to generate data for hydra3
-    {
-      test_046_light_geom_rect();
-      test_047_light_geom_disk();
+    
+    //LGHT_TESTS::test_203_sky_hdr();
+    //LGHT_TESTS::test_204_sky_hdr_rotate();  
+    //LGHT_TESTS::test_214_sky_ldr();  
+
+    if(true) // run tests to generate data for hydra3
+    { 
       test_078_material_remap_list1();
       test_079_material_remap_list2();
       
@@ -242,6 +239,10 @@ int main(int argc, const char** argv)
       MTL_TESTS::test_127_normal_map_height();
       
       LGHT_TESTS::test_201_sphere();
+      LGHT_TESTS::test_203_sky_hdr();
+      LGHT_TESTS::test_204_sky_hdr_rotate();  
+      LGHT_TESTS::test_214_sky_ldr();  
+
       LGHT_TESTS::test_206_ies1();
       LGHT_TESTS::test_207_ies2();
       LGHT_TESTS::test_208_ies3();

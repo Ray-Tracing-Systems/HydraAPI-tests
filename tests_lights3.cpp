@@ -503,7 +503,6 @@ namespace LGHT_TESTS
       intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(10.0f*IRRADIANCE_TO_RADIANCE);
 
       auto honioNode = lightNode.append_child(L"ies");
-
       honioNode.append_attribute(L"data")   = L"data/ies/ies_1.ies";
       honioNode.append_attribute(L"matrix") = L"1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1";
 
@@ -825,7 +824,6 @@ namespace LGHT_TESTS
     // Meshes
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     HRMeshRef sph1     = HRMeshFromSimpleMesh(L"sph1",    CreateSphere(2.0f, 64), matGray.id);
-    HRMeshRef sph2     = HRMeshFromSimpleMesh(L"sph2",    CreateSphere(2.0f, 64), matGray.id);
     HRMeshRef cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f),   matGray.id);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -934,7 +932,7 @@ namespace LGHT_TESTS
     mTranslate = translate4x4(float3(3.0f, 1.25f, 0.0f));
     mRes = mul(mTranslate, mRes);
 
-    hrMeshInstance(scnRef, sph2, mRes.L());
+    hrMeshInstance(scnRef, sph1, mRes.L());
 
 
     ///////////

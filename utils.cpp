@@ -800,7 +800,7 @@ namespace TEST_UTILS
 
 
   HRRenderRef CreateBasicTestRenderPT(int a_deviceId, int a_w, int a_h, int a_minRays, int a_maxRays,
-    int a_rayBounce, int a_diffBounce, const wchar_t* a_drvName)
+                                      int a_rayBounce, int a_diffBounce, const wchar_t* a_drvName)
   {
     auto renderRef = hrRenderCreate(a_drvName);
     hrRenderEnableDevice(renderRef, a_deviceId, true);

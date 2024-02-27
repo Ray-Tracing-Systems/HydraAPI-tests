@@ -697,7 +697,7 @@ namespace LGHT_TESTS
     hrMaterialOpen(matRefl, HR_WRITE_DISCARD);
     {
       auto matNode = hrMaterialParamNode(matRefl);
-      AddReflectionNode(matNode, L"torranse_sparrow", L"0.9 0.9 0.9", 0.98, true, 8);
+      AddReflectionNode(matNode, L"ggx", L"0.6 0.6 0.6", 0.95, false, 10);
     }
     hrMaterialClose(matRefl);
 
@@ -756,7 +756,7 @@ namespace LGHT_TESTS
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096);
 
     ////////////////////
     // Create scene
@@ -826,12 +826,12 @@ namespace LGHT_TESTS
       auto matNode = hrMaterialParamNode(matRefl);
 
       auto refl = matNode.append_child(L"reflectivity");
-      refl.append_attribute(L"brdf_type").set_value(L"torranse_sparrow");
-      refl.append_child(L"color").append_attribute(L"val").set_value(L"0.9 0.9 0.9");
-      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.98");
+      refl.append_attribute(L"brdf_type").set_value(L"ggx");
+      refl.append_child(L"color").append_attribute(L"val").set_value(L"0.6 0.6 0.6");
+      refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"0.95");
       refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
-      refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
-      refl.append_child(L"fresnel_IOR").append_attribute(L"val").set_value(8.0f);
+      refl.append_child(L"fresnel").append_attribute(L"val").set_value(0);
+      refl.append_child(L"fresnel_IOR").append_attribute(L"val").set_value(10.0f);
     }
     hrMaterialClose(matRefl);
 
@@ -907,7 +907,7 @@ namespace LGHT_TESTS
     // Render settings
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRRenderRef renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 512, 512, 512, 4096);
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 512, 4096);
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3680,9 +3680,7 @@ namespace LGHT_TESTS
 		HRMaterialRef matGray = hrMaterialCreate(L"matGray");
 		HRMaterialRef matRefl = hrMaterialCreate(L"matRefl");
 
-
 		HRTextureNodeRef texEnv = hrTexture2DCreateFromFile(L"data/textures/LA_Downtown_Afternoon_Fishing_B_8k.jpg");
-
 
 		hrMaterialOpen(matGray, HR_WRITE_DISCARD);
 		{
@@ -3699,14 +3697,13 @@ namespace LGHT_TESTS
 		hrMaterialOpen(matRefl, HR_WRITE_DISCARD);
 		{
 			auto matNode = hrMaterialParamNode(matRefl);
-
 			auto refl = matNode.append_child(L"reflectivity");
-			refl.append_attribute(L"brdf_type").set_value(L"torranse_sparrow");
-			refl.append_child(L"color").append_attribute(L"val").set_value(L"0.8 0.8 0.8");
-			refl.append_child(L"glossiness").append_attribute(L"val").set_value(L"1.0");
-			refl.append_child(L"extrusion").append_attribute(L"val").set_value(L"maxcolor");
-			refl.append_child(L"fresnel").append_attribute(L"val").set_value(1);
-			refl.append_child(L"fresnel_IOR").append_attribute(L"val").set_value(8.0f);
+			refl.append_attribute(L"brdf_type")                        = L"ggx";
+			refl.append_child(L"color").append_attribute(L"val")       = L"0.65 0.65 0.65";
+			refl.append_child(L"glossiness").append_attribute(L"val")  = 1.0f;
+			refl.append_child(L"extrusion").append_attribute(L"val")   = L"maxcolor";
+			refl.append_child(L"fresnel").append_attribute(L"val")     = 0.0f;
+			refl.append_child(L"fresnel_IOR").append_attribute(L"val") = 1.5f;
 		}
 		hrMaterialClose(matRefl);
 
@@ -3780,7 +3777,7 @@ namespace LGHT_TESTS
 		// Render settings
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		HRRenderRef renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
+		HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 2048);
 
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
