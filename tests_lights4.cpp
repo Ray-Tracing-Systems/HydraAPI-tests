@@ -2523,4 +2523,127 @@ namespace LGHT_TESTS
 
     return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
+
+  bool test_248_rotated_area_mis_specular()
+  {
+    std::wstring nameTest                 = L"test_248";
+    std::filesystem::path libraryPath     = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile  = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
+    // Materials
+    ////////////////////
+
+    auto mat_red    = hrMaterialCreate(L"red");
+    auto mat_green  = hrMaterialCreate(L"green");
+    auto mat_white  = hrMaterialCreate(L"white");    
+    auto mat_glossy = hrMaterialCreate(L"glossy_wall_mat");
+    auto mat_mirror = hrMaterialCreate(L"mirror");
+
+    hrMaterialOpen(mat_red, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(mat_red);
+      AddDiffuseNode(matNode, L"0.5 0 0");
+    }
+    hrMaterialClose(mat_red);
+
+    hrMaterialOpen(mat_green, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(mat_green);
+      AddDiffuseNode(matNode, L"0 0.5 0");
+    }
+    hrMaterialClose(mat_green);
+
+    hrMaterialOpen(mat_white, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(mat_white);
+      AddDiffuseNode(matNode, L"0.7 0.7 0.7");
+    }
+    hrMaterialClose(mat_white);
+
+    hrMaterialOpen(mat_glossy, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat_glossy);
+      AddReflectionNode(matNode, L"ggx", L"0.5 0.5 0.5", 0.85, false);
+    }
+    hrMaterialClose(mat_glossy);
+
+    hrMaterialOpen(mat_mirror, HR_WRITE_DISCARD);
+    {
+      xml_node matNode = hrMaterialParamNode(mat_mirror);
+      AddReflectionNode(matNode, L"ggx", L"0.85 0.85 0.85", 1.0, false);
+    }
+    hrMaterialClose(mat_mirror);
+
+    ////////////////////
+    // Meshes
+    ////////////////////
+    
+    auto cubeOpen    = CreateCubeOpen(4.0f);
+    auto teapotRef   = hrMeshCreateFromFile(L"data/meshes/teapot.vsgf"); // chunk_00009.vsgf // teapot.vsgf // chunk_00591.vsgf
+    auto cubeOpenRef = hrMeshCreate(L"my_box");
+
+    hrMeshOpen(cubeOpenRef, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
+    {
+      hrMeshVertexAttribPointer4f(cubeOpenRef, L"pos", &cubeOpen.vPos[0]);
+      hrMeshVertexAttribPointer4f(cubeOpenRef, L"norm", &cubeOpen.vNorm[0]);
+      hrMeshVertexAttribPointer2f(cubeOpenRef, L"texcoord", &cubeOpen.vTexCoord[0]);
+
+      int cubeMatIndices[10] = { mat_white.id, mat_white.id, mat_white.id, mat_glossy.id, mat_glossy.id, mat_glossy.id, mat_green.id, mat_green.id, mat_red.id, mat_red.id };
+
+      //hrMeshMaterialId(cubeRef, 0);
+      hrMeshPrimitiveAttribPointer1i(cubeOpenRef, L"mind", cubeMatIndices);
+      hrMeshAppendTriangles3(cubeOpenRef, int(cubeOpen.triIndices.size()), &cubeOpen.triIndices[0]);
+    }
+    hrMeshClose(cubeOpenRef);
+
+    ////////////////////
+    // Light
+    ////////////////////
+
+    auto rectLight = CreateLight(L"my_area_light", L"area", L"rect", L"diffuse", 0.5f, 1, L"1 1 1", 10.0f * IRRADIANCE_TO_RADIANCE);
+
+    ////////////////////
+    // Camera
+    ////////////////////
+
+    CreateCamera(45, L"0 0 14", L"0 0 0");
+
+    ////////////////////
+    // Render settings
+    ////////////////////
+
+    auto renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 4096, 10, 10);
+
+    ////////////////////
+    // Create scene
+    ////////////////////
+    
+    auto scnRef = hrSceneCreate((L"scene_" + nameTest).c_str());
+
+    hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+    int32_t remapList[2] = { 1, mat_mirror.id };    
+    AddMeshToScene(scnRef, teapotRef,   float3(0, -0.7f * 3.65f, 0), float3(), float3(3.65f, 3.65f, 3.65f), remapList, 2);
+    AddMeshToScene(scnRef, cubeOpenRef, float3(0, 0, 0), float3(0, 180, 0));
+    AddLightToScene(scnRef, rectLight,  float3(-2.7f, 3, 0), float3(30, 20, 0));
+    AddLightToScene(scnRef, rectLight,  float3(3, 3.85, -2.85f));
+
+    hrSceneClose(scnRef);
+      
+    hrFlush(scnRef, renderRef);
+  
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 20);
+  }
 };

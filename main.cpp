@@ -224,7 +224,7 @@ int main(int argc, const char** argv)
     //LGHT_TESTS::test_207_ies2();
     //LGHT_TESTS::test_208_ies3();
     //LGHT_TESTS::test_216_ies4(); 
-    LGHT_TESTS::test_232_point_area_ies();    
+    //LGHT_TESTS::test_248_rotated_area_mis_specular();    
          
     if(false) // run tests to generate data for hydra3
     {
@@ -255,6 +255,7 @@ int main(int argc, const char** argv)
       LGHT_TESTS::test_228_point_ies_for_bpt();
       LGHT_TESTS::test_246_disk();
       LGHT_TESTS::test_247_light_scale_intensity();
+      LGHT_TESTS::test_248_rotated_area_mis_specular();    
     }
 
     //run_all_microfacet_torrance_sparrow();
