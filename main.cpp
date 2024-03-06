@@ -227,9 +227,8 @@ int main(int argc, const char** argv)
 
     if(true) // run tests to generate data for hydra3
     { 
-      test_078_material_remap_list1();
-      test_079_material_remap_list2();
-      
+      GEO_TESTS::test_304_dof();
+
       MTL_TESTS::test_101_diffuse_lambert_orbspec_mat01();
       MTL_TESTS::test_102_mirror_orbspec_mat02();
       MTL_TESTS::test_103_diffuse_texture();
@@ -256,7 +255,10 @@ int main(int argc, const char** argv)
       LGHT_TESTS::test_228_point_ies_for_bpt();
       LGHT_TESTS::test_246_disk();
       LGHT_TESTS::test_247_light_scale_intensity();
-      LGHT_TESTS::test_248_rotated_area_mis_specular();    
+      LGHT_TESTS::test_248_rotated_area_mis_specular();  
+
+      test_078_material_remap_list1();
+      test_079_material_remap_list2();
     }
 
     //run_all_microfacet_torrance_sparrow();
