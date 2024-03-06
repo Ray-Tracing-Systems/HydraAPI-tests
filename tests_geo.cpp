@@ -365,7 +365,7 @@ namespace GEO_TESTS
     auto sky         = CreateSky(L"sky", L"0.25 0.25 0.5", 1);
 
     auto directLight = CreateLight(L"Light01", L"directional", L"point", L"diffuse", 0, 0, L"1 1 1",
-      2.0f * IRRADIANCE_TO_RADIANCE, true, 10, 20);
+                                    2.0f * IRRADIANCE_TO_RADIANCE, true, 100, 200); // 10 and 20 previously
     
     ////////////////////
     // Camera

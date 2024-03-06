@@ -224,6 +224,7 @@ int main(int argc, const char** argv)
     //LGHT_TESTS::test_203_sky_hdr();
     //LGHT_TESTS::test_204_sky_hdr_rotate();  
     //LGHT_TESTS::test_214_sky_ldr();  
+    //GEO_TESTS::test_304_dof();
 
     if(true) // run tests to generate data for hydra3
     { 
