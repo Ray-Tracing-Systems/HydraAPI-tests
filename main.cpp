@@ -222,10 +222,9 @@ int main(int argc, const char** argv)
     ////////////////////////
     
     //LGHT_TESTS::test_203_sky_hdr();
-    //LGHT_TESTS::test_204_sky_hdr_rotate();  
-    //LGHT_TESTS::test_214_sky_ldr();  
+    //LGHT_TESTS::test_249_point_spot_projective();
     //GEO_TESTS::test_304_dof();
-
+  
     if(true) // run tests to generate data for hydra3
     { 
       GEO_TESTS::test_304_dof();
@@ -253,11 +252,13 @@ int main(int argc, const char** argv)
       LGHT_TESTS::test_215_light_scale_intensity();
       LGHT_TESTS::test_223_rotated_area_light();
       LGHT_TESTS::test_224_rotated_area_light2();
+      LGHT_TESTS::test_225_point_spot_simple();
       LGHT_TESTS::test_228_point_ies_for_bpt();
       LGHT_TESTS::test_246_disk();
       LGHT_TESTS::test_247_light_scale_intensity();
-      LGHT_TESTS::test_248_rotated_area_mis_specular();  
-
+      LGHT_TESTS::test_248_rotated_area_mis_specular();
+      LGHT_TESTS::test_249_point_spot_projective();
+  
       test_078_material_remap_list1();
       test_079_material_remap_list2();
     }

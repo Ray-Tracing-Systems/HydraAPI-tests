@@ -492,6 +492,7 @@ namespace LGHT_TESTS
   bool test_246_disk();
   bool test_247_light_scale_intensity();
   bool test_248_rotated_area_mis_specular();
+  bool test_249_point_spot_projective();
 }
 
 

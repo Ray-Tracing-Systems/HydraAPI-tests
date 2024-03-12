@@ -2646,4 +2646,186 @@ namespace LGHT_TESTS
 
     return check_images(ws2s(nameTest).c_str(), 1, 20);
   }
+
+  bool test_249_point_spot_projective()
+  {
+    std::wstring nameTest                = L"test_249";
+    std::filesystem::path libraryPath    = L"tests_f/"      + nameTest;
+    std::filesystem::path saveRenderFile = L"tests_images/" + nameTest + L"/z_out.png";
+
+    hrErrorCallerPlace(nameTest.c_str());
+    hrSceneLibraryOpen(libraryPath.wstring().c_str(), HR_WRITE_DISCARD);
+    
+    ////////////////////
+    // Materials
+    ////////////////////
+
+    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+
+    hrMaterialOpen(matGray, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matGray);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+      color.append_attribute(L"val").set_value(L"0.5 0.5 0.5");
+
+			VERIFY_XML(matNode);
+    }
+    hrMaterialClose(matGray);
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Meshes
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    HRMeshRef sph1     = HRMeshFromSimpleMesh(L"sph1",    CreateSphere(2.0f, 64), matGray.id);
+    HRMeshRef sph2     = HRMeshFromSimpleMesh(L"sph2",    CreateSphere(2.0f, 64), matGray.id);
+    HRMeshRef cubeOpen = HRMeshFromSimpleMesh(L"my_cube", CreateCubeOpen(6.0f),   matGray.id);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Light
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    auto projectiveTexId = hrTexture2DCreateFromFile(L"data/textures/smile.png");
+
+    HRLightRef spot1 = hrLightCreate(L"spot1");
+
+    hrLightOpen(spot1, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(spot1);
+
+      lightNode.attribute(L"type").set_value(L"point");
+      lightNode.attribute(L"shape").set_value(L"point");
+      lightNode.attribute(L"distribution").set_value(L"spot");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1 1 1");
+			intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(50.0f*IRRADIANCE_TO_RADIANCE);
+
+      lightNode.append_child(L"falloff_angle").append_attribute(L"val").set_value(100);
+      lightNode.append_child(L"falloff_angle2").append_attribute(L"val").set_value(60);
+
+      auto projective = lightNode.append_child(L"projective");
+      projective.append_attribute(L"type").set_value(L"uvn");
+      
+      projective.append_child(L"fov").text() = 45;
+      projective.append_child(L"nearClipPlane").text() = 1.0f;
+      projective.append_child(L"farClipPlane").text()  = 100.0f;
+
+      auto texNode = hrTextureBind(projectiveTexId, projective);
+      texNode.append_attribute(L"addressing_mode_u") = L"clamp";
+      texNode.append_attribute(L"addressing_mode_v") = L"clamp";
+
+			VERIFY_XML(lightNode);
+    }
+    hrLightClose(spot1);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Camera
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(L"45");
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"100.0");
+
+      camNode.append_child(L"up").text().set(L"0 1 0");
+      camNode.append_child(L"position").text().set(L"0 3 18");
+      camNode.append_child(L"look_at").text().set(L"0 3 0");
+
+			VERIFY_XML(camNode);
+    }
+    hrCameraClose(camRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Render settings
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRRenderRef renderRef = CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 256);
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Create scene
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRSceneInstRef scnRef = hrSceneCreate(L"my scene");
+
+    using namespace LiteMath;
+
+    float4x4 mRot;
+    float4x4 mTranslate;
+    float4x4 mScale;
+    float4x4 mRes;
+
+    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+
+    hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+    ///////////
+
+    mTranslate.identity();
+    mRes.identity();
+    mRot.identity();
+
+
+    mTranslate = translate4x4(float3(0.0f, 3.0f, 0.0f));
+    mRot = rotate4x4Y(180.0f*DEG_TO_RAD);
+    mRes = mul(mTranslate, mRot);
+
+    hrMeshInstance(scnRef, cubeOpen, mRes.L());
+
+    ///////////
+
+    mTranslate.identity();
+    mRes.identity();
+
+    mTranslate = translate4x4(float3(-3.0f, 1.25f, 0.0f));
+    mRes = mul(mTranslate, mRes);
+
+    hrMeshInstance(scnRef, sph1, mRes.L());
+
+    ///////////
+
+    mTranslate.identity();
+    mRes.identity();
+
+    mTranslate = translate4x4(float3(3.0f, 1.25f, 0.0f));
+    mRes = mul(mTranslate, mRes);
+
+    hrMeshInstance(scnRef, sph2, mRes.L());
+
+
+    ///////////
+
+    mTranslate.identity();
+    mRes.identity();
+
+    mTranslate = translate4x4(float3(0.0f, 8.95f, -1.0f));
+    mRes = mul(mTranslate, mRes);
+
+    hrLightInstance(scnRef, spot1, mRes.L());
+
+    ///////////
+
+    hrSceneClose(scnRef);
+    hrFlush(scnRef, renderRef);
+
+    ////////////////////
+    // Rendering, save and check image
+    ////////////////////
+
+    RenderProgress(renderRef);
+
+    std::filesystem::create_directories(saveRenderFile.parent_path());
+    hrRenderSaveFrameBufferLDR(renderRef, saveRenderFile.wstring().c_str());
+
+    return check_images(ws2s(nameTest).c_str(), 1, 30);
+  }
 };
