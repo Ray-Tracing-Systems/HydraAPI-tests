@@ -361,7 +361,7 @@ bool test_037_cornell_with_light_different_image_layers()
     plane.vTexCoord[i] *= 2.0f;
 
 
-  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFileDL(L"data/textures/chess_white.bmp");
+  HRTextureNodeRef testTex2 = hrTexture2DCreateFromFile(L"data/textures/chess_white.bmp");
 
   HRMaterialRef mat0 = hrMaterialCreate(L"mysimplemat");
   HRMaterialRef mat1 = hrMaterialCreate(L"mysimplemat2");
@@ -381,10 +381,11 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.75 0.75 0.75";
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/texture1.bmp");
-    hrTextureBind(testTex, diff);
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
+    hrTextureBind(testTex, color);
   }
   hrMaterialClose(mat0);
 
@@ -395,9 +396,10 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"1 1 1");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"1 1 1";
 
-    hrTextureBind(testTex2, diff);
+    hrTextureBind(testTex2, color);
   }
   hrMaterialClose(mat1);
 
@@ -408,10 +410,11 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.75 0.75 0.75";
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/relief_wood.jpg");
-    hrTextureBind(testTex, diff);
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/relief_wood.jpg");
+    hrTextureBind(testTex, color);
   }
   hrMaterialClose(mat2);
 
@@ -422,10 +425,11 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.75 0.75 0.75");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.75 0.75 0.75";
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/163.jpg");
-    hrTextureBind(testTex, diff);
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/163.jpg");
+    hrTextureBind(testTex, color);
   }
   hrMaterialClose(mat3);
 
@@ -436,7 +440,8 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.1 0.1 0.75");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.1 0.1 0.75";
   }
   hrMaterialClose(mat4);
 
@@ -447,10 +452,11 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.75 0.75 0.25");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.75 0.75 0.25";
 
-    HRTextureNodeRef testTex = hrTexture2DCreateFromFileDL(L"data/textures/texture1.bmp");
-    hrTextureBind(testTex, diff);
+    HRTextureNodeRef testTex = hrTexture2DCreateFromFile(L"data/textures/texture1.bmp");
+    hrTextureBind(testTex, color);
   }
   hrMaterialClose(mat5);
 
@@ -461,7 +467,8 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.5 0.0 0.0");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.5 0.0 0.0";
   }
   hrMaterialClose(mat6);
 
@@ -471,7 +478,8 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.0 0.5 0.0");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.0 0.5 0.0";
   }
   hrMaterialClose(mat7);
 
@@ -481,7 +489,8 @@ bool test_037_cornell_with_light_different_image_layers()
     xml_node diff = matNode.append_child(L"diffuse");
 
     diff.append_attribute(L"brdf_type").set_value(L"lambert");
-    diff.append_child(L"color").text().set(L"0.5 0.5 0.5");
+    auto color = diff.append_child(L"color");
+    color.append_attribute(L"val") = L"0.5 0.5 0.5";
   }
   hrMaterialClose(mat8);
 

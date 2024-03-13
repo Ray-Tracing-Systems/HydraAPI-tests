@@ -259,6 +259,7 @@ int main(int argc, const char** argv)
       LGHT_TESTS::test_248_rotated_area_mis_specular();
       LGHT_TESTS::test_249_point_spot_projective();
   
+      test_037_cornell_with_light_different_image_layers();
       test_078_material_remap_list1();
       test_079_material_remap_list2();
     }
