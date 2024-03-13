@@ -536,7 +536,7 @@ namespace SPECTRAL_TESTS
     // Render settings
     ////////////////////
 
-    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1280, 720, 64, 64);
+    auto renderRef = CreateBasicTestRenderPTNoCaust(CURR_RENDER_DEVICE, 1280, 720, 512, 512);
     
     hrRenderOpen(renderRef, HR_OPEN_EXISTING);
     {
@@ -663,22 +663,10 @@ namespace SPECTRAL_TESTS
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRLightRef sky = hrLightCreate(L"sky");
+    auto sky = CreateSky(L"sky", L"1.0 1.0 1.0", 1);
 
-    hrLightOpen(sky, HR_WRITE_DISCARD);
-    {
-      auto lightNode = hrLightParamNode(sky);
-
-      lightNode.attribute(L"type").set_value(L"sky");
-
-      auto intensityNode = lightNode.append_child(L"intensity");
-
-      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"1.0 1.0 1.0");
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(1.0f);
-
-      VERIFY_XML(lightNode);
-    }
-    hrLightClose(sky);
+    // auto sun = CreateLight(L"Light01", L"directional", L"point", L"diffuse", 0, 0, L"1 1 1",
+    //   4, true, 0, 1000);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2684,6 +2672,224 @@ namespace SPECTRAL_TESTS
       }
 
     }
+  }
+
+  bool test_612_cornell_spectral_3()
+  {
+    hrErrorCallerPlace(L"test_612_cornell_spectral_3");
+
+    hrSceneLibraryOpen(L"tests/test_612_cornell_spectral_3", HR_WRITE_DISCARD);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Materials
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    std::vector<float> wavelengths;
+
+    for(int w = 400; w <= 700; w += 10)
+      wavelengths.push_back(float(w));
+
+    auto greenMaterials  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-14_new.spd", wavelengths, L"green");
+    auto redMaterials    = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-15_new.spd", wavelengths, L"red");
+    auto blueMaterials   = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-13_new.spd", wavelengths, L"blue");
+    auto yellowMaterials = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-16_new.spd", wavelengths, L"yellow");
+    auto grayMaterials = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-19_new.spd", wavelengths, L"gray");
+
+    
+
+    HRMaterialRef matGray = hrMaterialCreate(L"matGray");
+    hrMaterialOpen(matGray, HR_WRITE_DISCARD);
+    {
+      auto matNode = hrMaterialParamNode(matGray);
+
+      auto diff = matNode.append_child(L"diffuse");
+      diff.append_attribute(L"brdf_type").set_value(L"lambert");
+
+      auto color = diff.append_child(L"color");
+//      color.append_attribute(L"val").set_value(L"0.725 0.71 0.68");
+      color.append_attribute(L"val").set_value(L"0.8 0.8 0.8");
+
+      VERIFY_XML(matNode);
+    }
+    hrMaterialClose(matGray);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Meshes
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    auto simpleBox = CreateCubeOpen(1.0f);
+    HRMeshRef box = TEST_UTILS::HRMeshFromSimpleMesh(L"box", simpleBox, matGray.id);
+    hrMeshOpen(box, HR_TRIANGLE_IND3, HR_WRITE_DISCARD);
+    {
+      hrMeshVertexAttribPointer4f(box, L"pos", &simpleBox.vPos[0]);
+      hrMeshVertexAttribPointer4f(box, L"norm", &simpleBox.vNorm[0]);
+      hrMeshVertexAttribPointer2f(box, L"texcoord", &simpleBox.vTexCoord[0]);
+
+      int cubeMatIndices[10] = { matGray.id, matGray.id, matGray.id, matGray.id, matGray.id, matGray.id,
+                                 greenMaterials[0].id, greenMaterials[0].id, redMaterials[0].id, redMaterials[0].id };
+
+      hrMeshPrimitiveAttribPointer1i(box, L"mind", cubeMatIndices);
+
+      hrMeshAppendTriangles3(box, int(simpleBox.triIndices.size()), &simpleBox.triIndices[0]);
+    }
+    hrMeshClose(box);
+
+    auto tallBox = hrMeshCreateFromFile(L"data/meshes/tallbox.obj");
+    hrMeshOpen(tallBox, HR_TRIANGLE_IND3, HR_OPEN_EXISTING);
+    {
+      hrMeshMaterialId(tallBox, matGray.id);
+    }
+    hrMeshClose(tallBox);
+
+    auto smallBox = hrMeshCreateFromFile(L"data/meshes/smallbox.obj");
+    hrMeshOpen(smallBox, HR_TRIANGLE_IND3, HR_OPEN_EXISTING);
+    {
+      hrMeshMaterialId(smallBox, matGray.id);
+    }
+    hrMeshClose(smallBox);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Light
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRLightRef rectLight = hrLightCreate(L"my_area_light");
+
+    hrLightOpen(rectLight, HR_WRITE_DISCARD);
+    {
+      auto lightNode = hrLightParamNode(rectLight);
+
+      lightNode.attribute(L"type").set_value(L"area");
+      lightNode.attribute(L"shape").set_value(L"rect");
+      lightNode.attribute(L"distribution").set_value(L"diffuse");
+
+      auto sizeNode = lightNode.append_child(L"size");
+
+      sizeNode.append_attribute(L"half_length").set_value(L"0.25");
+      sizeNode.append_attribute(L"half_width").set_value(L"0.19");
+
+      auto intensityNode = lightNode.append_child(L"intensity");
+      intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.404987 0.404987 0.404987");
+
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(17.0f);
+      VERIFY_XML(lightNode);
+    }
+    hrLightClose(rectLight);
+
+    // auto lights = hr_spectral::CreateSpectralLights(rectLight, wavelengths, light, L"area_light");
+    auto lights = hr_spectral::CreateSpectralLightsD65(rectLight, wavelengths);
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Camera
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRCameraRef camRef = hrCameraCreate(L"my camera");
+
+    hrCameraOpen(camRef, HR_WRITE_DISCARD);
+    {
+      auto camNode = hrCameraParamNode(camRef);
+
+      camNode.append_child(L"fov").text().set(L"19.5");
+      camNode.append_child(L"nearClipPlane").text().set(L"0.01");
+      camNode.append_child(L"farClipPlane").text().set(L"100.0");
+
+      camNode.append_child(L"up").text().set(L"0 1 0");
+      camNode.append_child(L"position").text().set(L"0 1 6.8");
+      camNode.append_child(L"look_at").text().set(L"0 1 0");
+    }
+    hrCameraClose(camRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Render settings
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    hrRenderOpen(renderRef, HR_OPEN_EXISTING);
+    {
+      auto node = hrRenderParamNode(renderRef);
+      node.append_child(L"framebuffer_channels").text() = 1;
+//      node.force_child(L"diff_trace_depth").text() = 5;
+    }
+    hrRenderClose(renderRef);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Create scene
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const float DEG_TO_RAD = 0.01745329251f; // float(3.14159265358979323846f) / 180.0f;
+    hlm::float4x4 mScale, mRotX, mRotY, mT, mRes;
+    hlm::float4x4 identity{};
+
+    mRotY = hlm::rotate4x4Y(180.0f * DEG_TO_RAD);
+    mT = hlm::translate4x4({0.0f, 1.0f, 0.0f});
+    auto openboxMatrix = mT * mRotY;
+
+    mT = hlm::translate4x4({0.0f, 1.98f, -0.03f});
+    auto lightMatrix = mT;
+
+    std::vector<std::filesystem::path> savedImages;
+
+    HRSceneInstRef scnRef = hrSceneCreate(L"scene");
+    for(int i = 0; i < wavelengths.size(); ++i)
+    {
+      hrSceneOpen(scnRef, HR_WRITE_DISCARD);
+
+      std::vector<int> openboxRemapList = {matGray.id, grayMaterials[i].id,
+                                           greenMaterials[0].id, greenMaterials[i].id,
+                                           redMaterials[0].id, redMaterials[i].id};
+      hrMeshInstance(scnRef, box, openboxMatrix.L(), openboxRemapList.data(), openboxRemapList.size());
+
+      std::vector<int> tallboxRemapList = {matGray.id, blueMaterials[i].id};
+      hrMeshInstance(scnRef, tallBox, identity.L(), tallboxRemapList.data(), tallboxRemapList.size());
+
+      std::vector<int> smallboxRemapList = {matGray.id, yellowMaterials[i].id};
+      hrMeshInstance(scnRef, smallBox, identity.L(), smallboxRemapList.data(), smallboxRemapList.size());
+      hrLightInstance(scnRef, lights[i], lightMatrix.L());
+
+      ///////////
+
+      hrSceneClose(scnRef);
+
+      hrFlush(scnRef, renderRef, camRef);
+
+      while (true)
+      {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        HRRenderUpdateInfo info = hrRenderHaveUpdate(renderRef);
+
+        if (info.haveUpdateFB)
+        {
+          auto pres = std::cout.precision(2);
+          std::cout << "rendering progress = " << info.progress << "% \r"; std::cout.flush();
+          std::cout.precision(pres);
+        }
+
+        if (info.finalUpdate)
+          break;
+      }
+
+      std::wstringstream imgName;
+      imgName << wavelengths[i] << "nm";
+      std::wstring basePath = L"tests_images/test_612_cornell_spectral_3/";
+      const std::wstring ldrName = basePath + imgName.str() + std::wstring(L".png");
+      const std::wstring hdrName = basePath + imgName.str() + std::wstring(L".exr");
+
+      hrRenderSaveFrameBufferLDR(renderRef, ldrName.c_str());
+      hrRenderSaveFrameBufferHDR(renderRef, hdrName.c_str());
+      savedImages.push_back(hdrName);
+    }
+
+    std::filesystem::path rgbPath {"tests_images/test_612_cornell_spectral_3/z_out.exr"};
+    hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
+
+    std::filesystem::path avgPath {"tests_images/test_612_cornell_spectral_3/averageSpectrum.exr"};
+    hr_spectral::AverageSpectralImages(avgPath, savedImages);
+
+    std::filesystem::path avgPath2 {"tests_images/test_612_cornell_spectral_3/averageSpectrumV2.exr"};
+    hr_spectral::AverageSpectralImagesV2(avgPath2, savedImages, wavelengths);
+
+    std::filesystem::path yPath {"tests_images/test_612_cornell_spectral_3/Y.exr"};
+    hr_spectral::SpectralImagesToY(yPath, savedImages, wavelengths);
+
+    return check_images_HDR("test_612_cornell_spectral_3", 1, 25);
   }
 }
 

@@ -533,6 +533,7 @@ namespace SPECTRAL_TESTS
   bool test_609_object_spectral();
   bool test_610_object_spectral_manyviews();
   void test_611_combine_images();
+  bool test_612_cornell_spectral_3();
 }
 
 
