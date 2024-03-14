@@ -190,11 +190,11 @@ int main(int argc, const char** argv)
     // SPECTRAL_TESTS
     /////////////////////
 
-    //SPECTRAL_TESTS::test_601_cornell_spectral_2();
-    //SPECTRAL_TESTS::test_602_macbeth();
-    //SPECTRAL_TESTS::test_605_macbeth_2();
-    //SPECTRAL_TESTS::test_606_macbeth_3();
-    //SPECTRAL_TESTS::test_603_texture_1();
+  
+    // SPECTRAL_TESTS::test_605_macbeth_2();
+    // SPECTRAL_TESTS::test_606_macbeth_3();
+    
+    
 
     /////////////////////
     // All tests
@@ -224,8 +224,8 @@ int main(int argc, const char** argv)
     //LGHT_TESTS::test_203_sky_hdr();
     //LGHT_TESTS::test_249_point_spot_projective();
     //GEO_TESTS::test_304_dof();
-  
-    if(true) // run tests to generate data for hydra3
+    
+    if(false) // run tests to generate data for hydra3
     { 
       GEO_TESTS::test_304_dof();
 
@@ -262,6 +262,11 @@ int main(int argc, const char** argv)
       test_037_cornell_with_light_different_image_layers();
       test_078_material_remap_list1();
       test_079_material_remap_list2();
+
+      SPECTRAL_TESTS::test_601_cornell_spectral_2();
+      SPECTRAL_TESTS::test_602_macbeth();
+      SPECTRAL_TESTS::test_603_texture_1();
+      SPECTRAL_TESTS::test_612_cornell_spectral_3();
     }
 
     //run_all_microfacet_torrance_sparrow();

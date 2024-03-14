@@ -359,7 +359,7 @@ namespace SPECTRAL_TESTS
     // Render settings
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 1024, 1024);
     hrRenderOpen(renderRef, HR_OPEN_EXISTING);
     {
       auto node = hrRenderParamNode(renderRef);
@@ -435,6 +435,9 @@ namespace SPECTRAL_TESTS
 
     std::filesystem::path rgbPath {"tests_images/test_601_cornell_spectral_2/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
+
+    std::filesystem::path rgbPathLDR {"tests_images/test_601_cornell_spectral_2/z_out.png"};
+    hr_spectral::SpectralImagesToRGB(rgbPathLDR, savedImages, wavelengths);
 
     std::filesystem::path avgPath {"tests_images/test_601_cornell_spectral_2/averageSpectrum.exr"};
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
@@ -611,6 +614,9 @@ namespace SPECTRAL_TESTS
     std::filesystem::path rgbPath = saveRenderPath / "z_out.exr";
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
 
+    std::filesystem::path rgbPathLDR = saveRenderPath / "z_out.png";
+    hr_spectral::SpectralImagesToRGB(rgbPathLDR, savedImages, wavelengths);
+
     std::filesystem::path avgPath = saveRenderPath / "averageSpectrum.exr";
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
 
@@ -761,6 +767,9 @@ namespace SPECTRAL_TESTS
 
     std::filesystem::path rgbPath {"tests_images/test_603_texture_1/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
+
+    std::filesystem::path rgbPathLDR {"tests_images/test_603_texture_1/z_out.png"};
+    hr_spectral::SpectralImagesToRGB(rgbPathLDR, savedImages, wavelengths);
 
     std::filesystem::path avgPath {"tests_images/test_603_texture_1/averageSpectrum.exr"};
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
@@ -2811,7 +2820,7 @@ namespace SPECTRAL_TESTS
     // Render settings
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 256, 512);
+    HRRenderRef renderRef = TEST_UTILS::CreateBasicTestRenderPT(CURR_RENDER_DEVICE, 512, 512, 1024, 1024);
     hrRenderOpen(renderRef, HR_OPEN_EXISTING);
     {
       auto node = hrRenderParamNode(renderRef);
@@ -2890,6 +2899,9 @@ namespace SPECTRAL_TESTS
 
     std::filesystem::path rgbPath {"tests_images/test_612_cornell_spectral_3/z_out.exr"};
     hr_spectral::SpectralImagesToRGB(rgbPath, savedImages, wavelengths);
+
+    std::filesystem::path rgbPathLDR {"tests_images/test_612_cornell_spectral_3/z_out.png"};
+    hr_spectral::SpectralImagesToRGB(rgbPathLDR, savedImages, wavelengths);
 
     std::filesystem::path avgPath {"tests_images/test_612_cornell_spectral_3/averageSpectrum.exr"};
     hr_spectral::AverageSpectralImages(avgPath, savedImages);
