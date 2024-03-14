@@ -9,6 +9,7 @@
 #include "LiteMath.h"
 #include "mesh_utils.h"
 #include "HRExtensions_Spectral.h"
+#include "HRExtensions_SpectralConstants.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
 using namespace TEST_UTILS;
@@ -645,7 +646,17 @@ namespace SPECTRAL_TESTS
       texPaths[n] = path;
     }
 
-    hlm::float4x4 texMatrix;
+    hlm::float4x4 texMatrix1, texMatrix2, texMatrix3;
+    texMatrix1.m_col[3].M[0] = -0.5;
+    texMatrix1.m_col[3].M[1] = -0.5;
+
+    texMatrix2.m_col[1].M[1] = -1.0;
+
+    texMatrix3.m_col[3].M[0] = 0.5;
+    texMatrix3.m_col[3].M[1] = 0.5;
+
+    auto texMatrix = texMatrix3 * texMatrix2 * texMatrix1;
+    
     auto materials = hr_spectral::CreateSpectralTexturedDiffuseMaterials(wavelengths, texPaths, texMatrix);
 
     SimpleMesh plane = CreatePlane(4.0f);
@@ -2691,7 +2702,7 @@ namespace SPECTRAL_TESTS
 
     auto greenMaterials  = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-14_new.spd", wavelengths, L"green");
     auto redMaterials    = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-15_new.spd", wavelengths, L"red");
-    auto blueMaterials   = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-13_new.spd", wavelengths, L"blue");
+    auto pinkMaterials   = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-17_new.spd", wavelengths, L"pink");
     auto yellowMaterials = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-16_new.spd", wavelengths, L"yellow");
     auto grayMaterials = hr_spectral::CreateSpectralDiffuseMaterialsFromSPDFile("data/spectral/macbeth_spectra/macbeth-19_new.spd", wavelengths, L"gray");
 
@@ -2769,7 +2780,7 @@ namespace SPECTRAL_TESTS
       auto intensityNode = lightNode.append_child(L"intensity");
       intensityNode.append_child(L"color").append_attribute(L"val").set_value(L"0.404987 0.404987 0.404987");
 
-      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(17.0f);
+      intensityNode.append_child(L"multiplier").append_attribute(L"val").set_value(hr_spectral::D_65_MAX_VAL);
       VERIFY_XML(lightNode);
     }
     hrLightClose(rectLight);
@@ -2836,7 +2847,7 @@ namespace SPECTRAL_TESTS
                                            redMaterials[0].id, redMaterials[i].id};
       hrMeshInstance(scnRef, box, openboxMatrix.L(), openboxRemapList.data(), openboxRemapList.size());
 
-      std::vector<int> tallboxRemapList = {matGray.id, blueMaterials[i].id};
+      std::vector<int> tallboxRemapList = {matGray.id, pinkMaterials[i].id};
       hrMeshInstance(scnRef, tallBox, identity.L(), tallboxRemapList.data(), tallboxRemapList.size());
 
       std::vector<int> smallboxRemapList = {matGray.id, yellowMaterials[i].id};
