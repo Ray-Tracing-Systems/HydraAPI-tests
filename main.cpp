@@ -225,7 +225,7 @@ int main(int argc, const char** argv)
     //LGHT_TESTS::test_249_point_spot_projective();
     //GEO_TESTS::test_304_dof();
     
-    if(false) // run tests to generate data for hydra3
+    if(true) // run tests to generate data for hydra3
     { 
       GEO_TESTS::test_304_dof();
 
