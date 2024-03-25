@@ -652,17 +652,18 @@ namespace SPECTRAL_TESTS
       texPaths[n] = path;
     }
 
-    hlm::float4x4 texMatrix1, texMatrix2, texMatrix3;
-    texMatrix1.m_col[3].M[0] = -0.5;
-    texMatrix1.m_col[3].M[1] = -0.5;
+    // hlm::float4x4 texMatrix1, texMatrix2, texMatrix3;
+    // texMatrix1.m_col[3].M[0] = -0.5;
+    // texMatrix1.m_col[3].M[1] = -0.5;
 
-    texMatrix2.m_col[1].M[1] = -1.0;
+    // texMatrix2.m_col[1].M[1] = -1.0;
 
-    texMatrix3.m_col[3].M[0] = 0.5;
-    texMatrix3.m_col[3].M[1] = 0.5;
+    // texMatrix3.m_col[3].M[0] = 0.5;
+    // texMatrix3.m_col[3].M[1] = 0.5;
 
-    auto texMatrix = texMatrix3 * texMatrix2 * texMatrix1;
+    // auto texMatrix = texMatrix3 * texMatrix2 * texMatrix1;
     
+    hlm::float4x4 texMatrix;
     auto materials = hr_spectral::CreateSpectralTexturedDiffuseMaterials(wavelengths, texPaths, texMatrix);
 
     SimpleMesh plane = CreatePlane(4.0f);
