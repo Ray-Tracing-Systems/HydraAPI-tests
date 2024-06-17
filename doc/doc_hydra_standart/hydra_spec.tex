@@ -672,6 +672,22 @@ This level of spec add support for arbitrary matrices applied to lights. By defa
 	\caption{Example of different matrices applied to lights. }
 	\label{fig:lgt_matrices}
 \end{table}
+\FloatBarrier
+
+\reqirenmentlight{light\_ies}
+
+Simulation of goniograms (IES files) for light is accounted as if ray always hit center of light. I.e. point-area approximation (fig. \ref{fig:test_232_image}, right).
+
+\boldblue{(!)Note:} Modeling light distribution using goniograms (IES files) for area light sources is \textbf{not a physically correct} way to set light distribution properties for at least two reasons: (1) IES distribution assumes light source is point; (2) IES distribution does not account that area light sources does not emit light to the side at 90 degrees. Therefore tests with IES distribution set for area lights have to account slight discrepancy in implicit and explicit sampling for area lights ñlose to the edge of the light source (by masking such areas or decrease requirenment for PSNR).  
+
+\boldblue{Test:} test\_232\_point\_area.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../tests_images/test_232/w_ref.png}           
+	\caption{\label{fig:test_232_image}
+		Left: a light surface with infinite number of points with IES distribution. Right: point-area approximation. }   
+\end{figure}
+
 
 \newpage
 
