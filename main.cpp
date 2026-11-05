@@ -224,6 +224,16 @@ int main(int argc, const char** argv)
     //LGHT_TESTS::test_203_sky_hdr();
     //LGHT_TESTS::test_249_point_spot_projective();
     //GEO_TESTS::test_304_dof();
+
+    //LGHT_TESTS::test_217_cylinder();
+    //LGHT_TESTS::test_218_cylinder2();
+    //LGHT_TESTS::test_219_cylinder_tex();
+    //LGHT_TESTS::test_220_cylinder_tex2();
+    //LGHT_TESTS::test_221_cylinder_tex3();
+    //LGHT_TESTS::test_222_cylinder_with_end_face();
+    //LGHT_TESTS::test_245_cylinder_tex_nearest();
+    LGHT_TESTS::test_211_sky_and_sun_perez();
+    return;
     
     if(true) // run tests to generate data for hydra3
     { 
@@ -240,6 +250,7 @@ int main(int argc, const char** argv)
       LGHT_TESTS::test_201_sphere();
       LGHT_TESTS::test_203_sky_hdr();
       LGHT_TESTS::test_204_sky_hdr_rotate();  
+      LGHT_TESTS::test_211_sky_and_sun_perez();
       LGHT_TESTS::test_214_sky_ldr();  
 
       LGHT_TESTS::test_206_ies1();
@@ -258,7 +269,17 @@ int main(int argc, const char** argv)
       LGHT_TESTS::test_247_light_scale_intensity();
       LGHT_TESTS::test_248_rotated_area_mis_specular();
       LGHT_TESTS::test_249_point_spot_projective();
-  
+      
+
+      LGHT_TESTS::test_217_cylinder();
+      LGHT_TESTS::test_218_cylinder2();
+      LGHT_TESTS::test_219_cylinder_tex();
+      LGHT_TESTS::test_220_cylinder_tex2();
+      LGHT_TESTS::test_221_cylinder_tex3();
+      LGHT_TESTS::test_222_cylinder_with_end_face();
+      LGHT_TESTS::test_245_cylinder_tex_nearest();
+
+
       test_037_cornell_with_light_different_image_layers();
       test_078_material_remap_list1();
       test_079_material_remap_list2();
